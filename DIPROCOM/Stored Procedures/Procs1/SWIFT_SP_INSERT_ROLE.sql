@@ -8,8 +8,7 @@ DECLARE @return_value int,
           @pID numeric(18, 0)
 BEGIN
 	BEGIN TRAN t1
-	EXEC @return_value = [DIPROCOM].[SWIFT_SP_GET_NEXT_SEQUENCE] @SEQUENCE_NAME = N'ROLE',
-                                                              @pRESULT = @pID OUTPUT
+	SELECT  @pID = (SELECT MAX(ROLE_ID) FROM SONDA.SWIFT_ROLE) + 1
 		BEGIN		
 			INSERT INTO [DIPROCOM].[SWIFT_ROLE]
            ([ROLE_ID]

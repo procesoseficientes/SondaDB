@@ -5,12 +5,17 @@ AS
 BEGIN
 	
 	BEGIN TRAN t1
-		BEGIN			
-			
+		BEGIN		
+			DELETE DIPROCOM.SWIFT_PORTFOLIO_BY_SKU
+			WHERE CODE_PORTFOLIO = @CODE_PORTFOLIO;
+
+			DELETE DIPROCOM.SWIFT_PORTFOLIO_BY_SELLER
+			WHERE CODE_PORTFOLIO = @CODE_PORTFOLIO;
+
 			DELETE DIPROCOM.SWIFT_PORTFOLIO
 			WHERE CODE_PORTFOLIO = @CODE_PORTFOLIO;
 		END
-	
+
 	
 	IF @@error = 0 BEGIN
 		SELECT @pResult = 'OK'
@@ -21,6 +26,12 @@ BEGIN
 		SELECT	@pResult	= ERROR_MESSAGE()
 	END
 END
+
+-- SELECT * FROM DIPROCOM.SWIFT_PORTFOLIO_BY_SKU
+-- SELECT * FROM DIPROCOM.SWIFT_PORTFOLIO_BY_SELLER
+
+--Error: No se encontró un elemento relacionado o éste elemento está siendo utilizado 
+--( The DELETE statement conflicted with the REFERENCE constraint "FK_SWIFT_PORTFOLIO_BY_SELLER_SWIFT_PORTFOLIO". The conflict occurred in database "SWIFT_EXPRESS_QA", table "DIPROCOM.SWIFT_PORTFOLIO_BY_SELLER", column CODE_PORTFOLIO.The statement has been terminated.)
 
 
 

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [DIPROCOM].[SONDA_POS_RES_SAT] (
+CREATE TABLE [DIPROCOM].[SONDA_POS_RES_SAT] (
     [ROWPK]                                   INT           IDENTITY (1, 1) NOT NULL,
     [AUTH_ID]                                 VARCHAR (50)  NOT NULL,
     [AUTH_ASSIGNED_DATETIME]                  DATETIME      NULL,
@@ -26,6 +26,8 @@
 );
 
 
+
+
 GO
 -- =============================================
 -- Author:		<Elder Lucas>
@@ -33,10 +35,9 @@ GO
 -- Description:	<Trigger que previene el atraso de los correlativos en la tabla POS_RES_SAT y que devuelve el correlativo actual para mostrar en el error en SONDA_SD>
 -- =============================================
 CREATE TRIGGER [DIPROCOM].[PREVENT_LOWER_DOCUMENT]
-   ON  [SWIFT_EXPRESS].[DIPROCOM].[SONDA_POS_RES_SAT]
+   ON  [SWIFT_EXPRESS_QA].[DIPROCOM].[SONDA_POS_RES_SAT]
    AFTER UPDATE
 AS 
-
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -96,7 +97,12 @@ BEGIN
            ,-200
            ,'INFO'
 		   )
+
         RETURN;
 	END
 
 END
+GO
+DISABLE TRIGGER [DIPROCOM].[PREVENT_LOWER_DOCUMENT]
+    ON [DIPROCOM].[SONDA_POS_RES_SAT];
+

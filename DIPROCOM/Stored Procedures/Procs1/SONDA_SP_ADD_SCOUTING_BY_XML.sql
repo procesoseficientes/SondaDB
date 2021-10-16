@@ -234,8 +234,8 @@ BEGIN
         --
 --        PRINT '----> @QTY: ' + CAST(@QTY AS VARCHAR)
         --
-        --IF @QTY = @TAGS_QTY
-        --BEGIN
+        IF @QTY = @TAGS_QTY
+        BEGIN
         BEGIN TRY
           BEGIN TRAN
           -- ----------------------------------------------------------------------------------
@@ -346,13 +346,13 @@ BEGIN
         --
         --RAISERROR (@ERRORTRAN,16,1)
         END CATCH
-        --END
-        --ELSE
-        --BEGIN
-        --  SELECT
-        --    @IS_SUCCESSFUL = 0
-        --   ,@MESSAGE = 'No es igual la cantidad de etiquetas'
-        --END
+        END
+        ELSE
+        BEGIN
+          SELECT
+            @IS_SUCCESSFUL = 0
+           ,@MESSAGE = 'No es igual la cantidad de etiquetas'
+        END
       END
 
      

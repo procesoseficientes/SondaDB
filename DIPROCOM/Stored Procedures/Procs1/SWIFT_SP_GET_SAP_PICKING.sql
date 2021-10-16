@@ -6,6 +6,11 @@
 -- Modificacion 11-07-2016 @ Sprint  ζ
 					-- alberto.ruiz
 					-- Se agrego columna TOTAL_LINE
+
+-- Modificacion 12-08-2016 @ Sprint η
+					-- rudi garcia
+					-- Se quito la condicion "AND POD.OpenQty > 3"
+
 /*
 -- Ejemplo de Ejecucion:
         EXEC [DIPROCOM].[SWIFT_SP_GET_SAP_PICKING] @pERP_DOC = 8
@@ -38,7 +43,7 @@ BEGIN
 							  INNER JOIN
 							[BD_Prueba_Viscosa].dbo.OSLP AS SE
 							ON SE.SlpCode =  PO.SlpCode
-		WHERE  po.DocStatus=''''O'''' AND pod.LineStatus=''''O'''' AND (PO.DocType = ''''I'''') AND POD.OpenQty > 3 AND (PO.DocNum = '+@pERP_DOC+') '')'
+		WHERE  po.DocStatus=''''O'''' AND pod.LineStatus=''''O'''' AND (PO.DocType = ''''I'''') AND (PO.DocNum = '+@pERP_DOC+') '')'
 	--
 	PRINT '@SQL: ' + @SQL
 	--

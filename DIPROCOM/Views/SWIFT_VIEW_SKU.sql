@@ -1,4 +1,6 @@
-﻿-- =============================================
+﻿
+
+-- =============================================
 -- Autor:				joel.delcompare
 -- Fecha de Creacion: 	01-22-2016
 -- Description:			
@@ -41,11 +43,11 @@ AS
 		,ISNULL([PU].[CODE_PACK_UNIT] ,'No tiene unidad Asociada') AS [CODE_PACK_UNIT]
 		,ISNULL([ERPSPU].[DESCRIPTION_PACK_UNIT] ,'No tiene unidad Asociada') AS [DESCRIPTION_PACK_UNIT]
 		,0 [HANDLE_DIMENSION]
-	FROM [SWIFT_INTERFACES].[DIPROCOM].[ERP_VIEW_SKU] [ERP]
-	INNER JOIN [DIPROCOM].[SWIFT_PARAMETER] [sp]
-	ON	[LIST_NUM] = [sp].[VALUE]
-		AND [sp].[GROUP_ID] = 'ERP_HARDCODE_VALUES'
-		AND [sp].[PARAMETER_ID] = 'PRICE_LIST'
+	FROM [SWIFT_INTERFACES_QA].[DIPROCOM].[ERP_VIEW_SKU] [ERP]
+	--INNER JOIN [DIPROCOM].[SWIFT_PARAMETER] [sp]
+	--ON	[LIST_NUM] = [sp].[VALUE]
+	--	AND [sp].[GROUP_ID] = 'ERP_HARDCODE_VALUES'
+	--	AND [sp].[PARAMETER_ID] = 'PRICE_LIST'
 	LEFT JOIN [DIPROCOM].[SWIFT_SKU_SALE_PACK_UNIT] [PU]
 	ON	([ERP].[CODE_SKU] = [PU].[CODE_SKU])
 	LEFT JOIN [DIPROCOM].[SONDA_PACK_UNIT] [ERPSPU]

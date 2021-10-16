@@ -7,6 +7,7 @@
 AS
 BEGIN TRY
 BEGIN
+	DECLARE @OWNER VARCHAR(25) = 'Diprocom'
 	IF EXISTS (SELECT 1 FROM DIPROCOM.SWIFT_PRICE_LIST WHERE CODE_PRICE_LIST = @CODE_PRICE_LIST) BEGIN
 		SELECT @pResult = 'El codigo ya fue ingresado.'
 		RETURN -1
@@ -19,6 +20,7 @@ BEGIN
 				, COMMENT
 				, LAST_UPDATE
 				, LAST_UPDATE_BY
+				, OWNER
 			)
 			VALUES(
 				@CODE_PRICE_LIST
@@ -26,6 +28,7 @@ BEGIN
 				, @COMMENT
 				, GETDATE()
 				, @LAST_UPDATE_BY
+				, @OWNER
 			)
 			
 		END	

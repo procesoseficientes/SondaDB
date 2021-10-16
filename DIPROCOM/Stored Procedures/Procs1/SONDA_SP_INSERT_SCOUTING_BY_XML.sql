@@ -365,7 +365,7 @@
 		SELECT * FROM [DIPROCOM].[SONDA_TAG_X_CUSTOMER_NEW]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_INSERT_SCOUTING_BY_XML](
+CREATE PROCEDURE [DIPROCOM].SONDA_SP_INSERT_SCOUTING_BY_XML(
 	@XML XML
 	,@JSON VARCHAR(MAX) = NULL
 )
@@ -380,7 +380,7 @@ BEGIN
 	);
 	--
 	DECLARE @CUSTOMER_NEW TABLE (
-		[CODE_CUSTOMER_HH] VARCHAR(50)  NULL
+		[CODE_CUSTOMER_HH] VARCHAR(50) NOT NULL
 		,[DOC_SERIE] VARCHAR(50) NOT NULL
 		,[DOC_NUM] INT NOT NULL
 		,[CODE_ROUTE] VARCHAR(50) NOT NULL
@@ -407,7 +407,7 @@ BEGIN
 	--
 	DECLARE @RESULT TABLE (
 		[CLIENT_ID_HH] VARCHAR(50) NOT NULL
-		,[CLIENT_ID_BO] VARCHAR(50)  NULL
+		,[CLIENT_ID_BO] VARCHAR(50) NOT NULL
 		,[DOC_SERIE] VARCHAR(50) NOT NULL
 		,[DOC_NUM] INT NOT NULL
 		,[IS_SUCCESSFUL] INT NULL
@@ -574,8 +574,8 @@ BEGIN
 			PRINT '----> @IS_SUCCESSFUL: ' +  ISNULL(CAST(@IS_SUCCESSFUL AS VARCHAR),'ES NULL')
 			PRINT '----> @MESSAGE: ' + ISNULL(@MESSAGE,'ES NULL')
 			--
-			--IF @EXISTS = 0
-			--BEGIN
+			IF @EXISTS = 0
+			BEGIN
 				PRINT '--> NO EXISTE'
 				
 				-- ------------------------------------------------------------------------------------
@@ -702,13 +702,13 @@ BEGIN
 						--
 						--RAISERROR (@ERRORTRAN,16,1)
 					END CATCH
-				--END
-				--ELSE
-				--BEGIN
-				--	SELECT 
-				--		@IS_SUCCESSFUL = 0
-				--		,@MESSAGE = 'No es igual la cantidad de etiquetas'
-				--END
+				END
+				ELSE
+				BEGIN
+					SELECT 
+						@IS_SUCCESSFUL = 0
+						,@MESSAGE = 'No es igual la cantidad de etiquetas'
+				END
 			END
 
 			-- ------------------------------------------------------------------------------------

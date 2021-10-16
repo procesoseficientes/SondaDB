@@ -278,10 +278,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_POLYGON_082021.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="DIPROCOM\Tables\SWIFT_TAGS.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
@@ -291,14 +287,6 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="DIPROCOM\Tables\SWIFT_BONUS_LIST_BY_SKU_MULTIPLE.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_POLYGON_BY_ROUTE_082021.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON_082021.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
@@ -314,19 +302,11 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_POLYGON_POINT_082021.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="DIPROCOM\Tables\SWIFT_POLYGON_X_CUSTOMER_BK.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="DIPROCOM\Tables\SWIFT_BONUS_PRIORITY.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_TASK_BY_POLYGON_082021.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
@@ -350,10 +330,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_FREQUENCY_X_CUSTOMER_082021.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="DIPROCOM\Tables\SWIFT_PRICE_LIST_BY_CUSTOMER.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
@@ -371,10 +347,6 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="DIPROCOM\Tables\SWIFT_ROLE.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_POLYGON_X_CUSTOMER_082021.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
@@ -454,10 +426,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_POLYGON_BY_ROUTE_24082021.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="DIPROCOM\Tables\SWIFT_TEMP_RECEPTION_HEADER.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
@@ -470,19 +438,11 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_POLYGON_POINT_24082021.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="DIPROCOM\Tables\SWIFT_PROMO.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="DIPROCOM\Tables\SONDA_POS_INVOICE_DETAIL_HIST.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_TASK_BY_POLYGON_24082021.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
@@ -498,10 +458,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_FREQUENCY_24082021.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="DIPROCOM\Tables\SWIFT_TRADE_AGREEMENT.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
@@ -510,23 +466,11 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_FREQUENCY_X_CUSTOMER_24082021.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="DIPROCOM\Tables\SWIFT_PROMO_BONUS_BY_GENERAL_AMOUNT.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_POLYGON_X_CUSTOMER_24082021.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="DIPROCOM\Tables\SWIFT_CUSTOMER_FREQUENCY.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="DIPROCOM\Tables\SWIFT_POLYGON_24082021.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
@@ -1331,10 +1275,6 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="DIPROCOM\Tables\SONDA_SALES_ORDER_DETAIL_TEMP.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="dbo\Tables\SONDA_INVOICE_LOG_EXISTS_BK30012021.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
@@ -4728,14 +4668,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="DIPROCOM\Stored Procedures\Procs1\SWIFT_SP_GET_GPS_ACTIVE_ROUTE_TEST.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="DIPROCOM\Stored Procedures\Procs1\SWIFT_SP_GET_GPS_ACTIVE_ROUTEBK_2021.09.13.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="DIPROCOM\Stored Procedures\Procs1\SWIFT_SP_GET_HISTORICAL_CONSIGMENT.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
@@ -6951,10 +6883,6 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="DIPROCOM\Stored Procedures\Procs2\SWIFT_SYNCRO_VENDEDORES_RUTA.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="DIPROCOM\Stored Procedures\Procs2\SWIFT_SYNCRO_VENDEDORES_RUTA_COPIA.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>

@@ -4,11 +4,13 @@
     [DESCRIPTION_PACK_UNIT] VARCHAR (250) NULL,
     [LAST_UPDATE]           DATETIME      NULL,
     [LAST_UPDATE_BY]        VARCHAR (25)  NULL,
-    [UM_ENTRY]              VARCHAR (25)  NULL,
+    [UM_ENTRY]              NUMERIC (18)  NULL,
     [ORDER]                 INT           NULL,
     PRIMARY KEY CLUSTERED ([PACK_UNIT] ASC),
     UNIQUE NONCLUSTERED ([CODE_PACK_UNIT] ASC)
 );
+
+
 
 
 GO
