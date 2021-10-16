@@ -21,7 +21,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_INSERT_FREQUENCY_BY_POLYGON]
+				EXEC [SONDA].[SWIFT_SP_INSERT_FREQUENCY_BY_POLYGON]
 					@SUNDAY = 0
 					,@MONDAY = 0
 					,@TUESDAY = 1
@@ -36,10 +36,10 @@
 					,@TYPE_TASK = 'PRESALE'
 					,@POLYGON_ID = 66
 				-- 
-				SELECT * FROM [DIPROCOM].[SWIFT_FREQUENCY] WHERE CODE_ROUTE= 'RUDI@DIPROCOM' AND TYPE_TASK = 'PRESALE'
+				SELECT * FROM [SONDA].[SWIFT_FREQUENCY] WHERE CODE_ROUTE= 'RUDI@DIPROCOM' AND TYPE_TASK = 'PRESALE'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_INSERT_FREQUENCY_BY_POLYGON] (
+CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_FREQUENCY_BY_POLYGON] (
 	@SUNDAY AS INT
 	,@MONDAY AS INT
 	,@TUESDAY AS INT
@@ -126,13 +126,13 @@ BEGIN
 			,@CODE_ROUTE  -- CODE_ROUTE - varchar(50)
 			,[TP].[TASK_TYPE]
 			,@POLYGON_ID
-		FROM [DIPROCOM].[SWIFT_TASK_BY_POLYGON] [TP]
+		FROM [SONDA].[SWIFT_TASK_BY_POLYGON] [TP]
 		WHERE [TP].[POLYGON_ID] = @POLYGON_ID
 			
 		-- ------------------------------------------------------------------------------------
 		-- Inserta o actualiza la frecuencia
 		-- ------------------------------------------------------------------------------------
-		MERGE [DIPROCOM].[SWIFT_FREQUENCY] [F]
+		MERGE [SONDA].[SWIFT_FREQUENCY] [F]
 		USING
 			(
 				SELECT
@@ -217,7 +217,7 @@ BEGIN
 			[F].ID_FREQUENCY
 			,[F].[CODE_FREQUENCY]
 			,[F].[TYPE_TASK]
-		FROM [DIPROCOM].[SWIFT_FREQUENCY] [F]
+		FROM [SONDA].[SWIFT_FREQUENCY] [F]
 		INNER JOIN @FREQUENCY [FT] ON (
 			[FT].[CODE_FREQUENCY] = [F].[CODE_FREQUENCY]
 		)
@@ -226,11 +226,11 @@ BEGIN
 		-- Elimina los clientes del poligono de cualquier frecuencia asociada
 		-- ------------------------------------------------------------------------------------
 		DELETE [FC]
-		FROM [DIPROCOM].[SWIFT_POLYGON_X_CUSTOMER] [PC]
-		INNER JOIN [DIPROCOM].[SWIFT_FREQUENCY_X_CUSTOMER] [FC] ON (
+		FROM [SONDA].[SWIFT_POLYGON_X_CUSTOMER] [PC]
+		INNER JOIN [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] [FC] ON (
 			[FC].[CODE_CUSTOMER] = [PC].[CODE_CUSTOMER]
 		)
-		INNER JOIN [DIPROCOM].[SWIFT_FREQUENCY_BY_POLYGON] [FP] ON (
+		INNER JOIN [SONDA].[SWIFT_FREQUENCY_BY_POLYGON] [FP] ON (
 			[FP].[POLYGON_ID] = [PC].[POLYGON_ID]
 			AND [FP].[ID_FREQUENCY] = [FC].[ID_FREQUENCY]
 		)
@@ -239,9 +239,9 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Establece la relacion entre poligono y frecuencias
 		-- ------------------------------------------------------------------------------------
-		DELETE FROM [DIPROCOM].[SWIFT_FREQUENCY_BY_POLYGON] WHERE [POLYGON_ID] = @POLYGON_ID
+		DELETE FROM [SONDA].[SWIFT_FREQUENCY_BY_POLYGON] WHERE [POLYGON_ID] = @POLYGON_ID
 		--
-		INSERT INTO [DIPROCOM].[SWIFT_FREQUENCY_BY_POLYGON]
+		INSERT INTO [SONDA].[SWIFT_FREQUENCY_BY_POLYGON]
 				([POLYGON_ID] 
 				,[ID_FREQUENCY])
 		SELECT DISTINCT
@@ -252,7 +252,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Agrega los clientes a la frecuencia
 		-- ------------------------------------------------------------------------------------
-		INSERT INTO [DIPROCOM].[SWIFT_FREQUENCY_X_CUSTOMER]
+		INSERT INTO [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER]
 		(
 			[ID_FREQUENCY]
 			,[CODE_CUSTOMER]
@@ -262,8 +262,8 @@ BEGIN
 			[FP].[ID_FREQUENCY]
 			,[PC].[CODE_CUSTOMER]
 			,1
-		FROM [DIPROCOM].[SWIFT_POLYGON_X_CUSTOMER] PC
-		INNER JOIN [DIPROCOM].[SWIFT_FREQUENCY_BY_POLYGON] [FP] ON (
+		FROM [SONDA].[SWIFT_POLYGON_X_CUSTOMER] PC
+		INNER JOIN [SONDA].[SWIFT_FREQUENCY_BY_POLYGON] [FP] ON (
 			[FP].[POLYGON_ID] = [PC].[POLYGON_ID]
 		)
 		WHERE [PC].[POLYGON_ID] = @POLYGON_ID
@@ -271,7 +271,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Agrega propuesta de clientes
 		-- ------------------------------------------------------------------------------------
-		MERGE [DIPROCOM].[SWIFT_CUSTOMER_FREQUENCY] [CF]
+		MERGE [SONDA].[SWIFT_CUSTOMER_FREQUENCY] [CF]
 		USING
 			(
 				SELECT 
@@ -285,7 +285,7 @@ BEGIN
 					,@FRIDAY [FRIDAY]
 					,@SATURDAY [SATURDAY]
 					,@FRECUENCY_WEEKS [FREQUENCY_WEEKS]
-				FROM [DIPROCOM].[SWIFT_POLYGON_X_CUSTOMER] PC 
+				FROM [SONDA].[SWIFT_POLYGON_X_CUSTOMER] PC 
 				WHERE [PC].[POLYGON_ID] = @POLYGON_ID
 			) [PC]
 		ON (
@@ -342,7 +342,7 @@ BEGIN
 			IS_NEW = 0
 			,HAS_PROPOSAL = 1
 			,HAS_FREQUENCY = 1
-		FROM [DIPROCOM].[SWIFT_POLYGON_X_CUSTOMER] PC
+		FROM [SONDA].[SWIFT_POLYGON_X_CUSTOMER] PC
 		WHERE [PC].[POLYGON_ID] = @POLYGON_ID
 
 		-- ------------------------------------------------------------------------------------

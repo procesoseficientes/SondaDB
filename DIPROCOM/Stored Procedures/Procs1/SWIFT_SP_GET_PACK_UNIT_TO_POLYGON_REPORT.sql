@@ -9,7 +9,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT]
+				EXEC [SONDA].[SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT]
 				    	@POLYGON_TYPE = 'REGION'
 				    	,@START_DATETIME = '20161201 00:00:00.000'
 				    	,@END_DATETIME = '20170201 00:00:00.000'
@@ -17,7 +17,7 @@
 				    	,@CHANNELS = NULL
 				    	,@TYPE = 'SALE'
 				    --
-				    EXEC [DIPROCOM].[SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT]
+				    EXEC [SONDA].[SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT]
 				    	@POLYGON_TYPE = 'REGION'
 				    	,@START_DATETIME = '20161201 00:00:00.000'
 				    	,@END_DATETIME = '20170201 00:00:00.000'
@@ -25,7 +25,7 @@
 				    	,@CHANNELS = '21|1'
 				    	,@TYPE = 'PRESALE'
 				    --
-				    EXEC [DIPROCOM].[SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT]
+				    EXEC [SONDA].[SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT]
 				    	@POLYGON_TYPE = 'SECTOR'
 				    	,@POLYGON_SUB_TYPE = 'COMMERCIAL'
 				    	,@POLYGON_ID_PARENT = 63
@@ -35,7 +35,7 @@
 				    	,@CHANNELS = NULL--'21|1'
 				    	,@TYPE = 'SALE'
 				    --
-				    EXEC [DIPROCOM].[SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT]
+				    EXEC [SONDA].[SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT]
 				    	@POLYGON_TYPE = 'SECTOR'
 				    	,@POLYGON_SUB_TYPE = 'COMMERCIAL'
 				    	,@POLYGON_ID_PARENT = 63
@@ -45,7 +45,7 @@
 				    	,@CHANNELS = NULL
 				    	,@TYPE = 'PRESALE'
 				    --
-				    EXEC [DIPROCOM].[SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT]
+				    EXEC [SONDA].[SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT]
 				    	@POLYGON_TYPE = 'RUTA'
 				    	,@POLYGON_SUB_TYPE = 'COMMERCIAL'
 				    	,@POLYGON_ID_PARENT = 5167
@@ -55,7 +55,7 @@
 				    	,@CHANNELS = NULL
 				    	,@TYPE = 'SALE'
 				    --
-				    EXEC [DIPROCOM].[SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT]
+				    EXEC [SONDA].[SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT]
 				    	@POLYGON_TYPE = 'RUTA'
 				    	,@POLYGON_SUB_TYPE = 'COMMERCIAL'
 				    	,@POLYGON_ID_PARENT = 5167
@@ -67,7 +67,7 @@
 
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT (@POLYGON_TYPE VARCHAR(250)
+CREATE PROCEDURE [SONDA].SWIFT_SP_GET_PACK_UNIT_TO_POLYGON_REPORT (@POLYGON_TYPE VARCHAR(250)
 , @POLYGON_SUB_TYPE VARCHAR(250) = NULL
 , @POLYGON_ID_PARENT INT = NULL
 , @START_DATETIME DATETIME
@@ -118,8 +118,8 @@ BEGIN
     -- Coloca parametros iniciales
     -- ------------------------------------------------------------------------------------
     SELECT
-      @DELIMITER = [DIPROCOM].[SWIFT_FN_GET_PARAMETER]('DELIMITER', 'DEFAULT_DELIMITER')
-     ,@DEFAULT_DISPLAY_DECIMALS = [DIPROCOM].[SWIFT_FN_GET_PARAMETER]('CALCULATION_RULES', 'DEFAULT_DISPLAY_DECIMALS')
+      @DELIMITER = [SONDA].[SWIFT_FN_GET_PARAMETER]('DELIMITER', 'DEFAULT_DELIMITER')
+     ,@DEFAULT_DISPLAY_DECIMALS = [SONDA].[SWIFT_FN_GET_PARAMETER]('CALCULATION_RULES', 'DEFAULT_DISPLAY_DECIMALS')
      ,@POLYGON_SUB_TYPE =
                          CASE
                            WHEN @POLYGON_TYPE = 'RUTA' THEN NULL
@@ -132,7 +132,7 @@ BEGIN
     SELECT
       [P].[POLYGON_ID]
      ,[P].[POLYGON_ID_PARENT] INTO [#POLYGON]
-    FROM [DIPROCOM].[SWIFT_POLYGON] [P]
+    FROM [SONDA].[SWIFT_POLYGON] [P]
     WHERE [P].[POLYGON_TYPE] = @POLYGON_TYPE
     AND (
     [P].[SUB_TYPE] = @POLYGON_SUB_TYPE
@@ -151,7 +151,7 @@ BEGIN
       INSERT INTO @TAG
         SELECT
           [T].[VALUE]
-        FROM [DIPROCOM].[SWIFT_FN_SPLIT_2](@TAG_COLORS, @DELIMITER) [T]
+        FROM [SONDA].[SWIFT_FN_SPLIT_2](@TAG_COLORS, @DELIMITER) [T]
     END
 
     -- ------------------------------------------------------------------------------------
@@ -162,7 +162,7 @@ BEGIN
       INSERT INTO @CHANNEL
         SELECT
           [C].[VALUE]
-        FROM [DIPROCOM].[SWIFT_FN_SPLIT_2](@CHANNELS, @DELIMITER) [C]
+        FROM [SONDA].[SWIFT_FN_SPLIT_2](@CHANNELS, @DELIMITER) [C]
     END
 
     -- ------------------------------------------------------------------------------------
@@ -174,7 +174,7 @@ BEGIN
      ,[C].[LONGITUDE]
      ,[GEOMETRY]::Point([C].[LATITUDE], [C].[LONGITUDE], 0) [POINT]
      ,[C].[SELLER_DEFAULT_CODE] AS [SELLER_CODE] INTO [#CUSTOMER]
-    FROM [DIPROCOM].[SWIFT_VIEW_ALL_COSTUMER] [C]
+    FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
     WHERE [GPS] <> '0,0'
     AND ([C].[LATITUDE] IS NOT NULL
     AND [C].[LONGITUDE] IS NOT NULL)
@@ -189,10 +189,10 @@ BEGIN
     IF @POLYGON_ID_PARENT IS NOT NULL
     BEGIN
       SELECT
-        @GEOMETRY_POLYGON = [DIPROCOM].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@POLYGON_ID_PARENT);
+        @GEOMETRY_POLYGON = [SONDA].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@POLYGON_ID_PARENT);
       --
       SELECT
-        @TOTAL_CUSTOMERS = [DIPROCOM].[SWIFT_GET_CUSTOMERS_COUNT_BY_GEOMETRY_POLYGON](@GEOMETRY_POLYGON);
+        @TOTAL_CUSTOMERS = [SONDA].[SWIFT_GET_CUSTOMERS_COUNT_BY_GEOMETRY_POLYGON](@GEOMETRY_POLYGON);
     END;
 
     -- ------------------------------------------------------------------------------------
@@ -202,7 +202,7 @@ BEGIN
     BEGIN
       DELETE [C]
         FROM [#CUSTOMER] [C]
-        LEFT JOIN [DIPROCOM].[SWIFT_TAG_X_CUSTOMER] [TC]
+        LEFT JOIN [SONDA].[SWIFT_TAG_X_CUSTOMER] [TC]
           ON (
           [TC].[CUSTOMER] = [CODE_CUSTOMER]
           )
@@ -220,7 +220,7 @@ BEGIN
     BEGIN
       DELETE [C]
         FROM [#CUSTOMER] [C]
-        LEFT JOIN [DIPROCOM].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+        LEFT JOIN [SONDA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
           ON (
           [CC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
           )
@@ -245,8 +245,8 @@ BEGIN
          ,MAX([PU].[DESCRIPTION_PACK_UNIT])
          ,SUM([SD].[QTY])
          ,[PBR].[POLYGON_ID]
-        FROM [DIPROCOM].[SONDA_SALES_ORDER_DETAIL] [SD]
-        INNER JOIN [DIPROCOM].[SONDA_SALES_ORDER_HEADER] [SO]
+        FROM [SONDA].[SONDA_SALES_ORDER_DETAIL] [SD]
+        INNER JOIN [SONDA].[SONDA_SALES_ORDER_HEADER] [SO]
           ON (
           [SO].[SALES_ORDER_ID] = [SD].[SALES_ORDER_ID]
           )
@@ -254,19 +254,19 @@ BEGIN
           ON (
           [C].[CODE_CUSTOMER] = [SO].[CLIENT_ID]
           )
-        INNER JOIN [DIPROCOM].[SONDA_PACK_UNIT] [PU]
+        INNER JOIN [SONDA].[SONDA_PACK_UNIT] [PU]
           ON (
           [PU].[CODE_PACK_UNIT] = [SD].[CODE_PACK_UNIT]
           )
-        INNER JOIN [DIPROCOM].[USERS] [U]
+        INNER JOIN [SONDA].[USERS] [U]
           ON (
 			[U].[SELLER_ROUTE] = [SO].[POS_TERMINAL]
           )
-        INNER JOIN [DIPROCOM].[SWIFT_ROUTES] [R]
+        INNER JOIN [SONDA].[SWIFT_ROUTES] [R]
           ON (
           R.[SELLER_CODE] = [U].[RELATED_SELLER]
           )
-        INNER JOIN [DIPROCOM].[SWIFT_POLYGON_BY_ROUTE] [PBR]
+        INNER JOIN [SONDA].[SWIFT_POLYGON_BY_ROUTE] [PBR]
           ON (
           [PBR].[ROUTE] = [R].[ROUTE]
           )
@@ -288,8 +288,8 @@ BEGIN
          ,'Manual'
          ,SUM([D].[QTY])
          ,[PBR].[POLYGON_ID]
-        FROM [DIPROCOM].[SONDA_POS_INVOICE_DETAIL] [D]
-        INNER JOIN [DIPROCOM].[SONDA_POS_INVOICE_HEADER] [I]
+        FROM [SONDA].[SONDA_POS_INVOICE_DETAIL] [D]
+        INNER JOIN [SONDA].[SONDA_POS_INVOICE_HEADER] [I]
           ON (
           [I].[CDF_RESOLUCION] = [D].[INVOICE_RESOLUTION]
           AND [I].[CDF_SERIE] = [D].[INVOICE_SERIAL]
@@ -299,15 +299,15 @@ BEGIN
           ON (
           [C].[CODE_CUSTOMER] = [I].[CLIENT_ID]
           )
-        INNER JOIN [DIPROCOM].[USERS] [U]
+        INNER JOIN [SONDA].[USERS] [U]
           ON (
           [U].[SELLER_ROUTE] = [I].[POS_TERMINAL]
           )
-        INNER JOIN [DIPROCOM].[SWIFT_ROUTES] [R]
+        INNER JOIN [SONDA].[SWIFT_ROUTES] [R]
           ON (
           R.[SELLER_CODE] = [U].[RELATED_SELLER]
           )
-        INNER JOIN [DIPROCOM].[SWIFT_POLYGON_BY_ROUTE] [PBR]
+        INNER JOIN [SONDA].[SWIFT_POLYGON_BY_ROUTE] [PBR]
           ON (
           [PBR].[ROUTE] = [R].[ROUTE]
           )
@@ -332,7 +332,7 @@ BEGIN
       -- ------------------------------------------------------------------------------------
       -- ObtIene el poligono actual 
       -- ------------------------------------------------------------------------------------
-      SET @GEOMETRY_POLYGON = [DIPROCOM].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@vPOLYGON_ID);
+      SET @GEOMETRY_POLYGON = [SONDA].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@vPOLYGON_ID);
 
       -- ------------------------------------------------------------------------------------
       -- Obtiene los clientes del poligono actual
@@ -405,9 +405,9 @@ BEGIN
 			[PPU].[POLYGON_ID]
 			,[P].[POLYGON_NAME]
 			,[PPU].[PACK_UNIT]
-			,CONVERT(DECIMAL(18,' + CAST(@DEFAULT_DISPLAY_DECIMALS AS VARCHAR) + '),[DIPROCOM].SWIFT_FN_GET_DISPLAY_NUMBER([PPU].[QTY])) [QTY]
+			,CONVERT(DECIMAL(18,' + CAST(@DEFAULT_DISPLAY_DECIMALS AS VARCHAR) + '),[SONDA].SWIFT_FN_GET_DISPLAY_NUMBER([PPU].[QTY])) [QTY]
 		FROM [#POLYGON_PACK_UNIT] [PPU]
-		INNER JOIN [DIPROCOM].[SWIFT_POLYGON] [P] ON (
+		INNER JOIN [SONDA].[SWIFT_POLYGON] [P] ON (
 			[PPU].[POLYGON_ID] = [P].[POLYGON_ID]
 		)'
     --

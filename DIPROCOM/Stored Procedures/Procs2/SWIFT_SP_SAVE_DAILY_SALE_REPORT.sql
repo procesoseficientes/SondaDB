@@ -5,12 +5,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_SAVE_DAILY_SALE_REPORT]
+				EXEC [SONDA].[SWIFT_SP_SAVE_DAILY_SALE_REPORT]
 				--
-				SELECT * FROM [DIPROCOM].[SWIFT_DAILY_GOAL_BY_SELLER]
+				SELECT * FROM [SONDA].[SWIFT_DAILY_GOAL_BY_SELLER]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_SAVE_DAILY_SALE_REPORT]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_SAVE_DAILY_SALE_REPORT]
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -51,18 +51,18 @@ BEGIN
        ,[U].[LOGIN]
        ,[U].[NAME_USER] [SELLER_NAME]
        ,COUNT([SOH].[SALES_ORDER_ID]) [DOCUMENT_QTY]
-       ,SUM([DIPROCOM].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([SOH].[SALES_ORDER_ID])) [DOCUMENT_TOTAL]
+       ,SUM([SONDA].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([SOH].[SALES_ORDER_ID])) [DOCUMENT_TOTAL]
        ,GETDATE()
        ,[GH].[GOAL_DATE_FROM]
        ,[GH].[GOAL_DATE_TO]
        ,[GH].[INCLUDE_SATURDAY]
     FROM
-        [DIPROCOM].[SWIFT_TASKS] [T]
-    INNER JOIN [DIPROCOM].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
-    INNER JOIN [DIPROCOM].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
-    LEFT JOIN [DIPROCOM].[SONDA_SALES_ORDER_HEADER] [SOH] ON [SOH].[TASK_ID] = [T].[TASK_ID]
+        [SONDA].[SWIFT_TASKS] [T]
+    INNER JOIN [SONDA].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
+    INNER JOIN [SONDA].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
+    LEFT JOIN [SONDA].[SONDA_SALES_ORDER_HEADER] [SOH] ON [SOH].[TASK_ID] = [T].[TASK_ID]
                                                           AND [SOH].[IS_READY_TO_SEND] = 1
-    LEFT JOIN [DIPROCOM].[SWIFT_GOAL_HEADER] [GH] ON [UT].[TEAM_ID] = [GH].[TEAM_ID]
+    LEFT JOIN [SONDA].[SWIFT_GOAL_HEADER] [GH] ON [UT].[TEAM_ID] = [GH].[TEAM_ID]
                                                   AND [GH].[SALE_TYPE] = 'PRE'
                                                   AND [T].[TASK_DATE] BETWEEN [GH].[GOAL_DATE_FROM]
                                                               AND
@@ -92,9 +92,9 @@ BEGIN
     INTO
         [#INVOICES]
     FROM
-        [DIPROCOM].[SONDA_POS_INVOICE_HEADER] [SPH]
-    INNER JOIN [DIPROCOM].[USERS] [U] ON [SPH].[POSTED_BY] = [U].[LOGIN]
-    INNER JOIN [DIPROCOM].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
+        [SONDA].[SONDA_POS_INVOICE_HEADER] [SPH]
+    INNER JOIN [SONDA].[USERS] [U] ON [SPH].[POSTED_BY] = [U].[LOGIN]
+    INNER JOIN [SONDA].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
     WHERE
         FORMAT([SPH].[POSTED_DATETIME], 'yyyyMMdd') = FORMAT(GETDATE(),
                                                              'yyyyMMdd')
@@ -127,11 +127,11 @@ BEGIN
        ,[GH].[GOAL_DATE_TO]
        ,[GH].[INCLUDE_SATURDAY]
     FROM
-        [DIPROCOM].[SWIFT_TASKS] [T]
-    INNER JOIN [DIPROCOM].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
-    INNER JOIN [DIPROCOM].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
+        [SONDA].[SWIFT_TASKS] [T]
+    INNER JOIN [SONDA].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
+    INNER JOIN [SONDA].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
     LEFT JOIN [#INVOICES] [I] ON [I].[LOGIN] = [U].[LOGIN]
-    LEFT JOIN [DIPROCOM].[SWIFT_GOAL_HEADER] [GH] ON [UT].[TEAM_ID] = [GH].[TEAM_ID]
+    LEFT JOIN [SONDA].[SWIFT_GOAL_HEADER] [GH] ON [UT].[TEAM_ID] = [GH].[TEAM_ID]
                                                   AND [GH].[SALE_TYPE] = 'VEN'
                                                   AND [T].[TASK_DATE] BETWEEN [GH].[GOAL_DATE_FROM]
                                                               AND
@@ -155,7 +155,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	-- Inserta en la tabla de SWIFT_DAILY_GOAL_BY_SELLER
 	-- ------------------------------------------------------------------------------------
-    INSERT  INTO [DIPROCOM].[SWIFT_DAILY_GOAL_BY_SELLER]
+    INSERT  INTO [SONDA].[SWIFT_DAILY_GOAL_BY_SELLER]
             (
              [TEAM_ID]
             ,[DOC_TYPE]
@@ -175,9 +175,9 @@ BEGIN
        ,ISNULL([DOCUMENT_QTY], 0)
        ,ISNULL([DOCUMENT_TOTAL], 0)
        ,[DATE]
-       ,[DIPROCOM].[SWIFT_FN_GET_GOAL_WORK_DAYS]([DATE],
+       ,[SONDA].[SWIFT_FN_GET_GOAL_WORK_DAYS]([DATE],
                                               '2018-08-01 00:00:00.000', 1)
-       ,[DIPROCOM].[SWIFT_FN_GET_GOAL_WORK_DAYS]('2018-07-01 00:00:00.000',
+       ,[SONDA].[SWIFT_FN_GET_GOAL_WORK_DAYS]('2018-07-01 00:00:00.000',
                                               [DATE], 1)
     FROM
         @RESULT;

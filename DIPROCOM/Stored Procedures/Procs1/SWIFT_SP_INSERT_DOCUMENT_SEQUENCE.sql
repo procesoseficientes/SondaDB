@@ -27,7 +27,7 @@ DECLARE @BRANCH_ADDRESS varchar(150)
 
 -- TODO: Set parameter values here.
 
-EXECUTE [DIPROCOM].[SWIFT_SP_INSERT_DOCUMENT_SEQUENCE] 
+EXECUTE [SONDA].[SWIFT_SP_INSERT_DOCUMENT_SEQUENCE] 
    @DOC_TYPE
   ,@ASSIGNED_DATETIME
   ,@POST_DATETIME
@@ -44,7 +44,7 @@ GO
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_INSERT_DOCUMENT_SEQUENCE]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_DOCUMENT_SEQUENCE]
     @DOC_TYPE VARCHAR(50),
     @POST_DATETIME DATETIME,
     @ASSIGNED_BY VARCHAR(100),
@@ -111,7 +111,7 @@ BEGIN TRY
                              ELSE
                                  'Rangos mal definidos'
                          END
-            FROM [DIPROCOM].[SWIFT_DOCUMENT_SEQUENCE] AS [S]
+            FROM [SONDA].[SWIFT_DOCUMENT_SEQUENCE] AS [S]
             WHERE [S].[DOC_TYPE] = @DOC_TYPE
                   AND
                   (
@@ -141,7 +141,7 @@ BEGIN TRY
             END;
             ELSE
             BEGIN
-                INSERT INTO [DIPROCOM].[SWIFT_DOCUMENT_SEQUENCE]
+                INSERT INTO [SONDA].[SWIFT_DOCUMENT_SEQUENCE]
                 (
                     [DOC_TYPE],
                     [ASSIGNED_DATETIME],
@@ -176,7 +176,7 @@ BEGIN TRY
     END;
     ELSE
     BEGIN
-        INSERT INTO [DIPROCOM].[SWIFT_DOCUMENT_SEQUENCE]
+        INSERT INTO [SONDA].[SWIFT_DOCUMENT_SEQUENCE]
         (
             [DOC_TYPE],
             [ASSIGNED_DATETIME],

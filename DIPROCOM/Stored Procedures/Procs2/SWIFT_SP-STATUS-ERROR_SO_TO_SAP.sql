@@ -15,7 +15,7 @@
 				-- 	
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP-STATUS-ERROR_SO_TO_SAP] (
+CREATE PROCEDURE [SONDA].[SWIFT_SP-STATUS-ERROR_SO_TO_SAP] (
 	@SALES_ORDER_ID INT
 	,@POSTED_RESPONSE VARCHAR(4000)
 	,@OWNER VARCHAR(125)
@@ -26,7 +26,7 @@ BEGIN TRY
 	--
 	DECLARE	@ID NUMERIC(18, 0), @PARAMETER_OWNER VARCHAR(125);
 	--
-	SELECT @PARAMETER_OWNER = [DIPROCOM].[SWIFT_FN_GET_PARAMETER]('SALES_ORDER_INTERCOMPANY','SEND_ALL_DETAIL')
+	SELECT @PARAMETER_OWNER = [SONDA].[SWIFT_FN_GET_PARAMETER]('SALES_ORDER_INTERCOMPANY','SEND_ALL_DETAIL')
 	-- ------------------------------------------------------------------------------------
 	-- Actualiza el detalle y lo marca con error
 	-- ------------------------------------------------------------------------------------
@@ -35,14 +35,14 @@ BEGIN TRY
 		[D].[POSTED_RESPONSE] = @POSTED_RESPONSE
 		,[ATTEMPTED_WITH_ERROR] = ISNULL([ATTEMPTED_WITH_ERROR],0) + 1
 		,[D].[INTERFACE_OWNER] = @OWNER
-	FROM [DIPROCOM].[SONDA_SALES_ORDER_DETAIL] [D]	
-		INNER JOIN [DIPROCOM].[SWIFT_VIEW_ALL_SKU] [SKU] ON [SKU].[CODE_SKU] = [D].[SKU]
+	FROM [SONDA].[SONDA_SALES_ORDER_DETAIL] [D]	
+		INNER JOIN [SONDA].[SWIFT_VIEW_ALL_SKU] [SKU] ON [SKU].[CODE_SKU] = [D].[SKU]
 	WHERE [SALES_ORDER_ID] = @SALES_ORDER_ID 
 		AND ([SKU].[OWNER] = @OWNER OR (@OWNER = @PARAMETER_OWNER AND @OWNER = @CUSTOMER_OWNER));
 	-- ------------------------------------------------------------------------------------
 	-- Actualiza el encabezado y lo marca con error
 	-- ------------------------------------------------------------------------------------
-	UPDATE [DIPROCOM].[SONDA_SALES_ORDER_HEADER]
+	UPDATE [SONDA].[SONDA_SALES_ORDER_HEADER]
 	SET	
 		[ATTEMPTED_WITH_ERROR] = [ATTEMPTED_WITH_ERROR] + 1
 		,[POSTED_RESPONSE] = @POSTED_RESPONSE
@@ -50,7 +50,7 @@ BEGIN TRY
 		,[LAST_UPDATE_IS_SENDING] = GETDATE()
 	WHERE [SALES_ORDER_ID] = @SALES_ORDER_ID;
 	--
-	INSERT	INTO [DIPROCOM].[SWIFT_SEND_SO_ERP_LOG]
+	INSERT	INTO [SONDA].[SWIFT_SEND_SO_ERP_LOG]
 			(
 				[SALES_ORDER_ID]
 				,[ATTEMPTED_WITH_ERROR]

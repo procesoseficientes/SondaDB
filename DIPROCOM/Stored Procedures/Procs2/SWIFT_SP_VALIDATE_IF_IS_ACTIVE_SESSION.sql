@@ -4,12 +4,12 @@
 -- Description:			SP que valida si la sesion enviada es la activa del usuario
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_VALIDATE_IF_IS_ACTIVE_SESSION]
+				EXEC [SONDA].[SWIFT_SP_VALIDATE_IF_IS_ACTIVE_SESSION]
 					@LOGIN = 'gerente@DIPROCOM'
 					,@SESSION_ID = 'oe3hojf5ysmuryp3ba2gczzk'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_VALIDATE_IF_IS_ACTIVE_SESSION](
+CREATE PROCEDURE [SONDA].[SWIFT_SP_VALIDATE_IF_IS_ACTIVE_SESSION](
 	@LOGIN VARCHAR(50)
 	,@SESSION_ID VARCHAR(88)
 )
@@ -25,7 +25,7 @@ BEGIN
 		SELECT TOP 1
 			@RESULT = 1
 			,@MESSAGE = ''
-		FROM [DIPROCOM].[USERS] [U]
+		FROM [SONDA].[USERS] [U]
 		WHERE [U].[LOGIN] = @LOGIN
 		AND [U].[SESSION_ID] = @SESSION_ID
 		--

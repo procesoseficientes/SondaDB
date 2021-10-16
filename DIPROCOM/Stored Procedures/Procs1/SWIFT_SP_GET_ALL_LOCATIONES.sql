@@ -6,15 +6,15 @@
 
 /*
 -- Ejemplo de Ejecucion:				
-				-- EXEC [DIPROCOM].[SWIFT_SP_GET_ALL_LOCATIONES]
+				-- EXEC [SONDA].[SWIFT_SP_GET_ALL_LOCATIONES]
 				--				
 */
 -- =============================================
 
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_GET_ALL_LOCATIONES]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_ALL_LOCATIONES]
 AS
 Select L.[CODE_LOCATION]
-from [DIPROCOM].[SWIFT_LOCATIONS] L
+from [SONDA].[SWIFT_LOCATIONS] L
 
 
 

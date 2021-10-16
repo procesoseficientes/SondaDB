@@ -1,4 +1,4 @@
-﻿CREATE TABLE [DIPROCOM].[tttt] (
+﻿CREATE TABLE [SONDA].[tttt] (
     [col] INT NULL
 );
 

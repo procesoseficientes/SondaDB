@@ -6,12 +6,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-	EXEC [DIPROCOM].[SWIFT_SP_SET_ERP_POSTING_STATUS_ON_INVOICE]
+	EXEC [SONDA].[SWIFT_SP_SET_ERP_POSTING_STATUS_ON_INVOICE]
   
 */
 -- =============================================
 
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_SET_ERP_POSTING_STATUS_ON_INVOICE]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_SET_ERP_POSTING_STATUS_ON_INVOICE]
 (
     @INVOICE_ID INT,
     @POSTING_STATUS INT,
@@ -34,7 +34,7 @@ BEGIN
            @CDF_SERIE = [IH].[CDF_SERIE],
            @CDF_RESOLUCION = [IH].[CDF_RESOLUCION],
            @IS_CREDIT_NOTE = [IH].[IS_CREDIT_NOTE]
-    FROM [DIPROCOM].[SONDA_POS_INVOICE_HEADER] AS [IH]
+    FROM [SONDA].[SONDA_POS_INVOICE_HEADER] AS [IH]
     WHERE [IH].[ID] = @INVOICE_ID;
 
 
@@ -43,7 +43,7 @@ BEGIN
     -- ---------------------------------------------------------------
     IF (@POSTING_STATUS = 1)
     BEGIN
-        EXEC [DIPROCOM].[SWIFT_SP_MARK_INVOICE_AS_SEND_TO_ERP] @INVOICE_ID = @INVOICE_NUM,           -- int
+        EXEC [SONDA].[SWIFT_SP_MARK_INVOICE_AS_SEND_TO_ERP] @INVOICE_ID = @INVOICE_NUM,           -- int
                                                             @CDF_SERIE = @CDF_SERIE,              -- varchar(50)
                                                             @CDF_RESOLUCION = @CDF_RESOLUCION,    -- nvarchar(50)
                                                             @IS_CREDIT_NOTE = @IS_CREDIT_NOTE,    -- int
@@ -53,7 +53,7 @@ BEGIN
     END;
     ELSE
     BEGIN
-        EXEC [DIPROCOM].[SWIFT_SP_MARK_INVOICE_AS_FAILED_TO_ERP] @INVOICE_ID = @INVOICE_NUM,           -- int
+        EXEC [SONDA].[SWIFT_SP_MARK_INVOICE_AS_FAILED_TO_ERP] @INVOICE_ID = @INVOICE_NUM,           -- int
                                                               @CDF_SERIE = @CDF_SERIE,              -- varchar(50)
                                                               @CDF_RESOLUCION = @CDF_RESOLUCION,    -- nvarchar(50)
                                                               @IS_CREDIT_NOTE = @IS_CREDIT_NOTE,    -- int

@@ -45,7 +45,7 @@
 
 --Ejemplo de ejecucion:
 /*
-  EXEC [DIPROCOM].SONDA_SP_INSERT_SCOUTING
+  EXEC [SONDA].SONDA_SP_INSERT_SCOUTING
           @CODE_CUSTOMER = 'SO-374'
 	        ,@NAME_CUSTOMER = 'NOMBRE PRUEBA01'
 	        ,@CLASSIFICATION_CUSTOMER = '60'
@@ -84,17 +84,17 @@
 		  ,@IS_POSTED_OFFLINE = 0
 
 					SELECT * 
-          FROM [DIPROCOM].SWIFT_CUSTOMERS_NEW
+          FROM [SONDA].SWIFT_CUSTOMERS_NEW
           WHERE CODE_CUSTOMER_BO = 'SO-374'
 
           SELECT *
-          FROM [DIPROCOM].SWIFT_CUSTOMER_FREQUENCY_NEW 
+          FROM [SONDA].SWIFT_CUSTOMER_FREQUENCY_NEW 
           --WHERE CODE_CUSTOMER = 'SO-125'
           ORDER BY CODE_FREQUENCY DESC
 */
 
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].SONDA_SP_INSERT_SCOUTING (
+CREATE PROCEDURE [SONDA].SONDA_SP_INSERT_SCOUTING (
 -- ----------------------------------------------------------------------------------
 -- Parametros para customer
 -- ----------------------------------------------------------------------------------
@@ -165,7 +165,7 @@ BEGIN
 	BEGIN 
 		SELECT
 			@CLIENT_EXIST = SCN.CODE_CUSTOMER
-		FROM [DIPROCOM].SWIFT_CUSTOMERS_NEW SCN
+		FROM [SONDA].SWIFT_CUSTOMERS_NEW SCN
 		WHERE SCN.[CODE_CUSTOMER_HH] = @CODE_CUSTOMER
 			AND [SCN].[CODE_ROUTE] = @CODE_ROUTE
 			AND [SCN].[POST_DATETIME] = @POST_DATETIME
@@ -174,12 +174,12 @@ BEGIN
 	BEGIN
 		SELECT
 			@CLIENT_EXIST = SCN.CODE_CUSTOMER
-		FROM [DIPROCOM].SWIFT_CUSTOMERS_NEW SCN
+		FROM [SONDA].SWIFT_CUSTOMERS_NEW SCN
 		WHERE SCN.CODE_CUSTOMER = @CODE_CUSTOMER
 
 		SELECT
 			@IN_ERP = COUNT([SCN].[IS_POSTED_ERP])
-		FROM [DIPROCOM].SWIFT_CUSTOMERS_NEW SCN
+		FROM [SONDA].SWIFT_CUSTOMERS_NEW SCN
 		WHERE SCN.CODE_CUSTOMER = @CODE_CUSTOMER
 			AND IS_POSTED_ERP = 1
 	END	
@@ -189,7 +189,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 
 	SELECT
-        @SCOUTING_PREFIX = [DIPROCOM].SWIFT_FN_GET_PARAMETER('SCOUTING', 'CLIENT_PREFIX')
+        @SCOUTING_PREFIX = [SONDA].SWIFT_FN_GET_PARAMETER('SCOUTING', 'CLIENT_PREFIX')
 
     -- ----------------------------------------------------------------------------------
     -- Se elimina si existe, de lo contrario se agraga otra secuencia 
@@ -210,7 +210,7 @@ BEGIN
       -- ----------------------------------------------------------------------------------      
       SELECT
         @SCOUTING_SEQUENCE = NEXT VALUE
-        FOR [DIPROCOM].SCOUTING_CLIENT_SEQUENCE
+        FOR [SONDA].SCOUTING_CLIENT_SEQUENCE
       --
       PRINT ('Se concatena el prefijo con la secuencia.')
     END;
@@ -234,8 +234,8 @@ BEGIN
      ,@CODE_CUSTOMER_BO = [C].[CODE_CUSTOMER]
 	 ,@OWNER_ID = [SC].[COMPANY_ID]
 	 ,@OWNER_CODE = [C].[OWNER_ID]
-    FROM [DIPROCOM].[SWIFT_VIEW_ALL_COSTUMER] [C]
-		INNER JOIN [DIPROCOM].[SWIFT_COMPANY] [SC] ON [C].[OWNER] = [SC].[COMPANY_NAME]
+    FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
+		INNER JOIN [SONDA].[SWIFT_COMPANY] [SC] ON [C].[OWNER] = [SC].[COMPANY_NAME]
     WHERE [C].[CODE_CUSTOMER] = @CODE_CUSTOMER
 	--
     IF @EXISTS = 0
@@ -243,7 +243,7 @@ BEGIN
       SELECT TOP 1
         @EXISTS = 1
        ,@CODE_CUSTOMER_BO = [CN].[CODE_CUSTOMER]
-      FROM [DIPROCOM].[SWIFT_CUSTOMERS_NEW] [CN]
+      FROM [SONDA].[SWIFT_CUSTOMERS_NEW] [CN]
       WHERE [CN].[CODE_CUSTOMER] = @HHID
     END
 
@@ -251,7 +251,7 @@ BEGIN
     -- ----------------------------------------------------------------------------------
     -- Se inserta el cliente
     -- ----------------------------------------------------------------------------------
-	INSERT	INTO [DIPROCOM].[SWIFT_CUSTOMERS_NEW]
+	INSERT	INTO [SONDA].[SWIFT_CUSTOMERS_NEW]
 			(
 				[CODE_CUSTOMER]
 				,[NAME_CUSTOMER]
@@ -343,7 +343,7 @@ BEGIN
     -- ----------------------------------------------------------------------------------
     -- Se inserte la frecuencia del cliente
     -- ----------------------------------------------------------------------------------
-    INSERT [DIPROCOM].SWIFT_CUSTOMER_FREQUENCY_NEW (CODE_CUSTOMER
+    INSERT [SONDA].SWIFT_CUSTOMER_FREQUENCY_NEW (CODE_CUSTOMER
     , SUNDAY
     , MONDAY
     , TUESDAY

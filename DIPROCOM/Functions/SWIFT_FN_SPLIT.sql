@@ -7,10 +7,10 @@
         USE SWIFT_EXPRESS
         GO
         --
-        SELECT * FROM [DIPROCOM].[SWIFT_FN_SPLIT]('A|B|C|D','|')
+        SELECT * FROM [SONDA].[SWIFT_FN_SPLIT]('A|B|C|D','|')
 */
 -- =============================================
-CREATE FUNCTION [DIPROCOM].[SWIFT_FN_SPLIT]
+CREATE FUNCTION [SONDA].[SWIFT_FN_SPLIT]
 (
     @STRING NVARCHAR(4000),
     @DELIMITER NCHAR(1)

@@ -3,7 +3,7 @@
 -- Fecha de Creacion: 02-Oct-2018 G-Force@Koala
 -- Description:			  SP que borra la pregunta
 
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_DELETE_QUESTION] (@QUESTION_ID INT)
+CREATE PROCEDURE [SONDA].[SWIFT_SP_DELETE_QUESTION] (@QUESTION_ID INT)
 AS
 	BEGIN TRY
 
@@ -17,13 +17,13 @@ AS
 		SELECT
 			@ANSWERS_QTY = COUNT(*)
 		FROM
-			[DIPROCOM].[SWIFT_QUESTION] AS [Q]
+			[SONDA].[SWIFT_QUESTION] AS [Q]
 		WHERE
 			[Q].[QUIZ_ID] = (
 								SELECT TOP 1
 									[QA].[QUIZ_ID]
 								FROM
-									[DIPROCOM].[SWIFT_QUESTION] AS [QA]
+									[SONDA].[SWIFT_QUESTION] AS [QA]
 								WHERE
 									[QA].[QUESTION_ID] = @QUESTION_ID
 							);
@@ -34,8 +34,8 @@ AS
 		SELECT
 			@ASSIGNED_ROUTES_QTY = COUNT(*)
 		FROM
-			[DIPROCOM].[SWIFT_QUESTION] AS [Q]
-		INNER JOIN [DIPROCOM].[SWIFT_ASIGNED_QUIZ] AS [AQ]
+			[SONDA].[SWIFT_QUESTION] AS [Q]
+		INNER JOIN [SONDA].[SWIFT_ASIGNED_QUIZ] AS [AQ]
 		ON	([AQ].[QUIZ_ID] = [Q].[QUIZ_ID])
 		WHERE
 			[Q].[QUESTION_ID] = @QUESTION_ID;
@@ -57,7 +57,7 @@ AS
 			-- Se eliminan las respuestas
 			-- ------------------------------------------------------------------------------------
 			DELETE
-				[DIPROCOM].[SWIFT_ANSWER]
+				[SONDA].[SWIFT_ANSWER]
 			WHERE
 				[QUESTION_ID] = @QUESTION_ID;
 			
@@ -65,7 +65,7 @@ AS
 			-- Elimina la pregunta
 			-- ------------------------------------------------------------------------------------
 			DELETE
-				[DIPROCOM].[SWIFT_QUESTION]
+				[SONDA].[SWIFT_QUESTION]
 			WHERE
 				[QUESTION_ID] = @QUESTION_ID;
 			

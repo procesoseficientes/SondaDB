@@ -5,13 +5,13 @@
 -- Description:			    Vista de acceso a datos del Reporte Cumplimiento de Ruta
 /*
 -- Ejemplo de Ejecucion:
-	SELECT * FROM DIPROCOM.SWIFT_VW_ROUTE_COMPLIANCE 
+	SELECT * FROM [SONDA].SWIFT_VW_ROUTE_COMPLIANCE 
 */
 -- =============================================
-CREATE VIEW [DIPROCOM].[SWIFT_VW_ROUTE_COMPLIANCE] 
+CREATE VIEW [SONDA].[SWIFT_VW_ROUTE_COMPLIANCE] 
 AS
 
   SELECT *
-  FROM [DIPROCOM].[SWIFT_ROUTE_COMPLIANCE]  
+  FROM [SONDA].[SWIFT_ROUTE_COMPLIANCE]  
 
 

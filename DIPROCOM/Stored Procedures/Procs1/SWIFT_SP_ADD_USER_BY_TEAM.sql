@@ -5,13 +5,13 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_ADD_USER_BY_TEAM]
+				EXEC [SONDA].[SWIFT_SP_ADD_USER_BY_TEAM]
 					  @TEAM_ID = 1          
 				-- 
-				SELECT * FROM [DIPROCOM].[SWIFT_TEAM]
+				SELECT * FROM [SONDA].[SWIFT_TEAM]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_ADD_USER_BY_TEAM] (
+CREATE PROCEDURE [SONDA].[SWIFT_SP_ADD_USER_BY_TEAM] (
 		@TEAM_ID INT
 		,@XML XML
 		,@LOGIN_ID VARCHAR(50)
@@ -40,7 +40,7 @@ BEGIN
 						1
 					FROM
 						@USERS [U]
-					JOIN [DIPROCOM].[SWIFT_TEAM] [UT] ON [U].[CORRELATIVE] = [UT].[SUPERVISOR] )
+					JOIN [SONDA].[SWIFT_TEAM] [UT] ON [U].[CORRELATIVE] = [UT].[SUPERVISOR] )
 		BEGIN
 			SELECT
 				-1 AS [Resultado]
@@ -49,7 +49,7 @@ BEGIN
 			RETURN;
 		END;
 
-		INSERT	INTO [DIPROCOM].[SWIFT_USER_BY_TEAM]
+		INSERT	INTO [SONDA].[SWIFT_USER_BY_TEAM]
 				(
 					[TEAM_ID]
 					,[USER_ID]

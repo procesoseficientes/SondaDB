@@ -5,10 +5,10 @@
 -- =============================================
 /*
 -- Ejemplo de Ejecucion:
-        SELECT [DIPROCOM].[SONDA_FN_CAN_VOID_INVOICE]('Seria Prueba hector','Prueba hector numero','195')
+        SELECT [SONDA].[SONDA_FN_CAN_VOID_INVOICE]('Seria Prueba hector','Prueba hector numero','195')
 */
 -- =============================================
-CREATE FUNCTION [DIPROCOM].[SONDA_FN_CAN_VOID_INVOICE]
+CREATE FUNCTION [SONDA].[SONDA_FN_CAN_VOID_INVOICE]
 (	
 	@CDF_SERIE VARCHAR(50),
 	@CDF_RESOLUTION VARCHAR(50),
@@ -20,7 +20,7 @@ BEGIN
 	DECLARE @RESULT INT = 1
 	--
 	SELECT TOP 1 @RESULT = 0  
-	FROM [DIPROCOM].[SONDA_POS_INVOICE_HEADER] [IH]
+	FROM [SONDA].[SONDA_POS_INVOICE_HEADER] [IH]
 	WHERE [IH].[CDF_SERIE] = @CDF_SERIE
 		AND [IH].[CDF_RESOLUCION] = @CDF_RESOLUTION
 		AND [IH].[INVOICE_ID] = @INVOICE_ID

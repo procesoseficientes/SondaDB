@@ -23,7 +23,7 @@
 -- Ejemplo de Ejecucion:
 		declare @pRESULT varchar(MAX)
 		--
-		exec [DIPROCOM].[SONDA_TRANSFER_SKU]
+		exec [SONDA].[SONDA_TRANSFER_SKU]
 		  @Login = 'oper3_fl@DIPROCOM'
 		  ,@Route = 'fl_ventas03'
 		  ,@pRESULT = @pRESULT OUTPUT
@@ -31,7 +31,7 @@
 		select @pRESULT
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_TRANSFER_SKU] (
+CREATE PROCEDURE [SONDA].[SONDA_TRANSFER_SKU] (
 	@Login VARCHAR(50)
 	,@Route VARCHAR(50)
 	,@pRESULT VARCHAR(MAX) = '' OUTPUT
@@ -78,12 +78,12 @@ BEGIN
 			,[TD].[SERIE]
 			,(
 				SELECT TOP 1 [CODE_LOCATION]
-				FROM [DIPROCOM].[SWIFT_VIEW_LOCATIONS]
+				FROM [SONDA].[SWIFT_VIEW_LOCATIONS]
 				WHERE [CODE_WAREHOUSE] = [TH].[CODE_WAREHOUSE_TARGET]
 			)
 		FROM
-			[DIPROCOM].[SWIFT_VIEW_TRANSFER_HEADER] [TH]
-		INNER JOIN [DIPROCOM].[SWIFT_VIEW_TRANSFER_DETAIL] [TD]
+			[SONDA].[SWIFT_VIEW_TRANSFER_HEADER] [TH]
+		INNER JOIN [SONDA].[SWIFT_VIEW_TRANSFER_DETAIL] [TD]
 		ON	(
 				[TH].[TRANSFER_ID] = [TD].[TRANSFER_ID]
 			)
@@ -98,7 +98,7 @@ BEGIN
 		-------------------------------------------------------------------------------
 		-- Actualiza el registro del sku para agregar inventario
 		-------------------------------------------------------------------------------
-		--MERGE [DIPROCOM].[SWIFT_INVENTORY] [I]
+		--MERGE [SONDA].[SWIFT_INVENTORY] [I]
 		--USING (
 		--	SELECT
 		--		[T].[SKU_CODE]
@@ -158,11 +158,11 @@ BEGIN
 		--UPDATE [I]
 		--SET [I].[ON_HAND] = [I].[ON_HAND] - [T].[QTY]
 		--FROM @TRANSFER [T]
-		--INNER JOIN [DIPROCOM].[SWIFT_TRANSFER_HEADER] [TH] ON (
+		--INNER JOIN [SONDA].[SWIFT_TRANSFER_HEADER] [TH] ON (
 		--	[TH].[TRANSFER_ID] = [T].[TRANSFER_ID]
 		--	AND [TH].[CODE_WAREHOUSE_TARGET] = [T].[CODE_WAREHOUSE_TARGET]
 		--)
-		--INNER JOIN [DIPROCOM].[SWIFT_INVENTORY] [I] ON (
+		--INNER JOIN [SONDA].[SWIFT_INVENTORY] [I] ON (
 		--	[I].[WAREHOUSE] = [TH].[CODE_WAREHOUSE_SOURCE]
 		--	--AND [T].[LOCATION] = [I].[LOCATION]
 		--	AND [I].[SKU] = [T].[SKU_CODE]
@@ -174,14 +174,14 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		UPDATE [D]
 		SET	[STATUS] = 'TRANSFERIDO'
-		FROM [DIPROCOM].[SWIFT_TRANSFER_DETAIL] [D]
+		FROM [SONDA].[SWIFT_TRANSFER_DETAIL] [D]
 		INNER JOIN @TRANSFER [T] ON (
 			[T].[TRANSFER_ID] = [D].[TRANSFER_ID]
 		)
 		--
 		UPDATE [H]
 		SET	[STATUS] = 'TRANSFERIDO'
-		FROM [DIPROCOM].[SWIFT_TRANSFER_HEADER] [H]
+		FROM [SONDA].[SWIFT_TRANSFER_HEADER] [H]
 		INNER JOIN @TRANSFER [T] ON (
 			[T].[TRANSFER_ID] = [H].[TRANSFER_ID]
 		)

@@ -4,14 +4,14 @@
 -- Description:			Crea detalle de la orden de venta
 /*
 -- EJEMPLO DE EJECUCION:
-		EXEC [DIPROCOM].[SWIFT_SP_VALIDATE_USER_TO_PRESALE]
+		EXEC [SONDA].[SWIFT_SP_VALIDATE_USER_TO_PRESALE]
 			@LOGIN = 'RUDI@DIPROCOM'
 		--
-		EXEC [DIPROCOM].[SWIFT_SP_VALIDATE_USER_TO_PRESALE]
+		EXEC [SONDA].[SWIFT_SP_VALIDATE_USER_TO_PRESALE]
 			@LOGIN = 'oper2@DIPROCOM'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_VALIDATE_USER_TO_PRESALE]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_VALIDATE_USER_TO_PRESALE]
 		@LOGIN VARCHAR(50)
 AS
 BEGIN TRY
@@ -24,13 +24,13 @@ BEGIN TRY
 	-- Obtiene la ruta del usuario
 	-- ------------------------------------------------------------------------------------
 	SELECT TOP 1 @CODE_ROUTE = U.SELLER_ROUTE
-	FROM DIPROCOM.USERS U
+	FROM [SONDA].USERS U
 	WHERE U.[LOGIN] = @LOGIN
 
 	-- ------------------------------------------------------------------------------------
 	-- Valida si tiene documentos de preventa
 	-- ------------------------------------------------------------------------------------
-	SELECT @RESULT = [DIPROCOM].[SWIFT_FUNC_VALIDATE_DOCUMENT_PRESALE](@CODE_ROUTE)
+	SELECT @RESULT = [SONDA].[SWIFT_FUNC_VALIDATE_DOCUMENT_PRESALE](@CODE_ROUTE)
 	--
 	IF @RESULT = 0
 	BEGIN
@@ -40,7 +40,7 @@ BEGIN TRY
 	-- ------------------------------------------------------------------------------------
 	-- Valida si tiene bodega de preventa
 	-- ------------------------------------------------------------------------------------
-	SELECT @RESULT = [DIPROCOM].[SWIFT_FUNC_VALIDATE_ROUTE_WH_PRESALE](@CODE_ROUTE)
+	SELECT @RESULT = [SONDA].[SWIFT_FUNC_VALIDATE_ROUTE_WH_PRESALE](@CODE_ROUTE)
 	--
 	IF @RESULT = 0
 	BEGIN

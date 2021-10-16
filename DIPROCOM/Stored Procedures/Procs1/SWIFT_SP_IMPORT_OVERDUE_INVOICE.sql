@@ -15,10 +15,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-      		EXEC [DIPROCOM].[SWIFT_SP_IMPORT_OVERDUE_INVOICE]
+      		EXEC [SONDA].[SWIFT_SP_IMPORT_OVERDUE_INVOICE]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_IMPORT_OVERDUE_INVOICE]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_IMPORT_OVERDUE_INVOICE]
 AS
 BEGIN
     --
@@ -72,7 +72,7 @@ BEGIN
         -- -------------------------------------------------------------
         -- Limpiamos la tabla
         -- -------------------------------------------------------------
-        TRUNCATE TABLE [DIPROCOM].[SWIFT_OVERDUE_INVOICE_BY_CUSTOMER];
+        TRUNCATE TABLE [SONDA].[SWIFT_OVERDUE_INVOICE_BY_CUSTOMER];
 
         -- -------------------------------------------------------------
         -- Obtenemos los clientes
@@ -82,7 +82,7 @@ BEGIN
             [CODE_CUSTOMER]
         )
         SELECT [CODE_CUSTOMER]
-        FROM [DIPROCOM].[SWIFT_VIEW_ALL_COSTUMER];
+        FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER];
 
         -- ------------------------------------------------------------
         -- Armamos y Ejecutamos la consulta
@@ -119,7 +119,7 @@ BEGIN
         -- -------------------------------------------------------------------
         -- Insertamos en nuestra tabla que almacena toda la informacion
         -- -------------------------------------------------------------------
-        INSERT INTO [DIPROCOM].[SWIFT_OVERDUE_INVOICE_BY_CUSTOMER]
+        INSERT INTO [SONDA].[SWIFT_OVERDUE_INVOICE_BY_CUSTOMER]
         (
             [INVOICE_ID],
             [DOC_ENTRY],
@@ -160,7 +160,7 @@ BEGIN
         END;
 
         --
-        EXEC [DIPROCOM].[SONDA_SP_INSERT_SONDA_SERVER_ERROR_LOG] @CODE_ROUTE = '',                                  -- varchar(50)
+        EXEC [SONDA].[SONDA_SP_INSERT_SONDA_SERVER_ERROR_LOG] @CODE_ROUTE = '',                                  -- varchar(50)
                                                               @LOGIN = '',                                       -- varchar(50)
                                                               @SOURCE_ERROR = 'SWIFT_SP_IMPORT_OVERDUE_INVOICE', -- varchar(250)
                                                               @DOC_RESOLUTION = '',                              -- varchar(100)

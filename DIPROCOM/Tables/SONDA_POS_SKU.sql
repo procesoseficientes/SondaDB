@@ -1,4 +1,4 @@
-﻿CREATE TABLE [DIPROCOM].[SONDA_POS_SKU] (
+﻿CREATE TABLE [SONDA].[SONDA_POS_SKU] (
     [SKU]                  VARCHAR (50)    NOT NULL,
     [SKU_NAME]             VARCHAR (150)   NULL,
     [SKU_PRICE]            MONEY           NULL,

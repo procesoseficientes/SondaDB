@@ -5,11 +5,11 @@
 --                      
 /*
 -- Ejemplo de Ejecucion:				
-				--EXECUTE [DIPROCOM].[SWIFT_SP_GET_TASK_FILTER]
+				--EXECUTE [SONDA].[SWIFT_SP_GET_TASK_FILTER]
 							   @LOGIN = '' usuario
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_GET_TASK_FILTER]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_TASK_FILTER]
 	@LOGIN    [varchar](100)
 AS
 BEGIN
@@ -23,7 +23,7 @@ BEGIN
          ELSE 'Scouting'
       END
 	,COUNT(*) AS TOTAL_TASK_TYPE
-	FROM [DIPROCOM].[SWIFT_TASKS]
+	FROM [SONDA].[SWIFT_TASKS]
 	WHERE [ASSIGEND_TO] = @LOGIN
 	GROUP BY TASK_TYPE
 	ORDER BY TASK_TYPE ASC

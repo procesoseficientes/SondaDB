@@ -2,26 +2,26 @@
 -- Author:         diego.as
 -- Create date:    15-02-2016
 -- Description:    Inserta registros en la Tabla 
---				   [DIPROCOM].[SONDA_PACK_UNIT]
+--				   [SONDA].[SONDA_PACK_UNIT]
 --				   con transacción y control de errores.
 
 /*
 Ejemplo de Ejecucion:
 
-		EXEC [DIPROCOM].[SONDA_SP_INSERT_PACK_CONVERSION]
+		EXEC [SONDA].[SONDA_SP_INSERT_PACK_CONVERSION]
 			@CODE_SKU = '100020'
 			,@CODE_PACK_UNIT_FROM = 'CAJAS'
 			,@CODE_PACK_UNIT_TO = 'PAQUETES'
 			,@CONVERSION_FACTOR = 12
 			,@LAST_UPDATE_BY = 'oper1@DIPROCOM'
 		----------------------------------------------
-		SELECT * FROM [DIPROCOM].[SONDA_PACK_CONVERSION]
+		SELECT * FROM [SONDA].[SONDA_PACK_CONVERSION]
 		
 				
 */
 -- =============================================
 
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_INSERT_PACK_CONVERSION]
+CREATE PROCEDURE [SONDA].[SONDA_SP_INSERT_PACK_CONVERSION]
 (
 	@CODE_SKU VARCHAR(50)
 	,@CODE_PACK_UNIT_FROM  VARCHAR(25)
@@ -38,7 +38,7 @@ BEGIN
     BEGIN TRAN TransAdd
     BEGIN TRY
 		
-		INSERT INTO [DIPROCOM].[SONDA_PACK_CONVERSION](
+		INSERT INTO [SONDA].[SONDA_PACK_CONVERSION](
 			[CODE_SKU]
 			,[CODE_PACK_UNIT_FROM]
 			,[CODE_PACK_UNIT_TO]

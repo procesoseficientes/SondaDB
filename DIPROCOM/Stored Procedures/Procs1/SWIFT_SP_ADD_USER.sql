@@ -9,13 +9,13 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_ADD_USER]
+				EXEC [SONDA].[SWIFT_SP_ADD_USER]
 				-- 
-				SELECT * FROM [DIPROCOM].[USERS]
+				SELECT * FROM [SONDA].[USERS]
 				SELECT * FROM [dbo].[SWIFT_USER]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_ADD_USER](
+CREATE PROCEDURE [SONDA].[SWIFT_SP_ADD_USER](
 	@LOGIN varchar(50)
 	,@NAME_USER varchar(50)
 	,@TYPE_USER varchar(50)
@@ -39,7 +39,7 @@ BEGIN
 	BEGIN TRY
 		DECLARE @ID INT
 		--
-		INSERT INTO [DIPROCOM].[USERS]
+		INSERT INTO [SONDA].[USERS]
 				(
 					[LOGIN]
 					,[NAME_USER]

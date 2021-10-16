@@ -30,12 +30,12 @@
 -- Ejemplo de Ejecucion:
 				DECLARE @pRESULT VARCHAR(MAX)
 				--
-				exec [DIPROCOM].[SONDA_SP_Stock] @Warehouse = 'CAN', @pRESULT = @pRESULT OUTPUT
+				exec [SONDA].[SONDA_SP_Stock] @Warehouse = 'CAN', @pRESULT = @pRESULT OUTPUT
 				--
 				SELECT @pRESULT
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_Stock]
+CREATE PROCEDURE [SONDA].[SONDA_SP_Stock]
 	(
 		@Warehouse NVARCHAR(15)
 		,@pRESULT VARCHAR(MAX) = '' OUTPUT
@@ -49,12 +49,12 @@ AS
 		DECLARE	@tmpResult VARCHAR(MAX) = '';
 --
 		SELECT
-			@ListaPrecios = [DIPROCOM].[SWIFT_FN_GET_PRICE_LIST](DEFAULT);
+			@ListaPrecios = [SONDA].[SWIFT_FN_GET_PRICE_LIST](DEFAULT);
 	--SELECT
 		--@ListaPrecios = 1;
 --
 		DELETE FROM
-			[DIPROCOM].[SONDA_POS_SKUS]
+			[SONDA].[SONDA_POS_SKUS]
 		WHERE
 			[ROUTE_ID] = @Warehouse
 		OPTION
@@ -62,7 +62,7 @@ AS
 --
 		IF (@@ERROR = 0)
 		BEGIN
-			INSERT	INTO [DIPROCOM].[SONDA_POS_SKUS]
+			INSERT	INTO [SONDA].[SONDA_POS_SKUS]
 					(
 						[SKU]
 						,[SKU_NAME]
@@ -102,10 +102,10 @@ AS
 				,MAX([s].[VAT_CODE]) AS [TAX_CODE]
 				,'ST'
 			FROM
-				[DIPROCOM].[SWIFT_INVENTORY] [i]
-			INNER JOIN [DIPROCOM].[SWIFT_VIEW_ALL_SKU] [s]
+				[SONDA].[SWIFT_INVENTORY] [i]
+			INNER JOIN [SONDA].[SWIFT_VIEW_ALL_SKU] [s]
 			ON	([s].[CODE_SKU] = [i].[SKU])
-			--INNER JOIN [DIPROCOM].[SWIFT_PRICE_LIST_BY_SKU] [p]
+			--INNER JOIN [SONDA].[SWIFT_PRICE_LIST_BY_SKU] [p]
 			--ON	([p].[CODE_SKU] = [i].[SKU])
 			WHERE
 				[i].[WAREHOUSE] = @Warehouse

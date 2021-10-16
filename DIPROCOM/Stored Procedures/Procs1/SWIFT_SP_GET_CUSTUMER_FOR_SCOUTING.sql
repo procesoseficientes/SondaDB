@@ -100,10 +100,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        exec [DIPROCOM].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING] @CODE_ROUTE = '46'
+        exec [SONDA].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING] @CODE_ROUTE = '46'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING]
 (@CODE_ROUTE VARCHAR(50))
 AS
 BEGIN
@@ -248,8 +248,8 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     -- Obtiene la lista de precios por defecto de la ruta
     -- ------------------------------------------------------------------------------------
-    /*SELECT @DEFAULT_PRICE_LIST = ISNULL([CODE_PRICE_LIST], [DIPROCOM].[SWIFT_FN_GET_PARAMETER] ('ERP_HARDCODE_VALUES','PRICE_LIST'))
-  FROM [DIPROCOM].[USERS]
+    /*SELECT @DEFAULT_PRICE_LIST = ISNULL([CODE_PRICE_LIST], [SONDA].[SWIFT_FN_GET_PARAMETER] ('ERP_HARDCODE_VALUES','PRICE_LIST'))
+  FROM [SONDA].[USERS]
   WHERE [SELLER_ROUTE] = @CODE_ROUTE*/
     SELECT @DEFAULT_PRICE_LIST = '-1';
 
@@ -260,8 +260,8 @@ BEGIN
     SELECT [DL].[DISCOUNT_LIST_ID],
            [DL].[CODE_ROUTE],
            [DLBC].[CODE_CUSTOMER]
-    FROM [DIPROCOM].[SWIFT_DISCOUNT_LIST] [DL]
-        INNER JOIN [DIPROCOM].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER] [DLBC]
+    FROM [SONDA].[SWIFT_DISCOUNT_LIST] [DL]
+        INNER JOIN [SONDA].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER] [DLBC]
             ON (
                    [DL].[DISCOUNT_LIST_ID] = [DLBC].[DISCOUNT_LIST_ID]
                    AND [DLBC].[DISCOUNT_LIST_ID] > 0
@@ -275,8 +275,8 @@ BEGIN
     SELECT [BL].[BONUS_LIST_ID],
            [BL].[CODE_ROUTE],
            [BLBC].[CODE_CUSTOMER]
-    FROM [DIPROCOM].[SWIFT_BONUS_LIST] [BL]
-        INNER JOIN [DIPROCOM].[SWIFT_BONUS_LIST_BY_CUSTOMER] [BLBC]
+    FROM [SONDA].[SWIFT_BONUS_LIST] [BL]
+        INNER JOIN [SONDA].[SWIFT_BONUS_LIST_BY_CUSTOMER] [BLBC]
             ON ([BL].[BONUS_LIST_ID] = [BLBC].[BONUS_LIST_ID])
     WHERE [BL].[CODE_ROUTE] = @CODE_ROUTE;
 
@@ -287,8 +287,8 @@ BEGIN
     SELECT [SM].[SALES_BY_MULTIPLE_LIST_ID],
            [SM].[CODE_ROUTE],
            [SLBC].[CODE_CUSTOMER]
-    FROM [DIPROCOM].[SWIFT_SKU_SALES_BY_MULTIPLE_LIST] [SM]
-        INNER JOIN [DIPROCOM].[SWIFT_SKU_SALES_BY_MULTIPLE_LIST_BY_CUSTOMER] [SLBC]
+    FROM [SONDA].[SWIFT_SKU_SALES_BY_MULTIPLE_LIST] [SM]
+        INNER JOIN [SONDA].[SWIFT_SKU_SALES_BY_MULTIPLE_LIST_BY_CUSTOMER] [SLBC]
             ON ([SM].[SALES_BY_MULTIPLE_LIST_ID] = [SLBC].[SALES_BY_MULTIPLE_LIST_ID])
     WHERE [SM].[CODE_ROUTE] = @CODE_ROUTE;
 
@@ -304,8 +304,8 @@ BEGIN
     SELECT [SPL].[SPECIAL_PRICE_LIST_ID],
            [SPL].[CODE_ROUTE],
            [SPLBC].[CODE_CUSTOMER]
-    FROM [DIPROCOM].[SWIFT_SPECIAL_PRICE_LIST] AS [SPL]
-        INNER JOIN [DIPROCOM].[SWIFT_SPECIAL_PRICE_LIST_BY_CUSTOMER] AS [SPLBC]
+    FROM [SONDA].[SWIFT_SPECIAL_PRICE_LIST] AS [SPL]
+        INNER JOIN [SONDA].[SWIFT_SPECIAL_PRICE_LIST_BY_CUSTOMER] AS [SPLBC]
             ON (
                    [SPLBC].[SPECIAL_PRICE_LIST_ID] = [SPL].[SPECIAL_PRICE_LIST_ID]
                    AND [SPLBC].[SPECIAL_PRICE_LIST_ID] > 0
@@ -319,8 +319,8 @@ BEGIN
     SELECT [SC].[CHANNEL_ID],
            [SC].[CODE_CHANNEL],
            [SCXC].[CODE_CUSTOMER]
-    FROM [DIPROCOM].[SWIFT_CHANNEL] [SC]
-        INNER JOIN [DIPROCOM].[SWIFT_CHANNEL_X_CUSTOMER] [SCXC]
+    FROM [SONDA].[SWIFT_CHANNEL] [SC]
+        INNER JOIN [SONDA].[SWIFT_CHANNEL_X_CUSTOMER] [SCXC]
             ON ([SCXC].[CHANNEL_ID] = [SC].[CHANNEL_ID]);
 
     -- ------------------------------------------------------------------------------------
@@ -372,7 +372,7 @@ BEGIN
            (
                SELECT TOP (1)
                       MAX([IH].[DOCUMENT_AMOUNT]) AS [DOCUMENT_AMOUNT]
-               FROM [DIPROCOM].[SONDA_ITEM_HISTORY] AS [IH]
+               FROM [SONDA].[SONDA_ITEM_HISTORY] AS [IH]
                WHERE [IH].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
                GROUP BY [IH].[CODE_CUSTOMER]
                ORDER BY [IH].[CODE_CUSTOMER]
@@ -387,13 +387,13 @@ BEGIN
            (
                SELECT TOP (1)
                       MAX(CAST([IH].[SALE_DATE] AS DATE)) AS [SALE_DATE]
-               FROM [DIPROCOM].[SONDA_ITEM_HISTORY] AS [IH]
+               FROM [SONDA].[SONDA_ITEM_HISTORY] AS [IH]
                WHERE [IH].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
                GROUP BY [IH].[CODE_CUSTOMER]
                ORDER BY [IH].[CODE_CUSTOMER]
            ) AS [LAST_PURCHASE_DATE]
-    FROM [DIPROCOM].[SWIFT_VIEW_ALL_COSTUMER] [C]
-        INNER JOIN [DIPROCOM].[USERS] [U]
+    FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
+        INNER JOIN [SONDA].[USERS] [U]
             ON ([C].[SELLER_DEFAULT_CODE] = [U].[RELATED_SELLER])
         LEFT JOIN [#DISCOUNT_LIST] [DLC]
             ON (
@@ -410,7 +410,7 @@ BEGIN
                    [SMC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
                    AND [SMC].[CODE_CUSTOMER] > ''
                )
-        LEFT JOIN [DIPROCOM].[SWIFT_PRICE_LIST_BY_CUSTOMER_FOR_ROUTE] [PLC]
+        LEFT JOIN [SONDA].[SWIFT_PRICE_LIST_BY_CUSTOMER_FOR_ROUTE] [PLC]
             ON (
                    [PLC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
                    AND [PLC].[CODE_CUSTOMER] > ''
@@ -508,7 +508,7 @@ BEGIN
            (
                SELECT TOP (1)
                       MAX([IH].[DOCUMENT_AMOUNT]) AS [DOCUMENT_AMOUNT]
-               FROM [DIPROCOM].[SONDA_ITEM_HISTORY] AS [IH]
+               FROM [SONDA].[SONDA_ITEM_HISTORY] AS [IH]
                WHERE [IH].[CODE_CUSTOMER] = [VAC].[CODE_CUSTOMER]
                GROUP BY [IH].[CODE_CUSTOMER]
                ORDER BY [IH].[CODE_CUSTOMER]
@@ -523,13 +523,13 @@ BEGIN
            (
                SELECT TOP (1)
                       MAX(CAST([IH].[SALE_DATE] AS DATE)) AS [SALE_DATE]
-               FROM [DIPROCOM].[SONDA_ITEM_HISTORY] AS [IH]
+               FROM [SONDA].[SONDA_ITEM_HISTORY] AS [IH]
                WHERE [IH].[CODE_CUSTOMER] = [VAC].[CODE_CUSTOMER]
                GROUP BY [IH].[CODE_CUSTOMER]
                ORDER BY [IH].[CODE_CUSTOMER]
            ) AS [LAST_PURCHASE_DATE]
-    FROM [DIPROCOM].[SWIFT_VIEW_ALL_COSTUMER] [VAC]
-        INNER JOIN [DIPROCOM].[SONDA_ROUTE_PLAN] [RP]
+    FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [VAC]
+        INNER JOIN [SONDA].[SONDA_ROUTE_PLAN] [RP]
             ON ([VAC].[CODE_CUSTOMER] = [RP].[RELATED_CLIENT_CODE])
         LEFT JOIN [#DISCOUNT_LIST] [DLC]
             ON (
@@ -546,7 +546,7 @@ BEGIN
                    [SMC].[CODE_CUSTOMER] = [VAC].[CODE_CUSTOMER]
                    AND [SMC].[CODE_CUSTOMER] > ''
                )
-        LEFT JOIN [DIPROCOM].[SWIFT_PRICE_LIST_BY_CUSTOMER_FOR_ROUTE] [PLC]
+        LEFT JOIN [SONDA].[SWIFT_PRICE_LIST_BY_CUSTOMER_FOR_ROUTE] [PLC]
             ON (
                    [PLC].[CODE_CUSTOMER] = [VAC].[CODE_CUSTOMER]
                    AND [PLC].[CODE_CUSTOMER] > ''

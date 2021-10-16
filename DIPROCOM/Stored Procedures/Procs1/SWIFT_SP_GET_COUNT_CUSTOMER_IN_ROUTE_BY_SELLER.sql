@@ -5,16 +5,16 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_GET_COUNT_CUSTOMER_IN_ROUTE_BY_SELLER]
+				EXEC [SONDA].[SWIFT_SP_GET_COUNT_CUSTOMER_IN_ROUTE_BY_SELLER]
 					@LOGIN = 'gerente@DIPROCOM'
 					,@SELLER_ROUTE = '-1'
 				--
-				EXEC [DIPROCOM].[SWIFT_SP_GET_COUNT_CUSTOMER_IN_ROUTE_BY_SELLER]
+				EXEC [SONDA].[SWIFT_SP_GET_COUNT_CUSTOMER_IN_ROUTE_BY_SELLER]
 					@LOGIN = 'gerente@DIPROCOM'
 					,@SELLER_ROUTE = '-1|1'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_GET_COUNT_CUSTOMER_IN_ROUTE_BY_SELLER]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_COUNT_CUSTOMER_IN_ROUTE_BY_SELLER]
 (
     @LOGIN VARCHAR(50),
     @SELLER_CODE VARCHAR(4000)
@@ -31,7 +31,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     -- Coloca parametros iniciales
     --------------------------------------------------------------------------------------
-    SELECT @DELIMITER = [DIPROCOM].[SWIFT_FN_GET_PARAMETER]('DELIMITER', 'DEFAULT_DELIMITER'),
+    SELECT @DELIMITER = [SONDA].[SWIFT_FN_GET_PARAMETER]('DELIMITER', 'DEFAULT_DELIMITER'),
            @DAY_NUMBER = 0,
            @NAME_COL = '';
 
@@ -42,8 +42,8 @@ BEGIN
            [SS].[SELLER_CODE],
            [SS].[SELLER_NAME]
     INTO [#SELLER]
-    FROM [DIPROCOM].[Split](@SELLER_CODE, @DELIMITER) [S]
-        INNER JOIN [DIPROCOM].[SWIFT_SELLER] [SS]
+    FROM [SONDA].[Split](@SELLER_CODE, @DELIMITER) [S]
+        INNER JOIN [SONDA].[SWIFT_SELLER] [SS]
             ON ([SS].[SELLER_CODE] = [S].[Data]);
 
     -- ------------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     SELECT [RUS].[CODE_ROUTE]
     INTO [#ROUTE]
-    FROM [DIPROCOM].[SWIFT_ROUTE_BY_USER] [RUS]
+    FROM [SONDA].[SWIFT_ROUTE_BY_USER] [RUS]
     WHERE [RUS].[LOGIN] = @LOGIN;
 
     -- ------------------------------------------------------------------------------------
@@ -60,8 +60,8 @@ BEGIN
     SELECT DISTINCT
            [PBR].[ID_FREQUENCY]
     INTO [#FREQUENCY]
-    FROM [DIPROCOM].[SWIFT_POLYGON_BY_ROUTE] [PBR]
-        INNER JOIN [DIPROCOM].[SWIFT_ROUTES] [R]
+    FROM [SONDA].[SWIFT_POLYGON_BY_ROUTE] [PBR]
+        INNER JOIN [SONDA].[SWIFT_ROUTES] [R]
             ON ([R].[ROUTE] = [PBR].[ROUTE])
         INNER JOIN [#SELLER] [S]
             ON ([S].[SELLER_CODE] = [R].[SELLER_CODE])
@@ -83,8 +83,8 @@ BEGIN
            SUM([F].[FRIDAY]) [FRIDAY],
            SUM([F].[SATURDAY]) [SATURDAY]
     INTO [#CUSTOMER_BY_DAY]
-    FROM [DIPROCOM].[SWIFT_FREQUENCY] [F]
-        INNER JOIN [DIPROCOM].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
+    FROM [SONDA].[SWIFT_FREQUENCY] [F]
+        INNER JOIN [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
             ON ([FC].[ID_FREQUENCY] = [F].[ID_FREQUENCY])
         INNER JOIN [#FREQUENCY] [TF]
             ON ([TF].[ID_FREQUENCY] = [F].[ID_FREQUENCY])
@@ -111,8 +111,8 @@ BEGIN
                    'Frecuencia Unica'
            END [POLYGON_TYPE]
     INTO [#INFO]
-    FROM [DIPROCOM].[SWIFT_POLYGON_BY_ROUTE] [PBR]
-        INNER JOIN [DIPROCOM].[SWIFT_ROUTES] [R]
+    FROM [SONDA].[SWIFT_POLYGON_BY_ROUTE] [PBR]
+        INNER JOIN [SONDA].[SWIFT_ROUTES] [R]
             ON ([R].[ROUTE] = [PBR].[ROUTE])
         INNER JOIN [#SELLER] [S]
             ON ([S].[SELLER_CODE] = [R].[SELLER_CODE])

@@ -5,13 +5,13 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_VALIDATE_TRAN_FOR_CURRENCY]
+				EXEC [SONDA].[SWIFT_SP_VALIDATE_TRAN_FOR_CURRENCY]
 					 @CURRENCY_ID = 1
 				-- 
-				SELECT * FROM [DIPROCOM].[SWIFT_CURRENCY]
+				SELECT * FROM [SONDA].[SWIFT_CURRENCY]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_VALIDATE_TRAN_FOR_CURRENCY](  
+CREATE PROCEDURE [SONDA].[SWIFT_SP_VALIDATE_TRAN_FOR_CURRENCY](  
  @CURRENCY_ID INT = NULL
  ,@IS_DEFAULT INT = NULL
 )
@@ -26,7 +26,7 @@ BEGIN
 
     SELECT TOP 1
       @ID = C.CURRENCY_ID
-    FROM [DIPROCOM].[SWIFT_CURRENCY] C
+    FROM [SONDA].[SWIFT_CURRENCY] C
     WHERE C.IS_DEFAULT = 1
     
     -- ------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
   	-- Si no tiene transacciones la moneda default se actualiza
 	  -- ------------------------------------------------------------------------------------
-      UPDATE [DIPROCOM].[SWIFT_CURRENCY] SET
+      UPDATE [SONDA].[SWIFT_CURRENCY] SET
         [IS_DEFAULT] = 0
       WHERE [CURRENCY_ID] = @ID
     END

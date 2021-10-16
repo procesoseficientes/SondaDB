@@ -2,7 +2,7 @@
 -- Author:         diego.as
 -- Create date:    15-02-2016
 -- Description:    Obtiene los registros de la Tabla 
---				   [DIPROCOM].[SONDA_PACK_CONVERSION]
+--				   [SONDA].[SONDA_PACK_CONVERSION]
 --				   con control de errores.
 
 -- Modificacion:	alejandro.ochoa
@@ -12,12 +12,12 @@
 /*
 Ejemplo de Ejecucion:
 
-		EXEC [DIPROCOM].[SONDA_SP_GET_PACK_CONVERSION]	
+		EXEC [SONDA].[SONDA_SP_GET_PACK_CONVERSION]	
 				
 */
 -- =============================================
 
-CREATE PROC [DIPROCOM].[SONDA_SP_GET_PACK_CONVERSION]
+CREATE PROC [SONDA].[SONDA_SP_GET_PACK_CONVERSION]
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -28,7 +28,7 @@ BEGIN
    ,[SPC].[CODE_PACK_UNIT_TO] [CODE_PACK_UNIT_FROM]
    ,[SPC].[CONVERSION_FACTOR]
    ,[SPC].[ORDER]
-  FROM [DIPROCOM].[SONDA_PACK_CONVERSION] AS SPC
+  FROM [SONDA].[SONDA_PACK_CONVERSION] AS SPC
 END
 
 

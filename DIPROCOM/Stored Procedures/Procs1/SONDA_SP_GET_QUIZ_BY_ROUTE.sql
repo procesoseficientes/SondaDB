@@ -22,11 +22,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [DIPROCOM].[SONDA_SP_GET_QUIZ_BY_ROUTE]
+        EXEC [SONDA].[SONDA_SP_GET_QUIZ_BY_ROUTE]
 		@CODE_ROUTE = '136'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_GET_QUIZ_BY_ROUTE]
+CREATE PROCEDURE [SONDA].[SONDA_SP_GET_QUIZ_BY_ROUTE]
 (@CODE_ROUTE VARCHAR(50))
 AS
 BEGIN
@@ -84,8 +84,8 @@ BEGIN
            [SQ].[REQUIRED],
            [SQ].[QUIZ_START],
            1 AS [CHANNELS_ON_QUIZ]
-    FROM [DIPROCOM].[SWIFT_QUIZ] [SQ]
-        INNER JOIN [DIPROCOM].[SWIFT_ASIGNED_QUIZ] [SAQ]
+    FROM [SONDA].[SWIFT_QUIZ] [SQ]
+        INNER JOIN [SONDA].[SWIFT_ASIGNED_QUIZ] [SAQ]
             ON [SQ].[QUIZ_ID] = [SAQ].[QUIZ_ID]
     WHERE [SAQ].[ROUTE_CODE] = @CODE_ROUTE
           AND @TODAY
@@ -115,10 +115,10 @@ BEGIN
            [SQ].[REQUIRED],
            [SQ].[QUIZ_START],
            1 AS [CHANNELS_ON_QUIZ]
-    FROM [DIPROCOM].[SWIFT_QUIZ] [SQ]
-        INNER JOIN [DIPROCOM].[SWIFT_ASIGNED_QUIZ] [SAQ]
+    FROM [SONDA].[SWIFT_QUIZ] [SQ]
+        INNER JOIN [SONDA].[SWIFT_ASIGNED_QUIZ] [SAQ]
             ON ([SQ].[QUIZ_ID] = [SAQ].[QUIZ_ID])
-        INNER JOIN [DIPROCOM].[SWIFT_ASIGNED_QUIZ] [QBR]
+        INNER JOIN [SONDA].[SWIFT_ASIGNED_QUIZ] [QBR]
             ON (
                    [QBR].[QUIZ_ID] = [SAQ].[QUIZ_ID]
                    AND [QBR].[ROUTE_CODE] = @CODE_ROUTE

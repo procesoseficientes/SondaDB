@@ -5,21 +5,21 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_DISASSOCIATE_POLYGON_X_ROUTE]
+				EXEC [SONDA].[SWIFT_SP_DISASSOCIATE_POLYGON_X_ROUTE]
 					@ROUTE = 1
 					,@POLYGON_ID = 63
 					,@ID_FREQUENCY = 24
 				-- 
-				EXEC [DIPROCOM].[SWIFT_SP_INSERT_POLYGON_X_ROUTE]
+				EXEC [SONDA].[SWIFT_SP_INSERT_POLYGON_X_ROUTE]
 					@ROUTE = 1
 					,@POLYGON_ID = 63
 					,@ID_FREQUENCY = 24
 					,@IS_MULTIPOLYGON = 1
 				-- 
-				SELECT * FROM [DIPROCOM].[SWIFT_POLYGON_BY_ROUTE] 
+				SELECT * FROM [SONDA].[SWIFT_POLYGON_BY_ROUTE] 
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_DISASSOCIATE_POLYGON_X_ROUTE] (@POLYGON_ID INT)
+CREATE PROCEDURE [SONDA].[SWIFT_SP_DISASSOCIATE_POLYGON_X_ROUTE] (@POLYGON_ID INT)
 AS
 BEGIN
   BEGIN TRY
@@ -28,8 +28,8 @@ BEGIN
     -- Borramos loc clientes de la frecuencia
     -- ------------------------------------------------------------
     DELETE FC
-      FROM [DIPROCOM].SWIFT_FREQUENCY_X_CUSTOMER FC
-      INNER JOIN [DIPROCOM].SWIFT_POLYGON_X_CUSTOMER PC
+      FROM [SONDA].SWIFT_FREQUENCY_X_CUSTOMER FC
+      INNER JOIN [SONDA].SWIFT_POLYGON_X_CUSTOMER PC
         ON (
         PC.CODE_CUSTOMER = FC.CODE_CUSTOMER
         )
@@ -38,13 +38,13 @@ BEGIN
     ------------------------------------------------------------
     -- Borramos la asociacion del poligono y la ruta
     -- ------------------------------------------------------------
-    DELETE [DIPROCOM].SWIFT_POLYGON_BY_ROUTE
+    DELETE [SONDA].SWIFT_POLYGON_BY_ROUTE
     WHERE POLYGON_ID = @POLYGON_ID
     
     ------------------------------------------------------------
     -- Actualizamos los clientes para que no tenga frecuencia
     -- ------------------------------------------------------------
-    UPDATE [DIPROCOM].SWIFT_POLYGON_X_CUSTOMER
+    UPDATE [SONDA].SWIFT_POLYGON_X_CUSTOMER
     SET HAS_FREQUENCY = 0
     WHERE POLYGON_ID = @POLYGON_ID
       
@@ -52,7 +52,7 @@ BEGIN
     -- Actualizamos el poligono para que este disponible para asociar
     -- ------------------------------------------------------------
 
-    UPDATE [DIPROCOM].SWIFT_POLYGON
+    UPDATE [SONDA].SWIFT_POLYGON
     SET AVAILABLE = 1
     WHERE POLYGON_ID = @POLYGON_ID
 

@@ -72,15 +72,15 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				exec [DIPROCOM].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE = 'R011'
-				exec [DIPROCOM].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE = 'JOSE@DIPROCOM'
-				exec [DIPROCOM].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE = 'JOEL@DIPROCOM'
-				exec [DIPROCOM].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE = 'ALBERTO@DIPROCOM'
-				exec [DIPROCOM].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE = 'RUDI@DIPROCOM'				
-				exec [DIPROCOM].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE = '001'
+				exec [SONDA].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE = 'R011'
+				exec [SONDA].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE = 'JOSE@DIPROCOM'
+				exec [SONDA].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE = 'JOEL@DIPROCOM'
+				exec [SONDA].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE = 'ALBERTO@DIPROCOM'
+				exec [SONDA].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE = 'RUDI@DIPROCOM'				
+				exec [SONDA].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE = '001'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE VARCHAR(50)
+CREATE PROCEDURE [SONDA].[SWIFT_SP_VALIDATE_ROUTE] @CODE_ROUTE VARCHAR(50)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -114,8 +114,8 @@ BEGIN
     SELECT [T].[TASK_TYPE],
            COUNT([T].[TASK_TYPE]) AS [QTY]
     INTO [#TASK]
-    FROM [DIPROCOM].[SWIFT_TASKS] [T]
-        INNER JOIN [DIPROCOM].[USERS] [U]
+    FROM [SONDA].[SWIFT_TASKS] [T]
+        INNER JOIN [SONDA].[USERS] [U]
             ON ([T].[ASSIGEND_TO] = [U].[LOGIN])
     WHERE [U].[SELLER_ROUTE] = @CODE_ROUTE
           AND [T].[TASK_DATE] = CONVERT(DATE, GETDATE())
@@ -134,7 +134,7 @@ BEGIN
     WHERE [T].[TASK_TYPE] = 'TAKE_INVENTORY';
 
     SELECT @QTY_SURVEY = COUNT(*)
-    FROM [DIPROCOM].[SWIFT_ASIGNED_QUIZ]
+    FROM [SONDA].[SWIFT_ASIGNED_QUIZ]
     WHERE [ROUTE_CODE] = @CODE_ROUTE;
 
 	print '1'
@@ -144,7 +144,7 @@ BEGIN
     -- -----------------------------------------------
     SELECT TOP (1)
            @SELLER_CODE = [U].[RELATED_SELLER]
-    FROM [DIPROCOM].[USERS] [U]
+    FROM [SONDA].[USERS] [U]
     WHERE [U].[SELLER_ROUTE] = @CODE_ROUTE;
 
     -- -----------------------------------------------
@@ -152,7 +152,7 @@ BEGIN
     -- -----------------------------------------------
     SELECT TOP (1)
            @CODE_PORTFOLIO = [PS].[CODE_PORTFOLIO]
-    FROM [DIPROCOM].[SWIFT_PORTFOLIO_BY_SELLER] [PS]
+    FROM [SONDA].[SWIFT_PORTFOLIO_BY_SELLER] [PS]
     WHERE [PS].[CODE_SELLER] = @SELLER_CODE;
 
     -- -----------------------------------------------
@@ -161,7 +161,7 @@ BEGIN
     IF (@CODE_PORTFOLIO IS NOT NULL)
     BEGIN
         SELECT @QTY_SKU_PORTFOLIO = COUNT([PS].[CODE_SKU])
-        FROM [DIPROCOM].[SWIFT_PORTFOLIO_BY_SKU] [PS]
+        FROM [SONDA].[SWIFT_PORTFOLIO_BY_SKU] [PS]
         WHERE [PS].[CODE_PORTFOLIO] = @CODE_PORTFOLIO;
         --
         IF (@QTY_SKU_PORTFOLIO = 0)
@@ -177,19 +177,19 @@ BEGIN
     -- -----------------------------------------------
     SELECT @USER = [LOGIN],
            @OPERATOR_TYPE = [USER_TYPE]
-    FROM [DIPROCOM].[USERS]
+    FROM [SONDA].[USERS]
     WHERE [SELLER_ROUTE] = @CODE_ROUTE;
 
     -- -----------------------------------------------
     -- Obtiene regla que indica si utilizará FEL
     -- -----------------------------------------------
     SELECT @ROUTE_WILL_USE_FEL = [E].[ENABLED]
-    FROM [DIPROCOM].[SWIFT_EVENT] [E]
-        INNER JOIN [DIPROCOM].[SWIFT_RULE_X_EVENT] [RE]
+    FROM [SONDA].[SWIFT_EVENT] [E]
+        INNER JOIN [SONDA].[SWIFT_RULE_X_EVENT] [RE]
             ON ([RE].[EVENT_ID] = [E].[EVENT_ID])
-        INNER JOIN [DIPROCOM].[SWIFT_RULE] [R]
+        INNER JOIN [SONDA].[SWIFT_RULE] [R]
             ON ([R].[RULE_ID] = [RE].[RULE_ID])
-        INNER JOIN [DIPROCOM].[SWIFT_RULE_X_ROUTE] [RR]
+        INNER JOIN [SONDA].[SWIFT_RULE_X_ROUTE] [RR]
             ON ([R].[RULE_ID] = [RR].[RULE_ID])
     WHERE [RR].[CODE_ROUTE] = @CODE_ROUTE
           AND [E].[TYPE] = 'RutaUsaFacturacionEnLinea'
@@ -201,7 +201,7 @@ BEGIN
     -- -----------------------------------------------
     SELECT @LAST_ALLOWED_ONLINE_INVOICE_SEQUENCE = [DOC_TO],
            @CURRENT_ONLINE_INVOICE_SEQUENCE = [CURRENT_DOC]
-    FROM [DIPROCOM].[SWIFT_DOCUMENT_SEQUENCE]
+    FROM [SONDA].[SWIFT_DOCUMENT_SEQUENCE]
     WHERE [ASSIGNED_TO] = @CODE_ROUTE
           AND [DOC_TYPE] = 'CONTINGENCY_DOCUMENT';
 
@@ -211,14 +211,14 @@ BEGIN
     -- -----------------------------------------------
     IF (@SALE_QTY > 0)
     BEGIN
-        SELECT @PDOC = [DIPROCOM].[SWIFT_FUNC_VALIDATE_DOCUMENT_SALE](@CODE_ROUTE);
+        SELECT @PDOC = [SONDA].[SWIFT_FUNC_VALIDATE_DOCUMENT_SALE](@CODE_ROUTE);
         --
         IF (@PDOC = 0)
         BEGIN
             SET @RESULT = 'Ruta No Tiene Resolución de Factura por Tareas de Venta Directa';
         END;
 
-        SELECT @PWH = [DIPROCOM].[SWIFT_FUNC_VALIDATE_ROUTE_WH_SALE](@CODE_ROUTE);
+        SELECT @PWH = [SONDA].[SWIFT_FUNC_VALIDATE_ROUTE_WH_SALE](@CODE_ROUTE);
         --
         IF (@PWH = 0)
         BEGIN
@@ -240,7 +240,7 @@ BEGIN
     -- -----------------------------------------------
     IF (@PRESALE_QTY > 0)
     BEGIN
-        SELECT @PDOC = [DIPROCOM].[SWIFT_FUNC_VALIDATE_DOCUMENT_PRESALE](@CODE_ROUTE);
+        SELECT @PDOC = [SONDA].[SWIFT_FUNC_VALIDATE_DOCUMENT_PRESALE](@CODE_ROUTE);
         --
         IF (@PDOC = 0)
         BEGIN
@@ -253,7 +253,7 @@ BEGIN
                 SET @RESULT = 'Ruta No Tiene Documentos de Ordenes de Venta';
             END;
         END;
-        SELECT @PWH = [DIPROCOM].[SWIFT_FUNC_VALIDATE_ROUTE_WH_PRESALE](@CODE_ROUTE);
+        SELECT @PWH = [SONDA].[SWIFT_FUNC_VALIDATE_ROUTE_WH_PRESALE](@CODE_ROUTE);
         --
         IF (@PWH = 0)
         BEGIN
@@ -275,7 +275,7 @@ BEGIN
     -- -----------------------------------------------
     IF (@TAKE_INVENTORY_QTY > 0)
     BEGIN
-        SELECT @HAVE_INVENTORY_DOCS = [DIPROCOM].[SWIFT_FUNC_VALIDATE_DOCUMENT_TAKE_INVENTORY](@CODE_ROUTE);
+        SELECT @HAVE_INVENTORY_DOCS = [SONDA].[SWIFT_FUNC_VALIDATE_DOCUMENT_TAKE_INVENTORY](@CODE_ROUTE);
         --
         IF (@HAVE_INVENTORY_DOCS = 0)
         BEGIN
@@ -297,10 +297,10 @@ BEGIN
     SELECT [E].[TYPE_ACTION],
            COUNT([E].[TYPE_ACTION]) AS [QTY]
     INTO [#EVENT]
-    FROM [DIPROCOM].[SWIFT_EVENT] [E]
-        INNER JOIN [DIPROCOM].[SWIFT_RULE_X_EVENT] [RE]
+    FROM [SONDA].[SWIFT_EVENT] [E]
+        INNER JOIN [SONDA].[SWIFT_RULE_X_EVENT] [RE]
             ON ([E].[EVENT_ID] = [RE].[EVENT_ID])
-        INNER JOIN [DIPROCOM].[SWIFT_RULE_X_ROUTE] [RR]
+        INNER JOIN [SONDA].[SWIFT_RULE_X_ROUTE] [RR]
             ON ([RE].[RULE_ID] = [RR].[RULE_ID])
     WHERE [RR].[CODE_ROUTE] = @CODE_ROUTE
           AND [E].[TYPE] = 'agregarCliente'
@@ -324,7 +324,7 @@ BEGIN
     IF (@SALE_QTY > 0) --OR CONTAINS(@RESULT,'Ruta No Tiene Resolución de Factura')= 1)
 
     BEGIN
-        SELECT @PDOC = [DIPROCOM].[SWIFT_FUNC_VALIDATE_DOCUMENT_SALE](@CODE_ROUTE);
+        SELECT @PDOC = [SONDA].[SWIFT_FUNC_VALIDATE_DOCUMENT_SALE](@CODE_ROUTE);
         --
         IF (@PDOC = 0)
         BEGIN
@@ -338,7 +338,7 @@ BEGIN
             END;
         END;
     END;
-    SELECT @PWH = [DIPROCOM].[SWIFT_FUNC_VALIDATE_ROUTE_WH_SALE](@CODE_ROUTE);
+    SELECT @PWH = [SONDA].[SWIFT_FUNC_VALIDATE_ROUTE_WH_SALE](@CODE_ROUTE);
     --
     IF (@PWH = 0)
     BEGIN
@@ -359,7 +359,7 @@ BEGIN
     -- -----------------------------------------------
     IF (@PRESALE_QTY > 0)
     BEGIN
-        SELECT @PDOC = [DIPROCOM].[SWIFT_FUNC_VALIDATE_DOCUMENT_PRESALE](@CODE_ROUTE);
+        SELECT @PDOC = [SONDA].[SWIFT_FUNC_VALIDATE_DOCUMENT_PRESALE](@CODE_ROUTE);
         --
         IF (@PDOC = 0)
         BEGIN
@@ -372,7 +372,7 @@ BEGIN
                 SET @RESULT = 'Ruta No Tiene Documentos de Ordenes de Venta';
             END;
         END;
-        SELECT @PWH = [DIPROCOM].[SWIFT_FUNC_VALIDATE_ROUTE_WH_PRESALE](@CODE_ROUTE);
+        SELECT @PWH = [SONDA].[SWIFT_FUNC_VALIDATE_ROUTE_WH_PRESALE](@CODE_ROUTE);
         --
         IF (@PWH = 0)
         BEGIN
@@ -393,7 +393,7 @@ BEGIN
     -- -----------------------------------------------
     -- Valida si tiene Lista de Precios por Default
     -- -----------------------------------------------
-    SELECT @EXIST_PRICE_LIST_DEFAULT = [DIPROCOM].[SWIFT_FN_GET_PRICE_LIST](NULL);
+    SELECT @EXIST_PRICE_LIST_DEFAULT = [SONDA].[SWIFT_FN_GET_PRICE_LIST](NULL);
 
     IF (@EXIST_PRICE_LIST_DEFAULT IS NULL)
     BEGIN
@@ -414,12 +414,12 @@ BEGIN
     -- ----------------------------------------------------------------------------------------
     SELECT TOP (1)
            @PAYMENT_RULE_ACTIVE = 1
-    FROM [DIPROCOM].[SWIFT_EVENT] AS [E]
-        INNER JOIN [DIPROCOM].[SWIFT_RULE_X_EVENT] AS [RE]
+    FROM [SONDA].[SWIFT_EVENT] AS [E]
+        INNER JOIN [SONDA].[SWIFT_RULE_X_EVENT] AS [RE]
             ON ([RE].[EVENT_ID] = [E].[EVENT_ID])
-        INNER JOIN [DIPROCOM].[SWIFT_RULE] AS [R]
+        INNER JOIN [SONDA].[SWIFT_RULE] AS [R]
             ON ([R].[RULE_ID] = [RE].[RULE_ID])
-        INNER JOIN [DIPROCOM].[SWIFT_RULE_X_ROUTE] AS [RR]
+        INNER JOIN [SONDA].[SWIFT_RULE_X_ROUTE] AS [RR]
             ON ([RR].[RULE_ID] = [R].[RULE_ID])
     WHERE [RR].[CODE_ROUTE] = @CODE_ROUTE
           AND [E].[TYPE] = 'CobrarOrdenDeVenta'
@@ -434,7 +434,7 @@ BEGIN
         DECLARE @HAVE_SEQUENCE INT = 0;
         --
         SELECT @HAVE_SEQUENCE = 1
-        FROM [DIPROCOM].[SWIFT_DOCUMENT_SEQUENCE] AS [DS]
+        FROM [SONDA].[SWIFT_DOCUMENT_SEQUENCE] AS [DS]
         WHERE [DS].[ASSIGNED_TO] = @CODE_ROUTE
               AND [DOC_TYPE] = 'PAYMENT'
               AND ([DS].[CURRENT_DOC] + 1) >= [DS].[DOC_FROM]
@@ -458,7 +458,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     -- Valida si debe de tener asignado un acuerdo comercial
     -- ------------------------------------------------------------------------------------
-    SELECT @HAS_TRADE_AGREEMENT = [DIPROCOM].[SWIFT_FN_VALIDATE_TRADE_AGREEMENT_BY_ROUTE](@CODE_ROUTE);
+    SELECT @HAS_TRADE_AGREEMENT = [SONDA].[SWIFT_FN_VALIDATE_TRADE_AGREEMENT_BY_ROUTE](@CODE_ROUTE);
     --
     IF (@HAS_TRADE_AGREEMENT = 0)
     BEGIN
@@ -478,7 +478,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     -- Valida si existen los parametros de etiqutas
     -- ------------------------------------------------------------------------------------
-    SELECT @EXISTS_LABEL_GROUP = [DIPROCOM].[SWIFT_FN_VALIDATE_EXISTX_GROUP_IN_PARAMETER]('LABEL');
+    SELECT @EXISTS_LABEL_GROUP = [SONDA].[SWIFT_FN_VALIDATE_EXISTX_GROUP_IN_PARAMETER]('LABEL');
     --
     IF (@EXISTS_LABEL_GROUP = 0)
     BEGIN
@@ -498,7 +498,7 @@ BEGIN
     -- Valida si la ruta tiene secuencia de documentos de HISTORY_PROMO
     -- ------------------------------------------------------------------------------------
     SELECT @HAVE_DOCUMENT_SEQUENCE_OF_HISTORY_PROMO
-        = [DIPROCOM].[SWIFT_FN_VALIDATE_IF_ROUTE_HAVE_DOCUMENT_SEQUENCE_OF_HISTORY_PROMO](@CODE_ROUTE);
+        = [SONDA].[SWIFT_FN_VALIDATE_IF_ROUTE_HAVE_DOCUMENT_SEQUENCE_OF_HISTORY_PROMO](@CODE_ROUTE);
     --
     IF (@HAVE_DOCUMENT_SEQUENCE_OF_HISTORY_PROMO = 0)
     BEGIN
@@ -523,10 +523,10 @@ BEGIN
 
     SELECT @RULE_EXISTS = 1,
            @RULE_ENABLED = 1
-    FROM [DIPROCOM].[SWIFT_EVENT] AS [E]
-        INNER JOIN [DIPROCOM].[SWIFT_RULE_X_EVENT] AS [RE]
+    FROM [SONDA].[SWIFT_EVENT] AS [E]
+        INNER JOIN [SONDA].[SWIFT_RULE_X_EVENT] AS [RE]
             ON ([RE].[EVENT_ID] = [E].[EVENT_ID])
-        INNER JOIN [DIPROCOM].[SWIFT_RULE_X_ROUTE] AS [RR]
+        INNER JOIN [SONDA].[SWIFT_RULE_X_ROUTE] AS [RR]
             ON ([RR].[RULE_ID] = [RE].[RULE_ID])
     WHERE [RR].[CODE_ROUTE] = @CODE_ROUTE
           AND [E].[TYPE] = 'FacturarAunConFacturasVencidas'
@@ -535,7 +535,7 @@ BEGIN
     IF (@RULE_EXISTS = 1 AND @RULE_ENABLED = 1)
     BEGIN
         SELECT @SEQUENCE_EXISTS = 1
-        FROM [DIPROCOM].[SWIFT_DOCUMENT_SEQUENCE]
+        FROM [SONDA].[SWIFT_DOCUMENT_SEQUENCE]
         WHERE [DOC_TYPE] = 'CREDIT_INVOICE_PAYMENT'
               AND [ASSIGNED_TO] = @CODE_ROUTE;
 
@@ -563,7 +563,7 @@ BEGIN
         DECLARE @MICROSURVEY_SEQUECE_EXISTS INT = 0;
 
         SELECT @MICROSURVEY_SEQUECE_EXISTS = COUNT(*)
-        FROM [DIPROCOM].[SWIFT_DOCUMENT_SEQUENCE] AS [DS]
+        FROM [SONDA].[SWIFT_DOCUMENT_SEQUENCE] AS [DS]
         WHERE [DS].[ASSIGNED_TO] = @CODE_ROUTE;
 
         IF (@MICROSURVEY_SEQUECE_EXISTS = 0)
@@ -623,7 +623,7 @@ BEGIN
             -- Se obtienen las frases y escenarios de la ruta
             -- ---------------------------------------------------------------
             INSERT INTO @SONDA_PHRASES_AND_SCENARIOS_FEL
-            EXEC [DIPROCOM].[SONDA_SP_GET_PHRASES_AND_SCENARIOS_FEL_BY_ROUTE] @CODE_ROUTE = @CODE_ROUTE; -- varchar(50)
+            EXEC [SONDA].[SONDA_SP_GET_PHRASES_AND_SCENARIOS_FEL_BY_ROUTE] @CODE_ROUTE = @CODE_ROUTE; -- varchar(50)
 
             IF NOT EXISTS (SELECT 1 FROM @SONDA_PHRASES_AND_SCENARIOS_FEL)
             BEGIN

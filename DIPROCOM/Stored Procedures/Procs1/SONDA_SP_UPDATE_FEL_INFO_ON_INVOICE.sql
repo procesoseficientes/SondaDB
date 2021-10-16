@@ -6,7 +6,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-	EXEC [DIPROCOM].[SONDA_SP_UPDATE_FEL_INFO_ON_INVOICE]
+	EXEC [SONDA].[SONDA_SP_UPDATE_FEL_INFO_ON_INVOICE]
     @CODE_ROUTE =,
     @ELECTRONIC_SIGNATURE =,
     @DOCUMENT_SERIES =,
@@ -20,7 +20,7 @@
     @CONTINGENCY_DOC_NUM =
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_UPDATE_FEL_INFO_ON_INVOICE]
+CREATE PROCEDURE [SONDA].[SONDA_SP_UPDATE_FEL_INFO_ON_INVOICE]
 (
     @CODE_ROUTE VARCHAR(50),
     -- --------------------------------
@@ -45,7 +45,7 @@ BEGIN
         -- ---------------------------------------------------------------
         -- ACTUALIZA EL DOCUMENTO CON LOS DATOS DE FACTURA ELECTRONICA EN LINEA
         -- ---------------------------------------------------------------
-        UPDATE [DIPROCOM].[SONDA_POS_INVOICE_HEADER]
+        UPDATE [SONDA].[SONDA_POS_INVOICE_HEADER]
         SET [ELECTRONIC_SIGNATURE] = @ELECTRONIC_SIGNATURE,
             [DOCUMENT_SERIES] = @DOCUMENT_SERIES,
             [DOCUMENT_NUMBER] = @DOCUMENT_NUMBER,
@@ -65,7 +65,7 @@ BEGIN
         -- ------------------------------------------------------------------------
         IF (@FROM_CONTINGENCY_SUBPROCESS = 1 AND @SHIPMENT = 2)
         BEGIN
-            UPDATE [DIPROCOM].[SONDA_POS_INVOICE_HEADER]
+            UPDATE [SONDA].[SONDA_POS_INVOICE_HEADER]
             SET [FEL_CONTINGENCY_DOCUMENT_SHIPMENT_ATTEMPTS] = ISNULL([FEL_CONTINGENCY_DOCUMENT_SHIPMENT_ATTEMPTS], 0)
                                                                + 1
             WHERE [POS_TERMINAL] = @CODE_ROUTE

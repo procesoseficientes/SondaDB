@@ -1,15 +1,15 @@
-﻿CREATE VIEW [DIPROCOM].[SWIFT_VIEW_HIST_SKU]
+﻿CREATE VIEW [SONDA].[SWIFT_VIEW_HIST_SKU]
 AS
 SELECT     TOP (100) PERCENT CONVERT(DATE, INV_DATE) AS INV_DATE,
                           A.SKU,
                           A.SKU_DESCRIPTION AS DESCRIPTION_SKU,
                           (SELECT     BARCODE_SKU
-                            FROM          DIPROCOM.SWIFT_SKU AS B
+                            FROM          [SONDA].SWIFT_SKU AS B
                             WHERE      (A.SKU = B.CODE_SKU)) AS BARCODE, 
                             SUM(ON_HAND) AS ON_HAND, 
                             COST, 
                             SUM(ON_HAND) * COST AS TOTAL
-FROM         DIPROCOM.SWIFT_HIST_INVENTORY AS A
+FROM         [SONDA].SWIFT_HIST_INVENTORY AS A
 GROUP BY INV_DATE, A.SKU, A.SKU_DESCRIPTION, A.COST
 ORDER BY INV_DATE
 

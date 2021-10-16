@@ -1,4 +1,4 @@
-﻿/****** Object:  StoredProcedure [DIPROCOM].[SWIFT_SP_RELOCATE_INVENTORY_MOV]    Script Date: 20/12/2015 9:09:38 AM ******/
+﻿/****** Object:  StoredProcedure [SONDA].[SWIFT_SP_RELOCATE_INVENTORY_MOV]    Script Date: 20/12/2015 9:09:38 AM ******/
 -- =============================================
 -- Autor:				JOSE ROBERTO
 -- Fecha de Creacion: 	20-11-2015
@@ -6,7 +6,7 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				   EXEC [DIPROCOM].[SWIFT_SP_RELOCATE_INVENTORY_MOVE] 
+				   EXEC [SONDA].[SWIFT_SP_RELOCATE_INVENTORY_MOVE] 
 					 @INVENTORY = 2121
 					,@SERIAL_NUMBER = null
 					,@WAREHOUSE = '001'
@@ -18,7 +18,7 @@
 					,@USER = 'user01'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_RELOCATE_INVENTORY_MOVE]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_RELOCATE_INVENTORY_MOVE]
 	@SERIAL_NUMBER varchar(50)
     ,@WAREHOUSE_TARGET varchar(50)
     ,@LOCATION_TARGET varchar(50)
@@ -32,7 +32,7 @@ CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_RELOCATE_INVENTORY_MOVE]
 	,@INVENTORY INT
 AS
 	BEGIN TRY
-		MERGE [DIPROCOM].[SWIFT_INVENTORY] I
+		MERGE [SONDA].[SWIFT_INVENTORY] I
 			  USING (SELECT @INVENTORY AS INVENTORY ) AS S
 			  ON I.INVENTORY  = S.INVENTORY
 			  WHEN MATCHED THEN    
@@ -77,7 +77,7 @@ AS
 
 
 			 -- insertar en log
-  EXEC [DIPROCOM].[SWIFT_SP_INSERT_LOG_RELOCATE]
+  EXEC [SONDA].[SWIFT_SP_INSERT_LOG_RELOCATE]
                    @LAST_UPDATE_BY = @LAST_UPDATE_BY
 				 , @WAREHOUSE_TARGET = @WAREHOUSE_TARGET
 				 , @LOCATION_TARGET = @LOCATION_TARGET

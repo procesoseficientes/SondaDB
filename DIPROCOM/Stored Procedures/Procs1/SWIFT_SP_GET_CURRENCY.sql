@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_GET_CURRENCY]					 
+				EXEC [SONDA].[SWIFT_SP_GET_CURRENCY]					 
 				-- 				
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_GET_CURRENCY]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_CURRENCY]
 AS
 BEGIN
   	
@@ -23,7 +23,7 @@ BEGIN
         WHEN 1 THEN 'SI'
         ELSE 'NO'
        END [IS_DEFAULT_DESCRIPTION]
-    FROM [DIPROCOM].[SWIFT_CURRENCY] C
+    FROM [SONDA].[SWIFT_CURRENCY] C
       
 	
 END

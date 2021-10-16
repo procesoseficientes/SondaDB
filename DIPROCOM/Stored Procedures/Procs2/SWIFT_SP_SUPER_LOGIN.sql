@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_SUPER_LOGIN]
+				EXEC [SONDA].[SWIFT_SP_SUPER_LOGIN]
 					@LOGIN = 'supervisor1@DIPROCOM'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_SUPER_LOGIN] (@LOGIN VARCHAR(50))
+CREATE PROCEDURE [SONDA].[SWIFT_SP_SUPER_LOGIN] (@LOGIN VARCHAR(50))
 AS
 BEGIN
     DECLARE
@@ -29,8 +29,8 @@ BEGIN
        ,@MESSAGE = 'Proceso Exitoso'
        ,@CODE = 200
     FROM
-        [DIPROCOM].[SWIFT_TEAM] [T]
-    INNER JOIN [DIPROCOM].[USERS] [U] ON [U].[CORRELATIVE] = [T].[SUPERVISOR]
+        [SONDA].[SWIFT_TEAM] [T]
+    INNER JOIN [SONDA].[USERS] [U] ON [U].[CORRELATIVE] = [T].[SUPERVISOR]
     WHERE
         [U].[LOGIN] = @LOGIN;
 

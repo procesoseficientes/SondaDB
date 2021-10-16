@@ -6,14 +6,14 @@
 
 /*
 -- Ejemplo de Ejecucion:
-	EXEC [DIPROCOM].[GET_STATISTIC_SALES_BY_CUSTOMER]
+	EXEC [SONDA].[GET_STATISTIC_SALES_BY_CUSTOMER]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[GET_STATISTIC_SALES_BY_CUSTOMER]
+CREATE PROCEDURE [SONDA].[GET_STATISTIC_SALES_BY_CUSTOMER]
 AS
 BEGIN
     DECLARE @WEEKSOLD INT = NULL;
-    SELECT @WEEKSOLD = [DIPROCOM].[SWIFT_FN_GET_PARAMETER]('STADISTICS', 'WEEKS_OLD_FOR_CUSTOMER_SALES_SATISTICS');
+    SELECT @WEEKSOLD = [SONDA].[SWIFT_FN_GET_PARAMETER]('STADISTICS', 'WEEKS_OLD_FOR_CUSTOMER_SALES_SATISTICS');
 
     -- -----------------------------------------------------
     -- OBTENES LOS IDENTIFICADORES DE LAS FREQUENCIAS DEL DIA ACTUAL (EN BASE A LA FECHA DEL SERVIDOR)
@@ -33,17 +33,17 @@ BEGIN
     --(
     --    [ID_FREQUENCY]
     --)
-    --EXEC [DIPROCOM].[SWIFT_SP_GET_FREQUENCY_X_TASK] @DATE = @CURRENT_DATE;
+    --EXEC [SONDA].[SWIFT_SP_GET_FREQUENCY_X_TASK] @DATE = @CURRENT_DATE;
 
     -- -----------------------------------------------------
     -- Truncamos los resultados de la tabla en cada ejecucion
     -- -----------------------------------------------------
-    TRUNCATE TABLE [DIPROCOM].[SONDA_STATISTIC_SALES_BY_CUSTOMER];
+    TRUNCATE TABLE [SONDA].[SONDA_STATISTIC_SALES_BY_CUSTOMER];
 
     -- -----------------------------------------------------
     -- Obtenemos e insertamos los resultados del promedio de ventas y su unidad de venta vendida
     -- -----------------------------------------------------
-    INSERT INTO [DIPROCOM].[SONDA_STATISTIC_SALES_BY_CUSTOMER]
+    INSERT INTO [SONDA].[SONDA_STATISTIC_SALES_BY_CUSTOMER]
     (
         [CLIENT_ID],
         [CODE_SKU],
@@ -54,10 +54,10 @@ BEGIN
            MAX([spid].[SKU]) AS [CODE_SKU],
            ROUND(AVG([spid].[QTY]), 0) AS [QTY],
            MAX([spid].[SALES_PACK_UNIT]) AS [SALE_PACK_UNIT]
-    FROM [DIPROCOM].[SONDA_POS_INVOICE_DETAIL] AS [spid]
-        INNER JOIN [DIPROCOM].[SONDA_POS_INVOICE_HEADER] AS [spih]
+    FROM [SONDA].[SONDA_POS_INVOICE_DETAIL] AS [spid]
+        INNER JOIN [SONDA].[SONDA_POS_INVOICE_HEADER] AS [spih]
             ON ([spih].[ID] = [spid].[ID])
-        INNER JOIN [DIPROCOM].[SWIFT_FREQUENCY_X_CUSTOMER] AS [sfxc]
+        INNER JOIN [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] AS [sfxc]
             ON ([sfxc].[CODE_CUSTOMER] = [spih].[CLIENT_ID])
         --INNER JOIN @FREQUENCIES AS [f]
         --    ON ([f].[ID_FREQUENCY] = [sfxc].[ID_FREQUENCY])

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [DIPROCOM].[SWIFT_GOAL_DETAIL] (
+﻿CREATE TABLE [SONDA].[SWIFT_GOAL_DETAIL] (
     [GOAL_DETAIL_ID]       INT             IDENTITY (1, 1) NOT NULL,
     [GOAL_HEADER_ID]       INT             NOT NULL,
     [SELLER_ID]            INT             NOT NULL,

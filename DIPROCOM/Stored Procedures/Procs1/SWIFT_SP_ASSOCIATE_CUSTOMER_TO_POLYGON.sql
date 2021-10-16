@@ -5,10 +5,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_ASSOCIATE_CUSTOMER_TO_POLYGON]
+				EXEC [SONDA].[SWIFT_SP_ASSOCIATE_CUSTOMER_TO_POLYGON]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_ASSOCIATE_CUSTOMER_TO_POLYGON]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_ASSOCIATE_CUSTOMER_TO_POLYGON]
 AS
 	BEGIN
 		SET NOCOUNT ON;
@@ -48,8 +48,8 @@ AS
 			);
 
 			--SE LIMPIAN LAS TABLAS
-			truncate table  [DIPROCOM].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON]
-			truncate table   [DIPROCOM].[SWIFT_CUSTOMER_GPS_ASSOCIATE_TO_POLYGON]
+			truncate table  [SONDA].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON]
+			truncate table   [SONDA].[SWIFT_CUSTOMER_GPS_ASSOCIATE_TO_POLYGON]
 
 		-- ------------------------------------------------------------------------------------
 		-- Obtenemos todos los poligonos a recorrer
@@ -65,7 +65,7 @@ AS
 			,[P].[POLYGON_NAME]
 			,[P].[POLYGON_TYPE]
 		FROM
-			[DIPROCOM].[SWIFT_POLYGON] [P]
+			[SONDA].[SWIFT_POLYGON] [P]
 		WHERE
 			[P].[POLYGON_TYPE] = 'REGION'
 			OR [P].[POLYGON_TYPE] = 'SECTOR'
@@ -90,8 +90,8 @@ AS
 			,[C].[GPS]
 			,[geometry]::[Point]([C].[LATITUDE] ,[C].[LONGITUDE] ,0) [POINT]
 		FROM
-			[DIPROCOM].[SWIFT_VIEW_ALL_COSTUMER] [C]
-		LEFT JOIN [DIPROCOM].[SWIFT_CUSTOMER_GPS_ASSOCIATE_TO_POLYGON] AS [CAP]
+			[SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
+		LEFT JOIN [SONDA].[SWIFT_CUSTOMER_GPS_ASSOCIATE_TO_POLYGON] AS [CAP]
 		ON	([CAP].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER])
 		WHERE
 			[C].[GPS] <> '0,0'
@@ -110,14 +110,14 @@ AS
 		DELETE
 			[CAP]
 		FROM
-			[DIPROCOM].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON] AS [CAP]
+			[SONDA].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON] AS [CAP]
 		INNER JOIN @CUSTOMER AS [C]
 		ON	([C].[CODE_CUSTOMER] = [CAP].[CODE_CUSTOMER]);
 		--
 		DELETE
 			[CAP]
 		FROM
-			[DIPROCOM].[SWIFT_CUSTOMER_GPS_ASSOCIATE_TO_POLYGON] AS [CAP]
+			[SONDA].[SWIFT_CUSTOMER_GPS_ASSOCIATE_TO_POLYGON] AS [CAP]
 		INNER JOIN @CUSTOMER AS [C]
 		ON	([C].[CODE_CUSTOMER] = [CAP].[CODE_CUSTOMER]);
 	
@@ -139,12 +139,12 @@ AS
 			-- ------------------------------------------------------------------------------------
 			-- ObtIene el poligono actual 
 			-- ------------------------------------------------------------------------------------
-			SET @GEOMETRY_POLYGON = [DIPROCOM].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@POLYGON_ID);	  
+			SET @GEOMETRY_POLYGON = [SONDA].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@POLYGON_ID);	  
 	  
 			-- ------------------------------------------------------------------------------------
 			-- INSERTA EL CLIENTE
 			-- ------------------------------------------------------------------------------------
-			INSERT	INTO [DIPROCOM].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON]
+			INSERT	INTO [SONDA].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON]
 					(
 						[POLYGON_ID]
 						,[POLYGON_NAME]
@@ -186,12 +186,12 @@ AS
 			[VC].[CODE_CUSTOMER]
 			,[VC].[GPS_CUSTOMER]
 		FROM
-			[DIPROCOM].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON] AS [VC];
+			[SONDA].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON] AS [VC];
 
 		-- ------------------------------------------------------------------------------------
 		-- Guarda el historico de gps de cliente asociado a poligono
 		-- ------------------------------------------------------------------------------------
-		INSERT	INTO [DIPROCOM].[SWIFT_CUSTOMER_GPS_ASSOCIATE_TO_POLYGON]
+		INSERT	INTO [SONDA].[SWIFT_CUSTOMER_GPS_ASSOCIATE_TO_POLYGON]
 				(
 					[CODE_CUSTOMER]
 					,[GPS]

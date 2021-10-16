@@ -1,4 +1,4 @@
-﻿CREATE FUNCTION [DIPROCOM].[Split]
+﻿CREATE FUNCTION [SONDA].[Split]
 (
 	@RowData nvarchar(2000),
 	@SplitOn nvarchar(5)

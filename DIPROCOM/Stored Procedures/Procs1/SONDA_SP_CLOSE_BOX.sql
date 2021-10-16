@@ -12,14 +12,14 @@
 					-- Se agrega validacion de identificador de dispositivo
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SONDA_SP_CLOSE_BOX]
+				EXEC [SONDA].[SONDA_SP_CLOSE_BOX]
 					@LOGIN = 'RUDI@DIPROCOM'
 					,@DEVICE_ID = '3b396881f40a8de3'
 				--
-				SELECT * FROM [DIPROCOM].[SONDA_LIQUIDATION]
+				SELECT * FROM [SONDA].[SONDA_LIQUIDATION]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_CLOSE_BOX](
+CREATE PROCEDURE [SONDA].[SONDA_SP_CLOSE_BOX](
 	@LOGIN VARCHAR(50)
 	,@DEVICE_ID VARCHAR(50)
 )
@@ -31,18 +31,18 @@ BEGIN
 		DECLARE @CODE_ROUTE VARCHAR(50)
 		--
 		SELECT @CODE_ROUTE = [U].[SELLER_ROUTE]
-		FROM [DIPROCOM].[USERS] [U]
+		FROM [SONDA].[USERS] [U]
 		WHERE [U].[LOGIN] = @LOGIN
 
 		-- ----------------------------------------------------------------
 		-- Se valida identificador de dispositivo
 		-- ----------------------------------------------------------------
-		EXEC DIPROCOM.[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE , -- varchar(50)
+		EXEC [SONDA].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE , -- varchar(50)
 			@DEVICE_ID = @DEVICE_ID -- varchar(50)
 		
 
 		--
-		EXEC [DIPROCOM].[SONDA_SP_SET_LIQUIDATION_TO_ACTIVE_ROUTE] 
+		EXEC [SONDA].[SONDA_SP_SET_LIQUIDATION_TO_ACTIVE_ROUTE] 
 			@CODE_ROUTE = @CODE_ROUTE
 			,@LOGIN = @LOGIN
 	END TRY

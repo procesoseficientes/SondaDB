@@ -1,4 +1,4 @@
-﻿CREATE TABLE [DIPROCOM].[SKU_TEMP] (
+﻿CREATE TABLE [SONDA].[SKU_TEMP] (
     [SKU]                       INT             NULL,
     [CODE_SKU]                  VARCHAR (50)    NULL,
     [DESCRIPTION_SKU]           VARCHAR (MAX)   NULL,

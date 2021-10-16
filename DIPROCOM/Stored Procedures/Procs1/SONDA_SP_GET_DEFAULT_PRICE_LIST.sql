@@ -6,8 +6,8 @@
 /*
 -- Modificacion: 14-04-2016
 			Autor: diego.as
-			Descripcion: Se modifico para que mandara a llamar a la funcion [DIPROCOM].[SWIFT_FN_GET_PARAMETER]
-						 en lugar del SELECT que se tenia a la tabla [DIPROCOM].[SWIFT_PARAMETER]
+			Descripcion: Se modifico para que mandara a llamar a la funcion [SONDA].[SWIFT_FN_GET_PARAMETER]
+						 en lugar del SELECT que se tenia a la tabla [SONDA].[SWIFT_PARAMETER]
 */				   
 -- Modificacion 3/7/2017 @ A-Team Sprint Ebonne
 					-- rodrigo.gomez
@@ -20,17 +20,17 @@
 /*
 -- EJEMPLO DE EJECUCION: 
 		
-		EXEC [DIPROCOM].[SONDA_SP_GET_DEFAULT_PRICE_LIST] @LOGIN = 'rudi@DIPROCOM'
+		EXEC [SONDA].[SONDA_SP_GET_DEFAULT_PRICE_LIST] @LOGIN = 'rudi@DIPROCOM'
 		
 */			
 -- =====================================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_GET_DEFAULT_PRICE_LIST]
+CREATE PROCEDURE [SONDA].[SONDA_SP_GET_DEFAULT_PRICE_LIST]
 	@LOGIN VARCHAR(50) = NULL
 AS
 BEGIN
 	
-	SELECT ISNULL([CODE_PRICE_LIST], [DIPROCOM].[SWIFT_FN_GET_PARAMETER] ('ERP_HARDCODE_VALUES','PRICE_LIST')) AS CODE_PRICE_LIST
-	FROM [DIPROCOM].[USERS]
+	SELECT ISNULL([CODE_PRICE_LIST], [SONDA].[SWIFT_FN_GET_PARAMETER] ('ERP_HARDCODE_VALUES','PRICE_LIST')) AS CODE_PRICE_LIST
+	FROM [SONDA].[USERS]
 	WHERE [LOGIN] = @LOGIN
 	
 	--SELECT '-1' AS CODE_PRICE_LIST

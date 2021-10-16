@@ -4,10 +4,10 @@
 -- Description:			Funcion que genera una tabla de un split del caracter indicado para mas de 400 splits
 /*
 -- Ejemplo de Ejecucion:
-        SELECT * FROM [DIPROCOM].[SWIFT_FN_SPLIT_2]('A|B|C|D','|')
+        SELECT * FROM [SONDA].[SWIFT_FN_SPLIT_2]('A|B|C|D','|')
 */
 -- =============================================
-CREATE FUNCTION [DIPROCOM].[SWIFT_FN_SPLIT_2]
+CREATE FUNCTION [SONDA].[SWIFT_FN_SPLIT_2]
 (
     @STRING VARCHAR(MAX)
     ,@DELIMITER NCHAR(1)

@@ -33,7 +33,7 @@
 					-- Se agrega insercion de campos DUE_DATE, CREDIT_AMOUNT, CASH_AMOUNT, PAID_TO_DATE 
 /*															 
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SONDA_SP_ADD_INVOICE_BY_XML]
+				EXEC [SONDA].[SONDA_SP_ADD_INVOICE_BY_XML]
 					@XML = '<?xml version="1.0"?>
 <Data>
     <invoice>
@@ -116,10 +116,10 @@ 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","Image2":"","Image3":"","ErpInvoiceId":"C.F","IsCreditNote":0,"InRoutePlan":1,"IdBo":null,"IsPostedValidated":null,"DetailQty":1,"InvoiceDetail":[{"InvoiceId":29,"Sku":"100017","SkuName":"QUANTUM AAA 4BC 54CS","Qty":5,"Price":10,"Discount":0,"TotalLine":50,"Serie":"0","Serie2":"0","RequeriesSerie":0,"LineSeq":2,"IsActive":1,"ComboReference":"100017","ParentSeq":1,"Exposure":1,"Phone":""}]},"dbuser":"UDIPROCOM","dbuserpass":"DIPROCOMServer1237710","battery":100,"routeid":"7","uuid":"2b9cd997e9ffcd98","warehouse":"R006"}'
 				--
-				SELECT * FROM [DIPROCOM].[SONDA_POS_INVOICE_HEADER]
+				SELECT * FROM [SONDA].[SONDA_POS_INVOICE_HEADER]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_ADD_INVOICE_BY_XML_T]
+CREATE PROCEDURE [SONDA].[SONDA_SP_ADD_INVOICE_BY_XML_T]
 	(
 		@XML XML
 		,@JSON VARCHAR(MAX)
@@ -233,7 +233,7 @@ AS
 																'varchar(50)')
 				,@DEVICE_ID = [x].[Rec].[query]('./uuid').[value]('.' ,
 																'varchar(50)')
-				,@LOGIN = [DIPROCOM].[SWIFT_FN_GET_LOGIN_BY_ROUTE]([x].[Rec].[query]('./routeid').[value]('.' ,
+				,@LOGIN = [SONDA].[SWIFT_FN_GET_LOGIN_BY_ROUTE]([x].[Rec].[query]('./routeid').[value]('.' ,
 																'varchar(50)'))
 				,@BATTERY = [x].[Rec].[query]('./battery').[value]('.' ,'int')
 			FROM
@@ -242,7 +242,7 @@ AS
 		-- ------------------------------------------------------------------------------------
 		-- Se valida el identificador del dispositivo
 		-- ------------------------------------------------------------------------------------
-			EXEC [DIPROCOM].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE , -- varchar(50)
+			EXEC [SONDA].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE , -- varchar(50)
 				@DEVICE_ID = @DEVICE_ID; -- varchar(50)
 		
 		-- ------------------------------------------------------------------------------------
@@ -312,7 +312,7 @@ AS
 			-- Valida si existe la factura
 			-- ------------------------------------------------------------------------------------
 				INSERT	INTO @RESUTL_VALIDATION
-						EXEC [DIPROCOM].[SONDA_SP_VALIDATED_IF_EXISTS_INVOICE] @CODE_ROUTE = @CODE_ROUTE ,
+						EXEC [SONDA].[SONDA_SP_VALIDATED_IF_EXISTS_INVOICE] @CODE_ROUTE = @CODE_ROUTE ,
 							@CODE_CUSTOMER = @CODE_CUSTOMER ,
 							@DOC_RESOLUTION = @DOC_RESOLUTION ,
 							@DOC_SERIE = @DOC_SERIE ,@DOC_NUM = @DOC_NUM ,
@@ -342,7 +342,7 @@ AS
 					-- ------------------------------------------------------------------------------------
 					-- Inserta el encabezado
 					-- ------------------------------------------------------------------------------------
-							INSERT	INTO [DIPROCOM].[SONDA_POS_INVOICE_HEADER]
+							INSERT	INTO [SONDA].[SONDA_POS_INVOICE_HEADER]
 									(
 										[INVOICE_ID]
 										,[TERMS]
@@ -549,7 +549,7 @@ AS
 					-- ------------------------------------------------------------------------------------
 					-- inserta el detalle
 					-- ------------------------------------------------------------------------------------
-							INSERT	INTO [DIPROCOM].[SONDA_POS_INVOICE_DETAIL]
+							INSERT	INTO [SONDA].[SONDA_POS_INVOICE_DETAIL]
 									(
 										[INVOICE_ID]
 										,[INVOICE_SERIAL]
@@ -623,7 +623,7 @@ AS
 					SET @JSON = 'No cuadra la cantidad de lineas que dice el encabezdo con las del detalle|'
 						+ @JSON;
 			--
-					EXEC [DIPROCOM].[SONDA_SP_INSERT_INVOICE_LOG_EXISTS] @EXISTS_INVOICE = 0 , -- int
+					EXEC [SONDA].[SONDA_SP_INSERT_INVOICE_LOG_EXISTS] @EXISTS_INVOICE = 0 , -- int
 						@DOC_RESOLUTION = @DOC_RESOLUTION , -- varchar(100)
 						@DOC_SERIE = @DOC_SERIE , -- varchar(100)
 						@DOC_NUM = @DOC_NUM , -- int

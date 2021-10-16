@@ -13,10 +13,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [DIPROCOM].[SWIFT_SP_GET_SAP_PICKING] @pERP_DOC = 8
+        EXEC [SONDA].[SWIFT_SP_GET_SAP_PICKING] @pERP_DOC = 8
 */
 -- =============================================
-CREATE PROC [DIPROCOM].[SWIFT_SP_GET_SAP_PICKING]
+CREATE PROC [SONDA].[SWIFT_SP_GET_SAP_PICKING]
 	@pERP_DOC VARCHAR(50)
 AS
 BEGIN

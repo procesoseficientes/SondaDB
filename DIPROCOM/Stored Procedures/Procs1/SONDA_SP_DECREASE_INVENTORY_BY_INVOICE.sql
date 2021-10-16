@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SONDA_SP_DECREASE_INVENTORY_BY_INVOICE]
+				EXEC [SONDA].[SONDA_SP_DECREASE_INVENTORY_BY_INVOICE]
 					@ID = 407
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_DECREASE_INVENTORY_BY_INVOICE](
+CREATE PROCEDURE [SONDA].[SONDA_SP_DECREASE_INVENTORY_BY_INVOICE](
 	@ID INT
 )
 AS
@@ -41,14 +41,14 @@ BEGIN
 	-- Obtiene quien realizo la factura
 	-- ------------------------------------------------------------------------------------
 	SELECT @LOGIN = [H].[POSTED_BY]
-	FROM [DIPROCOM].[SONDA_POS_INVOICE_HEADER] [H]
+	FROM [SONDA].[SONDA_POS_INVOICE_HEADER] [H]
 	WHERE [H].[ID] = @ID
 
 	-- ------------------------------------------------------------------------------------
 	-- Obtiene la bodega de venta directa del usuario
 	-- ------------------------------------------------------------------------------------
 	SELECT @CODE_WAREHOUSE = [U].[DEFAULT_WAREHOUSE]
-	FROM [DIPROCOM].[USERS] [U]
+	FROM [SONDA].[USERS] [U]
 	WHERE [U].[LOGIN] = @LOGIN
 
 	-- ------------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ BEGIN
 		,[D].[SERIE]
 		,[D].[REQUERIES_SERIE]
 		,[D].[ID]
-	FROM [DIPROCOM].[SONDA_POS_INVOICE_DETAIL] [D]
+	FROM [SONDA].[SONDA_POS_INVOICE_DETAIL] [D]
 	WHERE [D].[ID] = @ID
 
 	-- ------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	UPDATE [I]
 	SET [I].[ON_HAND] = [I].[ON_HAND] - [D].[QTY]
-	FROM [DIPROCOM].[SWIFT_INVENTORY] [I]
+	FROM [SONDA].[SWIFT_INVENTORY] [I]
 	INNER JOIN @INVOICE_DETAIL [D] ON (
 		[I].[SKU] = [D].[CODE_SKU]
 		AND [I].[SERIAL_NUMBER] = [D].[SERIE]
@@ -109,7 +109,7 @@ BEGIN
 		SELECT
 			[I].[INVENTORY]
 			,[I].[ON_HAND]
-		FROM [DIPROCOM].[SWIFT_INVENTORY] [I]
+		FROM [SONDA].[SWIFT_INVENTORY] [I]
 		WHERE [I].[WAREHOUSE] = @CODE_WAREHOUSE
 			AND [I].[SKU] = @CODE_SKU
 			AND [I].[ON_HAND] > 0
@@ -129,7 +129,7 @@ BEGIN
 			-- ------------------------------------------------------------------------------------
 			IF(@ON_HAND >= @QTY)
 			BEGIN
-				UPDATE [DIPROCOM].[SWIFT_INVENTORY]
+				UPDATE [SONDA].[SWIFT_INVENTORY]
 				SET [ON_HAND] = (@ON_HAND - @QTY)
 				WHERE [INVENTORY] = @INVENTORY_ID
 				--
@@ -139,7 +139,7 @@ BEGIN
 			END
 			ELSE
 			BEGIN
-				UPDATE [DIPROCOM].[SWIFT_INVENTORY]
+				UPDATE [SONDA].[SWIFT_INVENTORY]
 				SET [ON_HAND] = 0
 				WHERE [INVENTORY] = @INVENTORY_ID
 				--

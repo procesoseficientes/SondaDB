@@ -9,7 +9,7 @@
 
 --Ejemplo de ejecucion:
 /*
-  EXEC DIPROCOM.SONDA_SP_INSERT_SCOUTING
+  EXEC [SONDA].SONDA_SP_INSERT_SCOUTING
 			    --Customer
           @CODE_CUSTOMER = '-10'
 	        ,@NAME_CUSTOMER = 'NOMBRE PRUEBA'
@@ -45,18 +45,18 @@
           ,@LAST_DATE_VISITED = '09-Nov-15'
 
 					SELECT * 
-          FROM DIPROCOM.SWIFT_CUSTOMERS_NEW
+          FROM [SONDA].SWIFT_CUSTOMERS_NEW
           --WHERE CODE_CUSTOMER = 'C8888'
           ORDER BY CUSTOMER DESC
 
           SELECT *
-          FROM DIPROCOM.SWIFT_CUSTOMER_FREQUENCY_NEW 
+          FROM [SONDA].SWIFT_CUSTOMER_FREQUENCY_NEW 
           --WHERE CODE_CUSTOMER = 'C8888'
           ORDER BY CODE_FREQUENCY DESC
 */
 
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_INSERT_SCOUTING_Pruebas]
+CREATE PROCEDURE [SONDA].[SONDA_SP_INSERT_SCOUTING_Pruebas]
 	-- ----------------------------------------------------------------------------------
   -- Parametros para customer
 	-- ----------------------------------------------------------------------------------
@@ -107,7 +107,7 @@ BEGIN
 			BEGIN TRY
 		  
 		--
-		--SELECT @EXISTE = COUNT(*) FROM DIPROCOM.SWIFT_CUSTOMERS_NEW WHERE SYNC_ID = @SYNC_ID
+		--SELECT @EXISTE = COUNT(*) FROM [SONDA].SWIFT_CUSTOMERS_NEW WHERE SYNC_ID = @SYNC_ID
 		
 		--
 	    IF(SELECT @EXISTE) = 0 BEGIN --SI NO EXISTE EL ID DE SINCRONIZACION
@@ -115,7 +115,7 @@ BEGIN
 			-- ----------------------------------------------------------------------------------
 			-- Se inserte el cliente
 			-- ----------------------------------------------------------------------------------
-			INSERT INTO [DIPROCOM].[SWIFT_CUSTOMERS_NEW](
+			INSERT INTO [SONDA].[SWIFT_CUSTOMERS_NEW](
 				  [CODE_CUSTOMER]
     				,[NAME_CUSTOMER]
         			,[CLASSIFICATION_CUSTOMER]
@@ -188,7 +188,7 @@ BEGIN
 			  -- Validar si el CODE_CUSTOMER es nulo, se actualiza el CODE_CUSTOMER con el id generado
 			  -- ----------------------------------------------------------------------------------      
      
-			  UPDATE [DIPROCOM].[SWIFT_CUSTOMERS_NEW] SET
+			  UPDATE [SONDA].[SWIFT_CUSTOMERS_NEW] SET
 			  [CODE_CUSTOMER] = 'SO-' + CONVERT(VARCHAR(10), @ID)
 			  WHERE CUSTOMER = @ID
 			  
@@ -201,7 +201,7 @@ BEGIN
 			  -- ----------------------------------------------------------------------------------
 			  -- Se inserte la frecuencia del cliente
 			  -- ----------------------------------------------------------------------------------
-			  INSERT DIPROCOM.SWIFT_CUSTOMER_FREQUENCY_NEW(          
+			  INSERT [SONDA].SWIFT_CUSTOMER_FREQUENCY_NEW(          
         			CODE_CUSTOMER
         			,SUNDAY
         			,MONDAY

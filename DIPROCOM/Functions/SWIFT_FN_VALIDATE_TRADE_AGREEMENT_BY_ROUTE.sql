@@ -5,10 +5,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        SELECT [DIPROCOM].[SWIFT_FN_VALIDATE_TRADE_AGREEMENT_BY_ROUTE]('001')
+        SELECT [SONDA].[SWIFT_FN_VALIDATE_TRADE_AGREEMENT_BY_ROUTE]('001')
 */
 -- =============================================
-CREATE FUNCTION [DIPROCOM].[SWIFT_FN_VALIDATE_TRADE_AGREEMENT_BY_ROUTE] (@CODE_ROUTE VARCHAR(50))
+CREATE FUNCTION [SONDA].[SWIFT_FN_VALIDATE_TRADE_AGREEMENT_BY_ROUTE] (@CODE_ROUTE VARCHAR(50))
 RETURNS INT
 AS
 BEGIN
@@ -20,12 +20,12 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   SELECT TOP 1
     @HAS_EVENT = 1
-  FROM [DIPROCOM].[SWIFT_EVENT] [E]
-  INNER JOIN [DIPROCOM].[SWIFT_RULE_X_EVENT] [RXE]
+  FROM [SONDA].[SWIFT_EVENT] [E]
+  INNER JOIN [SONDA].[SWIFT_RULE_X_EVENT] [RXE]
     ON (
     [RXE].[EVENT_ID] = [E].[EVENT_ID]
     )
-  INNER JOIN [DIPROCOM].[SWIFT_RULE_X_ROUTE] [RXR]
+  INNER JOIN [SONDA].[SWIFT_RULE_X_ROUTE] [RXR]
     ON (
     [RXR].[RULE_ID] = [RXE].[RULE_ID]
     )
@@ -43,7 +43,7 @@ BEGIN
                               WHEN [R].[TRADE_AGREEMENT_ID] IS NULL THEN 0
                               ELSE 1
                             END
-    FROM [DIPROCOM].[SWIFT_ROUTES] [R]
+    FROM [SONDA].[SWIFT_ROUTES] [R]
     WHERE [R].[CODE_ROUTE] = @CODE_ROUTE
   END
   --

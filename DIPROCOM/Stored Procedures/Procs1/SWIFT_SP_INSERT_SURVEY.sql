@@ -1,4 +1,4 @@
-﻿CREATE PROC [DIPROCOM].[SWIFT_SP_INSERT_SURVEY]
+﻿CREATE PROC [SONDA].[SWIFT_SP_INSERT_SURVEY]
 	  @NAME VARCHAR(50)
 	, @DESCRIPTION VARCHAR(250)
 	, @USER VARCHAR(50)	
@@ -8,10 +8,10 @@ DECLARE @return_value int,
           @pID numeric(18, 0)
 BEGIN
 	BEGIN TRAN t1
-	EXEC @return_value = [DIPROCOM].[SWIFT_SP_GET_NEXT_SEQUENCE] @SEQUENCE_NAME = N'SURVEY',
+	EXEC @return_value = [SONDA].[SWIFT_SP_GET_NEXT_SEQUENCE] @SEQUENCE_NAME = N'SURVEY',
                                                               @pRESULT = @pID OUTPUT
 		BEGIN		
-			INSERT INTO [DIPROCOM].[SWIFT_SURVEY]
+			INSERT INTO [SONDA].[SWIFT_SURVEY]
            ([SURVEY_ID]
            ,[NAME]
            ,[DESCRIPTION]

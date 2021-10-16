@@ -7,7 +7,7 @@
 
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_VALIDATE_DEPOSITS_WERE_POSTED] (@XML XML
+CREATE PROCEDURE [SONDA].[SONDA_SP_VALIDATE_DEPOSITS_WERE_POSTED] (@XML XML
 , @JSON VARCHAR(MAX))
 AS
 BEGIN
@@ -126,7 +126,7 @@ BEGIN
     
 
     INSERT INTO @RESULT_VALIDATION ([EXISTS], [ID], [DOC_SERIE], [DOC_NUM])
-    EXEC [DIPROCOM].[SONDA_SP_VALIDATE_DEPOSIT_IS_POSTED] @DEPOSIT_ID = @ID
+    EXEC [SONDA].[SONDA_SP_VALIDATE_DEPOSIT_IS_POSTED] @DEPOSIT_ID = @ID
                                                       ,@DEPOSIT_ID_HH = @DOC_ID
                                                       ,@DOC_SERIE = @DOC_SERIE
                                                       ,@DOC_NUM = @DOC_NUM

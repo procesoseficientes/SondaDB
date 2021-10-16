@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [DIPROCOM].[SONDA_SP_ADD_SCOUTING_BY_XML] (@XML XML
+﻿CREATE PROCEDURE [SONDA].[SONDA_SP_ADD_SCOUTING_BY_XML] (@XML XML
 , @JSON VARCHAR(MAX) = NULL)
 AS
 BEGIN
@@ -71,8 +71,8 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     SELECT TOP 1
       @OWNER = COMPANY_ID
-     ,@SCOUTING_PREFIX = [DIPROCOM].SWIFT_FN_GET_PARAMETER('SCOUTING', 'CLIENT_PREFIX')
-    FROM [DIPROCOM].[SWIFT_COMPANY]
+     ,@SCOUTING_PREFIX = [SONDA].SWIFT_FN_GET_PARAMETER('SCOUTING', 'CLIENT_PREFIX')
+    FROM [SONDA].[SWIFT_COMPANY]
 
     -- ------------------------------------------------------
     -- Obtiene el LOGIN_ID y el CODE_ROUTE
@@ -208,7 +208,7 @@ BEGIN
        ,@CODE_CUSTOMER_BO = [C].[CODE_CUSTOMER]
        ,@IS_SUCCESSFUL = 1
        ,@MESSAGE = 'Ya existe el scouting'
-      FROM [DIPROCOM].[SONDA_CUSTOMER_NEW] [C]
+      FROM [SONDA].[SONDA_CUSTOMER_NEW] [C]
       WHERE [C].[DOC_SERIE] = @DOC_SERIE
       AND [C].[DOC_NUM] = @DOC_NUM
       AND [C].[SYNC_ID] = @SYNC_ID
@@ -243,7 +243,7 @@ BEGIN
           -- ----------------------------------------------------------------------------------      
           SELECT
             @SCOUTING_SEQUENCE = NEXT VALUE
-            FOR [DIPROCOM].SCOUTING_CLIENT_SEQUENCE
+            FOR [SONDA].SCOUTING_CLIENT_SEQUENCE
 
           -- ----------------------------------------------------------------------------------
           -- Se prepara el codigo de scouting
@@ -254,7 +254,7 @@ BEGIN
           -- ----------------------------------------------------------------------------------
           -- Se inserta el nuevo cliente
           -- ----------------------------------------------------------------------------------
-          INSERT INTO [DIPROCOM].[SONDA_CUSTOMER_NEW] ([CODE_CUSTOMER]
+          INSERT INTO [SONDA].[SONDA_CUSTOMER_NEW] ([CODE_CUSTOMER]
           , [DOC_SERIE]
           , [DOC_NUM]
           , [CODE_ROUTE]
@@ -320,7 +320,7 @@ BEGIN
           -- ----------------------------------------------------------------------------------
           -- Se insertan las etiquetas del nuevo cliente
           -- ----------------------------------------------------------------------------------
-          INSERT INTO [DIPROCOM].[SONDA_TAG_X_CUSTOMER_NEW] ([TAG_COLOR]
+          INSERT INTO [SONDA].[SONDA_TAG_X_CUSTOMER_NEW] ([TAG_COLOR]
           , [CUSTOMER_ID])
             SELECT
               [T].TAG_COLOR

@@ -10,7 +10,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-		EXEC [DIPROCOM].[SONDA_SP_INSERT_SURVEY_BY_XML]
+		EXEC [SONDA].[SONDA_SP_INSERT_SURVEY_BY_XML]
 		@XML = '
 			<Data>
     <encuestas>
@@ -96,7 +96,7 @@
 		'
 */
 
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_INSERT_SURVEY_BY_XML]
+CREATE PROCEDURE [SONDA].[SONDA_SP_INSERT_SURVEY_BY_XML]
 	(
 		@XML XML
 		,@JSON VARCHAR(MAX) = NULL
@@ -220,7 +220,7 @@ AS
 				-- Realiza intento de insercion del registro obtenido
 				-- ------------------------------------------------------------------------------------
 				BEGIN TRY
-					INSERT	INTO [DIPROCOM].[SONDA_SURVEY]
+					INSERT	INTO [SONDA].[SONDA_SURVEY]
 							(
 								[SURVEY_NAME]
 								,[QUESTION]
@@ -256,7 +256,7 @@ AS
 							SELECT TOP 1
 								[VC].[GPS]
 							FROM
-								[DIPROCOM].[SWIFT_VIEW_ALL_COSTUMER] AS [VC]
+								[SONDA].[SWIFT_VIEW_ALL_COSTUMER] AS [VC]
 							WHERE
 								[VC].[CODE_CUSTOMER] = [S].[CODE_CUSTOMER]
 							)

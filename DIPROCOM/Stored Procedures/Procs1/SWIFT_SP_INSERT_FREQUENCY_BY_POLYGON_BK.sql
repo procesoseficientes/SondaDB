@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_INSERT_FREQUENCY_BY_POLYGON]
+				EXEC [SONDA].[SWIFT_SP_INSERT_FREQUENCY_BY_POLYGON]
 					@SUNDAY = 0
 					,@MONDAY = 0
 					,@TUESDAY = 1
@@ -20,10 +20,10 @@
 					,@TYPE_TASK = 'PRESALE'
 					,@POLYGON_ID = 66
 				-- 
-				SELECT * FROM [DIPROCOM].[SWIFT_FREQUENCY] WHERE CODE_ROUTE= 'RUDI@DIPROCOM' AND TYPE_TASK = 'PRESALE'
+				SELECT * FROM [SONDA].[SWIFT_FREQUENCY] WHERE CODE_ROUTE= 'RUDI@DIPROCOM' AND TYPE_TASK = 'PRESALE'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_INSERT_FREQUENCY_BY_POLYGON_BK] (
+CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_FREQUENCY_BY_POLYGON_BK] (
 	@SUNDAY AS INT
 	,@MONDAY AS INT
 	,@TUESDAY AS INT
@@ -61,7 +61,7 @@ AS
 			-- ------------------------------------------------------------------------------------
 			-- Inserta o actualiza la frecuencia
 			-- ------------------------------------------------------------------------------------
-			MERGE [DIPROCOM].[SWIFT_FREQUENCY] [F]
+			MERGE [SONDA].[SWIFT_FREQUENCY] [F]
 			USING
 				(
 					SELECT
@@ -117,7 +117,7 @@ AS
 						);
 			--
 			SELECT TOP 1 @ID_FREQUENCY = [F].ID_FREQUENCY
-			FROM [DIPROCOM].[SWIFT_FREQUENCY] [F]
+			FROM [SONDA].[SWIFT_FREQUENCY] [F]
 			WHERE [F].[CODE_FREQUENCY] = @CODE_FRECUENCY
 			--
 			PRINT '@ID_FREQUENCY: ' + CAST(@ID_FREQUENCY AS VARCHAR)
@@ -125,7 +125,7 @@ AS
 			-- ------------------------------------------------------------------------------------
 			-- Agrega los clientes a la frecuencia
 			-- ------------------------------------------------------------------------------------
-			INSERT INTO [DIPROCOM].[SWIFT_FREQUENCY_X_CUSTOMER]
+			INSERT INTO [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER]
 			(
 				[ID_FREQUENCY]
 				,[CODE_CUSTOMER]
@@ -135,8 +135,8 @@ AS
 				@ID_FREQUENCY
 				,[PC].[CODE_CUSTOMER]
 				,1
-			FROM [DIPROCOM].[SWIFT_POLYGON_X_CUSTOMER] PC
-			LEFT JOIN [DIPROCOM].[SWIFT_FREQUENCY_X_CUSTOMER] FC ON (
+			FROM [SONDA].[SWIFT_POLYGON_X_CUSTOMER] PC
+			LEFT JOIN [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] FC ON (
 				[FC].[ID_FREQUENCY] = @ID_FREQUENCY
 				AND [FC].[CODE_CUSTOMER] = [PC].[CODE_CUSTOMER]
 			)
@@ -146,7 +146,7 @@ AS
 			-- ------------------------------------------------------------------------------------
 			-- Agrega propuesta de clientes
 			-- ------------------------------------------------------------------------------------
-			MERGE [DIPROCOM].[SWIFT_CUSTOMER_FREQUENCY] [CF]
+			MERGE [SONDA].[SWIFT_CUSTOMER_FREQUENCY] [CF]
 			USING
 				(
 					SELECT 
@@ -160,7 +160,7 @@ AS
 						,@FRIDAY [FRIDAY]
 						,@SATURDAY [SATURDAY]
 						,@FRECUENCY_WEEKS [FREQUENCY_WEEKS]
-					FROM [DIPROCOM].[SWIFT_POLYGON_X_CUSTOMER] PC 
+					FROM [SONDA].[SWIFT_POLYGON_X_CUSTOMER] PC 
 					WHERE [PC].[POLYGON_ID] = @POLYGON_ID
 				) [PC]
 			ON (
@@ -217,7 +217,7 @@ AS
 				IS_NEW = 0
 				,HAS_PROPOSAL = 1
 				,HAS_FREQUENCY = 1
-			FROM [DIPROCOM].[SWIFT_POLYGON_X_CUSTOMER] PC
+			FROM [SONDA].[SWIFT_POLYGON_X_CUSTOMER] PC
 			WHERE [PC].[POLYGON_ID] = @POLYGON_ID
 
 			-- ------------------------------------------------------------------------------------

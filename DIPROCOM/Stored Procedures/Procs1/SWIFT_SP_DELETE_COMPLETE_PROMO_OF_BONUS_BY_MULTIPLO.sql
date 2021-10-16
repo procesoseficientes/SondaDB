@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].SWIFT_SP_DELETE_COMPLETE_PROMO_OF_BONUS_BY_MULTIPLO
+				EXEC [SONDA].SWIFT_SP_DELETE_COMPLETE_PROMO_OF_BONUS_BY_MULTIPLO
 				@PROMO_ID = 2128
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_DELETE_COMPLETE_PROMO_OF_BONUS_BY_MULTIPLO] (@PROMO_ID INT)
+CREATE PROCEDURE [SONDA].[SWIFT_SP_DELETE_COMPLETE_PROMO_OF_BONUS_BY_MULTIPLO] (@PROMO_ID INT)
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -25,7 +25,7 @@ BEGIN
     -- ---------------------------------------------------------------------------------------------------
     SELECT
       @THIS_ASSOCIATE = 1
-    FROM DIPROCOM.[SWIFT_TRADE_AGREEMENT_BY_PROMO]
+    FROM [SONDA].[SWIFT_TRADE_AGREEMENT_BY_PROMO]
     WHERE [PROMO_ID] = @PROMOTION_ID;
 
     IF (@THIS_ASSOCIATE = 1)
@@ -38,13 +38,13 @@ BEGIN
       -- --------------------------------------------------------------------------------
       -- Se eliminan los detalles de la promo por multiplo
       -- --------------------------------------------------------------------------------
-      DELETE FROM [DIPROCOM].[SWIFT_PROMO_BONUS_BY_MULTIPLE]
+      DELETE FROM [SONDA].[SWIFT_PROMO_BONUS_BY_MULTIPLE]
       WHERE [PROMO_ID] = @PROMOTION_ID
 
       -- --------------------------------------------------------------------------------
       -- Se eliminan la promocion 
       -- --------------------------------------------------------------------------------
-      DELETE FROM [DIPROCOM].[SWIFT_PROMO]
+      DELETE FROM [SONDA].[SWIFT_PROMO]
       WHERE [PROMO_ID] = @PROMOTION_ID
 
       -- --------------------------------------------------------------------------------

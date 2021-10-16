@@ -6,12 +6,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_GET_CONSIGMENT_HEADER]
+				EXEC [SONDA].[SWIFT_SP_GET_CONSIGMENT_HEADER]
 					@FECHA_INICIAL = '2014-10-13 00:00:00.000',
 					@FECHA_FIN = '2017-10-13 23:59:59.59'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_GET_CONSIGMENT_HEADER] (
+CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_CONSIGMENT_HEADER] (
 	@FECHA_INICIAL DATETIME,
 	@FECHA_FIN DATETIME)
 AS
@@ -25,12 +25,12 @@ BEGIN
 	-- ----------------------------------------------------------------------------------------------------------------
 	-- Coloca parametros iniciales
 	-------------------------------------------------------------------------------------------------------------------
-	SELECT @DEFAULT_DISPLAY_DECIMALS = [DIPROCOM].[SWIFT_FN_GET_PARAMETER]('CALCULATION_RULES','DEFAULT_DISPLAY_DECIMALS')
+	SELECT @DEFAULT_DISPLAY_DECIMALS = [SONDA].[SWIFT_FN_GET_PARAMETER]('CALCULATION_RULES','DEFAULT_DISPLAY_DECIMALS')
 	
 	-- ----------------------------------------------------------------------------------------------------------------
 	-- Se Obtiene el Parametro de Dias Restantes para el KPI
 	-- ----------------------------------------------------------------------------------------------------------------
-	SELECT @KPI = [DIPROCOM].[SWIFT_FN_GET_PARAMETER]('CONSIGNMENT','WARNING_DUE_DATE_CONSIGNMENT')
+	SELECT @KPI = [SONDA].[SWIFT_FN_GET_PARAMETER]('CONSIGNMENT','WARNING_DUE_DATE_CONSIGNMENT')
   
   SET @QUERY = N'
 
@@ -57,7 +57,7 @@ BEGIN
    ,[CH].[IS_ACTIVE_ROUTE]
    ,[CH].[DUE_DATE]
    ,[CH].[CONSIGNMENT_HH_NUM]
-   , CONVERT(DECIMAL(18,' + CAST(@DEFAULT_DISPLAY_DECIMALS AS VARCHAR) + '),[DIPROCOM].SWIFT_FN_GET_DISPLAY_NUMBER([CH].[TOTAL_AMOUNT])) [TOTAL_AMOUNT]   
+   , CONVERT(DECIMAL(18,' + CAST(@DEFAULT_DISPLAY_DECIMALS AS VARCHAR) + '),[SONDA].SWIFT_FN_GET_DISPLAY_NUMBER([CH].[TOTAL_AMOUNT])) [TOTAL_AMOUNT]   
    ,[CH].[DOC_SERIE]
    ,[CH].[DOC_NUM]
    ,[CH].[IMG]
@@ -72,8 +72,8 @@ BEGIN
 		WHEN DATEDIFF(DAY,GETDATE(),CH.DUE_DATE) < ' + @KPI +' THEN 2
 		WHEN  DATEDIFF(DAY,GETDATE(),CH.DUE_DATE) >' + @KPI +' THEN 3
 	END AS [KPI]
-  FROM [DIPROCOM].[SWIFT_CONSIGNMENT_HEADER] [CH]
-  INNER JOIN [DIPROCOM].SWIFT_VIEW_ALL_COSTUMER AC
+  FROM [SONDA].[SWIFT_CONSIGNMENT_HEADER] [CH]
+  INNER JOIN [SONDA].SWIFT_VIEW_ALL_COSTUMER AC
     ON CH.CUSTOMER_ID = AC.CODE_CUSTOMER
   WHERE CONVERT(DATE,[CH].[DATE_CREATE]) Between CONVERT(DATE,''' + CONVERT(VARCHAR(25),@FECHA_INICIAL,101) + ''') AND CONVERT(DATE,''' + CONVERT(VARCHAR(25),@FECHA_FIN,101) + ''')
   '

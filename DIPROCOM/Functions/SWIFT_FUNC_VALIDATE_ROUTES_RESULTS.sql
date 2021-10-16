@@ -11,7 +11,7 @@
 							,@RESULT_MESSAGE VARCHAR(50) ='ERROR EN VALIDACIÓN'
 							,@RESULT VARCHAR
 
-							SELECT [DIPROCOM].[SWIFT_FUNC_VALIDATE_ROUTES_RESULTS] 
+							SELECT [SONDA].[SWIFT_FUNC_VALIDATE_ROUTES_RESULTS] 
 							(
 							@RESULT_BIT
 							,@RESULT_MESSAGE
@@ -20,7 +20,7 @@
 							SELECT @Result as RESULT
 -- =============================================
 */
-CREATE FUNCTION [DIPROCOM].[SWIFT_FUNC_VALIDATE_ROUTES_RESULTS]
+CREATE FUNCTION [SONDA].[SWIFT_FUNC_VALIDATE_ROUTES_RESULTS]
 ( 
 	@RESULT_BIT BIT --Contiene el resultado 1= Correcto-Asignación, 0= Incoprecto-No Tiene Asignación
 	,@RESULT_MESSAGE VARCHAR(2000)-- Contiene el valor del mensaje a concatenar delclarado en SP principal

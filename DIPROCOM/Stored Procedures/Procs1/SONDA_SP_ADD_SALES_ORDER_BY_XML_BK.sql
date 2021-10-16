@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [DIPROCOM].[SONDA_SP_ADD_SALES_ORDER_BY_XML_BK] (@XML XML
+﻿CREATE PROCEDURE [SONDA].[SONDA_SP_ADD_SALES_ORDER_BY_XML_BK] (@XML XML
 , @JSON VARCHAR(MAX))
 AS
 BEGIN
@@ -117,7 +117,7 @@ BEGIN
       -- ------------------------------------------------------------------------------------
 	  --SET @COMMITTED_INVENTORY=0
       INSERT INTO @RESULT_VALIDATION
-      EXEC [DIPROCOM].[SONDA_SP_VALIDATED_IF_EXISTS_SALES_ORDER_2] @DOC_SERIE = @DOC_SERIE
+      EXEC [SONDA].[SONDA_SP_VALIDATED_IF_EXISTS_SALES_ORDER_2] @DOC_SERIE = @DOC_SERIE
                                                                ,@DOC_NUM = @DOC_NUM
                                                                , -- int
                                                                 @CODE_ROUTE = @CODE_ROUTE
@@ -143,12 +143,12 @@ BEGIN
       BEGIN
         PRINT '--> ya existe la orden de venta con el ID :' + CAST(@SALES_ORDER_ID AS VARCHAR)
 
---        UPDATE [DIPROCOM].[SONDA_SALES_ORDER_HEADER]
+--        UPDATE [SONDA].[SONDA_SALES_ORDER_HEADER]
 --        SET [IS_READY_TO_SEND] = 1
 --        WHERE [SALES_ORDER_ID] = @SALES_ORDER_ID
 --        IF (@COMMITTED_INVENTORY = 1)
 --        BEGIN
---          EXEC [DIPROCOM].[SONDA_SP_COMMIT_INVENTORY_BY_SALES_ORDER_ID] @SALE_ORDER_ID = @SALES_ORDER_ID
+--          EXEC [SONDA].[SONDA_SP_COMMIT_INVENTORY_BY_SALES_ORDER_ID] @SALE_ORDER_ID = @SALES_ORDER_ID
 --        END
         --
         SELECT
@@ -163,7 +163,7 @@ BEGIN
         -- ------------------------------------------------------------------------------------
         -- Inserta el encabezado
         -- ------------------------------------------------------------------------------------
-        INSERT INTO [DIPROCOM].[SONDA_SALES_ORDER_HEADER] ([TERMS]
+        INSERT INTO [SONDA].[SONDA_SALES_ORDER_HEADER] ([TERMS]
         , [POSTED_DATETIME]
         , [CLIENT_ID]
         , [POS_TERMINAL]
@@ -282,7 +282,7 @@ BEGIN
         -- ------------------------------------------------------------------------------------
         -- inserta el detalle
         -- ------------------------------------------------------------------------------------
-        INSERT INTO [DIPROCOM].[SONDA_SALES_ORDER_DETAIL] ([SALES_ORDER_ID]
+        INSERT INTO [SONDA].[SONDA_SALES_ORDER_DETAIL] ([SALES_ORDER_ID]
         , [SKU]
         , [LINE_SEQ]
         , [QTY]

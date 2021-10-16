@@ -7,13 +7,13 @@ Descripcion:            SP que elimina el tipo de tarea por poligono
 
 Ejemplo de Ejecucion:
 
-    EXEC [DIPROCOM].SWIFT_SP_DISASSOCIATE_TASK_BY_POLYGON
+    EXEC [SONDA].SWIFT_SP_DISASSOCIATE_TASK_BY_POLYGON
       @POLYGON_ID = 63
     --
-    SELECT * FROM [DIPROCOM].SWIFT_TASK_BY_POLYGON WHERE POLYGON_ID = 63
+    SELECT * FROM [SONDA].SWIFT_TASK_BY_POLYGON WHERE POLYGON_ID = 63
 
 =====================================================================*/
-CREATE PROCEDURE [DIPROCOM].SWIFT_SP_DISASSOCIATE_TASK_BY_POLYGON
+CREATE PROCEDURE [SONDA].SWIFT_SP_DISASSOCIATE_TASK_BY_POLYGON
 (
   @POLYGON_ID INT  
 ) AS
@@ -25,7 +25,7 @@ BEGIN
     -- --------------------------------------------
     -- Se eliminan las tareas asociadas al poligono
     -- --------------------------------------------
-    DELETE FROM  [DIPROCOM].[SWIFT_TASK_BY_POLYGON]
+    DELETE FROM  [SONDA].[SWIFT_TASK_BY_POLYGON]
       WHERE [POLYGON_ID] = @POLYGON_ID
 
     -- ---------------------------------------

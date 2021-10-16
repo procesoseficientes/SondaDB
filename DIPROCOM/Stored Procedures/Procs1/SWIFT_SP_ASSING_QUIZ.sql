@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC DIPROCOM.SWIFT_SP_ASSING_QUIZ
+        EXEC [SONDA].SWIFT_SP_ASSING_QUIZ
 		@XML_ROUTES = '
 			<ArrayOfAsignacionMicroencuesta>
 			  <AsignacionMicroencuesta>
@@ -43,7 +43,7 @@
 		@QUIZ_ID = 12
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_ASSING_QUIZ]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_ASSING_QUIZ]
 	(
 		@QUIZ_ID INT
 		,@XML_ROUTES XML
@@ -73,7 +73,7 @@ AS
 			SELECT
 				COUNT([QUESTION_ID])
 			FROM
-				[DIPROCOM].[SWIFT_QUESTION]
+				[SONDA].[SWIFT_QUESTION]
 			WHERE
 				[QUIZ_ID] = @QUIZ_ID
 			) < 1
@@ -129,7 +129,7 @@ AS
 				-- ------------------------------------------------------------------------------------
 				-- Se inserta la asociacion
 				-- ------------------------------------------------------------------------------------
-				INSERT	INTO [DIPROCOM].[SWIFT_ASIGNED_QUIZ]
+				INSERT	INTO [SONDA].[SWIFT_ASIGNED_QUIZ]
 						(
 							[QUIZ_ID]
 							,[ROUTE_CODE]

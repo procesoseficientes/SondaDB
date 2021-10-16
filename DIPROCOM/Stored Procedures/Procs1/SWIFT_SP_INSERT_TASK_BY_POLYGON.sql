@@ -7,13 +7,13 @@ Descripcion:            SP que inserta el tipo de tarea por poligono
 
 Ejemplo de Ejecucion:
 
-    EXEC [DIPROCOM].SWIFT_SP_INSERT_TASK_BY_POLYGON
+    EXEC [SONDA].SWIFT_SP_INSERT_TASK_BY_POLYGON
       @TYPE_TASK = 'PRESALE'
       ,@POLYGON_ID = 1
     --
-    SELECT * FROM [DIPROCOM].SWIFT_TASK_BY_POLYGON
+    SELECT * FROM [SONDA].SWIFT_TASK_BY_POLYGON
 ==============================================*/
-CREATE PROCEDURE [DIPROCOM].SWIFT_SP_INSERT_TASK_BY_POLYGON
+CREATE PROCEDURE [SONDA].SWIFT_SP_INSERT_TASK_BY_POLYGON
 (
 @TASK_TYPE VARCHAR(15)
 ,@POLYGON_ID INT  
@@ -26,7 +26,7 @@ BEGIN
     -- ----------------------------------------
     -- Se inserta la tarea asociada al poligono
     -- ----------------------------------------
-    INSERT INTO [DIPROCOM].[SWIFT_TASK_BY_POLYGON] (
+    INSERT INTO [SONDA].[SWIFT_TASK_BY_POLYGON] (
       [POLYGON_ID]
       , [TASK_TYPE]
       )

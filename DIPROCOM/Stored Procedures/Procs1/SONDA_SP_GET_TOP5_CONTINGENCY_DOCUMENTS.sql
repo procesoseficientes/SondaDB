@@ -22,18 +22,18 @@
 
 /*
 -- Ejemplo de Ejecucion:
-	EXEC [DIPROCOM].[SONDA_SP_GET_TOP5_CONTINGENCY_DOCUMENTS]
+	EXEC [SONDA].[SONDA_SP_GET_TOP5_CONTINGENCY_DOCUMENTS]
   
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_GET_TOP5_CONTINGENCY_DOCUMENTS]
+CREATE PROCEDURE [SONDA].[SONDA_SP_GET_TOP5_CONTINGENCY_DOCUMENTS]
 AS
 BEGIN
 
     DECLARE @SHIPMENT_ATTEMPTS VARCHAR(250);
 
     SELECT @SHIPMENT_ATTEMPTS
-        = [DIPROCOM].[SWIFT_FN_GET_PARAMETER]('SONDA_FEL_CONFIGURATION', 'FEL_CONTINGENCY_DOCUMENT_SHIPMENT_ATTEMPTS');
+        = [SONDA].[SWIFT_FN_GET_PARAMETER]('SONDA_FEL_CONFIGURATION', 'FEL_CONTINGENCY_DOCUMENT_SHIPMENT_ATTEMPTS');
 
 
     SELECT TOP (5)
@@ -79,21 +79,21 @@ BEGIN
            (
                SELECT TOP (1)
                       ISNULL([VAC].[ADRESS_CUSTOMER], 'SIN DIRECCION')
-               FROM [DIPROCOM].[SWIFT_VIEW_ALL_COSTUMER] AS [VAC]
+               FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER] AS [VAC]
                WHERE [VAC].[CODE_CUSTOMER] = [IH].[CLIENT_ID]
                ORDER BY [VAC].[CODE_CUSTOMER]
            ) AS [ClientAddress],
            (
                SELECT TOP (1)
                       ISNULL([VC].[DEPARTAMENT], 'N/A')
-               FROM [DIPROCOM].[SWIFT_VIEW_CUSTOMERS] AS [VC]
+               FROM [SONDA].[SWIFT_VIEW_CUSTOMERS] AS [VC]
                WHERE [VC].[CODE_CUSTOMER] = [IH].[CLIENT_ID]
                ORDER BY [VC].[CODE_CUSTOMER]
            ) AS [Department],
            (
                SELECT TOP (1)
                       ISNULL([VC].[MUNICIPALITY], 'N/A')
-               FROM [DIPROCOM].[SWIFT_VIEW_CUSTOMERS] AS [VC]
+               FROM [SONDA].[SWIFT_VIEW_CUSTOMERS] AS [VC]
                WHERE [VC].[CODE_CUSTOMER] = [IH].[CLIENT_ID]
                ORDER BY [VC].[CODE_CUSTOMER]
            ) AS [Municipality],
@@ -103,7 +103,7 @@ BEGIN
            [IH].[CONTINGENCY_DOC_SERIE] AS [ContingencyDocSerie],
            [IH].[CONTINGENCY_DOC_NUM] AS [ContingencyDocNum],
            NULL AS [InvoiceDetail]
-    FROM [DIPROCOM].[SONDA_POS_INVOICE_HEADER] AS [IH]
+    FROM [SONDA].[SONDA_POS_INVOICE_HEADER] AS [IH]
     WHERE [IH].[IS_CONTINGENCY_DOCUMENT] = 1
           AND [IH].[IS_READY_TO_SEND] = 1
           AND [IH].[VALIDATION_RESULT] <> 1

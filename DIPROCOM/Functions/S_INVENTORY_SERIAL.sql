@@ -8,10 +8,10 @@
 					-- Se agrega columna en el WHERE para filtrar solo las etiquetas que realmente tienen informacion.
 /*
   EJEMPLO:
-  SELECT * FROM [DIPROCOM].S_INVENTORY_SERIAL('C001')
+  SELECT * FROM [SONDA].S_INVENTORY_SERIAL('C001')
 */
 -- =============================================
-CREATE  FUNCTION [DIPROCOM].[S_INVENTORY_SERIAL]
+CREATE  FUNCTION [SONDA].[S_INVENTORY_SERIAL]
 (        
 -- Add the parameters for the function here
 @Warehouse nvarchar(8) = 'PG.GUM01'
@@ -28,7 +28,7 @@ SELECT
 	,''		AS SKU_ICC
 	,i.WAREHOUSE		AS WAREHOUSE
 FROM 
- [DIPROCOM].[SWIFT_INVENTORY] i 
+ [SONDA].[SWIFT_INVENTORY] i 
 WHERE 	
 i.WAREHOUSE = @Warehouse 
  AND  i.ON_HAND > 0

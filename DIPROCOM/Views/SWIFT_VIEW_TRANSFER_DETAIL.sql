@@ -10,10 +10,10 @@
  
 /*
 -- Ejemplo de Ejecucion:
-        SELECT * FROM [DIPROCOM].[SWIFT_VIEW_TRANSFER_DETAIL]
+        SELECT * FROM [SONDA].[SWIFT_VIEW_TRANSFER_DETAIL]
 */
 -- =============================================
-CREATE VIEW [DIPROCOM].[SWIFT_VIEW_TRANSFER_DETAIL]
+CREATE VIEW [SONDA].[SWIFT_VIEW_TRANSFER_DETAIL]
 AS
     (
         SELECT
@@ -27,8 +27,8 @@ AS
             ,'ST' AS [CODE_PACK_UNIT_STOCK]
             ,[S].[VAT_CODE]
         FROM
-            [DIPROCOM].[SWIFT_TRANSFER_DETAIL] [TD]
-        INNER JOIN [DIPROCOM].[SWIFT_VIEW_ALL_SKU] [S]
+            [SONDA].[SWIFT_TRANSFER_DETAIL] [TD]
+        INNER JOIN [SONDA].[SWIFT_VIEW_ALL_SKU] [S]
         ON    ([TD].[SKU_CODE] = [S].[CODE_SKU])
     );
  

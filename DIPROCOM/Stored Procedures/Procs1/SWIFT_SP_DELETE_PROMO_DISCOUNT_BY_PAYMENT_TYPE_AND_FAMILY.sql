@@ -4,23 +4,23 @@
 -- Description:            SP que elimina promociones por familia y tipo de pago
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [DIPROCOM].[SWIFT_SP_DELETE_PROMO_DISCOUNT_BY_PAYMENT_TYPE_AND_FAMILY]
+        EXEC [SONDA].[SWIFT_SP_DELETE_PROMO_DISCOUNT_BY_PAYMENT_TYPE_AND_FAMILY]
         @PROMO_ID = 2114
 */
 -- =============================================
 
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_DELETE_PROMO_DISCOUNT_BY_PAYMENT_TYPE_AND_FAMILY]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_DELETE_PROMO_DISCOUNT_BY_PAYMENT_TYPE_AND_FAMILY]
 	@PROMO_ID INT
 AS
 BEGIN TRY
 	-- ---------------------------------------------------
 	-- se eliminan los descuentos por familia especificada
 	-- ---------------------------------------------------
-	DELETE FROM [DIPROCOM].[SWIFT_PROMO_DISCOUNT_BY_PAYMENT_TYPE_AND_FAMILY]
+	DELETE FROM [SONDA].[SWIFT_PROMO_DISCOUNT_BY_PAYMENT_TYPE_AND_FAMILY]
 	WHERE PROMO_ID = @PROMO_ID
 
 
-  UPDATE [DIPROCOM].[SWIFT_PROMO]
+  UPDATE [SONDA].[SWIFT_PROMO]
     SET [LAST_UPDATE] = GETDATE()
     WHERE [PROMO_ID] = @PROMO_ID;
 	-- -------------------------

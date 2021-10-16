@@ -1,4 +1,4 @@
-﻿CREATE TABLE [DIPROCOM].[SONDA_ITEM_HISTORY] (
+﻿CREATE TABLE [SONDA].[SONDA_ITEM_HISTORY] (
     [CODE_ROUTE]                                  VARCHAR (50)    NULL,
     [DOC_TYPE]                                    VARCHAR (50)    NULL,
     [CODE_CUSTOMER]                               VARCHAR (50)    NULL,

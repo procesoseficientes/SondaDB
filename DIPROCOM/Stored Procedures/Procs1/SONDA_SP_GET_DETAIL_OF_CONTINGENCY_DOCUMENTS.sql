@@ -11,7 +11,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-	EXEC [DIPROCOM].[SONDA_SP_GET_DETAIL_OF_CONTINGENCY_DOCUMENTS]
+	EXEC [SONDA].[SONDA_SP_GET_DETAIL_OF_CONTINGENCY_DOCUMENTS]
 	@CONTINGENCY_DOCUMENTS = '
 	<Data>
     <Data>
@@ -258,7 +258,7 @@
 	'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_GET_DETAIL_OF_CONTINGENCY_DOCUMENTS]
+CREATE PROCEDURE [SONDA].[SONDA_SP_GET_DETAIL_OF_CONTINGENCY_DOCUMENTS]
 (@CONTINGENCY_DOCUMENTS XML)
 AS
 BEGIN
@@ -289,7 +289,7 @@ BEGIN
            (
                SELECT TOP (1)
                       [VAS].[DESCRIPTION_SKU]
-               FROM [DIPROCOM].[SWIFT_VIEW_ALL_SKU] AS [VAS]
+               FROM [SONDA].[SWIFT_VIEW_ALL_SKU] AS [VAS]
                WHERE [VAS].[CODE_SKU] = [ID].[SKU]
                ORDER BY [VAS].[SKU]
            ) AS [SkuName],
@@ -308,7 +308,7 @@ BEGIN
            NULL AS [Phone],
            --[ID].[SALES_PACK_UNIT] AS [SalesPackUnit]
            NULL AS [SalesPackUnit]
-    FROM [DIPROCOM].[SONDA_POS_INVOICE_DETAIL] AS [ID]
+    FROM [SONDA].[SONDA_POS_INVOICE_DETAIL] AS [ID]
         INNER JOIN @CONTINGENCY_DOCUMENT_HEADER AS [CDH]
             ON ([CDH].[INVOICE_ID_BO] = [ID].[ID]);
 

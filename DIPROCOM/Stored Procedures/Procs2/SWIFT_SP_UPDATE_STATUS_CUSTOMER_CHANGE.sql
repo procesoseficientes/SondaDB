@@ -9,13 +9,13 @@
 
 /*
 -- EJEMPLO DE EJECUCION: 
-		EXEC [DIPROCOM].[SWIFT_SP_UPDATE_STATUS_CUSTOMER_CHANGE]
+		EXEC [SONDA].[SWIFT_SP_UPDATE_STATUS_CUSTOMER_CHANGE]
 		 @CUSTOMER = '3874'
 		,@STATUS = 'ACCEPTED'  --REJECTED, ACCEPTED, NEW
 		,@LOGIN = 'gerente@DIPROCOM'
 */
 -- =========================================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_UPDATE_STATUS_CUSTOMER_CHANGE] (
+CREATE PROCEDURE [SONDA].[SWIFT_SP_UPDATE_STATUS_CUSTOMER_CHANGE] (
 	@CUSTOMER VARCHAR(50)
 	,@STATUS VARCHAR(50)
 	,@LOGIN VARCHAR(50)
@@ -26,7 +26,7 @@ BEGIN
 	DECLARE @SEND_TAGS_TO_ERP VARCHAR(10) = '0'
 	--
 	BEGIN TRY
-		SELECT @SEND_TAGS_TO_ERP = [DIPROCOM].[SWIFT_FN_GET_PARAMETER]('CUSTOMER_CHANGE','SEND_TAGS_TO_ERP')
+		SELECT @SEND_TAGS_TO_ERP = [SONDA].[SWIFT_FN_GET_PARAMETER]('CUSTOMER_CHANGE','SEND_TAGS_TO_ERP')
 		
 		-- ------------------------------------------------------------------------------------
 		-- Valida si tiene que enviar las etiquetas
@@ -36,8 +36,8 @@ BEGIN
 			DECLARE @MESSAGE VARCHAR(MAX) = ''
 			--
 			SELECT @MESSAGE = @MESSAGE + ('La etiqueta ' + [T].[TAG_VALUE_TEXT] + ' no tiene asignado el campo correspondiente del ERP. ')
-			FROM [DIPROCOM].[SWIFT_TAG_X_CUSTOMER_CHANGE] [TCC]
-			INNER JOIN [DIPROCOM].[SWIFT_TAGS] [T] ON ([T].[TAG_COLOR] = [TCC].[TAG_COLOR])
+			FROM [SONDA].[SWIFT_TAG_X_CUSTOMER_CHANGE] [TCC]
+			INNER JOIN [SONDA].[SWIFT_TAGS] [T] ON ([T].[TAG_COLOR] = [TCC].[TAG_COLOR])
 			WHERE [TCC].[CUSTOMER] = @CUSTOMER
 				AND [T].[QRY_GROUP] IS NULL
 			--
@@ -52,7 +52,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Actualiza el cliente
 		-- ------------------------------------------------------------------------------------
-		UPDATE [DIPROCOM].[SWIFT_CUSTOMER_CHANGE]
+		UPDATE [SONDA].[SWIFT_CUSTOMER_CHANGE]
 		SET STATUS = @STATUS
 			,STATUS_CHANGE_BY = @LOGIN
 			,STATUS_CHANGE_DATETIME = GETDATE()			

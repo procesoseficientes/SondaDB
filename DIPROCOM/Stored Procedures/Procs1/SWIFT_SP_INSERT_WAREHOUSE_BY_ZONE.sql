@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC  [DIPROCOM].[SWIFT_SP_INSERT_WAREHOUSE_BY_ZONE] @ID_ZONE = 1, @CODE_WAREHOUSE = '01'
-SELECT * FROM [DIPROCOM].[SWIFT_WAREHOUSE_X_ZONE]
+				EXEC  [SONDA].[SWIFT_SP_INSERT_WAREHOUSE_BY_ZONE] @ID_ZONE = 1, @CODE_WAREHOUSE = '01'
+SELECT * FROM [SONDA].[SWIFT_WAREHOUSE_X_ZONE]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_INSERT_WAREHOUSE_BY_ZONE] (@ID_ZONE INT
+CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_WAREHOUSE_BY_ZONE] (@ID_ZONE INT
   , @CODE_WAREHOUSE VARCHAR(50)
   )
 AS
@@ -20,7 +20,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Muestra el resultado
   -- ------------------------------------------------------------------------------------
-INSERT INTO [DIPROCOM].[SWIFT_WAREHOUSE_X_ZONE] ([ID_ZONE], [CODE_WAREHOUSE])
+INSERT INTO [SONDA].[SWIFT_WAREHOUSE_X_ZONE] ([ID_ZONE], [CODE_WAREHOUSE])
   VALUES (@ID_ZONE, @CODE_WAREHOUSE);
 
 

@@ -6,11 +6,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_ADD_MANUAL_FRECUENCY] 
+				EXEC [SONDA].[SWIFT_SP_ADD_MANUAL_FRECUENCY] 
 					@TRADE_AGREEMENT_ID = 1
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_ADD_MANUAL_FRECUENCY] (@XML XML
+CREATE PROCEDURE [SONDA].[SWIFT_SP_ADD_MANUAL_FRECUENCY] (@XML XML
 , @UPDATE_AND_INSERT INT
 , @REFERENCE_SOURCE VARCHAR(20)
 , @LOGIN_ID AS VARCHAR(50)) WITH RECOMPILE
@@ -149,7 +149,7 @@ BEGIN TRY
       [F].[SELLER_CODE]
      ,[S].[SELLER_NAME]
     FROM @TABLE_FRECUENCY [F]
-    LEFT JOIN [DIPROCOM].[SWIFT_SELLER] [S]
+    LEFT JOIN [SONDA].[SWIFT_SELLER] [S]
       ON ([F].[SELLER_CODE] = [S].[SELLER_CODE]);
 
 
@@ -157,7 +157,7 @@ BEGIN TRY
   -- ------------------------------------------------------
   -- Se actualiza o se inserta las ruta.
   -- ------------------------------------------------------
-  MERGE [DIPROCOM].[SWIFT_ROUTES] AS [R]
+  MERGE [SONDA].[SWIFT_ROUTES] AS [R]
   USING @TABLE_SELLER [F]
   ON ([R].[CODE_ROUTE] = [F].[SELLER_CODE])
   WHEN MATCHED
@@ -175,7 +175,7 @@ BEGIN TRY
   -- ------------------------------------------------------
   -- Se actualiza o se inserta los permisos para la ruta.
   -- ------------------------------------------------------
-  MERGE [DIPROCOM].[SWIFT_ROUTE_BY_USER] AS [RU]
+  MERGE [SONDA].[SWIFT_ROUTE_BY_USER] AS [RU]
   USING @TABLE_SELLER [F]
   ON ([RU].[CODE_ROUTE] = [F].[SELLER_CODE])
   WHEN MATCHED
@@ -222,8 +222,8 @@ BEGIN TRY
     -- -----------------------------------------------------------------------------------------------------------------------------
     UPDATE [PBR]
     SET [PBR].[ID_FREQUENCY] = NULL
-    FROM [DIPROCOM].[SWIFT_POLYGON_BY_ROUTE] AS [PBR]
-    INNER JOIN [DIPROCOM].[SWIFT_FREQUENCY] AS [F]
+    FROM [SONDA].[SWIFT_POLYGON_BY_ROUTE] AS [PBR]
+    INNER JOIN [SONDA].[SWIFT_FREQUENCY] AS [F]
       ON [F].[ID_FREQUENCY] = [PBR].[ID_FREQUENCY]
     INNER JOIN @FREQUENCY_TO_INSERT AS [FI]
       ON [FI].[CODE_FREQUENCY] = [F].[CODE_FREQUENCY]
@@ -234,8 +234,8 @@ BEGIN TRY
     -- Quitamos la asociacion de clientes a las frecuencias que coincidan con la informacion enviada en el documento de EXCEL
     -- -----------------------------------------------------------------------------------------------------------------------------
     DELETE [FC]
-      FROM [DIPROCOM].[SWIFT_FREQUENCY_X_CUSTOMER] AS [FC]
-      INNER JOIN [DIPROCOM].[SWIFT_FREQUENCY] AS [F]
+      FROM [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] AS [FC]
+      INNER JOIN [SONDA].[SWIFT_FREQUENCY] AS [F]
         ON [F].[ID_FREQUENCY] = [FC].[ID_FREQUENCY]
       INNER JOIN @TABLE_SELLER [TS]
         ON (
@@ -248,7 +248,7 @@ BEGIN TRY
     -- Quitamos la asociacion de frecuencias que coincidan con la informacion enviada en el documento de EXCEL
     -- -----------------------------------------------------------------------------------------------------------------------------
     DELETE [F]
-      FROM [DIPROCOM].[SWIFT_FREQUENCY] AS [F]
+      FROM [SONDA].[SWIFT_FREQUENCY] AS [F]
       INNER JOIN @FREQUENCY_TO_INSERT [FI]
         ON ([FI].[CODE_FREQUENCY] = [F].[CODE_FREQUENCY])
     WHERE [FI].[ID] > 0;
@@ -257,7 +257,7 @@ BEGIN TRY
     -- -----------------------------------------------
     -- Insertamos las nuevas frequencias generadas
     -- -----------------------------------------------
-    INSERT INTO [DIPROCOM].[SWIFT_FREQUENCY] ([CODE_FREQUENCY]
+    INSERT INTO [SONDA].[SWIFT_FREQUENCY] ([CODE_FREQUENCY]
     , [SUNDAY]
     , [MONDAY]
     , [TUESDAY]
@@ -311,13 +311,13 @@ BEGIN TRY
        ,[TF].[PRIORITY]
        ,[TF].[LAST_WEEK]
       FROM @TABLE_FRECUENCY [TF]
-      INNER JOIN [DIPROCOM].[SWIFT_FREQUENCY] [SF]
+      INNER JOIN [SONDA].[SWIFT_FREQUENCY] [SF]
         ON [SF].[CODE_FREQUENCY] = [TF].[CODE_FREQUENCY];
 
     -- --------------------------------------------------------
     -- Insertamos las nuevas frequencias por cliente generadas
     -- --------------------------------------------------------
-    INSERT INTO [DIPROCOM].[SWIFT_FREQUENCY_X_CUSTOMER] ([ID_FREQUENCY]
+    INSERT INTO [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] ([ID_FREQUENCY]
     , [CODE_CUSTOMER]
     , [PRIORITY]
     , [LAST_WEEK_VISITED])
@@ -342,7 +342,7 @@ BEGIN TRY
         [F].[ID_FREQUENCY]
        ,[TF].[CODE_FREQUENCY]
       FROM @TABLE_FRECUENCY AS [TF]
-      INNER JOIN [DIPROCOM].[SWIFT_FREQUENCY] [F]
+      INNER JOIN [SONDA].[SWIFT_FREQUENCY] [F]
         ON (
         [TF].[CODE_FREQUENCY] = [F].[CODE_FREQUENCY]
         )
@@ -366,7 +366,7 @@ BEGIN TRY
     UPDATE [FC]
     SET [FC].[PRIORITY] = [TF].[PRIORITY]
        ,[FC].[LAST_WEEK_VISITED] = [TF].[LAST_WEEK]
-    FROM [DIPROCOM].[SWIFT_FREQUENCY_X_CUSTOMER] AS [FC]
+    FROM [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] AS [FC]
     INNER JOIN @EXISTING_COMBINATION AS [EC]
       ON [EC].[ID_FREQUENCY] = [FC].[ID_FREQUENCY]
     INNER JOIN @TABLE_FRECUENCY AS [TF]
@@ -377,7 +377,7 @@ BEGIN TRY
     -- -----------------------------------------------------------------------------------------------------------------
     -- Insertamos los clientes que no existan de las combinaciones existentes
     -- -----------------------------------------------------------------------------------------------------------------
-    INSERT INTO [DIPROCOM].[SWIFT_FREQUENCY_X_CUSTOMER] ([ID_FREQUENCY]
+    INSERT INTO [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] ([ID_FREQUENCY]
     , [CODE_CUSTOMER]
     , [PRIORITY]
     , [LAST_WEEK_VISITED])
@@ -389,7 +389,7 @@ BEGIN TRY
       FROM @TABLE_FRECUENCY AS [TF]
       INNER JOIN @EXISTING_COMBINATION AS [EC]
         ON [EC].[CODE_FREQUENCY] = [TF].[CODE_FREQUENCY]
-      LEFT JOIN [DIPROCOM].[SWIFT_FREQUENCY_X_CUSTOMER] AS [FC]
+      LEFT JOIN [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] AS [FC]
         ON [FC].[ID_FREQUENCY] = [EC].[ID_FREQUENCY]
         AND [FC].[CODE_CUSTOMER] = [TF].[CUSTOMER_CODE]
       WHERE [FC].[ID_FREQUENCY] IS NULL;
@@ -401,7 +401,7 @@ BEGIN TRY
     SET [F].[LAST_WEEK_VISITED] = [TF].[LAST_WEEK]
        ,[F].[LAST_UPDATED] = GETDATE()
        ,[F].[LAST_UPDATED_BY] = @LOGIN_ID
-    FROM [DIPROCOM].[SWIFT_FREQUENCY] AS [F]
+    FROM [SONDA].[SWIFT_FREQUENCY] AS [F]
     INNER JOIN @EXISTING_COMBINATION AS [EC]
       ON [EC].[ID_FREQUENCY] = [F].[ID_FREQUENCY]
       AND [EC].[CODE_FREQUENCY] = [F].[CODE_FREQUENCY]
@@ -412,7 +412,7 @@ BEGIN TRY
     -- -----------------------------------------------
     -- Insertamos las nuevas frequencias generadas
     -- -----------------------------------------------
-    INSERT INTO [DIPROCOM].[SWIFT_FREQUENCY] ([CODE_FREQUENCY]
+    INSERT INTO [SONDA].[SWIFT_FREQUENCY] ([CODE_FREQUENCY]
     , [SUNDAY]
     , [MONDAY]
     , [TUESDAY]
@@ -466,14 +466,14 @@ BEGIN TRY
       FROM @TABLE_FRECUENCY [TF]
       INNER JOIN @UNEXISTING_COMBINATION AS [UC]
         ON [UC].[CODE_FREQUENCY] = [TF].[CODE_FREQUENCY]
-      INNER JOIN [DIPROCOM].[SWIFT_FREQUENCY] [SF]
+      INNER JOIN [SONDA].[SWIFT_FREQUENCY] [SF]
         ON [SF].[CODE_FREQUENCY] = [UC].[CODE_FREQUENCY]
       WHERE [UC].[ID] > 0;
 
     -- --------------------------------------------------------
     -- Insertamos las nuevas frequencias por cliente generadas
     -- --------------------------------------------------------
-    INSERT INTO [DIPROCOM].[SWIFT_FREQUENCY_X_CUSTOMER] ([ID_FREQUENCY]
+    INSERT INTO [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] ([ID_FREQUENCY]
     , [CODE_CUSTOMER]
     , [PRIORITY]
     , [LAST_WEEK_VISITED])
@@ -486,7 +486,7 @@ BEGIN TRY
 
   END
 
-  UPDATE [DIPROCOM].[SWIFT_TRADE_AGREEMENT]
+  UPDATE [SONDA].[SWIFT_TRADE_AGREEMENT]
   SET [LAST_UPDATE] = GETDATE()
      ,[LAST_UPDATE_BY] = @LOGIN_ID
 

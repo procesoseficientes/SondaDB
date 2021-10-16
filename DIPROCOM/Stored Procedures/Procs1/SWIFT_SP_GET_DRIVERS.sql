@@ -6,11 +6,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_GET_DRIVERS]
+				EXEC [SONDA].[SWIFT_SP_GET_DRIVERS]
 				
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_GET_DRIVERS] 
+CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_DRIVERS] 
 AS
 BEGIN
 

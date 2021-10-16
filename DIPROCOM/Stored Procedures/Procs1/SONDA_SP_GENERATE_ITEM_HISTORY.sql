@@ -19,12 +19,12 @@
 /*
 Ejemplo de Ejecucion:
 
-            EXEC [DIPROCOM].SONDA_SP_GENERATE_ITEM_HISTORY
+            EXEC [SONDA].SONDA_SP_GENERATE_ITEM_HISTORY
 			--
-			SELECT * FROM [DIPROCOM].[SONDA_ITEM_HISTORY]
+			SELECT * FROM [SONDA].[SONDA_ITEM_HISTORY]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_GENERATE_ITEM_HISTORY]
+CREATE PROCEDURE [SONDA].[SONDA_SP_GENERATE_ITEM_HISTORY]
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -34,12 +34,12 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     -- Limpia la tabla
     -- ------------------------------------------------------------------------------------
-    TRUNCATE TABLE [DIPROCOM].[SONDA_ITEM_HISTORY];
+    TRUNCATE TABLE [SONDA].[SONDA_ITEM_HISTORY];
 
     -- ------------------------------------------------------------------------------------
     -- Se obtiene el tipo de orden de venta
     -- ------------------------------------------------------------------------------------
-    SELECT @DOC_TYPE = [DIPROCOM].[SWIFT_FN_GET_PARAMETER]('SALES_ORDER', 'DOC_TYPE');
+    SELECT @DOC_TYPE = [SONDA].[SWIFT_FN_GET_PARAMETER]('SALES_ORDER', 'DOC_TYPE');
 
     -- ------------------------------------------------------------------------------------
     -- Obtiene encabezados de la ultima orden de compra de los clientes
@@ -62,9 +62,9 @@ BEGIN
                [H].[TOTAL_AMOUNT_DISPLAY] AS [DOCUMENT_AMOUNT],
                [H].[DISCOUNT_BY_GENERAL_AMOUNT] AS [DISCOUNT_BY_GENERAL_AMOUNT_HEADER],
                ROW_NUMBER() OVER (PARTITION BY [H].[CLIENT_ID] ORDER BY [H].[POSTED_DATETIME] DESC) AS [RN]
-        FROM [DIPROCOM].[SONDA_SALES_ORDER_HEADER] [H]
+        FROM [SONDA].[SONDA_SALES_ORDER_HEADER] [H]
     ) AS [H]
-        LEFT JOIN [DIPROCOM].[SONDA_ROUTE_PLAN] [P]
+        LEFT JOIN [SONDA].[SONDA_ROUTE_PLAN] [P]
             ON (
                    [H].[CLIENT_ID] = [P].[RELATED_CLIENT_CODE]
                    AND [P].[TASK_TYPE] = 'PRESALE'
@@ -112,7 +112,7 @@ BEGIN
            [D].[DISPLAY_AMOUNT],
            [H].[DISCOUNT_BY_GENERAL_AMOUNT_HEADER]
     INTO [#SALES_ORDER_DETAIL]
-    FROM [DIPROCOM].[SONDA_SALES_ORDER_DETAIL] AS [D]
+    FROM [SONDA].[SONDA_SALES_ORDER_DETAIL] AS [D]
         INNER JOIN [#SALES_ORDER_BY_CUSTOMER] AS [H]
             ON ([H].[SALES_ORDER_ID] = [D].[SALES_ORDER_ID])
     WHERE [H].[SALES_ORDER_ID] > 0
@@ -154,7 +154,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     -- Inserta las ordenes de venta al item history
     -- ------------------------------------------------------------------------------------
-    INSERT INTO [DIPROCOM].[SONDA_ITEM_HISTORY]
+    INSERT INTO [SONDA].[SONDA_ITEM_HISTORY]
     (
         [CODE_ROUTE],
         [DOC_TYPE],
@@ -202,7 +202,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     -- Se obtiene el tipo de inventario
     -- ------------------------------------------------------------------------------------
-    SELECT @DOC_TYPE = [DIPROCOM].[SWIFT_FN_GET_PARAMETER]('TAKE_INVENTORY', 'DOC_TYPE');
+    SELECT @DOC_TYPE = [SONDA].[SWIFT_FN_GET_PARAMETER]('TAKE_INVENTORY', 'DOC_TYPE');
 
     -- ------------------------------------------------------------------------------------
     -- Obtiene la ultima toma de inventario por cliente
@@ -215,8 +215,8 @@ BEGIN
                               ORDER BY [H].[TAKE_INVENTORY_ID] DESC
                              ) [ORDER]
     INTO [#TAKE_INVENTORY_BY_CUSTOMER]
-    FROM [DIPROCOM].[SONDA_TAKE_INVENTORY_HEADER] [H]
-        INNER JOIN [DIPROCOM].[SONDA_ROUTE_PLAN] [P]
+    FROM [SONDA].[SONDA_TAKE_INVENTORY_HEADER] [H]
+        INNER JOIN [SONDA].[SONDA_ROUTE_PLAN] [P]
             ON ([H].[CLIENT_ID] = [P].[RELATED_CLIENT_CODE]);
     --
     SELECT [C].[CODE_ROUTE],
@@ -227,9 +227,9 @@ BEGIN
            [D].[QTY] [QTY]
     INTO [#TAKE_INVENTORY]
     FROM [#TAKE_INVENTORY_BY_CUSTOMER] [C]
-        INNER JOIN [DIPROCOM].[SONDA_TAKE_INVENTORY_HEADER] [H]
+        INNER JOIN [SONDA].[SONDA_TAKE_INVENTORY_HEADER] [H]
             ON ([H].[TAKE_INVENTORY_ID] = [C].[TAKE_INVENTORY_ID])
-        INNER JOIN [DIPROCOM].[SONDA_TAKE_INVENTORY_DETAIL] [D]
+        INNER JOIN [SONDA].[SONDA_TAKE_INVENTORY_DETAIL] [D]
             ON ([D].[TAKE_INVENTORY_ID] = [H].[TAKE_INVENTORY_ID])
     WHERE [C].[ORDER] = 1
           AND [D].[CODE_PACK_UNIT] IS NOT NULL;
@@ -237,7 +237,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     -- Inserta las ordenes de venta al item history
     -- ------------------------------------------------------------------------------------
-    INSERT INTO [DIPROCOM].[SONDA_ITEM_HISTORY]
+    INSERT INTO [SONDA].[SONDA_ITEM_HISTORY]
     (
         [CODE_ROUTE],
         [DOC_TYPE],

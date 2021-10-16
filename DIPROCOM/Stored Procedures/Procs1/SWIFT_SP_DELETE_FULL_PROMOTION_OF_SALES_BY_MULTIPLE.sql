@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_DELETE_FULL_PROMOTION_OF_SALES_BY_MULTIPLE]
+				EXEC [SONDA].[SWIFT_SP_DELETE_FULL_PROMOTION_OF_SALES_BY_MULTIPLE]
 				@PROMO_ID = 20
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_DELETE_FULL_PROMOTION_OF_SALES_BY_MULTIPLE](
+CREATE PROCEDURE [SONDA].[SWIFT_SP_DELETE_FULL_PROMOTION_OF_SALES_BY_MULTIPLE](
 	@PROMO_ID INT
 )
 AS
@@ -25,7 +25,7 @@ BEGIN
 		-- ---------------------------------------------------------------------------------------------------
 		-- Se verifica si la promocion enviada como parametro se encuentra asociada a algun acuerdo comercial
 		-- ---------------------------------------------------------------------------------------------------
-		SELECT @THIS_ASSOCIATE = 1 FROM DIPROCOM.[SWIFT_TRADE_AGREEMENT_BY_PROMO] WHERE [PROMO_ID] = @PROMOTION_ID;
+		SELECT @THIS_ASSOCIATE = 1 FROM [SONDA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] WHERE [PROMO_ID] = @PROMOTION_ID;
 
 		IF(@THIS_ASSOCIATE = 1) BEGIN
 			RAISERROR('No se puede eliminar la Promoción debido a que está siendo utilizada en un Acuerdo Comercial',16,1);
@@ -34,12 +34,12 @@ BEGIN
 			-- -------------------------------------------------------------------------------
 			-- Se eliminan todos los SKUs con venta mínima  asociados a la promoción
 			-- -------------------------------------------------------------------------------
-			DELETE FROM [DIPROCOM].[SWIFT_PROMO_SKU_SALES_BY_MULTIPLE] WHERE [PROMO_ID] = @PROMOTION_ID;
+			DELETE FROM [SONDA].[SWIFT_PROMO_SKU_SALES_BY_MULTIPLE] WHERE [PROMO_ID] = @PROMOTION_ID;
 
 			-- --------------------------------------------------------------------------------
 			-- Se elimina la promoción
 			-- --------------------------------------------------------------------------------
-			DELETE FROM DIPROCOM.[SWIFT_PROMO] WHERE [PROMO_ID] = @PROMOTION_ID
+			DELETE FROM [SONDA].[SWIFT_PROMO] WHERE [PROMO_ID] = @PROMOTION_ID
 			
 			-- --------------------------------------------------------------------------------
 			-- Se devuelve el resultado como EXITOSO

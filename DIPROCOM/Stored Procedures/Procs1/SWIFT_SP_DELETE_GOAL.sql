@@ -5,10 +5,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				exec [DIPROCOM].[SWIFT_SP_DELETE_GOAL]
+				exec [SONDA].[SWIFT_SP_DELETE_GOAL]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_DELETE_GOAL] @GOAL_HEADER_ID AS INT
+CREATE PROCEDURE [SONDA].[SWIFT_SP_DELETE_GOAL] @GOAL_HEADER_ID AS INT
 AS
 BEGIN
   DECLARE @CURRENT_STATUS AS VARCHAR(50) = ''
@@ -18,16 +18,16 @@ BEGIN
       --Validamos el estado actual de la meta
       SELECT
         @CURRENT_STATUS = STATUS
-      FROM [DIPROCOM].SWIFT_GOAL_HEADER
+      FROM [SONDA].SWIFT_GOAL_HEADER
       WHERE GOAL_HEADER_ID = @GOAL_HEADER_ID
 
       IF @CURRENT_STATUS = 'CREATED'
       BEGIN
         --Se elimina el detalle de la meta
-        DELETE FROM [DIPROCOM].SWIFT_GOAL_DETAIL
+        DELETE FROM [SONDA].SWIFT_GOAL_DETAIL
         WHERE GOAL_HEADER_ID = @GOAL_HEADER_ID
 
-        DELETE FROM [DIPROCOM].SWIFT_GOAL_HEADER
+        DELETE FROM [SONDA].SWIFT_GOAL_HEADER
         WHERE GOAL_HEADER_ID = @GOAL_HEADER_ID
         -- -----------------------------------------------------------
         -- Se devuelve resultado positivo

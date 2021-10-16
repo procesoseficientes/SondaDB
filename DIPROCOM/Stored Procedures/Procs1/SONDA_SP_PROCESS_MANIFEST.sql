@@ -9,13 +9,13 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SONDA_SP_PROCESS_MANIFEST]
+				EXEC [SONDA].[SONDA_SP_PROCESS_MANIFEST]
 				@MANIFES_HEADER_ID = 1108
 				, @LOGIN_ID = 'ADOLFO@DIPROCOM'
 				, @CURRENT_GPS_USER = '14.64986000,-90.53980000'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SONDA_SP_PROCESS_MANIFEST](
+CREATE PROCEDURE [SONDA].[SONDA_SP_PROCESS_MANIFEST](
 	@MANIFES_HEADER_ID INT
 	,@LOGIN_ID VARCHAR(50)
 	,@CURRENT_GPS_USER VARCHAR(50)
@@ -29,17 +29,17 @@ BEGIN
 		-- -----------------------------------------------------------------------------------------
 		-- Se manda a validar la existencia del manifiesto escaneado
 		-- -----------------------------------------------------------------------------------------
-		EXEC DIPROCOM.[SONDA_SP_VALIDATE_IF_EXIST_3PL_MANIFEST] @MANIFEST_HEADER_ID = @MANIFES_HEADER_ID,@LOGIN_ID = @LOGIN_ID -- int
+		EXEC [SONDA].[SONDA_SP_VALIDATE_IF_EXIST_3PL_MANIFEST] @MANIFEST_HEADER_ID = @MANIFES_HEADER_ID,@LOGIN_ID = @LOGIN_ID -- int
 
 		-- -----------------------------------------------------------------------------------------
 		-- Se manda a validar el ESTADO del manifiesto escaneado
 		-- -----------------------------------------------------------------------------------------
-		EXEC [DIPROCOM].[SWIFT_SP_VALIDATE_MANIFEST_3PL] @MANIFEST_HEADER_ID = @MANIFES_HEADER_ID -- int
+		EXEC [SONDA].[SWIFT_SP_VALIDATE_MANIFEST_3PL] @MANIFEST_HEADER_ID = @MANIFES_HEADER_ID -- int
 
 		-- -----------------------------------------------------------------------------------------
 		-- Se manda a generar el listado de tareas del manifiesto si la validacion fue exitosa
 		-- -----------------------------------------------------------------------------------------
-		EXEC DIPROCOM.[SWIFT_SP_GENERATE_DELIVERY_PLAN_FROM_MANIFEST_3PL] 
+		EXEC [SONDA].[SWIFT_SP_GENERATE_DELIVERY_PLAN_FROM_MANIFEST_3PL] 
 			@MANIFEST_HADER_ID = @MANIFES_HEADER_ID , -- int
 			@LOGIN_ID = @LOGIN_ID, -- varchar(25)
 			@CURRENT_GPS_USER = @CURRENT_GPS_USER

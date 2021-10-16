@@ -5,7 +5,7 @@ Descripcion:		Valida si los datos de bonificacion que se envian como parametros,
 
 Ejemplo de Ejecucion:
 
-	EXEC [DIPROCOM].SWIFT_SP_VALIDATED_BONUS_SCALE_OF_PROMO
+	EXEC [SONDA].SWIFT_SP_VALIDATED_BONUS_SCALE_OF_PROMO
 		@PROMO_ID = 21
 		,@CODE_SKU = '100005'
 		,@PACK_UNIT = 7
@@ -15,9 +15,9 @@ Ejemplo de Ejecucion:
 		,@PACK_UNIT_BONUS = 7
 		,@BONUS_QTY = 1
 		------------------------------
-		SELECT * FROM [DIPROCOM].[SWIFT_PROMO_BONUS_BY_SCALE]
+		SELECT * FROM [SONDA].[SWIFT_PROMO_BONUS_BY_SCALE]
 =======================================================*/
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_VALIDATED_BONUS_SCALE_OF_PROMO] (@PROMO_ID INT
+CREATE PROCEDURE [SONDA].[SWIFT_SP_VALIDATED_BONUS_SCALE_OF_PROMO] (@PROMO_ID INT
 , @CODE_SKU VARCHAR(50)
 , @PACK_UNIT INT
 , @LOW_LIMIT NUMERIC(18, 0)
@@ -44,7 +44,7 @@ BEGIN
                 WHEN S.HIGH_LIMIT BETWEEN @LOW_LIMIT AND @HIGH_LIMIT THEN 'Rango del SKU: ' + CAST(@CODE_SKU AS VARCHAR) + ' absorbe un rango ya existente'
                 ELSE 'Rangos mal definidos'
               END
-  FROM [DIPROCOM].[SWIFT_PROMO_BONUS_BY_SCALE] AS S
+  FROM [SONDA].[SWIFT_PROMO_BONUS_BY_SCALE] AS S
   WHERE S.CODE_SKU = @CODE_SKU
   AND S.PACK_UNIT = @PACK_UNIT
   AND (

@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC  [DIPROCOM].[SWIFT_SP_DELETE_ZONE] @ZONE_ID = 2
-SELECT * FROM [DIPROCOM].[SWIFT_ZONE]
+				EXEC  [SONDA].[SWIFT_SP_DELETE_ZONE] @ZONE_ID = 2
+SELECT * FROM [SONDA].[SWIFT_ZONE]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_DELETE_ZONE] (
+CREATE PROCEDURE [SONDA].[SWIFT_SP_DELETE_ZONE] (
   @ZONE_ID INT
   )
 AS
@@ -20,7 +20,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Operar
   -- ------------------------------------------------------------------------------------
-DELETE [DIPROCOM].[SWIFT_ZONE]
+DELETE [SONDA].[SWIFT_ZONE]
 WHERE ZONE_ID = @ZONE_ID;
 
 

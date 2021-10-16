@@ -14,13 +14,13 @@
 /*
 -- Ejemplo de Ejecucion:
         --
-		EXEC [DIPROCOM].[SWIFT_SP_VALIDATE_POLYGON]
+		EXEC [SONDA].[SWIFT_SP_VALIDATE_POLYGON]
 			@POLYGON_ID  = 10
 			,@PARENT_ID  = null
 			,@POLYGON_TYPE = 'REGION'
 			,@POLYGON_SUB_TYPE = NULL
 		--
-		EXEC [DIPROCOM].[SWIFT_SP_VALIDATE_POLYGON]
+		EXEC [SONDA].[SWIFT_SP_VALIDATE_POLYGON]
 			@POLYGON_ID  = 10
 			,@PARENT_ID  = null
 			,@POLYGON_TYPE = 'REGION'
@@ -28,7 +28,7 @@
 			,@IS_MULTIPOLYGON = 1
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].SWIFT_SP_VALIDATE_POLYGON (
+CREATE PROCEDURE [SONDA].SWIFT_SP_VALIDATE_POLYGON (
 		@POLYGON_ID INT
 		,@PARENT_ID INT = NULL
 		,@POLYGON_TYPE VARCHAR(250)
@@ -59,7 +59,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Valida si el poligono tiene hijos 
 		-- ------------------------------------------------------------------------------------
-		IF [DIPROCOM].[SWIFT_FN_VALIDATE_POLYGON_HAS_CHILD](@POLYGON_ID) = 1
+		IF [SONDA].[SWIFT_FN_VALIDATE_POLYGON_HAS_CHILD](@POLYGON_ID) = 1
 		BEGIN
 			SELECT
 				-1 AS [RESULTADO]
@@ -71,14 +71,14 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Se obtiene el poligono geometrico del poligono que se desea validar
 		-- ------------------------------------------------------------------------------------
-		SELECT @GEOMETRY_POLYGON_TO_COMPARE = [DIPROCOM].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@POLYGON_ID);
+		SELECT @GEOMETRY_POLYGON_TO_COMPARE = [SONDA].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@POLYGON_ID);
 
 		-- ------------------------------------------------------------------------------------
 		-- Validar que si tiene padre, este contenido en el. 
 		-- ------------------------------------------------------------------------------------
 		IF @PARENT_ID IS NOT NULL
 		BEGIN
-			SELECT @GEOMETRY_POLYGON = [DIPROCOM].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@PARENT_ID);
+			SELECT @GEOMETRY_POLYGON = [SONDA].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@PARENT_ID);
 			--
 			IF @GEOMETRY_POLYGON.[STContains](@GEOMETRY_POLYGON_TO_COMPARE) = 0
 			BEGIN
@@ -104,7 +104,7 @@ BEGIN
 			,[P].[POLYGON_TYPE]
 			,[P].[SUB_TYPE]
 		INTO [#POLYGONS]
-		FROM [DIPROCOM].[SWIFT_POLYGON] [P]
+		FROM [SONDA].[SWIFT_POLYGON] [P]
 		WHERE [P].[POLYGON_TYPE] = @POLYGON_TYPE
 			AND (
 					@PARENT_ID IS NULL
@@ -128,7 +128,7 @@ BEGIN
 			FROM [#POLYGONS]
 			ORDER BY [POLYGON_ID_PARENT] ASC;
 			--
-			SET @GEOMETRY_POLYGON = [DIPROCOM].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@vPOLYGON_ID);
+			SET @GEOMETRY_POLYGON = [SONDA].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@vPOLYGON_ID);
 
 			-- ------------------------------------------------------------------------------------
 			-- Validar que su poligono no intersecte al nuevo.
@@ -150,7 +150,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		RESULTADO:
 
-    EXEC [DIPROCOM].[SWIFT_SP_ASSOCIATE_CUSTOMER_BY_POLYGON] @POLYGON_ID = @POLYGON_ID
+    EXEC [SONDA].[SWIFT_SP_ASSOCIATE_CUSTOMER_BY_POLYGON] @POLYGON_ID = @POLYGON_ID
     
 		SELECT
 			1 AS [RESULTADO]

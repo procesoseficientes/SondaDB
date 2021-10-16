@@ -12,7 +12,7 @@
 
 
 					-- Ejemplo de ajuste de nuevo batch y pallet
-				EXEC [DIPROCOM].[SWIFT_SP_PROCESS_DEVOLUTION_SKU_FROM_PICKING]
+				EXEC [SONDA].[SWIFT_SP_PROCESS_DEVOLUTION_SKU_FROM_PICKING]
 						@TASK_ID = 14169
 						,@QTY = 2
 						,@CODE_SKU = '100018'
@@ -36,7 +36,7 @@
 				
 
 				-- Ejemplo de ajuste a un batch existente con nuevo pallet
-				EXEC [DIPROCOM].[SWIFT_SP_PROCESS_DEVOLUTION_SKU_FROM_PICKING]
+				EXEC [SONDA].[SWIFT_SP_PROCESS_DEVOLUTION_SKU_FROM_PICKING]
 						@TASK_ID = 14169
 						,@QTY = 1
 						,@CODE_SKU = '100018'
@@ -60,7 +60,7 @@
 
 				
 				-- Ejemplo de ajuste a un batch existente con pallet existente
-				EXEC [DIPROCOM].[SWIFT_SP_PROCESS_DEVOLUTION_SKU_FROM_PICKING]
+				EXEC [SONDA].[SWIFT_SP_PROCESS_DEVOLUTION_SKU_FROM_PICKING]
 						@TASK_ID = 14169
 						,@QTY = 1
 						,@CODE_SKU = '100018'
@@ -86,7 +86,7 @@
 */
 -- =============================================
 
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_PROCESS_DEVOLUTION_SKU_FROM_PICKING]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_PROCESS_DEVOLUTION_SKU_FROM_PICKING]
 (
 	@TASK_ID INT
 	,@QTY INT
@@ -130,8 +130,8 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Obtiene parametros generales
 		-- ------------------------------------------------------------------------------------
-		SELECT @BATCH_STATUS_CLOSE = P.[VALUE] FROM [DIPROCOM].[SWIFT_PARAMETER] P WHERE P.[GROUP_ID] = 'RECEPCTION_BATCH' AND P.[PARAMETER_ID] = 'BATCH_STATUS_CLOSE' ---ESTARA CON VALOR "CLOSED"
-		SELECT @PALLET_STATUS_LOCATE = P.[VALUE] FROM [DIPROCOM].[SWIFT_PARAMETER] P WHERE P.[GROUP_ID] = 'RECEPCTION_BATCH' AND P.[PARAMETER_ID] = 'PALLET_STATUS_LOCATE' ---ESTARA CON VALOR "LOCATED"
+		SELECT @BATCH_STATUS_CLOSE = P.[VALUE] FROM [SONDA].[SWIFT_PARAMETER] P WHERE P.[GROUP_ID] = 'RECEPCTION_BATCH' AND P.[PARAMETER_ID] = 'BATCH_STATUS_CLOSE' ---ESTARA CON VALOR "CLOSED"
+		SELECT @PALLET_STATUS_LOCATE = P.[VALUE] FROM [SONDA].[SWIFT_PARAMETER] P WHERE P.[GROUP_ID] = 'RECEPCTION_BATCH' AND P.[PARAMETER_ID] = 'PALLET_STATUS_LOCATE' ---ESTARA CON VALOR "LOCATED"
 		----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 			-- ------------------------------------------------------------------------------------
@@ -140,9 +140,9 @@ BEGIN
 		
 			IF @BATCH_ID_NEW IS NULL
 			BEGIN
-			PRINT '--> [DIPROCOM].[SWIFT_SP_ADD_BATCH]'
+			PRINT '--> [SONDA].[SWIFT_SP_ADD_BATCH]'
 			--
-				EXEC [DIPROCOM].[SWIFT_SP_ADD_BATCH]
+				EXEC [SONDA].[SWIFT_SP_ADD_BATCH]
 					@BATCH_SUPPLIER = @BATCH_SUPPLIER
 					,@BATCH_SUPPLIER_EXPIRATION_DATE = @BATCH_SUPPLIER_EXPIRATION_DATE
 					,@STATUS = @BATCH_STATUS_CLOSE
@@ -156,9 +156,9 @@ BEGIN
 			END
 			ELSE
 			BEGIN
-			PRINT '--> [DIPROCOM].[SWIFT_SP_BATCH_QTY_UPDATE] --> @IS_SUM = 1'
+			PRINT '--> [SONDA].[SWIFT_SP_BATCH_QTY_UPDATE] --> @IS_SUM = 1'
 			--
-				EXEC [DIPROCOM].[SWIFT_SP_BATCH_QTY_UPDATE]
+				EXEC [SONDA].[SWIFT_SP_BATCH_QTY_UPDATE]
 					@BATCH_ID = @BATCH_ID_NEW
 					,@QTY = @QTY
 					,@LAST_UPDATE_BY = @LAST_UPDATE_BY
@@ -170,9 +170,9 @@ BEGIN
 			--------------------------------------------------------------------------------------
 			IF @PALLET_ID_NEW IS NULL
 			BEGIN
-			PRINT '--> [DIPROCOM].[SWIFT_SP_INSERT_PALLET]'
+			PRINT '--> [SONDA].[SWIFT_SP_INSERT_PALLET]'
 			--
-				EXEC [DIPROCOM].[SWIFT_SP_INSERT_PALLET]
+				EXEC [SONDA].[SWIFT_SP_INSERT_PALLET]
 					@BATCH_ID = @BATCH_ID_NEW
 					,@STATUS = @STATUS_PALLET
 					,@QTY = @QTY
@@ -185,9 +185,9 @@ BEGIN
 			END
 			ELSE
 			BEGIN
-			PRINT '--> [DIPROCOM].[SWIFT_SP_PALLET_QTY_UPDATE] --> @IS_SUM = 1'
+			PRINT '--> [SONDA].[SWIFT_SP_PALLET_QTY_UPDATE] --> @IS_SUM = 1'
 			--
-				EXEC [DIPROCOM].[SWIFT_SP_PALLET_QTY_UPDATE]
+				EXEC [SONDA].[SWIFT_SP_PALLET_QTY_UPDATE]
 					@PALLET_ID = @PALLET_ID_NEW
 					,@QTY = @QTY
 					,@LAST_UPDATE_BY = @LAST_UPDATE_BY
@@ -197,9 +197,9 @@ BEGIN
 			-- ------------------------------------------------------------------------------------
 			-- Inserta la transaccion
 			-- ------------------------------------------------------------------------------------
-			PRINT '--> [DIPROCOM].[SWIFT_SP_ADD_TXN_FOR_ADJUSTMENT]'
+			PRINT '--> [SONDA].[SWIFT_SP_ADD_TXN_FOR_ADJUSTMENT]'
 			--
-				EXEC [DIPROCOM].[SWIFT_SP_ADD_TXN_FOR_ADJUSTMENT]
+				EXEC [SONDA].[SWIFT_SP_ADD_TXN_FOR_ADJUSTMENT]
 					@PALLET_ID_OLD = @PALLET_ID_OLD
 					,@PALLET_ID_NEW = @PALLET_ID_NEW
 					,@TASK_ID = @TASK_ID
@@ -226,9 +226,9 @@ BEGIN
 				-- ------------------------------------------------------------------------------------
 				-- Se descuenta la cantidad en el inventario original
 				-- ------------------------------------------------------------------------------------
-				PRINT '--> [DIPROCOM].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT]'
+				PRINT '--> [SONDA].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT]'
 				--
-					EXEC [DIPROCOM].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT]
+					EXEC [SONDA].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT]
 						@PALLET_ID = @PALLET_ID_OLD
 						,@QTY = @QTY
 						,@LAST_UPDATE_BY = @LAST_UPDATE_BY
@@ -240,9 +240,9 @@ BEGIN
 				-- ------------------------------------------------------------------------------------
 				IF @IS_NEW_PALLET = 1
 				BEGIN
-				PRINT '--> [DIPROCOM].[SWIFT_SP_INVENTORY_INSERT_BY_ADJUSTMENT]'
+				PRINT '--> [SONDA].[SWIFT_SP_INVENTORY_INSERT_BY_ADJUSTMENT]'
 				--
-					EXEC [DIPROCOM].[SWIFT_SP_INVENTORY_INSERT_BY_ADJUSTMENT]
+					EXEC [SONDA].[SWIFT_SP_INVENTORY_INSERT_BY_ADJUSTMENT]
 						@PALLET_ID_OLD = @PALLET_ID_OLD
 						,@PALLET_ID_NEW = @PALLET_ID_NEW
 						,@BATCH_ID_NEW = @BATCH_ID_NEW
@@ -255,9 +255,9 @@ BEGIN
 				-- ------------------------------------------------------------------------------------
 				-- Se aumenta la cantidad en el pallet destino
 				-- ------------------------------------------------------------------------------------
-				PRINT '--> [DIPROCOM].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT] --> @IS_SUM = 1'
+				PRINT '--> [SONDA].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT] --> @IS_SUM = 1'
 				--
-					EXEC [DIPROCOM].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT]
+					EXEC [SONDA].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT]
 						@PALLET_ID = @PALLET_ID_NEW
 						,@QTY = @QTY
 						,@LAST_UPDATE_BY = @LAST_UPDATE_BY
@@ -269,7 +269,7 @@ BEGIN
 			------------------------------------------------------------------------------------------
 			-- Actualiza la Tabla PICKING_DETAIL
 			------------------------------------------------------------------------------------------
-			UPDATE [DIPROCOM].[SWIFT_PICKING_DETAIL] 
+			UPDATE [SONDA].[SWIFT_PICKING_DETAIL] 
 			SET [SCANNED] = ([SCANNED] - @QTY)
 				,[DIFFERENCE] = ([DIFFERENCE] + @QTY)
 			WHERE PICKING_HEADER = @PICKING_HEADER AND CODE_SKU = @CODE_SKU

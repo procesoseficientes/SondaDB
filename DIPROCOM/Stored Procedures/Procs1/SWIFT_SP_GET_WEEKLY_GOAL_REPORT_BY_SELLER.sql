@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[SWIFT_SP_GET_WEEKLY_GOAL_REPORT_BY_SELLER] @LOGIN = 'adolfo@DIPROCOM',
+				EXEC [SONDA].[SWIFT_SP_GET_WEEKLY_GOAL_REPORT_BY_SELLER] @LOGIN = 'adolfo@DIPROCOM',
 			@TASK_TYPE = 'PRESALE'
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[SWIFT_SP_GET_WEEKLY_GOAL_REPORT_BY_SELLER]
+CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_WEEKLY_GOAL_REPORT_BY_SELLER]
     (
      @LOGIN VARCHAR(50)
     ,@TASK_TYPE VARCHAR(15)
@@ -26,15 +26,15 @@ BEGIN
        ,[DG].[DOCUMENT_TOTAL]
        ,DATENAME(WEEKDAY, [DG].[DATE]) [WEEKDAY]
     FROM
-        [DIPROCOM].[SWIFT_DAILY_GOAL_BY_SELLER] [DG]
-    INNER JOIN [DIPROCOM].[SWIFT_GOAL_HEADER] [GH] ON [GH].[TEAM_ID] = [DG].[TEAM_ID]
+        [SONDA].[SWIFT_DAILY_GOAL_BY_SELLER] [DG]
+    INNER JOIN [SONDA].[SWIFT_GOAL_HEADER] [GH] ON [GH].[TEAM_ID] = [DG].[TEAM_ID]
                                                    AND [GH].[STATUS] = 1
                                                    AND [DG].[DATE] BETWEEN [GH].[GOAL_DATE_FROM]
                                                               AND
                                                               [GH].[GOAL_DATE_TO]
-    INNER JOIN [DIPROCOM].[USERS] [U] ON [U].[LOGIN] = [DG].[LOGIN]
-    INNER JOIN [DIPROCOM].[SWIFT_TEAM] [T] ON [T].[TEAM_ID] = [DG].[TEAM_ID]
-    INNER JOIN [DIPROCOM].[SWIFT_GOAL_DETAIL] [GD] ON [GD].[GOAL_HEADER_ID] = [GH].[GOAL_HEADER_ID]
+    INNER JOIN [SONDA].[USERS] [U] ON [U].[LOGIN] = [DG].[LOGIN]
+    INNER JOIN [SONDA].[SWIFT_TEAM] [T] ON [T].[TEAM_ID] = [DG].[TEAM_ID]
+    INNER JOIN [SONDA].[SWIFT_GOAL_DETAIL] [GD] ON [GD].[GOAL_HEADER_ID] = [GH].[GOAL_HEADER_ID]
                                                    AND [U].[CORRELATIVE] = [GD].[SELLER_ID]
     WHERE
         [DG].[LOGIN] = @LOGIN
