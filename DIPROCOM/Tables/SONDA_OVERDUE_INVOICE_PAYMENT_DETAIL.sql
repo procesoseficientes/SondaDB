@@ -1,0 +1,13 @@
+﻿CREATE TABLE [DIPROCOM].[SONDA_OVERDUE_INVOICE_PAYMENT_DETAIL] (
+    [ID]                INT             IDENTITY (1, 1) NOT NULL,
+    [PAYMENT_HEADER_ID] INT             NOT NULL,
+    [INVOICE_ID]        INT             NOT NULL,
+    [DOC_ENTRY]         INT             NOT NULL,
+    [DOC_SERIE]         VARCHAR (250)   NOT NULL,
+    [DOC_NUM]           INT             NOT NULL,
+    [PAYED_AMOUNT]      NUMERIC (18, 6) NOT NULL,
+    [AMOUNT_TO_DATE]    NUMERIC (18, 6) NULL,
+    [PENDING_AMOUNT]    NUMERIC (18, 6) NULL,
+    PRIMARY KEY CLUSTERED ([PAYMENT_HEADER_ID] ASC, [INVOICE_ID] ASC, [DOC_ENTRY] ASC)
+);
+

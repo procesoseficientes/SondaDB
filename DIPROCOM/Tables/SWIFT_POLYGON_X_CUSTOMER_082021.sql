@@ -1,0 +1,8 @@
+﻿CREATE TABLE [DIPROCOM].[SWIFT_POLYGON_X_CUSTOMER_082021] (
+    [POLYGON_ID]    INT          NOT NULL,
+    [CODE_CUSTOMER] VARCHAR (50) NOT NULL,
+    [IS_NEW]        INT          NULL,
+    [HAS_PROPOSAL]  INT          NULL,
+    [HAS_FREQUENCY] INT          NULL
+);
+

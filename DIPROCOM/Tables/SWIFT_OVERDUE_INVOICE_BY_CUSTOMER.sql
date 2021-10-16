@@ -1,0 +1,13 @@
+﻿CREATE TABLE [DIPROCOM].[SWIFT_OVERDUE_INVOICE_BY_CUSTOMER] (
+    [ID]              INT             IDENTITY (1, 1) NOT NULL,
+    [INVOICE_ID]      INT             NOT NULL,
+    [DOC_ENTRY]       INT             NOT NULL,
+    [CODE_CUSTOMER]   VARCHAR (250)   NULL,
+    [CREATED_DATE]    DATETIME        NULL,
+    [DUE_DATE]        DATETIME        NULL,
+    [TOTAL_AMOUNT]    NUMERIC (18, 6) NULL,
+    [PENDING_TO_PAID] NUMERIC (18, 6) NULL,
+    [IS_EXPIRED]      INT             NULL,
+    PRIMARY KEY CLUSTERED ([ID] ASC, [INVOICE_ID] ASC, [DOC_ENTRY] ASC)
+);
+

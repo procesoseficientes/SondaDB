@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [l3w]
+    AUTHORIZATION [guest];
+
