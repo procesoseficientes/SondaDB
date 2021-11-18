@@ -1,4 +1,4 @@
-﻿CREATE PROC [SONDA].[SWIFT_SP_GET_SBO_RTH]
+﻿CREATE PROC [acsa].[SWIFT_SP_GET_SBO_RTH]
 @DOC_ENTRY VARCHAR(50)
 AS
 SELECT 
@@ -32,15 +32,15 @@ CAST(NULL AS varchar) AS UTrasladoOC  ,
 cast(rt.RECEPTION_HEADER as varchar)  as UTDev , 
 case rt.TYPE_RECEPTION
 	when   'RT' then (
-						select cl.name_classification from  [SONDA].[SWIFT_CLASSIFICATION] cl 
+						select cl.name_classification from  [acsa].[SWIFT_CLASSIFICATION] cl 
 							where rt.TYPE_RECEPTION = cl.MPC01 )--'Recepcion por Devolucion' 
 	when   'RR' then (
-						select cl.name_classification from  [SONDA].[SWIFT_CLASSIFICATION] cl 
+						select cl.name_classification from  [acsa].[SWIFT_CLASSIFICATION] cl 
 							where rt.TYPE_RECEPTION = cl.MPC01 )--'Devolucion por reparacion' 
 	else rt.TYPE_RECEPTION
 end UDescTDev
-  FROM [SONDA].SWIFT_RECEPTION_HEADER  rt
-  inner join [SONDA].SWIFT_VIEW_ALL_COSTUMER  cus
+  FROM [acsa].SWIFT_RECEPTION_HEADER  rt
+  inner join [acsa].SWIFT_VIEW_ALL_COSTUMER  cus
   on cus.CODE_CUSTOMER = rt.CODE_PROVIDER 
 where rt.RECEPTION_HEADER = @DOC_ENTRY 
 and rt.TYPE_RECEPTION in ('RT','RR') 

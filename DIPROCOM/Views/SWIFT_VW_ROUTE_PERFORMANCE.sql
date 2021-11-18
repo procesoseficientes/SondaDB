@@ -5,10 +5,10 @@
 -- Description:			    Vista de acceso a datos del Reporte Performance de Ruta
 /*
 -- Ejemplo de Ejecucion:
-	SELECT * FROM [SONDA].SWIFT_VW_ROUTE_PERFORMANCE 
+	SELECT * FROM [acsa].SWIFT_VW_ROUTE_PERFORMANCE 
 */
 -- =============================================
-CREATE VIEW [SONDA].[SWIFT_VW_ROUTE_PERFORMANCE] 
+CREATE VIEW [acsa].[SWIFT_VW_ROUTE_PERFORMANCE] 
 AS
 	SELECT
       SI.TASK_ID
@@ -42,7 +42,7 @@ AS
       ,ISNULL(SI.TOTAL_LINE, 0) AS TOTAL_LINE
       ,ISNULL(SI.DISCOUNT_LINE, 0) AS DISCOUNT_LINE
       ,ISNULL(SI.TOTAL_LINE_CD, 0) AS TOTAL_LINE_CD
-    FROM [SONDA].SWIFT_SALES_INDICATOR SI
+    FROM [acsa].SWIFT_SALES_INDICATOR SI
 	
 
 

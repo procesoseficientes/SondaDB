@@ -5,11 +5,11 @@
 --                      
 /*
 -- Ejemplo de Ejecucion:				
-				--EXECUTE [SONDA].[SWIFT_SP_GET_TASK_FILTER]
+				--EXECUTE [acsa].[SWIFT_SP_GET_TASK_FILTER]
 							   @LOGIN = '' usuario
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_TASK_FILTER]
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_TASK_FILTER]
 	@LOGIN    [varchar](100)
 AS
 BEGIN
@@ -23,7 +23,7 @@ BEGIN
          ELSE 'Scouting'
       END
 	,COUNT(*) AS TOTAL_TASK_TYPE
-	FROM [SONDA].[SWIFT_TASKS]
+	FROM [acsa].[SWIFT_TASKS]
 	WHERE [ASSIGEND_TO] = @LOGIN
 	GROUP BY TASK_TYPE
 	ORDER BY TASK_TYPE ASC

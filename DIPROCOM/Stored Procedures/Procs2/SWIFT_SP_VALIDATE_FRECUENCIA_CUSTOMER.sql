@@ -6,14 +6,14 @@
 
 /*
 -- Ejemplo de Ejecucion:
-          EXEC [SONDA].SWIFT_SP_VALIDATE_FRECUENCIA_CUSTOMER
+          EXEC [acsa].SWIFT_SP_VALIDATE_FRECUENCIA_CUSTOMER
             @CODE_CUSTOMER = 'B0-2013'
         	  ,@POLYGON_ID = 3102
             ,@LAST_UPDATED_BY = 'gerente@DIPROCOM'
             ,@REFERENCE_SOURCE 'BD'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_VALIDATE_FRECUENCIA_CUSTOMER]
+CREATE PROCEDURE [acsa].[SWIFT_SP_VALIDATE_FRECUENCIA_CUSTOMER]
 	@CODE_CUSTOMER VARCHAR(50)
 	,@POLYGON_ID INT 
   ,@LAST_UPDATED_BY VARCHAR(25)
@@ -26,7 +26,7 @@ BEGIN TRY
 	-- Valida si el cliente tiene una frecuencia
 	-- ------------------------------------------------------------	
   IF 1 = (SELECT 1
-          FROM [SONDA].SWIFT_CUSTOMER_FREQUENCY F
+          FROM [acsa].SWIFT_CUSTOMER_FREQUENCY F
           WHERE F.CODE_CUSTOMER = @CODE_CUSTOMER) 
   BEGIN
     DECLARE 
@@ -53,13 +53,13 @@ BEGIN TRY
       ,@SATURDAY = F.SATURDAY
       ,@FREQUENCY_WEEKS = F.FREQUENCY_WEEKS
       ,@LAST_DATE_VISITED = F.LAST_DATE_VISITED      
-    FROM [SONDA].SWIFT_CUSTOMER_FREQUENCY F
+    FROM [acsa].SWIFT_CUSTOMER_FREQUENCY F
     WHERE F.CODE_CUSTOMER = @CODE_CUSTOMER
     
     -- ------------------------------------------------------------
 	  -- Asociamos el cliente a la frecuencia
 	  -- ------------------------------------------------------------	
-    EXEC [SONDA].[SWIFT_SP_ASOSOCIATE_CUSTOMER_FREQUENCY]
+    EXEC [acsa].[SWIFT_SP_ASOSOCIATE_CUSTOMER_FREQUENCY]
       @FREQUENCY_WEEKS = @FREQUENCY_WEEKS
       ,@SUNDAY = @SUNDAY
       ,@MONDAY = @MONDAY

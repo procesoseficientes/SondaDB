@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SONDA_SP_VALIDATE_SALES_ORDERS_BY_XML]
+				EXEC [acsa].[SONDA_SP_VALIDATE_SALES_ORDERS_BY_XML]
 				@XML = N'<?xml version=''1.0''?>
 						<Data>
 							<OrdenesDeVenta>
@@ -37,7 +37,7 @@
 				,@JSON = ''
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_VALIDATE_SALES_ORDERS_BY_XML_11](
+CREATE PROCEDURE [acsa].[SONDA_SP_VALIDATE_SALES_ORDERS_BY_XML_11](
 	@XML XML
 	,@JSON VARCHAR(MAX)
 )
@@ -120,7 +120,7 @@ BEGIN
 						 ,[DOC_SERIE]
 						 ,[DOC_NUM]
 			)
-			EXEC [SONDA].[SONDA_SP_VALIDATE_SALE_ORDER_IS_POSTED] 
+			EXEC [acsa].[SONDA_SP_VALIDATE_SALE_ORDER_IS_POSTED] 
 				@SALES_ORDER_ID = @SALES_ORDER_ID_BO
 				,@SALES_ORDER_ID_HH = @SALES_ORDER_ID
 				,@DOC_SERIE = @DOC_SERIE

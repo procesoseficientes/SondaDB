@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC  [SONDA].[SWIFT_SP_DELETE_ZONE] @ZONE_ID = 2
-SELECT * FROM [SONDA].[SWIFT_ZONE]
+				EXEC  [acsa].[SWIFT_SP_DELETE_ZONE] @ZONE_ID = 2
+SELECT * FROM [acsa].[SWIFT_ZONE]
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_DELETE_ZONE] (
+CREATE PROCEDURE [acsa].[SWIFT_SP_DELETE_ZONE] (
   @ZONE_ID INT
   )
 AS
@@ -20,7 +20,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Operar
   -- ------------------------------------------------------------------------------------
-DELETE [SONDA].[SWIFT_ZONE]
+DELETE [acsa].[SWIFT_ZONE]
 WHERE ZONE_ID = @ZONE_ID;
 
 

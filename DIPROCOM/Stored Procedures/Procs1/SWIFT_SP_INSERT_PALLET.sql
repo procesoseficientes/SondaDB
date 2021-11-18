@@ -1,4 +1,4 @@
-﻿/****** Object:  StoredProcedure [SONDA].[SWIFT_SP_INSERT_PALLET]    Script Date: 20/12/2015 9:09:38 AM ******/
+﻿/****** Object:  StoredProcedure [acsa].[SWIFT_SP_INSERT_PALLET]    Script Date: 20/12/2015 9:09:38 AM ******/
 -- =============================================
 -- Autor:				jose.garcia
 -- Fecha de Creacion: 	06-01-2016
@@ -6,7 +6,7 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				exec [SONDA].[SWIFT_SP_INSERT_PALLET] 
+				exec [acsa].[SWIFT_SP_INSERT_PALLET] 
 					@BATCH_ID=1
 					,@STATUS='open'
 					,@QTY=100	
@@ -17,7 +17,7 @@
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_PALLET]
+CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_PALLET]
 	@BATCH_ID INT
 	,@STATUS VARCHAR(20)
 	,@QTY INT
@@ -36,7 +36,7 @@ BEGIN
 
 	BEGIN TRAN
 	BEGIN TRY
-		INSERT INTO [SONDA].[SWIFT_PALLET](
+		INSERT INTO [acsa].[SWIFT_PALLET](
 			[BATCH_ID]
 			,[STATUS]
 			,[QTY]
@@ -61,7 +61,7 @@ BEGIN
 
 		IF @IS_ADJUSTMENT IS NULL
 		BEGIN
-			UPDATE [SONDA].[SWIFT_BATCH]
+			UPDATE [acsa].[SWIFT_BATCH]
 			SET QTY_LEFT = (QTY_LEFT - @QTY)
 			WHERE BATCH_ID = @BATCH_ID
 		END

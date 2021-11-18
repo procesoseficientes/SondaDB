@@ -6,10 +6,10 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [SONDA].[SWIFT_SP_GET_CUSTOMERS_IN_DEPARTMENT] @DEPARTMENT_ID = 4
+				EXEC [acsa].[SWIFT_SP_GET_CUSTOMERS_IN_DEPARTMENT] @DEPARTMENT_ID = 4
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_CUSTOMERS_IN_DEPARTMENT]
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_CUSTOMERS_IN_DEPARTMENT]
 (	
 	@DEPARTMENT_ID INT = NULL
 )
@@ -27,7 +27,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	SELECT *
 	INTO #POLYGON
-	FROM [SONDA].[SWIFT_FN_GET_POLYGON_BY_DEPARTMENT](@DEPARTMENT_ID) D
+	FROM [acsa].[SWIFT_FN_GET_POLYGON_BY_DEPARTMENT](@DEPARTMENT_ID) D
 	ORDER BY D.DEPARTMENT_ID,D.POSITION
 	--
 	SELECT @ROWS = @@ROWCOUNT
@@ -67,7 +67,7 @@ BEGIN
 		C.CODE_CUSTOMER
 		,@p.MakeValid().STContains(geometry::Point(ISNULL(C.LATITUDE,0), ISNULL(C.LONGITUDE,0), 0)) IS_IN
 	INTO #CUSTOMER
-	FROM [SONDA].SWIFT_CUSTOMERS_NEW C
+	FROM [acsa].SWIFT_CUSTOMERS_NEW C
 
 	-- ------------------------------------------------------------------------------------
 	-- Muestra quienes estan en el poligono

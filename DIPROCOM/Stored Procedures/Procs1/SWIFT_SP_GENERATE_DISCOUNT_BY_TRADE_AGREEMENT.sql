@@ -31,11 +31,11 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [SONDA].[SWIFT_SP_GENERATE_DISCOUNT_BY_TRADE_AGREEMENT]
+				EXEC [acsa].[SWIFT_SP_GENERATE_DISCOUNT_BY_TRADE_AGREEMENT]
 					@CODE_ROUTE = '4'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GENERATE_DISCOUNT_BY_TRADE_AGREEMENT] (@CODE_ROUTE VARCHAR(250))
+CREATE PROCEDURE [acsa].[SWIFT_SP_GENERATE_DISCOUNT_BY_TRADE_AGREEMENT] (@CODE_ROUTE VARCHAR(250))
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -58,7 +58,7 @@ BEGIN
   )
   --
   SELECT
-    @SELLER_CODE = [SONDA].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE)
+    @SELLER_CODE = [acsa].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE)
    ,@LINKED_TO = 'CUSTOMER'
 
   -- ------------------------------------------------------------------------------------
@@ -77,12 +77,12 @@ BEGIN
      ,[TA].[LINKED_TO]
      ,@CODE_ROUTE
      ,@CODE_ROUTE + '|' + [TA].[CODE_TRADE_AGREEMENT]
-    FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
+    FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
       ON (
       [C].[CODE_CUSTOMER] = [TAC].[CODE_CUSTOMER]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT] [TA]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA]
       ON (
       [TAC].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
@@ -106,12 +106,12 @@ BEGIN
      ,[TA].[LINKED_TO]
      ,@CODE_ROUTE
      ,@CODE_ROUTE + '|' + [TA].[CODE_TRADE_AGREEMENT]
-    FROM [SONDA].[SONDA_ROUTE_PLAN] [RP]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
+    FROM [acsa].[SONDA_ROUTE_PLAN] [RP]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
       ON (
       [RP].[RELATED_CLIENT_CODE] = [TAC].[CODE_CUSTOMER]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT] [TA]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA]
       ON (
       [TAC].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
@@ -127,13 +127,13 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Genera clientes de las listas de descuentos
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [SONDA].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER] ([DISCOUNT_LIST_ID]
+  INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER] ([DISCOUNT_LIST_ID]
   , [CODE_CUSTOMER])
     SELECT DISTINCT
       [DL].[DISCOUNT_LIST_ID]
      ,[TA].[CODE_CUSTOMER]
     FROM @TRADE_AGREEMENT_BY_CUSTOMER [TA]
-    INNER JOIN [SONDA].[SWIFT_DISCOUNT_LIST] [DL]
+    INNER JOIN [acsa].[SWIFT_DISCOUNT_LIST] [DL]
       ON (
       [TA].[CODE_ROUTE] = [DL].[CODE_ROUTE]
       AND [TA].[NAME_DISCOUNT_LIST] = [DL].[NAME_DISCOUNT_LIST]
@@ -145,7 +145,7 @@ BEGIN
   -- Agrega la lista del acuerdo comercial para los nuevos clientes de ser necesario
   -- ------------------------------------------------------------------------------------
   IF (SELECT
-        [SONDA].[SWIFT_FN_VALIDATE_TRADE_AGREEMENT_BY_ROUTE](@CODE_ROUTE))
+        [acsa].[SWIFT_FN_VALIDATE_TRADE_AGREEMENT_BY_ROUTE](@CODE_ROUTE))
     = 1
   BEGIN
     DECLARE @TRADE_AGREEMENT_ID INT = NULL
@@ -153,11 +153,11 @@ BEGIN
            ,@IS_ALREADY INT = 0
     --
     SELECT
-      @TRADE_AGREEMENT_ID = [SONDA].[SWIFT_FN_GET_TRADE_AGREEMENT_BY_ROUTE](@CODE_ROUTE)
+      @TRADE_AGREEMENT_ID = [acsa].[SWIFT_FN_GET_TRADE_AGREEMENT_BY_ROUTE](@CODE_ROUTE)
     --
     SELECT
       @CODE_TRADE_AGREEMENT = [TA].[CODE_TRADE_AGREEMENT]
-    FROM [SONDA].[SWIFT_TRADE_AGREEMENT] [TA]
+    FROM [acsa].[SWIFT_TRADE_AGREEMENT] [TA]
     WHERE [TA].[TRADE_AGREEMENT_ID] = @TRADE_AGREEMENT_ID
 
     -- ------------------------------------------------------------------------------------
@@ -169,8 +169,8 @@ BEGIN
       --
       SELECT TOP 1
         @IS_ALREADY = 1
-      FROM [SONDA].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER] [DLC]
-      INNER JOIN [SONDA].[SWIFT_DISCOUNT_LIST] [DL]
+      FROM [acsa].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER] [DLC]
+      INNER JOIN [acsa].[SWIFT_DISCOUNT_LIST] [DL]
         ON (
         [DL].[DISCOUNT_LIST_ID] = [DLC].[DISCOUNT_LIST_ID]
         )
@@ -193,7 +193,7 @@ BEGIN
          ,@LINKED_TO
          ,@CODE_ROUTE
          ,@CODE_ROUTE + '|' + [T].[CODE_TRADE_AGREEMENT]
-        FROM [SONDA].[SWIFT_TRADE_AGREEMENT] [T]
+        FROM [acsa].[SWIFT_TRADE_AGREEMENT] [T]
         WHERE [T].[TRADE_AGREEMENT_ID] = @TRADE_AGREEMENT_ID
     END
   END
@@ -201,7 +201,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Genera SKUs de la lista de descuentos
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [SONDA].[SWIFT_DISCOUNT_LIST_BY_SKU] ([DISCOUNT_LIST_ID]
+  INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_SKU] ([DISCOUNT_LIST_ID]
   , [CODE_SKU]
   , [PACK_UNIT]
   , [LOW_LIMIT]
@@ -227,19 +227,19 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT_BY_CUSTOMER [TA]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO] [P]
+    INNER JOIN [acsa].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO_DISCOUNT_BY_SCALE] [PDS]
+    INNER JOIN [acsa].[SWIFT_PROMO_DISCOUNT_BY_SCALE] [PDS]
       ON (
       [PDS].[PROMO_ID] = [P].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_DISCOUNT_LIST] [DL]
+    INNER JOIN [acsa].[SWIFT_DISCOUNT_LIST] [DL]
       ON (
       [DL].[CODE_ROUTE] = [TA].[CODE_ROUTE]
       AND [DL].[NAME_DISCOUNT_LIST] = [TA].[NAME_DISCOUNT_LIST]
@@ -249,7 +249,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Genera los descuentos generales
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [SONDA].[SWIFT_DISCOUNT_LIST_BY_GENERAL_AMOUNT] ([DISCOUNT_LIST_ID]
+  INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_GENERAL_AMOUNT] ([DISCOUNT_LIST_ID]
   , [LOW_AMOUNT]
   , [HIGH_AMOUNT]
   , [DISCOUNT]
@@ -267,19 +267,19 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT_BY_CUSTOMER [TA]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO] [P]
+    INNER JOIN [acsa].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO_DISCOUNT_BY_GENERAL_AMOUNT] [PGA]
+    INNER JOIN [acsa].[SWIFT_PROMO_DISCOUNT_BY_GENERAL_AMOUNT] [PGA]
       ON (
       [PGA].[PROMO_ID] = [P].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_DISCOUNT_LIST] [DL]
+    INNER JOIN [acsa].[SWIFT_DISCOUNT_LIST] [DL]
       ON (
       [DL].[CODE_ROUTE] = [TA].[CODE_ROUTE]
       AND [DL].[NAME_DISCOUNT_LIST] = [TA].[NAME_DISCOUNT_LIST]
@@ -291,7 +291,7 @@ BEGIN
   -- Genera los descuentos generales por familia
   -- ------------------------------------------------------------------------------------
 
-  INSERT INTO [SONDA].[SWIFT_DISCOUNT_LIST_BY_GENERAL_AMOUNT_AND_FAMILY] ([DISCOUNT_LIST_ID]
+  INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_GENERAL_AMOUNT_AND_FAMILY] ([DISCOUNT_LIST_ID]
   , [CODE_FAMILY]
   , [LOW_AMOUNT]
   , [HIGH_AMOUNT]
@@ -313,19 +313,19 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT_BY_CUSTOMER [TA]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO] [P]
+    INNER JOIN [acsa].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO_DISCOUNT_BY_FAMILY] [PDF]
+    INNER JOIN [acsa].[SWIFT_PROMO_DISCOUNT_BY_FAMILY] [PDF]
       ON (
       [PDF].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_DISCOUNT_LIST] [DL]
+    INNER JOIN [acsa].[SWIFT_DISCOUNT_LIST] [DL]
       ON (
       [TA].[CODE_ROUTE] = [DL].[CODE_ROUTE]
       AND [TA].[NAME_DISCOUNT_LIST] = [DL].[NAME_DISCOUNT_LIST]
@@ -336,7 +336,7 @@ BEGIN
   -- Genera los descuentos por tipo de pago y familia
   -- ------------------------------------------------------------------------------------
 
-  INSERT INTO [SONDA].[SWIFT_DISCOUNT_LIST_BY_PAYMENT_TYPE_AND_FAMILY] ([DISCOUNT_LIST_ID]
+  INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_PAYMENT_TYPE_AND_FAMILY] ([DISCOUNT_LIST_ID]
   , [PAYMENT_TYPE]
   , [CODE_FAMILY]
   , [DISCOUNT_TYPE]
@@ -356,19 +356,19 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT_BY_CUSTOMER [TA]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO] [P]
+    INNER JOIN [acsa].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO_DISCOUNT_BY_PAYMENT_TYPE_AND_FAMILY] [PDPF]
+    INNER JOIN [acsa].[SWIFT_PROMO_DISCOUNT_BY_PAYMENT_TYPE_AND_FAMILY] [PDPF]
       ON (
       [PDPF].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_DISCOUNT_LIST] [DL]
+    INNER JOIN [acsa].[SWIFT_DISCOUNT_LIST] [DL]
       ON (
       [TA].[CODE_ROUTE] = [DL].[CODE_ROUTE]
       AND [TA].[NAME_DISCOUNT_LIST] = [DL].[NAME_DISCOUNT_LIST]

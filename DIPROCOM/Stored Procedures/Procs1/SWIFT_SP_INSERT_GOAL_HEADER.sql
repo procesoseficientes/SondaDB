@@ -11,10 +11,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				exec [SONDA].SWIFT_SP_GET_GOAL_HEADER
+				exec [acsa].SWIFT_SP_GET_GOAL_HEADER
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_GOAL_HEADER]
+CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_GOAL_HEADER]
     @GOAL_NAME AS VARCHAR(250),
     @TEAM_ID AS INT,
     @GOAL_AMOUNT AS DECIMAL(18, 6),
@@ -35,7 +35,7 @@ BEGIN
         -- Se valida si el rango de fechas no se traslapa con el de otra meta para ese team y tipo de transacción. 
         -- ---------------------------------------------------------------
         SELECT @VALID_RANGE = COUNT(1)
-        FROM [SONDA].[SWIFT_GOAL_HEADER]
+        FROM [acsa].[SWIFT_GOAL_HEADER]
         WHERE (
                   @GOAL_DATE_FROM
               BETWEEN [GOAL_DATE_FROM] AND [GOAL_DATE_TO]
@@ -51,7 +51,7 @@ BEGIN
         -- ---------------------------------------------------------------
         SELECT TOP (1)
                @SUPERVISOR_ID = [T].[SUPERVISOR]
-        FROM [SONDA].[SWIFT_TEAM] [T]
+        FROM [acsa].[SWIFT_TEAM] [T]
         WHERE [T].[TEAM_ID] = @TEAM_ID
         ORDER BY [T].[TEAM_ID];
 
@@ -61,7 +61,7 @@ BEGIN
         IF @VALID_RANGE = 0
         BEGIN
 
-            INSERT INTO [SONDA].[SWIFT_GOAL_HEADER]
+            INSERT INTO [acsa].[SWIFT_GOAL_HEADER]
             (
                 [GOAL_NAME],
                 [TEAM_ID],

@@ -5,19 +5,19 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_DELETE_USER_BY_TEAM]
+				EXEC [acsa].[SWIFT_SP_DELETE_USER_BY_TEAM]
 					  @TEAM_ID = 1          
 				-- 
-				SELECT * FROM [SONDA].[SWIFT_TEAM]
+				SELECT * FROM [acsa].[SWIFT_TEAM]
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_DELETE_USER_BY_TEAM] (@TEAM_ID INT, @USER_ID INT = NULL)
+CREATE PROCEDURE [acsa].[SWIFT_SP_DELETE_USER_BY_TEAM] (@TEAM_ID INT, @USER_ID INT = NULL)
 AS
 BEGIN
   BEGIN TRY
     --
 
-    DELETE FROM [SONDA].[SWIFT_USER_BY_TEAM]
+    DELETE FROM [acsa].[SWIFT_USER_BY_TEAM]
     WHERE [TEAM_ID] = @TEAM_ID
       AND (@USER_ID IS NULL
       OR [USER_ID] = @USER_ID)

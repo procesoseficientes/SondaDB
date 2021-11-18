@@ -6,11 +6,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-	EXEC [SONDA].[SONDA_SP_STATISTIC_SALES_BY_CUSTOMER]
+	EXEC [acsa].[SONDA_SP_STATISTIC_SALES_BY_CUSTOMER]
 	@CODE_ROUTE = '46'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_STATISTIC_SALES_BY_CUSTOMER] (@CODE_ROUTE VARCHAR(50))
+CREATE PROCEDURE [acsa].[SONDA_SP_STATISTIC_SALES_BY_CUSTOMER] (@CODE_ROUTE VARCHAR(50))
 AS
 BEGIN
     SELECT DISTINCT
@@ -20,10 +20,10 @@ BEGIN
            [svas].[DESCRIPTION_SKU] AS [SKU_NAME],
            [sssbc].[QTY] AS [QTY],
            [sssbc].[SALE_PACK_UNIT]
-    FROM [SONDA].[SONDA_STATISTIC_SALES_BY_CUSTOMER] AS [sssbc]
-        INNER JOIN [SONDA].[SONDA_ROUTE_PLAN] AS [srp]
+    FROM [acsa].[SONDA_STATISTIC_SALES_BY_CUSTOMER] AS [sssbc]
+        INNER JOIN [acsa].[SONDA_ROUTE_PLAN] AS [srp]
             ON [srp].[RELATED_CLIENT_CODE] = [sssbc].[CLIENT_ID]
-        INNER JOIN [SONDA].[SWIFT_VIEW_ALL_SKU] AS [svas]
+        INNER JOIN [acsa].[SWIFT_VIEW_ALL_SKU] AS [svas]
             ON [svas].[CODE_SKU] = [sssbc].[CODE_SKU]
     WHERE [srp].[CODE_ROUTE] = @CODE_ROUTE
           AND [srp].[TASK_TYPE] = 'SALE';

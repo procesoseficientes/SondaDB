@@ -2,26 +2,26 @@
 -- Author:         diego.as
 -- Create date:    15-02-2016
 -- Description:    Inserta registros en la Tabla 
---				   [SONDA].[OP_WMS_CERTIFICATE_DEPOSIT_HEADER]
+--				   [acsa].[OP_WMS_CERTIFICATE_DEPOSIT_HEADER]
 --				   con transacción y control de errores.
 
 /*
 Ejemplo de Ejecucion:
 
-					EXEC [SONDA].[OP_WMS_SP_INSERT_CERTIFICATE_DEPOSIT_HEADER] 
+					EXEC [acsa].[OP_WMS_SP_INSERT_CERTIFICATE_DEPOSIT_HEADER] 
 					@VALID_FROM = '2016-02-10 12:19:04.323'
 					,@VALID_TO = '2016-02-15 12:19:04.323'
 					,@NAME_USER = 'ADMIN'
 					,@STATUS = 'ACTIVO'
 					,@CLIENT_NODE = NULL 
 
-					SELECT * FROM [SONDA].[OP_WMS_CERTIFICATE_DEPOSIT_HEADER]
+					SELECT * FROM [acsa].[OP_WMS_CERTIFICATE_DEPOSIT_HEADER]
 		
 				
 */
 -- =============================================
 
-CREATE PROCEDURE [SONDA].[OP_WMS_SP_INSERT_CERTIFICATE_DEPOSIT_HEADER]
+CREATE PROCEDURE [acsa].[OP_WMS_SP_INSERT_CERTIFICATE_DEPOSIT_HEADER]
 (
 	@VALID_FROM DATE
 	,@VALID_TO DATE
@@ -39,7 +39,7 @@ BEGIN
     BEGIN TRAN TransAdd
     BEGIN TRY
 		
-		INSERT INTO [SONDA].[OP_WMS_CERTIFICATE_DEPOSIT_HEADER] (
+		INSERT INTO [acsa].[OP_WMS_CERTIFICATE_DEPOSIT_HEADER] (
 			[VALID_FROM]
 			,[VALID_TO]
 			,[LAST_UPDATED]

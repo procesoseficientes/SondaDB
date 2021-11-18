@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[SWIFT_SPECIAL_PRICE_PRIORITY] (
+﻿CREATE TABLE [acsa].[SWIFT_SPECIAL_PRICE_PRIORITY] (
     [SPECIAL_PRICE_PRIORITY_ID]                  INT           IDENTITY (1, 1) NOT NULL,
     [DESCRIPTION]                                VARCHAR (250) NULL,
     [ORDER]                                      INT           NULL,

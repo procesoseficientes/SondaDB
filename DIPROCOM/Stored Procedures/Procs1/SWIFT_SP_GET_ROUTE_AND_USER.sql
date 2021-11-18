@@ -6,10 +6,10 @@
 /*
 -- Ejemplo de Ejecucion:
 				--
-				EXEC [SONDA].[SWIFT_SP_GET_ROUTE_AND_USER]
+				EXEC [acsa].[SWIFT_SP_GET_ROUTE_AND_USER]
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_ROUTE_AND_USER]
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_ROUTE_AND_USER]
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -19,8 +19,8 @@ BEGIN
 		,[R].[NAME_ROUTE]
 		,[U].[LOGIN]
 		,[U].[NAME_USER]
-	FROM [SONDA].[USERS] [U]
-	INNER JOIN [SONDA].[SWIFT_ROUTES] [R] ON (
+	FROM [acsa].[USERS] [U]
+	INNER JOIN [acsa].[SWIFT_ROUTES] [R] ON (
 		[U].[SELLER_ROUTE] = [R].[CODE_ROUTE]
 	)
 END

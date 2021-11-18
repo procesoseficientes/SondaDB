@@ -3,9 +3,9 @@
 -- Description:			Obtiene Bodegas de preventa
 /*
 -- Ejemplo de Ejecucion:				
-				select [SONDA].SWIFT_SP_GET_PRESALE_WAREHOUSES
+				select [acsa].SWIFT_SP_GET_PRESALE_WAREHOUSES
 */
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_PRESALE_WAREHOUSES]
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_PRESALE_WAREHOUSES]
 
 
 AS
@@ -13,7 +13,7 @@ BEGIN
 
 
 
-		    SELECT  * FROM [SONDA].[SWIFT_WAREHOUSES] 
+		    SELECT  * FROM [acsa].[SWIFT_WAREHOUSES] 
 	
 			
 			

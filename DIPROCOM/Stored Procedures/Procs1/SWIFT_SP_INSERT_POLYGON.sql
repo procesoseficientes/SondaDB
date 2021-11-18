@@ -22,7 +22,7 @@
 /*
 -- Ejemplo de Ejecucion:
 				--
-				EXEC [SONDA].[SWIFT_SP_INSERT_POLYGON]
+				EXEC [acsa].[SWIFT_SP_INSERT_POLYGON]
 					@POLYGON_NAME = 'RESERVACABAaaaa'
 					,@POLYGON_DESCRIPTION ='Reserva de Biosfera Visis Caba'
 					,@COMMENT =''
@@ -34,13 +34,13 @@
 					,@SAVE_ROUTE = 0
 					,@CODE_WAREHOUSE = NULL
 				--
-				SELECT * FROM [SONDA].[SWIFT_POLYGON] WHERE POLYGON_NAME = 'RESERVACABAaaaa'
+				SELECT * FROM [acsa].[SWIFT_POLYGON] WHERE POLYGON_NAME = 'RESERVACABAaaaa'
 				--
-				SELECT * FROM [SONDA].SWIFT_ROUTES WHERE NAME_ROUTE = 'RESERVACABAaaaa'
+				SELECT * FROM [acsa].SWIFT_ROUTES WHERE NAME_ROUTE = 'RESERVACABAaaaa'
 			
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_POLYGON] (
+CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_POLYGON] (
 		@POLYGON_NAME VARCHAR(250)
 		,@POLYGON_DESCRIPTION VARCHAR(250)
 		,@COMMENT VARCHAR(250)
@@ -61,7 +61,7 @@ BEGIN
 		-- ------------------------------------------------------------
 		DECLARE	@ID INT;
 		--
-		INSERT	INTO [SONDA].[SWIFT_POLYGON]
+		INSERT	INTO [acsa].[SWIFT_POLYGON]
 				(
 					[POLYGON_NAME]
 					,[POLYGON_DESCRIPTION]

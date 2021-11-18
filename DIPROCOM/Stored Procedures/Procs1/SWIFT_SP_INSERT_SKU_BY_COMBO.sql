@@ -5,16 +5,16 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_INSERT_SKU_BY_COMBO]
+				EXEC [acsa].[SWIFT_SP_INSERT_SKU_BY_COMBO]
 					@COMBO_ID = 5
 					,@CODE_SKU = '100002'
 					,@PACK_UNIT = 8
 					,@QTY = 2
 				-- 
-				SELECT * FROM [SONDA].[SWIFT_SKU_BY_COMBO]
+				SELECT * FROM [acsa].[SWIFT_SKU_BY_COMBO]
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_SKU_BY_COMBO](
+CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_SKU_BY_COMBO](
 	@COMBO_ID INT
 	,@CODE_SKU VARCHAR(50)
 	,@PACK_UNIT INT
@@ -25,7 +25,7 @@ BEGIN
 	BEGIN TRY
 		DECLARE @ID INT
 		--
-		INSERT INTO [SONDA].[SWIFT_SKU_BY_COMBO]
+		INSERT INTO [acsa].[SWIFT_SKU_BY_COMBO]
 				(
 					[COMBO_ID]
 					,[CODE_SKU]

@@ -7,14 +7,14 @@
 -- Ejemplo de Ejecucion:
 				declare @pRESULT varchar(MAX)
 				--
-				exec [SONDA].[SWIFT_SP_UPDATE_INVENTORY_BY_SONDA]
+				exec [acsa].[SWIFT_SP_UPDATE_INVENTORY_BY_SONDA]
 					@QTY = 3
 					,@DEFAULTWHS = 'BODEGA_CENTRAL'
 					,@SKU = '4000000'
 					,@COMBOREFERENCE = '4000000'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_UPDATE_INVENTORY_BY_SONDA]
+CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_INVENTORY_BY_SONDA]
 	@QTY			 INT
 	,@DEFAULTWHS	 VARCHAR(150)
 	,@SKU			 VARCHAR(25)

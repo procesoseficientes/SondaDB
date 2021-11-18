@@ -1,13 +1,13 @@
 ﻿
 
 
-CREATE PROC [SONDA].[SWIFT_SP_GET_SBO_SOH]
+CREATE PROC [acsa].[SWIFT_SP_GET_SBO_SOH]
 @DOC_NUM VARCHAR(50)--,@pERP_ITEM_CODE VARCHAR(50),@pERP_LINE_NUM VARCHAR(50)
 AS
 DECLARE @SQL VARCHAR(MAX)
 
 
-select @DOC_NUM= DOC_SAP_RECEPTION from  [SONDA].SWIFT_PICKING_HEADER
+select @DOC_NUM= DOC_SAP_RECEPTION from  [acsa].SWIFT_PICKING_HEADER
 where PICKING_HEADER = @DOC_NUM;
 
 SELECT  @SQL = '	
@@ -44,7 +44,7 @@ CAST(NULL AS varchar) AS UTotalFlete,
 CAST(NULL AS varchar) AS UTipoPago, 
 CAST(NULL AS varchar) AS UCuotas, 
 CAST(NULL AS varchar) AS UTotalTarjeta
-FROM         [SONDA].SWIFT_TXNS AS t INNER JOIN
+FROM         [acsa].SWIFT_TXNS AS t INNER JOIN
                           (SELECT     so.DocEntry, so.DocNum, so.DocType, so.CANCELED, so.Handwrtten, so.Printed, so.DocStatus, so.InvntSttus, so.Transfered, so.ObjType, so.DocDate, so.DocDueDate, so.CardCode, 
                                                    so.CardName, so.Address, so.NumAtCard, so.VatPercent, so.VatSum, so.VatSumFC, so.DiscPrcnt, so.DiscSum, so.DiscSumFC, so.DocCur, so.DocRate, so.DocTotal, so.DocTotalFC, 
                                                    so.PaidToDate, so.PaidFC, so.GrosProfit, so.GrosProfFC, so.Ref1, so.Ref2, so.Comments, so.JrnlMemo, so.TransId, so.ReceiptNum, so.GroupNum, so.DocTime, so.SlpCode, 

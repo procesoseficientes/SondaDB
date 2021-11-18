@@ -12,7 +12,7 @@
 */
 -- =============================================
 
-CREATE FUNCTION [SONDA].[SWIFT_FUNC_GET_TABLE_SPLIT]
+CREATE FUNCTION [acsa].[SWIFT_FUNC_GET_TABLE_SPLIT]
 (
     @String VARCHAR(MAX),
     @delimiter VARCHAR(50)

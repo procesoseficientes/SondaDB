@@ -22,7 +22,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SONDA_SP_ADD_DELIVERY_NOTE_BY_XML]
+				EXEC [acsa].[SONDA_SP_ADD_DELIVERY_NOTE_BY_XML]
 				@XML = '
 					
 <Data>
@@ -91,7 +91,7 @@
 				'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_ADD_DELIVERY_NOTE_BY_XML] (@XML XML)
+CREATE PROCEDURE [acsa].[SONDA_SP_ADD_DELIVERY_NOTE_BY_XML] (@XML XML)
 AS
 BEGIN
     BEGIN TRY
@@ -173,7 +173,7 @@ BEGIN
         FROM @XML.[nodes]('Data') AS [x]([Rec]);
 
         -- --------------------------------------------------------------------------------------------------------
-        EXEC [SONDA].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE, -- varchar(50)
+        EXEC [acsa].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE, -- varchar(50)
                                                                            @DEVICE_ID = @DEVICE_ID;   -- varchar(50)
 
 
@@ -364,7 +364,7 @@ BEGIN
             --
             BEGIN TRY
                 --
-                INSERT INTO [SONDA].[SONDA_DELIVERY_NOTE_HEADER]
+                INSERT INTO [acsa].[SONDA_DELIVERY_NOTE_HEADER]
                 (
                     [DOC_SERIE],
                     [DOC_NUM],
@@ -415,7 +415,7 @@ BEGIN
                 SET @ID = SCOPE_IDENTITY();
 
                 --
-                INSERT INTO [SONDA].[SONDA_DELIVERY_NOTE_DETAIL]
+                INSERT INTO [acsa].[SONDA_DELIVERY_NOTE_DETAIL]
                 (
                     [DELIVERY_NOTE_ID],
                     [CODE_SKU],
@@ -443,7 +443,7 @@ BEGIN
                 IF (@INVOICE_ID IS NOT NULL)
                 BEGIN
                     --
-                    EXEC [SONDA].[SONDA_SP_ADD_DELIVERY_NOTE_BY_INVOICE] @DELIVERY_NOTE_DOC_SERIE = @DELIVERY_NOTE_DOC_SERIE,
+                    EXEC [acsa].[SONDA_SP_ADD_DELIVERY_NOTE_BY_INVOICE] @DELIVERY_NOTE_DOC_SERIE = @DELIVERY_NOTE_DOC_SERIE,
                                                                          @DELIVERY_NOTE_DOC_NUM = @DELIVERY_NOTE_DOC_NUM,
                                                                          @INVOICE_ID = @INVOICE_ID,
                                                                          @DELIVERY_NOTE_BY_INVOICE_ID = @DELIVERY_NOTE_BY_INVOICE_ID OUTPUT;

@@ -5,14 +5,14 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SONDA_SP_INSERT_LOG_BONUS]
+				EXEC [acsa].[SONDA_SP_INSERT_LOG_BONUS]
 				@CODE_ROUTE = ''
 				, @SOURCE = ''
 				, @XML = ''
 				, @JSON = ''
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_INSERT_LOG_BONUS](
+CREATE PROCEDURE [acsa].[SONDA_SP_INSERT_LOG_BONUS](
 	@CODE_ROUTE VARCHAR(250)
 	, @SOURCE VARCHAR(250)
 	, @XML XML
@@ -22,7 +22,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	--
-	INSERT INTO [SONDA].[SONDA_LOG_BONUS]
+	INSERT INTO [acsa].[SONDA_LOG_BONUS]
 			(
 				[CODE_ROUTE]
 				,[POSTED_DATETIME]

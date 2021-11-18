@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_GET_SELLER_DETAIL_REPORT_FOR_SUPER]
+				EXEC [acsa].[SWIFT_SP_GET_SELLER_DETAIL_REPORT_FOR_SUPER]
 					@TEAM_ID = 2
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_SELLER_DETAIL_REPORT_FOR_SUPER] (@TEAM_ID INT)
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_SELLER_DETAIL_REPORT_FOR_SUPER] (@TEAM_ID INT)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -36,10 +36,10 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
     SELECT TOP 1
         @CURRENCY = [SYMBOL_CURRENCY]
-       ,@DISPLAY_DECIMALS = [SONDA].[SWIFT_FN_GET_PARAMETER]('CALCULATION_RULES',
+       ,@DISPLAY_DECIMALS = [acsa].[SWIFT_FN_GET_PARAMETER]('CALCULATION_RULES',
                                                              'DEFAULT_DISPLAY_DECIMALS')
     FROM
-        [SONDA].[SWIFT_CURRENCY]
+        [acsa].[SWIFT_CURRENCY]
     WHERE
         [IS_DEFAULT] = 1;
 	
@@ -67,7 +67,7 @@ BEGIN
        ,[U].[IMAGE] [SELLER_PICTURE]
        ,MAX([SOH].[POSTED_DATETIME]) [LAST_UPDATE]
        ,COUNT([SOH].[SALES_ORDER_ID]) [DOCUMENT_QTY]
-       ,SUM([SONDA].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([SOH].[SALES_ORDER_ID])) [DOCUMENT_TOTAL]
+       ,SUM([acsa].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([SOH].[SALES_ORDER_ID])) [DOCUMENT_TOTAL]
        ,COUNT([T].[COSTUMER_CODE]) [CUSTOMER_QTY]
        ,COUNT(CASE [T].[TASK_STATUS]
                 WHEN 'COMPLETED' THEN 1
@@ -80,10 +80,10 @@ BEGIN
               END) [PENDING_CUSTOMERS]
        ,[U].[LOGIN]
     FROM
-        [SONDA].[SWIFT_TASKS] [T]
-    INNER JOIN [SONDA].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
-    INNER JOIN [SONDA].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
-    LEFT JOIN [SONDA].[SONDA_SALES_ORDER_HEADER] [SOH] ON [SOH].[TASK_ID] = [T].[TASK_ID]
+        [acsa].[SWIFT_TASKS] [T]
+    INNER JOIN [acsa].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
+    INNER JOIN [acsa].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
+    LEFT JOIN [acsa].[SONDA_SALES_ORDER_HEADER] [SOH] ON [SOH].[TASK_ID] = [T].[TASK_ID]
                                                           AND [SOH].[IS_READY_TO_SEND] = 1
     WHERE
         [UT].[TEAM_ID] = @TEAM_ID
@@ -108,9 +108,9 @@ BEGIN
     INTO
         [#INVOICES]
     FROM
-        [SONDA].[SONDA_POS_INVOICE_HEADER] [SPH]
-    INNER JOIN [SONDA].[USERS] [U] ON [SPH].[POSTED_BY] = [U].[LOGIN]
-    INNER JOIN [SONDA].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
+        [acsa].[SONDA_POS_INVOICE_HEADER] [SPH]
+    INNER JOIN [acsa].[USERS] [U] ON [SPH].[POSTED_BY] = [U].[LOGIN]
+    INNER JOIN [acsa].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
     WHERE
         [UT].[TEAM_ID] = @TEAM_ID
         AND FORMAT([SPH].[POSTED_DATETIME], 'yyyyMMdd') = FORMAT(GETDATE(),
@@ -153,9 +153,9 @@ BEGIN
               END) [PENDING_CUSTOMERS]
        ,[U].[LOGIN]
     FROM
-        [SONDA].[SWIFT_TASKS] [T]
-    INNER JOIN [SONDA].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
-    INNER JOIN [SONDA].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
+        [acsa].[SWIFT_TASKS] [T]
+    INNER JOIN [acsa].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
+    INNER JOIN [acsa].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
     INNER JOIN [#INVOICES] [I] ON [I].[LOGIN] = [U].[LOGIN]
     WHERE
         [UT].[TEAM_ID] = @TEAM_ID

@@ -19,17 +19,17 @@
 -- Descripcion: 		Se agrega subquery para obtener la secuencia de la tarea.
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SONDA_SP_CREATE_TASK_OUTSIDE_OF_ROUTE_PLAN]
+				EXEC [acsa].[SONDA_SP_CREATE_TASK_OUTSIDE_OF_ROUTE_PLAN]
 					@CODE_ROUTE = '4'
 					,@CODE_CUSTOMER = '1915'
 					,@TASK_TYPE = 'SALES'
 				--
-				SELECT * FROM [SONDA].[SWIFT_TASKS] ORDER BY 1 DESC
+				SELECT * FROM [acsa].[SWIFT_TASKS] ORDER BY 1 DESC
 				--
-				SELECT TOP 5 * FROM [SONDA].[SONDA_ROUTE_PLAN] ORDER BY 1 DESC
+				SELECT TOP 5 * FROM [acsa].[SONDA_ROUTE_PLAN] ORDER BY 1 DESC
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_CREATE_TASK_OUTSIDE_OF_ROUTE_PLAN]
+CREATE PROCEDURE [acsa].[SONDA_SP_CREATE_TASK_OUTSIDE_OF_ROUTE_PLAN]
 (
     @CODE_ROUTE VARCHAR(50),
     @CODE_CUSTOMER VARCHAR(50),
@@ -44,7 +44,7 @@ BEGIN
 
 	SELECT 
 	@TASK_ID = ISNULL(TASK_ID,0)
-	FROM [SONDA].[SONDA_ROUTE_PLAN]
+	FROM [acsa].[SONDA_ROUTE_PLAN]
 	WHERE [RELATED_CLIENT_CODE] = @CODE_CUSTOMER
 		AND [CODE_ROUTE] = @CODE_ROUTE
 		AND [TASK_TYPE] = @TASK_TYPE
@@ -56,13 +56,13 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     SELECT TOP 1
            @CODE_FREQUENCY = [F].[CODE_FREQUENCY]
-    FROM [SONDA].[SWIFT_FREQUENCY] AS [F]
+    FROM [acsa].[SWIFT_FREQUENCY] AS [F]
     WHERE [F].[CODE_ROUTE] = @CODE_ROUTE;
 
     -- -----------------------------------------------------------------
     -- Inserta en la tabla SWIFT_TASKS
     -- -----------------------------------------------------------------
-    INSERT INTO [SONDA].[SWIFT_TASKS]
+    INSERT INTO [acsa].[SWIFT_TASKS]
     (
         [TASK_TYPE],
         [TASK_DATE],
@@ -120,7 +120,7 @@ BEGIN
            'Tarea generada para cliente ' + ISNULL([C].[NAME_CUSTOMER], '...'),
            (
                SELECT COUNT([RP].[TASK_SEQ]) + 1
-               FROM [SONDA].[SONDA_ROUTE_PLAN] [RP]
+               FROM [acsa].[SONDA_ROUTE_PLAN] [RP]
                WHERE [RP].[CODE_ROUTE] = @CODE_ROUTE
                      AND [RP].[TASK_TYPE] = @TASK_TYPE
                      AND [RP].[SCHEDULE_FOR] = GETDATE()
@@ -143,8 +143,8 @@ BEGIN
            0,
            'BY_USER',
            @CODE_ROUTE
-    FROM [SONDA].[USERS] AS [U]
-        INNER JOIN [SONDA].[SWIFT_VIEW_ALL_COSTUMER] AS [C]
+    FROM [acsa].[USERS] AS [U]
+        INNER JOIN [acsa].[SWIFT_VIEW_ALL_COSTUMER] AS [C]
             ON ([C].[SELLER_DEFAULT_CODE] = [U].[RELATED_SELLER])
     WHERE [U].[SELLER_ROUTE] = @CODE_ROUTE
           AND [C].[CODE_CUSTOMER] = @CODE_CUSTOMER;
@@ -154,7 +154,7 @@ BEGIN
     -- -----------------------------------------------------------------
     -- Inserta en la tabla SONDA_ROUTE_PLAN
     -- -----------------------------------------------------------------
-    INSERT INTO [SONDA].[SONDA_ROUTE_PLAN]
+    INSERT INTO [acsa].[SONDA_ROUTE_PLAN]
     (
         [TASK_ID],
         [CODE_FREQUENCY],
@@ -211,7 +211,7 @@ BEGIN
            @CODE_ROUTE,
            1,
            'BY_USER'
-    FROM [SONDA].[SWIFT_TASKS] AS [T]
+    FROM [acsa].[SWIFT_TASKS] AS [T]
     WHERE [T].[TASK_ID] = @TASK_ID;
 
     -- ------------------------------------------------------------------------------------
@@ -249,12 +249,12 @@ BEGIN
            (
                SELECT TOP 1
                       [CODE_PRICE_LIST]
-               FROM [SONDA].[SWIFT_PRICE_LIST_BY_CUSTOMER_FOR_ROUTE]
+               FROM [acsa].[SWIFT_PRICE_LIST_BY_CUSTOMER_FOR_ROUTE]
                WHERE [CODE_CUSTOMER] = @CODE_CUSTOMER
                      AND [CODE_ROUTE] = @CODE_ROUTE
            ) AS [CODE_PRICE_LIST]
-    FROM [SONDA].[SONDA_ROUTE_PLAN] AS [RP]
-        INNER JOIN [SONDA].[SWIFT_VIEW_ALL_COSTUMER] AS [C]
+    FROM [acsa].[SONDA_ROUTE_PLAN] AS [RP]
+        INNER JOIN [acsa].[SWIFT_VIEW_ALL_COSTUMER] AS [C]
             ON [C].[CODE_CUSTOMER] = [RP].[RELATED_CLIENT_CODE]
     WHERE [TASK_ID] = @TASK_ID;
 
@@ -268,25 +268,25 @@ BEGIN
            [PLS].[LOW_LIMIT],
            [PLS].[HIGH_LIMIT],
            [PLS].[PRICE]
-    FROM [SONDA].[SWIFT_PRICE_LIST_BY_SKU_PACK_SCALE_FOR_ROUTE] AS [PLS]
+    FROM [acsa].[SWIFT_PRICE_LIST_BY_SKU_PACK_SCALE_FOR_ROUTE] AS [PLS]
     WHERE [PLS].[CODE_ROUTE] = @CODE_ROUTE
           AND [PLS].[CODE_PRICE_LIST] =
           (
               SELECT TOP 1
                      [CODE_PRICE_LIST]
-              FROM [SONDA].[SWIFT_PRICE_LIST_BY_CUSTOMER_FOR_ROUTE]
+              FROM [acsa].[SWIFT_PRICE_LIST_BY_CUSTOMER_FOR_ROUTE]
               WHERE [CODE_CUSTOMER] = @CODE_CUSTOMER
                     AND [CODE_ROUTE] = @CODE_ROUTE
           )
           AND [PLS].[CODE_SKU] IN
               (
                   SELECT [SKU]
-                  FROM [SONDA].[SONDA_POS_SKUS]
+                  FROM [acsa].[SONDA_POS_SKUS]
                   WHERE [ROUTE_ID] =
                   (
                       SELECT TOP 1
                              [U].[DEFAULT_WAREHOUSE]
-                      FROM [SONDA].[USERS] AS [U]
+                      FROM [acsa].[USERS] AS [U]
                       WHERE [U].[SELLER_ROUTE] = @CODE_ROUTE
                   )
               );
@@ -316,7 +316,7 @@ BEGIN
            NULL [IS_RECONSIGN],
            [REASON],
            NULL [IN_ROUTE]
-    FROM [SONDA].[SWIFT_CONSIGNMENT_HEADER]
+    FROM [acsa].[SWIFT_CONSIGNMENT_HEADER]
     WHERE [STATUS] = 'ACTIVE'
           AND [CUSTOMER_ID] = @CODE_CUSTOMER;
 
@@ -334,8 +334,8 @@ BEGIN
            [CD].[PAYMENT_ID],
            [CD].[HANDLE_SERIAL],
            [CD].[SERIAL_NUMBER]
-    FROM [SONDA].[SWIFT_CONSIGNMENT_DETAIL] AS [CD]
-        INNER JOIN [SONDA].[SWIFT_CONSIGNMENT_HEADER] AS [CH]
+    FROM [acsa].[SWIFT_CONSIGNMENT_DETAIL] AS [CD]
+        INNER JOIN [acsa].[SWIFT_CONSIGNMENT_HEADER] AS [CH]
             ON [CD].[CONSIGNMENT_ID] = [CH].[CONSIGNMENT_ID]
     WHERE [STATUS] = 'ACTIVE'
           AND [CUSTOMER_ID] = @CODE_CUSTOMER;
@@ -343,20 +343,20 @@ BEGIN
     -- -------------------------------------------------------------------------------------------------------------
     -- Obtiene las facturas vencidas para el cliente
     -- -------------------------------------------------------------------------------------------------------------
-    EXEC [SONDA].[SONDA_SP_GET_OVERDUE_INVOICE_BY_CUSTOMER] @CODE_ROUTE = @CODE_ROUTE,       -- varchar(50)
+    EXEC [acsa].[SONDA_SP_GET_OVERDUE_INVOICE_BY_CUSTOMER] @CODE_ROUTE = @CODE_ROUTE,       -- varchar(50)
                                                             @CODE_CUSTOMER = @CODE_CUSTOMER; -- varchar(250)
 
     -- -------------------------------------------------------------------------------------------------------------
     -- Obtiene las condiciones de pago e informacion de limite de credito del cliente
     -- -------------------------------------------------------------------------------------------------------------
-    EXEC [SONDA].[SONDA_SP_GET_CUSTOMER_ACCOUNTING_INFORMATION] @CODE_ROUTE = @CODE_ROUTE,       -- varchar(50)
+    EXEC [acsa].[SONDA_SP_GET_CUSTOMER_ACCOUNTING_INFORMATION] @CODE_ROUTE = @CODE_ROUTE,       -- varchar(50)
                                                                 @CODE_CUSTOMER = @CODE_CUSTOMER; -- varchar(250)
 
     -- -----------------------------------------------------
     -- Obtiene la estadistica de ventas del cliente
     -- -----------------------------------------------------
 
-    EXEC [SONDA].[SONDA_SP_STATISTIC_SALES_BY_CUSTOMER_OUT_OF_ROUTE_PLAN] @CODE_ROUTE = @CODE_ROUTE,   -- varchar(50)
+    EXEC [acsa].[SONDA_SP_STATISTIC_SALES_BY_CUSTOMER_OUT_OF_ROUTE_PLAN] @CODE_ROUTE = @CODE_ROUTE,   -- varchar(50)
                                                                           @CLIENT_ID = @CODE_CUSTOMER; -- varchar(150)
 
 END;

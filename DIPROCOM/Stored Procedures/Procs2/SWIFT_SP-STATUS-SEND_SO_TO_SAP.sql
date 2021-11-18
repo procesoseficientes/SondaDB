@@ -30,14 +30,14 @@ SET @SALES_ORDER_ID = 0
 SET @POSTED_RESPONSE = '' 
 SET @ERP_REFERENCE ='0'
 
-EXECUTE @RC = [SONDA].[SWIFT_SP-STATUS-SEND_SO_TO_SAP] @SALES_ORDER_ID
+EXECUTE @RC = [acsa].[SWIFT_SP-STATUS-SEND_SO_TO_SAP] @SALES_ORDER_ID
                                                     ,@POSTED_RESPONSE
                                                     ,@ERP_REFERENCE
 GO
 
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP-STATUS-SEND_SO_TO_SAP]
+CREATE PROCEDURE [acsa].[SWIFT_SP-STATUS-SEND_SO_TO_SAP]
 	@SALES_ORDER_ID INT
 	,@POSTED_RESPONSE VARCHAR(4000)
 	,@ERP_REFERENCE VARCHAR(256)
@@ -49,11 +49,11 @@ BEGIN TRY
 	--
 	DECLARE	@ID NUMERIC(18, 0), @UNSENT_DETAIL INT = 0, @PARAMETER_OWNER VARCHAR(125);
 	--
-	SELECT @PARAMETER_OWNER = [SONDA].[SWIFT_FN_GET_PARAMETER]('SALES_ORDER_INTERCOMPANY','SEND_ALL_DETAIL')
+	SELECT @PARAMETER_OWNER = [acsa].[SWIFT_FN_GET_PARAMETER]('SALES_ORDER_INTERCOMPANY','SEND_ALL_DETAIL')
 	-- ------------------------------------------------------------------------------------
 	-- Actualiza el IS_SENDING A 0
 	-- ------------------------------------------------------------------------------------
-	UPDATE [SONDA].[SONDA_SALES_ORDER_HEADER]
+	UPDATE [acsa].[SONDA_SALES_ORDER_HEADER]
 		SET	
 			[IS_SENDING] = 0
 			,[LAST_UPDATE_IS_SENDING] = GETDATE()
@@ -68,14 +68,14 @@ BEGIN TRY
 		,[D].[POSTED_RESPONSE] = @POSTED_RESPONSE
 		,[D].[ERP_REFERENCE] = @ERP_REFERENCE
 		,[D].[INTERFACE_OWNER] = @OWNER
-	FROM [SONDA].[SONDA_SALES_ORDER_DETAIL] [D]	
-		INNER JOIN [SONDA].[SWIFT_VIEW_ALL_SKU] [SKU] ON [SKU].[CODE_SKU] = [D].[SKU]
+	FROM [acsa].[SONDA_SALES_ORDER_DETAIL] [D]	
+		INNER JOIN [acsa].[SWIFT_VIEW_ALL_SKU] [SKU] ON [SKU].[CODE_SKU] = [D].[SKU]
 	WHERE [SALES_ORDER_ID] = @SALES_ORDER_ID 
 		AND ([SKU].[OWNER] = @OWNER OR (@OWNER = @PARAMETER_OWNER AND @OWNER = @CUSTOMER_OWNER));
 	-- ------------------------------------------------------------------------------------
 	-- Obtiene la cantidad de lineas aun no enviadas
 	-- ------------------------------------------------------------------------------------
-	SELECT [D].[SALES_ORDER_ID] INTO [#TEMP] FROM [SONDA].[SONDA_SALES_ORDER_DETAIL] [D] WHERE ISNULL([D].[IS_POSTED_ERP], 0) = 0 AND [D].[SALES_ORDER_ID] = @SALES_ORDER_ID
+	SELECT [D].[SALES_ORDER_ID] INTO [#TEMP] FROM [acsa].[SONDA_SALES_ORDER_DETAIL] [D] WHERE ISNULL([D].[IS_POSTED_ERP], 0) = 0 AND [D].[SALES_ORDER_ID] = @SALES_ORDER_ID
 	--
 	SELECT @UNSENT_DETAIL = @@ROWCOUNT
 	-- ------------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ BEGIN TRY
 	-- ------------------------------------------------------------------------------------
 	IF @UNSENT_DETAIL = 0
 	BEGIN
-		UPDATE [SONDA].[SONDA_SALES_ORDER_HEADER]
+		UPDATE [acsa].[SONDA_SALES_ORDER_HEADER]
 		SET	
 			[IS_POSTED_ERP] = 1
 			,[POSTED_ERP] = GETDATE()
@@ -94,7 +94,7 @@ BEGIN TRY
 	-- ------------------------------------------------------------------------------------
 	-- Inserta en el LOG
 	-- ------------------------------------------------------------------------------------
-	INSERT	INTO [SONDA].[SWIFT_SEND_SO_ERP_LOG]
+	INSERT	INTO [acsa].[SWIFT_SEND_SO_ERP_LOG]
 			(
 				[SALES_ORDER_ID]
 				,[ATTEMPTED_WITH_ERROR]

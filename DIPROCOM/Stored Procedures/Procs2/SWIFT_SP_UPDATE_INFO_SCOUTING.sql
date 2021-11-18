@@ -6,7 +6,7 @@ Description:			Actualiza los datos de un cliente
 
 Ejemplo de ejecucion:
 
-  EXEC [SONDA].SWIFT_SP_UPDATE_SCOUTING
+  EXEC [acsa].SWIFT_SP_UPDATE_SCOUTING
   --Customer
           @CODE_CUSTOMER = 'C001'
 	        ,@NAME_CUSTOMER = 'NOMBRE PRUEBA'
@@ -40,17 +40,17 @@ Ejemplo de ejecucion:
           ,@FREQUENCY_WEEKS = '1'
           ,@LAST_DATE_VISITED = '09-Nov-15'
 	----
-	SELECT * FROM [SONDA].[SWIFT_CUSTOMERS_NEW]
+	SELECT * FROM [acsa].[SWIFT_CUSTOMERS_NEW]
     WHERE CODE_CUSTOMER = 'C001'
     ORDER BY CUSTOMER DESC
 	----
-    SELECT * FROM [SONDA].[SWIFT_CUSTOMER_FREQUENCY_NEW]
+    SELECT * FROM [acsa].[SWIFT_CUSTOMER_FREQUENCY_NEW]
     WHERE CODE_CUSTOMER = 'C001'
     ORDER BY CODE_FREQUENCY DESC
 */
 
 -- ============================================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_UPDATE_INFO_SCOUTING]
+CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_INFO_SCOUTING]
 ( -- ----------------------------------------------------------------------------------
   -- Parametros para customer
   -- ----------------------------------------------------------------------------------
@@ -101,7 +101,7 @@ BEGIN
       -- ----------------------------------------------------------------------------------
 	  -- Se ACTUALIZA el cliente
 	  -- ----------------------------------------------------------------------------------
-      UPDATE [SONDA].[SWIFT_CUSTOMERS_NEW]
+      UPDATE [acsa].[SWIFT_CUSTOMERS_NEW]
 	  SET [NAME_CUSTOMER] = @NAME_CUSTOMER
         	,[CLASSIFICATION_CUSTOMER] = @CLASSIFICATION_CUSTOMER
         	,[PHONE_CUSTOMER] = @PHONE_CUSTOMER
@@ -132,7 +132,7 @@ BEGIN
       -- ----------------------------------------------------------------------------------
 	  -- Se ACTUALIZA la frecuencia del cliente
 	  -- ----------------------------------------------------------------------------------
-      UPDATE [SONDA].[SWIFT_CUSTOMER_FREQUENCY_NEW]
+      UPDATE [acsa].[SWIFT_CUSTOMER_FREQUENCY_NEW]
 	  SET [SUNDAY] = @SUNDAY
         	,[MONDAY] = @MONDAY
         	,[TUESDAY] = @TUESDAY

@@ -8,10 +8,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-	EXEC [SONDA].[SWIFT_SP_GET_GOAL_HEADER] @STATUS = 'CREATED'
+	EXEC [acsa].[SWIFT_SP_GET_GOAL_HEADER] @STATUS = 'CREATED'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_GOAL_HEADER] @STATUS AS VARCHAR(25)
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_GOAL_HEADER] @STATUS AS VARCHAR(25)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -45,8 +45,8 @@ BEGIN
            [GH].[PERIOD_DAYS],
            [B].[NAME_TEAM],
            [GH].[SALE_TYPE]
-    FROM [SONDA].[SWIFT_GOAL_HEADER] [GH]
-        INNER JOIN [SONDA].[SWIFT_TEAM] [B]
+    FROM [acsa].[SWIFT_GOAL_HEADER] [GH]
+        INNER JOIN [acsa].[SWIFT_TEAM] [B]
             ON [GH].[TEAM_ID] = [B].[TEAM_ID]
     WHERE [GH].[STATUS] = @STATUS
     ORDER BY [GH].[GOAL_HEADER_ID] DESC;

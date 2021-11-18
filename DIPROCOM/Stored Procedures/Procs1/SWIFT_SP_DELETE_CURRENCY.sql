@@ -5,20 +5,20 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_DELETE_CURRENCY]
+				EXEC [acsa].[SWIFT_SP_DELETE_CURRENCY]
 					 @CURRENCY_ID = 1          
 				-- 
-				SELECT * FROM [SONDA].[SWIFT_CURRENCY]
+				SELECT * FROM [acsa].[SWIFT_CURRENCY]
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_DELETE_CURRENCY](  
+CREATE PROCEDURE [acsa].[SWIFT_SP_DELETE_CURRENCY](  
   @CURRENCY_ID INT
 )
 AS
 BEGIN
 	BEGIN TRY		
 		--
-	  DELETE [SONDA].[SWIFT_CURRENCY]
+	  DELETE [acsa].[SWIFT_CURRENCY]
     WHERE CURRENCY_ID = @CURRENCY_ID
 
 		--

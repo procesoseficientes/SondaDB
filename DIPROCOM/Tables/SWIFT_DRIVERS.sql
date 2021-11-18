@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[SWIFT_DRIVERS] (
+﻿CREATE TABLE [acsa].[SWIFT_DRIVERS] (
     [DRIVER]                INT          IDENTITY (1, 1) NOT NULL,
     [CODE_DRIVER]           VARCHAR (50) NULL,
     [NAME_DRIVER]           VARCHAR (50) NULL,

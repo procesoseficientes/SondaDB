@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				 EXEC [SONDA].[SWIFT_SP_UPDATE_SESSION_ID_USER] 'GERENTE@DIPROCOM','jzc1vajcv1ouddknng3zror4e78fa2db'
+				 EXEC [acsa].[SWIFT_SP_UPDATE_SESSION_ID_USER] 'GERENTE@DIPROCOM','jzc1vajcv1ouddknng3zror4e78fa2db'
 					
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_UPDATE_SESSION_ID_USER] (
+CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_SESSION_ID_USER] (
 		@LOGIN_ID VARCHAR(100)
 		,@SESSION_USER_ID VARCHAR(80)
 	)
@@ -20,7 +20,7 @@ BEGIN
 
 	BEGIN TRY
 		UPDATE
-			[SONDA].[USERS]
+			[acsa].[USERS]
 		SET	
 			SESSION_ID = @SESSION_USER_ID
 		WHERE

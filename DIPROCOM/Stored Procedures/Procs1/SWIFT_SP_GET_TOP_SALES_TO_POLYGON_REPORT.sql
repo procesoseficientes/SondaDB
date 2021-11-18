@@ -9,14 +9,14 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_GET_TOP_SALES_TO_POLYGON_REPORT]
+				EXEC [acsa].[SWIFT_SP_GET_TOP_SALES_TO_POLYGON_REPORT]
 					@START_DATETIME = '20161201 00:00:00.000'
 					,@END_DATETIME = '20170201 00:00:00.000'
 					,@TAG_COLORS = NULL
 					,@CHANNELS = NULL
 					,@TYPE = 'SALE'
 				--
-				EXEC [SONDA].[SWIFT_SP_GET_TOP_SALES_TO_POLYGON_REPORT]
+				EXEC [acsa].[SWIFT_SP_GET_TOP_SALES_TO_POLYGON_REPORT]
 					@START_DATETIME = '20161201 00:00:00.000'
 					,@END_DATETIME = '20170201 00:00:00.000'
 					,@TAG_COLORS = NULL
@@ -26,7 +26,7 @@
 
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].SWIFT_SP_GET_TOP_SALES_TO_POLYGON_REPORT (@START_DATETIME DATETIME
+CREATE PROCEDURE [acsa].SWIFT_SP_GET_TOP_SALES_TO_POLYGON_REPORT (@START_DATETIME DATETIME
 , @END_DATETIME DATETIME
 , @TAG_COLORS VARCHAR(MAX) = NULL
 , @CHANNELS VARCHAR(MAX) = NULL
@@ -84,8 +84,8 @@ BEGIN
     -- Coloca parametros iniciales
     -- ------------------------------------------------------------------------------------
     SELECT
-      @DELIMITER = [SONDA].[SWIFT_FN_GET_PARAMETER]('DELIMITER', 'DEFAULT_DELIMITER')
-     ,@DEFAULT_DISPLAY_DECIMALS = [SONDA].[SWIFT_FN_GET_PARAMETER]('CALCULATION_RULES', 'DEFAULT_DISPLAY_DECIMALS')
+      @DELIMITER = [acsa].[SWIFT_FN_GET_PARAMETER]('DELIMITER', 'DEFAULT_DELIMITER')
+     ,@DEFAULT_DISPLAY_DECIMALS = [acsa].[SWIFT_FN_GET_PARAMETER]('CALCULATION_RULES', 'DEFAULT_DISPLAY_DECIMALS')
 
     -- ------------------------------------------------------------------------------------
     -- Obtenemos todos los poligonos
@@ -93,8 +93,8 @@ BEGIN
     SELECT
       [P].[POLYGON_ID]
      ,[P].[POLYGON_ID_PARENT] INTO [#POLYGON]
-    FROM [SONDA].[SWIFT_POLYGON] [P]
-		INNER JOIN [SONDA].[SWIFT_POLYGON] [P2] ON [P].[POLYGON_ID_PARENT] = [P2].[POLYGON_ID]
+    FROM [acsa].[SWIFT_POLYGON] [P]
+		INNER JOIN [acsa].[SWIFT_POLYGON] [P2] ON [P].[POLYGON_ID_PARENT] = [P2].[POLYGON_ID]
     WHERE [P].[POLYGON_TYPE] = 'RUTA'
 		AND [P2].[SUB_TYPE] = 'COMMERCIAL'
     -- ------------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ BEGIN
       INSERT INTO @TAG
         SELECT
           [T].[VALUE]
-        FROM [SONDA].[SWIFT_FN_SPLIT_2](@TAG_COLORS, @DELIMITER) [T]
+        FROM [acsa].[SWIFT_FN_SPLIT_2](@TAG_COLORS, @DELIMITER) [T]
     END
 
     -- ------------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ BEGIN
       INSERT INTO @CHANNEL
         SELECT
           [C].[VALUE]
-        FROM [SONDA].[SWIFT_FN_SPLIT_2](@CHANNELS, @DELIMITER) [C]
+        FROM [acsa].[SWIFT_FN_SPLIT_2](@CHANNELS, @DELIMITER) [C]
     END
 
     -- ------------------------------------------------------------------------------------
@@ -128,7 +128,7 @@ BEGIN
      ,[C].[LONGITUDE]
      ,[GEOMETRY]::[Point]([C].[LATITUDE], [C].[LONGITUDE], 0) [Point]
      ,[C].[SELLER_DEFAULT_CODE] AS [SELLER_CODE] INTO [#CUSTOMER]
-    FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
+    FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
     WHERE [GPS] <> '0,0'
     AND ([C].[LATITUDE] IS NOT NULL
     AND [C].[LONGITUDE] IS NOT NULL)
@@ -141,7 +141,7 @@ BEGIN
     BEGIN
       DELETE [C]
         FROM [#CUSTOMER] [C]
-        LEFT JOIN [SONDA].[SWIFT_TAG_X_CUSTOMER] [TC]
+        LEFT JOIN [acsa].[SWIFT_TAG_X_CUSTOMER] [TC]
           ON (
           [TC].[CUSTOMER] = [CODE_CUSTOMER]
           )
@@ -159,7 +159,7 @@ BEGIN
     BEGIN
       DELETE [C]
         FROM [#CUSTOMER] [C]
-        LEFT JOIN [SONDA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+        LEFT JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
           ON (
           [CC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
           )
@@ -184,11 +184,11 @@ BEGIN
          ,SUM([SO].[TOTAL_AMOUNT])
          ,[PBR].[POLYGON_ID]
          ,[U].[RELATED_SELLER]
-		FROM [SONDA].[SONDA_SALES_ORDER_HEADER] [SO]
+		FROM [acsa].[SONDA_SALES_ORDER_HEADER] [SO]
 			INNER JOIN [#CUSTOMER] [C] ON [SO].[CLIENT_ID] = [C].[CODE_CUSTOMER]
-			INNER JOIN [SONDA].[USERS] [U] ON [SO].[POS_TERMINAL] = [U].[SELLER_ROUTE]
-			INNER JOIN [SONDA].[SWIFT_ROUTES] [R] ON [R].[SELLER_CODE] = [U].[RELATED_SELLER]
-			INNER JOIN [SONDA].[SWIFT_POLYGON_BY_ROUTE] [PBR] ON [PBR].[ROUTE] = [R].[ROUTE]
+			INNER JOIN [acsa].[USERS] [U] ON [SO].[POS_TERMINAL] = [U].[SELLER_ROUTE]
+			INNER JOIN [acsa].[SWIFT_ROUTES] [R] ON [R].[SELLER_CODE] = [U].[RELATED_SELLER]
+			INNER JOIN [acsa].[SWIFT_POLYGON_BY_ROUTE] [PBR] ON [PBR].[ROUTE] = [R].[ROUTE]
         WHERE [SO].[POSTED_DATETIME] BETWEEN @START_DATETIME AND @END_DATETIME
 			AND [SO].[IS_READY_TO_SEND] = 1
 		GROUP BY [U].[RELATED_SELLER]
@@ -206,11 +206,11 @@ BEGIN
          ,SUM([I].[TOTAL_AMOUNT])
          ,[PBR].[POLYGON_ID]
          ,[U].[RELATED_SELLER]
-		FROM [SONDA].[SONDA_POS_INVOICE_HEADER] [I]
+		FROM [acsa].[SONDA_POS_INVOICE_HEADER] [I]
 			INNER JOIN [#CUSTOMER] [C] ON [C].[CODE_CUSTOMER] = [I].[CLIENT_ID]
-			INNER JOIN [SONDA].[USERS] [U] ON [I].[POS_TERMINAL] = [U].[SELLER_ROUTE]
-			INNER JOIN [SONDA].[SWIFT_ROUTES] [R] ON [R].[SELLER_CODE] = [U].[RELATED_SELLER]
-			INNER JOIN [SONDA].[SWIFT_POLYGON_BY_ROUTE] [PBR] ON [PBR].[ROUTE] = [R].[ROUTE]
+			INNER JOIN [acsa].[USERS] [U] ON [I].[POS_TERMINAL] = [U].[SELLER_ROUTE]
+			INNER JOIN [acsa].[SWIFT_ROUTES] [R] ON [R].[SELLER_CODE] = [U].[RELATED_SELLER]
+			INNER JOIN [acsa].[SWIFT_POLYGON_BY_ROUTE] [PBR] ON [PBR].[ROUTE] = [R].[ROUTE]
 		WHERE [I].[POSTED_DATETIME] BETWEEN @START_DATETIME AND @END_DATETIME
 		AND [I].[IS_READY_TO_SEND] = 1
 		GROUP BY [U].[RELATED_SELLER]
@@ -239,7 +239,7 @@ BEGIN
       -- ------------------------------------------------------------------------------------
       -- ObtIene el poligono actual 
       -- ------------------------------------------------------------------------------------
-      SET @GEOMETRY_POLYGON = [SONDA].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@vPOLYGON_ID);
+      SET @GEOMETRY_POLYGON = [acsa].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@vPOLYGON_ID);
 
       -- ------------------------------------------------------------------------------------
       -- Obtiene los clientes del poligono actual
@@ -285,7 +285,7 @@ BEGIN
           ON (
           [C].[CODE_CUSTOMER] = [TA].[CODE_CUSTOMER]
           )
-        LEFT JOIN [SONDA].[SWIFT_SELLER] [SS]
+        LEFT JOIN [acsa].[SWIFT_SELLER] [SS]
           ON (
           [TA].[SELLER_CODE] = [SS].[SELLER_CODE]
           )
@@ -323,7 +323,7 @@ BEGIN
 			,[PS].[POLYGON_NAME] [SECTOR]
 			,[PR].[POLYGON_NAME] [REGION]
 			,[A].[CUSTOMERS_COUNT]
-			,CONVERT(DECIMAL(18,' + CAST(@DEFAULT_DISPLAY_DECIMALS AS VARCHAR) + '),[SONDA].SWIFT_FN_GET_DISPLAY_NUMBER([PA].[TOTAL_AMOUNT])) [TOTAL_SALES]
+			,CONVERT(DECIMAL(18,' + CAST(@DEFAULT_DISPLAY_DECIMALS AS VARCHAR) + '),[acsa].SWIFT_FN_GET_DISPLAY_NUMBER([PA].[TOTAL_AMOUNT])) [TOTAL_SALES]
 			,[R].[CODE_ROUTE]
 			,[R].[NAME_ROUTE]
       ,[PA].[SELLER_CODE]
@@ -332,19 +332,19 @@ BEGIN
 		INNER JOIN [#POLYGON_AMOUNT] [PA] ON (
 			[PA].[POLYGON_ID] = [A].[POLYGON_ID]
 		)
-		INNER JOIN [SONDA].[SWIFT_POLYGON] [P] ON (
+		INNER JOIN [acsa].[SWIFT_POLYGON] [P] ON (
 			[A].[POLYGON_ID] = [P].[POLYGON_ID]
 		)
-		INNER JOIN [SONDA].[SWIFT_POLYGON] [PS] ON (
+		INNER JOIN [acsa].[SWIFT_POLYGON] [PS] ON (
 			[P].[POLYGON_ID_PARENT] = [PS].[POLYGON_ID]
 		)
-		INNER JOIN [SONDA].[SWIFT_POLYGON] [PR] ON (
+		INNER JOIN [acsa].[SWIFT_POLYGON] [PR] ON (
 			[PS].[POLYGON_ID_PARENT] = [PR].[POLYGON_ID]
 		)
-		LEFT JOIN [SONDA].[SWIFT_POLYGON_BY_ROUTE] [PBR] ON(
+		LEFT JOIN [acsa].[SWIFT_POLYGON_BY_ROUTE] [PBR] ON(
 			[PBR].[POLYGON_ID] = [P].[POLYGON_ID]
 		)
-		LEFT JOIN [SONDA].[SWIFT_ROUTES] [R] ON	(
+		LEFT JOIN [acsa].[SWIFT_ROUTES] [R] ON	(
 			[R].[ROUTE] = [PBR].[ROUTE]
 		)
 		ORDER BY [PA].[TOTAL_AMOUNT] DESC,[A].[CUSTOMERS_COUNT] ASC'

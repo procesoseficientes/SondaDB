@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [SONDA].[SWIFT_SP_SALES_CUSTOMER]          
+﻿CREATE PROCEDURE [acsa].[SWIFT_SP_SALES_CUSTOMER]          
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -15,7 +15,7 @@ DECLARE @route VARCHAR(50)
 
 
 select  @start=COUNT(*)
-from [SONDA].SONDA_SALES_ORDER_HEADER with (nolock)
+from [acsa].SONDA_SALES_ORDER_HEADER with (nolock)
 where POSTED_DATETIME>=  format (getdate(),'yyyyMMdd')
 AND is_void=0
 and is_ready_to_send=1
@@ -32,7 +32,7 @@ SELECT @start [PEDIDOS]
 			------------------------------------------------------------------------------------
 		
 			select  TOP 1 @route=POS_TERMINAL, @client=CLIENT_ID, @sales=SALES_ORDER_ID
-			from [SONDA].SONDA_SALES_ORDER_HEADER with (nolock)
+			from [acsa].SONDA_SALES_ORDER_HEADER with (nolock)
 			where POSTED_DATETIME>=  format (getdate(),'yyyyMMdd')
 			AND is_void=0
 			and is_ready_to_send=1
@@ -43,7 +43,7 @@ SELECT @start [PEDIDOS]
 			------------------------------------------------------------------------------------
 
 			SELECT TOP 1 @scouting=CODE_CUSTOMER
-			 from [SONDA].SWIFT_CUSTOMERS_NEW with (nolock)
+			 from [acsa].SWIFT_CUSTOMERS_NEW with (nolock)
 			where POST_DATETIME>= format (getdate(),'yyyyMMdd')
 			AND CODE_ROUTE=@route
 			AND CODE_CUSTOMER_HH=@client
@@ -53,7 +53,7 @@ SELECT @start [PEDIDOS]
 			-- ACTUALIZAR EL CLIENTE AL PEDIDO
 			------------------------------------------------------------------------------------
 
-			update   [SONDA].SONDA_SALES_ORDER_HEADER
+			update   [acsa].SONDA_SALES_ORDER_HEADER
 			SET CLIENT_ID=@scouting
 			WHERE SALES_ORDER_ID=@sales
 

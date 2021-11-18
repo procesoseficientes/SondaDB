@@ -2,26 +2,26 @@
 -- Author:         diego.as
 -- Create date:    15-02-2016
 -- Description:    Inserta registros en la Tabla 
---				   [SONDA].[SONDA_PACK_UNIT]
+--				   [acsa].[SONDA_PACK_UNIT]
 --				   con transacción y control de errores.
 
 /*
 Ejemplo de Ejecucion:
 
-		EXEC [SONDA].[SONDA_SP_INSERT_PACK_UNIT]
+		EXEC [acsa].[SONDA_SP_INSERT_PACK_UNIT]
 			@CODE_PACK_UNIT = 'COD001'
 			,@DESCRIPTION_PACK_UNIT = 'EJEMPLO' 
 			,@ORDER = 1
 			,@LAST_UPDATE_BY = 'oper1@DIPROCOM' 
 						
 		----------------------------------------			
-		SELECT * FROM [SONDA].[SONDA_PACK_UNIT]
+		SELECT * FROM [acsa].[SONDA_PACK_UNIT]
 		
 				
 */
 -- =============================================
 
-CREATE PROCEDURE [SONDA].[SONDA_SP_INSERT_PACK_UNIT]
+CREATE PROCEDURE [acsa].[SONDA_SP_INSERT_PACK_UNIT]
 (
 	@CODE_PACK_UNIT VARCHAR(25)
 	,@DESCRIPTION_PACK_UNIT VARCHAR(250)
@@ -37,7 +37,7 @@ BEGIN
     BEGIN TRAN TransAdd
     BEGIN TRY
 		
-		INSERT INTO [SONDA].[SONDA_PACK_UNIT](
+		INSERT INTO [acsa].[SONDA_PACK_UNIT](
 				[CODE_PACK_UNIT]
 				,[DESCRIPTION_PACK_UNIT]
 				,[ORDER]

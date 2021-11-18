@@ -6,11 +6,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-	EXEC [SONDA].[SONDA_SP_GET_IMAGE_BY_SKU]
+	EXEC [acsa].[SONDA_SP_GET_IMAGE_BY_SKU]
 	@CODE_ROUTE = '46'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_GET_IMAGE_BY_SKU] @CODE_ROUTE VARCHAR(50)
+CREATE PROCEDURE [acsa].[SONDA_SP_GET_IMAGE_BY_SKU] @CODE_ROUTE VARCHAR(50)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -42,7 +42,7 @@ BEGIN
     -- Se obtienen los productos de la ruta
     -- ---------------------------------------------------------------
     INSERT INTO @SKUS
-    EXEC [SONDA].[SONDA_SP_GET_SKU] @CODE_ROUTE = @CODE_ROUTE;
+    EXEC [acsa].[SONDA_SP_GET_SKU] @CODE_ROUTE = @CODE_ROUTE;
 
     -- ---------------------------------------------------------------
     -- Se eliminan los registros duplicados
@@ -83,7 +83,7 @@ BEGIN
            [IBS].[IMAGE3],
            [IBS].[IMAGE4],
            [IBS].[IMAGE5]
-    FROM [SONDA].[IMAGE_BY_SKU] AS [IBS]
+    FROM [acsa].[IMAGE_BY_SKU] AS [IBS]
         INNER JOIN @SKUS AS [S]
             ON ([S].[SKU] = [IBS].[CODE_SKU]);
 END;

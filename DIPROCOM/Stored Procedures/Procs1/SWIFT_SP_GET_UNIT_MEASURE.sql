@@ -7,13 +7,13 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-EXECUTE  [SONDA].[SWIFT_SP_GET_UNIT_MEASURE] 
+EXECUTE  [acsa].[SWIFT_SP_GET_UNIT_MEASURE] 
 @TYPE = 'PESO'
 
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_UNIT_MEASURE]
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_UNIT_MEASURE]
     @TYPE [varchar](50)
 AS
 BEGIN 
@@ -24,7 +24,7 @@ BEGIN
 	SELECT [CODE]
 		  ,[DESCRIPTION]
 		  ,[TYPE]
-	FROM [SWIFT_EXPRESS].[SONDA].[SWIFT_MEASURE_UNIT]
+	FROM [SWIFT_EXPRESS].[acsa].[SWIFT_MEASURE_UNIT]
 	WHERE [TYPE] = @TYPE 
 	ORDER BY [DESCRIPTION] ASC
 

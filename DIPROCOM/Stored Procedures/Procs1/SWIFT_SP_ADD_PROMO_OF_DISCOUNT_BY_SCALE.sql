@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-		EXEC [SONDA].[SWIFT_SP_ADD_PROMO_OF_DISCOUNT_BY_SCALE]
+		EXEC [acsa].[SWIFT_SP_ADD_PROMO_OF_DISCOUNT_BY_SCALE]
 		@PROMO_ID = 2114
 		,@CODE_SKU = '100001'
 		,@PACK_UNIT = 1
@@ -15,7 +15,7 @@
 		,@DISCOUNT_TYPE = 'PERCENTAGE'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_ADD_PROMO_OF_DISCOUNT_BY_SCALE](
+CREATE PROCEDURE [acsa].[SWIFT_SP_ADD_PROMO_OF_DISCOUNT_BY_SCALE](
 @PROMO_ID INT
 	, @CODE_SKU VARCHAR(50)
 	, @PACK_UNIT INT
@@ -31,7 +31,7 @@ BEGIN
 		-- --------------------------------------------------------------------------
 		-- Se valida el rango de la promocion que se desea agregar
 		-- --------------------------------------------------------------------------
-		EXEC [SONDA].[SWIFT_SP_VALIDATE_DISCOUNT_SCALE_FOR_PROMO]
+		EXEC [acsa].[SWIFT_SP_VALIDATE_DISCOUNT_SCALE_FOR_PROMO]
 		@PROMO_ID = @PROMO_ID
 		, @CODE_SKU = @CODE_SKU
 		, @PACK_UNIT = @PACK_UNIT
@@ -42,7 +42,7 @@ BEGIN
 		--
 		DECLARE @ID INT;
 		--
-		INSERT INTO [SONDA].[SWIFT_PROMO_DISCOUNT_BY_SCALE]
+		INSERT INTO [acsa].[SWIFT_PROMO_DISCOUNT_BY_SCALE]
 			(
 				[PROMO_ID]
 				,[CODE_SKU]

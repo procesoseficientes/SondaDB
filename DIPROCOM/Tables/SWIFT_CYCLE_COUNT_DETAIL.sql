@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[SWIFT_CYCLE_COUNT_DETAIL] (
+﻿CREATE TABLE [acsa].[SWIFT_CYCLE_COUNT_DETAIL] (
     [COUNT]                 INT           IDENTITY (1, 1) NOT NULL,
     [COUNT_ID]              INT           NULL,
     [LOCATION]              VARCHAR (50)  NULL,

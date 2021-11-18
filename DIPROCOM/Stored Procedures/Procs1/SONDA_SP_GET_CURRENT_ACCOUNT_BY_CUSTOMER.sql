@@ -6,11 +6,11 @@
 /*
 -- Ejemplo de Ejecucion:
 		--
-        EXEC [SONDA].SONDA_SP_GET_CURRENT_ACCOUNT_BY_CUSTOMER @CODE_COSTUMER = '1', @CURRENT_AMOUT_PAYMENT = 1500, @CODE_ROUTE = 'rudi@DIPROCOM'
+        EXEC [acsa].SONDA_SP_GET_CURRENT_ACCOUNT_BY_CUSTOMER @CODE_COSTUMER = '1', @CURRENT_AMOUT_PAYMENT = 1500, @CODE_ROUTE = 'rudi@DIPROCOM'
 */
 
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_GET_CURRENT_ACCOUNT_BY_CUSTOMER]	
+CREATE PROCEDURE [acsa].[SONDA_SP_GET_CURRENT_ACCOUNT_BY_CUSTOMER]	
 	@CODE_COSTUMER VARCHAR(50)	
 	,@CURRENT_AMOUT_PAYMENT FLOAT
 	,@SALES_ORDER_TYPE VARCHAR(250) = 'CREDIT'
@@ -41,7 +41,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	-- Verifica si esta activa la regla de antiguedad de saldos
 	-- ------------------------------------------------------------------------------------
-	IF ([SONDA].[SWIFT_FN_VALIDATE_EVENT_FOR_ROUTE]('NoValidarAntiguedadDeSaldos',@CODE_ROUTE) = 1)
+	IF ([acsa].[SWIFT_FN_VALIDATE_EVENT_FOR_ROUTE]('NoValidarAntiguedadDeSaldos',@CODE_ROUTE) = 1)
 	BEGIN
 		GOTO ENDSP
 	END
@@ -55,7 +55,7 @@ BEGIN
 	END
 	ELSE
 	BEGIN
-		IF (@SALES_ORDER_TYPE = (SELECT [SONDA].[SWIFT_FN_GET_PARAMETER]('SALES_ORDER_TYPE','CASH' )))
+		IF (@SALES_ORDER_TYPE = (SELECT [acsa].[SWIFT_FN_GET_PARAMETER]('SALES_ORDER_TYPE','CASH' )))
 		BEGIN
 			SET @IS_CASH = 1
 		END
@@ -69,7 +69,7 @@ BEGIN
 	SELECT TOP 1 
 		@CREDIT_LIMIT = ISNULL([CREDIT_LIMIT],0)
 		,@EXTRA_DAYS = ISNULL([EXTRA_DAYS],0)
-	FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER]
+	FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER]
 	WHERE [CODE_CUSTOMER] = @CODE_COSTUMER
 
 	-- ----------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ BEGIN
 	-- ----------------------------------------------------------------------------------
 	PRINT('Se inserta en una tabla temporal las facturas activas del cliente');
 	INSERT INTO #INVOICE
-	EXEC [SONDA].SONDA_SP_GET_INVOICE_ACTIVE_BY_COSTUMER @CODE_COSTUMER
+	EXEC [acsa].SONDA_SP_GET_INVOICE_ACTIVE_BY_COSTUMER @CODE_COSTUMER
 
 	-- ----------------------------------------------------------------------------------
 	-- Se obtiene el total de las facturas activas

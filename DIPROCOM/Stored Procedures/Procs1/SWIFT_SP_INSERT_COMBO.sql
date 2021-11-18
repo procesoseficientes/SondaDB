@@ -5,14 +5,14 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_INSERT_COMBO]
+				EXEC [acsa].[SWIFT_SP_INSERT_COMBO]
 					@NAME_COMBO = 'combo 1'
 					,@DESCRIPTION_COMBO = 'combo 1'
 				-- 
-				SELECT * FROM [SONDA].[SWIFT_COMBO]
+				SELECT * FROM [acsa].[SWIFT_COMBO]
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_COMBO](
+CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_COMBO](
 	@NAME_COMBO VARCHAR(250)
 	,@DESCRIPTION_COMBO VARCHAR(250)
 )
@@ -21,7 +21,7 @@ BEGIN
 	BEGIN TRY
 		DECLARE @ID INT
 		--
-		INSERT INTO [SONDA].[SWIFT_COMBO]
+		INSERT INTO [acsa].[SWIFT_COMBO]
 				(
 					[NAME_COMBO]
 					,[DESCRIPTION_COMBO]

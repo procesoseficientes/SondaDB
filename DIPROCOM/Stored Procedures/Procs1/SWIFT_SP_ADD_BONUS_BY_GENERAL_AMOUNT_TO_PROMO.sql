@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-			EXEC  [SONDA].[SWIFT_SP_ADD_BONUS_BY_GENERAL_AMOUNT_TO_PROMO] @PROMO_NAME = 'Promo Prueba monto general 1', 
+			EXEC  [acsa].[SWIFT_SP_ADD_BONUS_BY_GENERAL_AMOUNT_TO_PROMO] @PROMO_NAME = 'Promo Prueba monto general 1', 
                                                                   @LOW_LIMIT = 1000,  
                                                                   @HIGH_LIMIT = 2000,   
                                                                   @CODE_SKU_BONUS = 'U00000331' ,   
@@ -13,7 +13,7 @@
                                                                   @BONUS_QTY = 2 
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_ADD_BONUS_BY_GENERAL_AMOUNT_TO_PROMO] (@PROMO_ID INT,
+CREATE PROCEDURE [acsa].[SWIFT_SP_ADD_BONUS_BY_GENERAL_AMOUNT_TO_PROMO] (@PROMO_ID INT,
 @LOW_LIMIT DECIMAL(18, 6),
 @HIGH_LIMIT DECIMAL(18, 6),
 @CODE_SKU_BONUS VARCHAR(50),
@@ -30,7 +30,7 @@ BEGIN
     -- ----------------------------------------------------------------------------------------------------------
     -- Se valida el rango de venta para la Bonificacion por monto general
     -- ----------------------------------------------------------------------------------------------------------
-    EXEC [SONDA].[SWIFT_SP_VALIDATE_LIMITS_OF_BONUS_BY_GENERAL_AMOUNT] @PROMO_ID = @PROMO_ID
+    EXEC [acsa].[SWIFT_SP_VALIDATE_LIMITS_OF_BONUS_BY_GENERAL_AMOUNT] @PROMO_ID = @PROMO_ID
                                                                     ,@LOW_LIMIT = @LOW_LIMIT
                                                                     ,@HIGH_LIMIT = @HIGH_LIMIT
                                                                     ,@CODE_SKU = @CODE_SKU_BONUS
@@ -39,7 +39,7 @@ BEGIN
     -- ----------------------------------------------------------------------------------------------------------
     -- Se inserta la bonificacion
     -- ----------------------------------------------------------------------------------------------------------
-    INSERT INTO [SONDA].[SWIFT_PROMO_BONUS_BY_GENERAL_AMOUNT] ([PROMO_ID], [LOW_LIMIT], [HIGH_LIMIT], [CODE_SKU_BONUS], [PACK_UNIT_BONUS], [BONUS_QTY])
+    INSERT INTO [acsa].[SWIFT_PROMO_BONUS_BY_GENERAL_AMOUNT] ([PROMO_ID], [LOW_LIMIT], [HIGH_LIMIT], [CODE_SKU_BONUS], [PACK_UNIT_BONUS], [BONUS_QTY])
       VALUES (@PROMO_ID, @LOW_LIMIT, @HIGH_LIMIT, @CODE_SKU_BONUS, @PACK_UNIT_BONUS, @BONUS_QTY);
 
     --

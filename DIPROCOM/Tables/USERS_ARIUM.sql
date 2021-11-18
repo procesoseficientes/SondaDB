@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[USERS_ARIUM] (
+﻿CREATE TABLE [acsa].[USERS_ARIUM] (
     [CORRELATIVE]            INT           NOT NULL,
     [LOGIN]                  VARCHAR (50)  NULL,
     [NAME_USER]              VARCHAR (50)  NULL,

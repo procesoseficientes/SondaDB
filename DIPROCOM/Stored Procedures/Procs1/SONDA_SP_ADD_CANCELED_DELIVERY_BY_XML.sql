@@ -9,7 +9,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SONDA_SP_ADD_CANCELED_DELIVERY_BY_XML]
+				EXEC [acsa].[SONDA_SP_ADD_CANCELED_DELIVERY_BY_XML]
 				@XML = '
 					
 <Data>
@@ -31,7 +31,7 @@
 
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_ADD_CANCELED_DELIVERY_BY_XML] (@XML XML)
+CREATE PROCEDURE [acsa].[SONDA_SP_ADD_CANCELED_DELIVERY_BY_XML] (@XML XML)
 AS
 BEGIN
   BEGIN TRY
@@ -125,7 +125,7 @@ BEGIN
 
       --      
 
-      INSERT INTO [SONDA].[SONDA_DELIVERY_CANCELED] (
+      INSERT INTO [acsa].[SONDA_DELIVERY_CANCELED] (
         [PICKING_DEMAND_HEADER_ID]
       , [DOC_NUM]
       , [DOC_SERIE]

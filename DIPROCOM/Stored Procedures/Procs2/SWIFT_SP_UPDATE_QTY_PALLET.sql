@@ -7,14 +7,14 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-EXECUTE  [SONDA].[SWIFT_SP_UPDATE_QTY_PALLET] 
+EXECUTE  [acsa].[SWIFT_SP_UPDATE_QTY_PALLET] 
    @PALLET_ID = 2
   ,@QTY = 2
 
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_UPDATE_QTY_PALLET]
+CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_QTY_PALLET]
      @PALLET_ID AS INT
 	,@QTY AS INT
 		
@@ -23,7 +23,7 @@ BEGIN
 
 	SET NOCOUNT ON;
 
-	UPDATE [SONDA].[SWIFT_PALLET]
+	UPDATE [acsa].[SWIFT_PALLET]
 	   SET [QTY] = @QTY
 	 WHERE [PALLET_ID] = @PALLET_ID
 

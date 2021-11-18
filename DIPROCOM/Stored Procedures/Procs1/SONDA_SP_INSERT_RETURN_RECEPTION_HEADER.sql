@@ -2,7 +2,7 @@
 -- Author:         diego.as
 -- Create date:    05-02-2016
 -- Description:    Insertar registros en la Tabla 
---				   [SONDA].SONDA_DOC_ROUTE_RETURN_HEADER 
+--				   [acsa].SONDA_DOC_ROUTE_RETURN_HEADER 
 --				   con transacción y control de errores.
 
 --Actualización:	diego.as
@@ -21,19 +21,19 @@
 /*
 Ejemplo de Ejecucion:
 
-					EXEC [SONDA].[SONDA_SP_INSERT_RETURN_RECEPTION_HEADER] 
+					EXEC [acsa].[SONDA_SP_INSERT_RETURN_RECEPTION_HEADER] 
 					@USER_LOGIN = 'oper1@DIPROCOM'
 					,@WAREHOUSE_SOURCE = 'V004'
 					,@WAREHOUSE_TARGET = 'C001'
 					,@STATUS_DOC =NULL 
 
-					SELECT * FROM [SONDA].[SONDA_DOC_ROUTE_RETURN_HEADER]
+					SELECT * FROM [acsa].[SONDA_DOC_ROUTE_RETURN_HEADER]
 		
 				
 */
 -- =============================================
 
-CREATE PROCEDURE [SONDA].SONDA_SP_INSERT_RETURN_RECEPTION_HEADER
+CREATE PROCEDURE [acsa].SONDA_SP_INSERT_RETURN_RECEPTION_HEADER
 (
 	@USER_LOGIN AS varchar(50)
 	,@WAREHOUSE_SOURCE varchar(50)
@@ -51,10 +51,10 @@ BEGIN
     BEGIN TRAN TransAdd
     BEGIN TRY
 		SELECT @NAME_USER = FU.NAME_USER 
-		FROM [SONDA].USERS AS FU 
+		FROM [acsa].USERS AS FU 
 		WHERE FU.LOGIN = @USER_LOGIN
 		
-		INSERT INTO [SONDA].[SONDA_DOC_ROUTE_RETURN_HEADER] (
+		INSERT INTO [acsa].[SONDA_DOC_ROUTE_RETURN_HEADER] (
 			USER_LOGIN
 			,WAREHOUSE_SOURCE
 			,WAREHOUSE_TARGET

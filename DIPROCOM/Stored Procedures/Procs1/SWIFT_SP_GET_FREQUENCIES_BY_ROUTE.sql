@@ -5,7 +5,7 @@
 
 /* Ejemplo de ejecucion
 	 
-	EXEC [SONDA].[SWIFT_SP_GET_FREQUENCIES_BY_ROUTE] 
+	EXEC [acsa].[SWIFT_SP_GET_FREQUENCIES_BY_ROUTE] 
 					@CODE_ROUTE = '99'
 					,@TYPE_TASK = 'PRESALE'
 					,@DAY = 3
@@ -13,7 +13,7 @@
 	*/
 
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_FREQUENCIES_BY_ROUTE]
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_FREQUENCIES_BY_ROUTE]
     @CODE_ROUTE VARCHAR(50),
     @TYPE_TASK VARCHAR(50),
     @DAY INT
@@ -28,8 +28,8 @@ BEGIN
                [F].[TYPE_TASK],
                @DAY [DAY]
         INTO [#FREQUENCIES]
-        FROM [SONDA].[SWIFT_FREQUENCY] [F]
-            INNER JOIN [SONDA].[SWIFT_FREQUENCY_BY_POLYGON] [PBR]
+        FROM [acsa].[SWIFT_FREQUENCY] [F]
+            INNER JOIN [acsa].[SWIFT_FREQUENCY_BY_POLYGON] [PBR]
                 ON ([PBR].[ID_FREQUENCY] = [F].[ID_FREQUENCY])
         WHERE (CASE @DAY
                    WHEN 1 THEN
@@ -63,8 +63,8 @@ BEGIN
                [F].[DAY],
                [C].[LATITUDE],
                [C].[LONGITUDE]
-        FROM [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
-            INNER JOIN [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
+        FROM [acsa].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
+            INNER JOIN [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
                 ON ([FC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER])
             INNER JOIN [#FREQUENCIES] [F]
                 ON ([F].[ID_FREQUENCY] = [FC].[ID_FREQUENCY])

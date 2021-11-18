@@ -5,7 +5,7 @@
 
 /* Ejemplo de ejecucion
 	 
-	 EXEC [SONDA].[SWIFT_SP_GET_ROUTES_SELECTED] 
+	 EXEC [acsa].[SWIFT_SP_GET_ROUTES_SELECTED] 
 	 @XML =
 	'<Data>
 	<routes>
@@ -17,7 +17,7 @@
 	*/
 --
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_ROUTES_SELECTED] @XML XML
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_ROUTES_SELECTED] @XML XML
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -86,11 +86,11 @@ BEGIN
                SUM([F].[FRIDAY]) [FRIDAY],
                SUM([F].[SATURDAY]) [SATURDAY]
         FROM @RUTAS_SELECCIONADAS [RS]
-            INNER JOIN [SONDA].[SWIFT_FREQUENCY] [F]
+            INNER JOIN [acsa].[SWIFT_FREQUENCY] [F]
                 ON ([RS].[CODE_ROUTE] = [F].[CODE_ROUTE])
-            INNER JOIN [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
+            INNER JOIN [acsa].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
                 ON ([F].[ID_FREQUENCY] = [FC].[ID_FREQUENCY])
-            INNER JOIN [SONDA].[SWIFT_ROUTES] [R]
+            INNER JOIN [acsa].[SWIFT_ROUTES] [R]
                 ON ([F].[CODE_ROUTE] = [R].[CODE_ROUTE])
         GROUP BY [F].[TYPE_TASK],
                  [F].[CODE_ROUTE],

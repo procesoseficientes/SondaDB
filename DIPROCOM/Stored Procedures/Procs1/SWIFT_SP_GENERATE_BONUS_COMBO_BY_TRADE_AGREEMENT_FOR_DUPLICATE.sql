@@ -17,12 +17,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_GENERATE_BONUS_COMBO_BY_TRADE_AGREEMENT_FOR_DUPLICATE]
+				EXEC [acsa].[SWIFT_SP_GENERATE_BONUS_COMBO_BY_TRADE_AGREEMENT_FOR_DUPLICATE]
 					@CODE_ROUTE = '44'
 					,@ORDER = 1
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GENERATE_BONUS_COMBO_BY_TRADE_AGREEMENT_FOR_DUPLICATE] (@CODE_ROUTE VARCHAR(250)
+CREATE PROCEDURE [acsa].[SWIFT_SP_GENERATE_BONUS_COMBO_BY_TRADE_AGREEMENT_FOR_DUPLICATE] (@CODE_ROUTE VARCHAR(250)
 , @ORDER INT)
 AS
 BEGIN
@@ -53,7 +53,7 @@ BEGIN
   )
   --
   SELECT
-    @SELLER_CODE = [SONDA].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE)
+    @SELLER_CODE = [acsa].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE)
 
   -- ------------------------------------------------------------------------------------
   -- Obtiene los clientes a repetidos
@@ -61,24 +61,24 @@ BEGIN
   INSERT INTO @CUSTOMER ([CODE_CUSTOMER])
     SELECT DISTINCT
       [C].[CODE_CUSTOMER]
-    FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
+    FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
       ON (
       [C].[CODE_CUSTOMER] = [TAC].[CODE_CUSTOMER]
       )
-    INNER JOIN [SONDA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+    INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
       ON (
       [C].[CODE_CUSTOMER] = [CC].[CODE_CUSTOMER]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT] [TA1]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA1]
       ON (
       [TA1].[TRADE_AGREEMENT_ID] = [TAC].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TACH]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TACH]
       ON (
       [CC].[CHANNEL_ID] = [TACH].[CHANNEL_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT] [TA2]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA2]
       ON (
       [TA2].[TRADE_AGREEMENT_ID] = [TACH].[TRADE_AGREEMENT_ID]
       )
@@ -95,28 +95,28 @@ BEGIN
   INSERT INTO @CUSTOMER ([CODE_CUSTOMER])
     SELECT DISTINCT
       [C].[CODE_CUSTOMER]
-    FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
-    INNER JOIN [SONDA].[SONDA_ROUTE_PLAN] [RP]
+    FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
+    INNER JOIN [acsa].[SONDA_ROUTE_PLAN] [RP]
       ON (
       [C].[CODE_CUSTOMER] = [RP].[RELATED_CLIENT_CODE]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
       ON (
       [C].[CODE_CUSTOMER] = [TAC].[CODE_CUSTOMER]
       )
-    INNER JOIN [SONDA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+    INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
       ON (
       [C].[CODE_CUSTOMER] = [CC].[CODE_CUSTOMER]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT] [TA1]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA1]
       ON (
       [TA1].[TRADE_AGREEMENT_ID] = [TAC].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TACH]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TACH]
       ON (
       [CC].[CHANNEL_ID] = [TACH].[CHANNEL_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT] [TA2]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA2]
       ON (
       [TA2].[TRADE_AGREEMENT_ID] = [TACH].[TRADE_AGREEMENT_ID]
       )
@@ -148,11 +148,11 @@ BEGIN
      ,@CODE_ROUTE
      ,@CODE_ROUTE + '|' + [C].[CODE_CUSTOMER]
     FROM @CUSTOMER [C]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
       ON (
       [C].[CODE_CUSTOMER] = [TAC].[CODE_CUSTOMER]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT] [TA]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA]
       ON (
       [TAC].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
@@ -169,7 +169,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Genera las listas de bonificaciones
 		-- ------------------------------------------------------------------------------------
-		INSERT INTO [SONDA].[SWIFT_BONUS_LIST]
+		INSERT INTO [acsa].[SWIFT_BONUS_LIST]
 				([NAME_BONUS_LIST])
 		SELECT DISTINCT (@CODE_ROUTE + '|' + [TA].[CODE_CUSTOMER])
 		FROM @TRADE_AGREEMENT [TA]
@@ -177,7 +177,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Asocia el cliente con la lista de bonificaciones
 		-- ------------------------------------------------------------------------------------
-		INSERT INTO [SONDA].[SWIFT_BONUS_LIST_BY_CUSTOMER]
+		INSERT INTO [acsa].[SWIFT_BONUS_LIST_BY_CUSTOMER]
 				(
 					[BONUS_LIST_ID]
 					,[CODE_CUSTOMER]
@@ -186,7 +186,7 @@ BEGIN
 			[BL].[BONUS_LIST_ID]
 			,[TA].[CODE_CUSTOMER]
 		FROM @TRADE_AGREEMENT [TA]
-		INNER JOIN [SONDA].[SWIFT_BONUS_LIST] [BL] ON (
+		INNER JOIN [acsa].[SWIFT_BONUS_LIST] [BL] ON (
 			[BL].[NAME_BONUS_LIST] = (@CODE_ROUTE + '|' + [TA].[CODE_CUSTOMER])
 		)
 	END*/
@@ -194,7 +194,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Se agrega la configuracion de bonificaciones por combo
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [SONDA].[SWIFT_BONUS_LIST_BY_COMBO] ([BONUS_LIST_ID]
+  INSERT INTO [acsa].[SWIFT_BONUS_LIST_BY_COMBO] ([BONUS_LIST_ID]
   , [COMBO_ID]
   , [BONUS_TYPE]
   , [BONUS_SUB_TYPE]
@@ -219,28 +219,28 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT [TA]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO] [P]
+    INNER JOIN [acsa].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO_BY_BONUS_RULE] [TAB]
+    INNER JOIN [acsa].[SWIFT_PROMO_BY_BONUS_RULE] [TAB]
       ON (
       [TAB].[PROMO_ID] = [P].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO_BY_COMBO_PROMO_RULE] [TAR]
+    INNER JOIN [acsa].[SWIFT_PROMO_BY_COMBO_PROMO_RULE] [TAR]
       ON (
       [TAR].[PROMO_RULE_BY_COMBO_ID] = [TAB].[PROMO_RULE_BY_COMBO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_BONUS_LIST] [BL]
+    INNER JOIN [acsa].[SWIFT_BONUS_LIST] [BL]
       ON (
       [BL].[CODE_ROUTE] = [TA].[CODE_ROUTE]
       AND [BL].[NAME_BONUS_LIST] = [TA].[NAME_BONUS_LIST]
       )
-    LEFT JOIN [SONDA].[SWIFT_BONUS_LIST_BY_COMBO] [BLC]
+    LEFT JOIN [acsa].[SWIFT_BONUS_LIST_BY_COMBO] [BLC]
       ON (
       [BLC].[BONUS_LIST_ID] = [BL].[BONUS_LIST_ID]
       AND [BLC].[COMBO_ID] = [TAR].[COMBO_ID]
@@ -251,7 +251,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Se agrega la configuracion de bonificaciones por combo
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [SONDA].[SWIFT_BONUS_LIST_BY_COMBO_SKU] ([BONUS_LIST_ID]
+  INSERT INTO [acsa].[SWIFT_BONUS_LIST_BY_COMBO_SKU] ([BONUS_LIST_ID]
   , [COMBO_ID]
   , [CODE_SKU]
   , [CODE_PACK_UNIT]
@@ -265,36 +265,36 @@ BEGIN
      ,[TAS].[QTY]
      ,[TAS].[IS_MULTIPLE]
     FROM @TRADE_AGREEMENT [TA]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO] [P]
+    INNER JOIN [acsa].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO_BY_BONUS_RULE] [TAB]
+    INNER JOIN [acsa].[SWIFT_PROMO_BY_BONUS_RULE] [TAB]
       ON (
       [TAB].[PROMO_ID] = [P].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO_BY_COMBO_PROMO_RULE] [TAR]
+    INNER JOIN [acsa].[SWIFT_PROMO_BY_COMBO_PROMO_RULE] [TAR]
       ON (
       [TAR].[PROMO_RULE_BY_COMBO_ID] = [TAB].[PROMO_RULE_BY_COMBO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO_SKU_BY_PROMO_RULE] [TAS]
+    INNER JOIN [acsa].[SWIFT_PROMO_SKU_BY_PROMO_RULE] [TAS]
       ON (
       [TAS].[PROMO_RULE_BY_COMBO_ID] = [TAR].[PROMO_RULE_BY_COMBO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_BONUS_LIST] [BL]
+    INNER JOIN [acsa].[SWIFT_BONUS_LIST] [BL]
       ON (
       [BL].[CODE_ROUTE] = [TA].[CODE_ROUTE]
       AND [BL].[NAME_BONUS_LIST] = [TA].[NAME_BONUS_LIST]
       )
-    INNER JOIN [SONDA].[SONDA_PACK_UNIT] [SPU]
+    INNER JOIN [acsa].[SONDA_PACK_UNIT] [SPU]
       ON (
       [SPU].[PACK_UNIT] = [TAS].[PACK_UNIT]
       )
-    LEFT JOIN [SONDA].[SWIFT_BONUS_LIST_BY_COMBO_SKU] [BLC]
+    LEFT JOIN [acsa].[SWIFT_BONUS_LIST_BY_COMBO_SKU] [BLC]
       ON (
       [BLC].[BONUS_LIST_ID] = [BL].[BONUS_LIST_ID]
       AND [BLC].[COMBO_ID] = [TAR].[COMBO_ID]

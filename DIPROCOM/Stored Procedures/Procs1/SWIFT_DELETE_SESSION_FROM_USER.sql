@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				 EXEC [SONDA].SWIFT_DELETE_SESSION_FROM_USER 'gerente@DIPROCOM'
+				 EXEC [acsa].SWIFT_DELETE_SESSION_FROM_USER 'gerente@DIPROCOM'
 					
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_DELETE_SESSION_FROM_USER] (
+CREATE PROCEDURE [acsa].[SWIFT_DELETE_SESSION_FROM_USER] (
 		@SESSION_ID VARCHAR(100)
 	)
 AS

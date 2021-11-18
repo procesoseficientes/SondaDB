@@ -6,11 +6,11 @@
 --						y que el producto coresponda a la tarea
 						--
 -- Ejemplo de Ejecucion:	
-						SELECT [SONDA].[SWIFT_FUNC_VALIDATE_TASK]('5219','20GM')
+						SELECT [acsa].[SWIFT_FUNC_VALIDATE_TASK]('5219','20GM')
 						--						--
 -- =============================================
 */
-CREATE FUNCTION [SONDA].[SWIFT_FUNC_VALIDATE_TASK]
+CREATE FUNCTION [acsa].[SWIFT_FUNC_VALIDATE_TASK]
 ( 
 	@TASK_ID INT
 	,@SKU VARCHAR(50)
@@ -21,8 +21,8 @@ BEGIN
 	DECLARE @RESULT BIT = 0
 	--
 	SELECT TOP 1 @RESULT = 1  
-	FROM [SONDA].[SWIFT_PALLET] TP
-	INNER JOIN [SONDA].[SWIFT_BATCH] TB ON (TP.TASK_ID = TB.TASK_ID)
+	FROM [acsa].[SWIFT_PALLET] TP
+	INNER JOIN [acsa].[SWIFT_BATCH] TB ON (TP.TASK_ID = TB.TASK_ID)
 	WHERE TB.TASK_ID =@TASK_ID
 	AND TB.SKU=@SKU
 	--

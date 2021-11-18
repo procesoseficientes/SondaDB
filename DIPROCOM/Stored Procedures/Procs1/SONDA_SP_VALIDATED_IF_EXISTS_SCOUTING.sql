@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SONDA_SP_VALIDATED_IF_EXISTS_SCOUTING]
+				EXEC [acsa].[SONDA_SP_VALIDATED_IF_EXISTS_SCOUTING]
 					@CODE_ROUTE = '46', -- varchar(50)
 					@CODE_CUSTOMER = 'SO-1322', -- varchar(50)
 					@DOC_SERIE = 'ADOLFO@DIPROCOM', -- varchar(50)
@@ -27,7 +27,7 @@
 					@JSON = '{"Data":{"scouting":[{"clientId":"-2","docSerie":"ADOLFO@DIPROCOM","docNum":"1","postedDatetime":"2017/06/16 10:21:33","tagsQty":"5","syncId":"46|Adolfo@DIPROCOM|2017/06/16 10:21:33|-2"},{"clientId":"-3","docSerie":"ADOLFO@DIPROCOM","docNum":"2","postedDatetime":"2017/06/16 10:22:58","tagsQty":"10","syncId":"46|Adolfo@DIPROCOM|2017/06/16 10:22:58|-3"},{"clientId":"-4","docSerie":"ADOLFO@DIPROCOM","docNum":"3","postedDatetime":"2017/06/16 10:24:19","tagsQty":"10","syncId":"46|Adolfo@DIPROCOM|2017/06/16 10:24:19|-4"}],"dbuser":"UDIPROCOM","dbuserpass":"DIPROCOMServer1237710","routeid":"46","loginId":"Adolfo@DIPROCOM"}}'
 */			
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_VALIDATED_IF_EXISTS_SCOUTING](
+CREATE PROCEDURE [acsa].[SONDA_SP_VALIDATED_IF_EXISTS_SCOUTING](
 	@CODE_ROUTE VARCHAR(50)
 	,@CODE_CUSTOMER VARCHAR(50)
 	,@DOC_SERIE VARCHAR(50)
@@ -53,7 +53,7 @@ BEGIN
 	SELECT TOP 1
 		@EXISTS = 1
 		,@ID = [CN].[CUSTOMER_ID]
-	FROM [SONDA].[SONDA_CUSTOMER_NEW] [CN] WITH(ROWLOCK,XLOCK,HOLDLOCK)
+	FROM [acsa].[SONDA_CUSTOMER_NEW] [CN] WITH(ROWLOCK,XLOCK,HOLDLOCK)
 	WHERE [CN].[CODE_ROUTE] = @CODE_ROUTE
 		AND [CN].[CODE_CUSTOMER] = @CODE_CUSTOMER
 		AND [CN].[DOC_SERIE] = @DOC_SERIE
@@ -77,14 +77,14 @@ BEGIN
 		SELECT TOP 1
 			@ID = [CN].[CUSTOMER_ID]
 			,@EXISTS = 1
-		FROM [SONDA].[SONDA_CUSTOMER_NEW] [CN] WITH(ROWLOCK,XLOCK,HOLDLOCK)
+		FROM [acsa].[SONDA_CUSTOMER_NEW] [CN] WITH(ROWLOCK,XLOCK,HOLDLOCK)
 		WHERE [CN].[CODE_CUSTOMER] = @ID_FROM_XML
 		GROUP BY [CN].[CUSTOMER_ID];
 		--
 		SELECT TOP 1
 			@TAG_QTY_IN_DB = COUNT([T].[CUSTOMER_ID])
-		FROM [SONDA].[SONDA_CUSTOMER_NEW] [CN] WITH(ROWLOCK,XLOCK,HOLDLOCK)
-		INNER JOIN [SONDA].[SONDA_TAG_X_CUSTOMER_NEW] [T] ON ([T].[CUSTOMER_ID] = [CN].[CUSTOMER_ID])
+		FROM [acsa].[SONDA_CUSTOMER_NEW] [CN] WITH(ROWLOCK,XLOCK,HOLDLOCK)
+		INNER JOIN [acsa].[SONDA_TAG_X_CUSTOMER_NEW] [T] ON ([T].[CUSTOMER_ID] = [CN].[CUSTOMER_ID])
 		WHERE [CN].[CODE_CUSTOMER] = @ID_FROM_XML
 		GROUP BY [CN].[CUSTOMER_ID];
 	END
@@ -105,7 +105,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	-- Marca IS_READY_TO_SEND como 1
 	-- ------------------------------------------------------------------------------------
-	UPDATE [SONDA].[SONDA_CUSTOMER_NEW]
+	UPDATE [acsa].[SONDA_CUSTOMER_NEW]
 	SET [IS_READY_TO_SEND] = 1
 	WHERE [CODE_CUSTOMER] = @CODE_CUSTOMER
 		AND [DOC_SERIE] = @DOC_SERIE
@@ -115,7 +115,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	-- Inserta el log
 	-- ------------------------------------------------------------------------------------
-	EXEC [SONDA].[SONDA_SP_CUSTOMER_NEW_INSERT_LOG] 
+	EXEC [acsa].[SONDA_SP_CUSTOMER_NEW_INSERT_LOG] 
 		@EXISTS_SCOUTING = @EXISTS, -- int
 		@DOC_SERIE = @DOC_SERIE, -- varchar(50)
 		@DOC_NUM = @DOC_NUM, -- int

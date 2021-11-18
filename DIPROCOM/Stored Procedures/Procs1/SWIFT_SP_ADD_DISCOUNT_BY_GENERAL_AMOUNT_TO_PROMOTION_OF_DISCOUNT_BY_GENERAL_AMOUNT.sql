@@ -5,14 +5,14 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_ADD_DISCOUNT_BY_GENERAL_AMOUNT_TO_PROMOTION_OF_DISCOUNT_BY_GENERAL_AMOUNT]
+				EXEC [acsa].[SWIFT_SP_ADD_DISCOUNT_BY_GENERAL_AMOUNT_TO_PROMOTION_OF_DISCOUNT_BY_GENERAL_AMOUNT]
 				@PROMO_ID = 8,
 				@LOW_AMOUNT = 50000.000000,
 				@HIGH_AMOUNT = 60000.990000,
 				@DISCOUNT = 3.000000
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_ADD_DISCOUNT_BY_GENERAL_AMOUNT_TO_PROMOTION_OF_DISCOUNT_BY_GENERAL_AMOUNT](
+CREATE PROCEDURE [acsa].[SWIFT_SP_ADD_DISCOUNT_BY_GENERAL_AMOUNT_TO_PROMOTION_OF_DISCOUNT_BY_GENERAL_AMOUNT](
 	@PROMO_ID INT,
 	@LOW_AMOUNT DECIMAL(18,6),
 	@HIGH_AMOUNT DECIMAL(18,6),
@@ -27,12 +27,12 @@ BEGIN
 		-- ----------------------------------------------------------------------------------------------------------
 		-- Se valida el rango de venta para el descuento por monto general
 		-- ----------------------------------------------------------------------------------------------------------
-		EXEC [SONDA].[SWIFT_SP_VALID_DISCOUNT_SCALE_FOR_DISCOUNT_BY_GENERAL_AMOUNT] @PROMO_ID,@LOW_AMOUNT,@HIGH_AMOUNT;
+		EXEC [acsa].[SWIFT_SP_VALID_DISCOUNT_SCALE_FOR_DISCOUNT_BY_GENERAL_AMOUNT] @PROMO_ID,@LOW_AMOUNT,@HIGH_AMOUNT;
 		
 		-- -----------------------------------------------------------------------------------------------------------
 		-- Si no hay conflicto con el rango de descuento, éste se agrega a la promoción de Descuento por Monto General
 		-- -----------------------------------------------------------------------------------------------------------
-		INSERT INTO [SONDA].[SWIFT_PROMO_DISCOUNT_BY_GENERAL_AMOUNT]
+		INSERT INTO [acsa].[SWIFT_PROMO_DISCOUNT_BY_GENERAL_AMOUNT]
 				(
 					[PROMO_ID]
 					,[LOW_AMOUNT]

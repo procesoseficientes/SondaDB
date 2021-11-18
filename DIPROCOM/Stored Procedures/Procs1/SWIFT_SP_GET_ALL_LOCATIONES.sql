@@ -6,15 +6,15 @@
 
 /*
 -- Ejemplo de Ejecucion:				
-				-- EXEC [SONDA].[SWIFT_SP_GET_ALL_LOCATIONES]
+				-- EXEC [acsa].[SWIFT_SP_GET_ALL_LOCATIONES]
 				--				
 */
 -- =============================================
 
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_ALL_LOCATIONES]
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_ALL_LOCATIONES]
 AS
 Select L.[CODE_LOCATION]
-from [SONDA].[SWIFT_LOCATIONS] L
+from [acsa].[SWIFT_LOCATIONS] L
 
 
 

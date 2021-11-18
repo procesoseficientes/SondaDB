@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[SWIFT_DAILY_GOAL_BY_SELLER] (
+﻿CREATE TABLE [acsa].[SWIFT_DAILY_GOAL_BY_SELLER] (
     [ID]             INT             IDENTITY (1, 1) NOT NULL,
     [TEAM_ID]        INT             NULL,
     [DOC_TYPE]       VARCHAR (15)    NULL,

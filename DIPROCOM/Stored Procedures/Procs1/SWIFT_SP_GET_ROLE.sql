@@ -5,12 +5,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_GET_ROLE]
+				EXEC [acsa].[SWIFT_SP_GET_ROLE]
 				--
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_ROLE]
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_ROLE]
 AS
 BEGIN
-  SELECT * FROM [SONDA].SWIFT_ROLE
+  SELECT * FROM [acsa].SWIFT_ROLE
 END

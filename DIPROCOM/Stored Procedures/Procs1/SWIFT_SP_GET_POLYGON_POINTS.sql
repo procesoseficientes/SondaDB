@@ -13,11 +13,11 @@
 
 /*
 Ejemplo de Ejecucion:
-			      EXEC [SONDA].[SWIFT_SP_GET_POLYGON_POINTS] 
+			      EXEC [acsa].[SWIFT_SP_GET_POLYGON_POINTS] 
 					@POLYGON_ID = 7        
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].SWIFT_SP_GET_POLYGON_POINTS (
+CREATE PROCEDURE [acsa].SWIFT_SP_GET_POLYGON_POINTS (
 	@POLYGON_ID INT = NULL
 	,@POLYGON_TYPE VARCHAR(250) = NULL
 	,@POLYGON_SUB_TYPE VARCHAR(250) = NULL
@@ -35,8 +35,8 @@ BEGIN
 		,[spp].[POSITION]
 		,[spp].[LATITUDE]
 		,[spp].[LONGITUDE]
-	FROM [SONDA].[SWIFT_POLYGON_POINT] [spp]
-	INNER JOIN [SONDA].[SWIFT_POLYGON] [sp] ON (
+	FROM [acsa].[SWIFT_POLYGON_POINT] [spp]
+	INNER JOIN [acsa].[SWIFT_POLYGON] [sp] ON (
 		[spp].[POLYGON_ID] = [sp].[POLYGON_ID]
 	)
 	WHERE

@@ -1,4 +1,4 @@
-CREATE TABLE [SONDA].[SONDA_POS_RES_SAT] (
+CREATE TABLE [acsa].[SONDA_POS_RES_SAT] (
     [ROWPK]                                   INT           IDENTITY (1, 1) NOT NULL,
     [AUTH_ID]                                 VARCHAR (50)  NOT NULL,
     [AUTH_ASSIGNED_DATETIME]                  DATETIME      NULL,
@@ -34,8 +34,8 @@ GO
 -- Create date: <2021-06-02>
 -- Description:	<Trigger que previene el atraso de los correlativos en la tabla POS_RES_SAT y que devuelve el correlativo actual para mostrar en el error en SONDA_SD>
 -- =============================================
-CREATE TRIGGER [SONDA].[PREVENT_LOWER_DOCUMENT]
-   ON  [SWIFT_EXPRESS_QA].[SONDA].[SONDA_POS_RES_SAT]
+CREATE TRIGGER [acsa].[PREVENT_LOWER_DOCUMENT]
+   ON  [SWIFT_EXPRESS_QA].[acsa].[SONDA_POS_RES_SAT]
    AFTER UPDATE
 AS 
 BEGIN
@@ -66,7 +66,7 @@ BEGIN
 				   @DOC_NUM = i.AUTH_CURRENT_DOC
 			FROM inserted i 
 			JOIN deleted d on i.AUTH_SERIE = d.AUTH_SERIE
-			INNER JOIN [SONDA].USERS U ON i.AUTH_ASSIGNED_TO = U.SELLER_ROUTE
+			INNER JOIN [acsa].USERS U ON i.AUTH_ASSIGNED_TO = U.SELLER_ROUTE
 
 	set @actual = ' No se puede actualizar el corelativo a un valor menor: ' + CAST((select d.AUTH_CURRENT_DOC from deleted d) AS VARCHAR)
 
@@ -74,7 +74,7 @@ BEGIN
 		--RAISERROR (@actual, 16, 1);
         ROLLBACK TRANSACTION;
 			
-	INSERT INTO [SONDA].[SONDA_SERVER_ERROR_LOG]
+	INSERT INTO [acsa].[SONDA_SERVER_ERROR_LOG]
            ([LOG_DATETIME]
            ,[CODE_ROUTE]
            ,[LOGIN]
@@ -103,6 +103,6 @@ BEGIN
 
 END
 GO
-DISABLE TRIGGER [SONDA].[PREVENT_LOWER_DOCUMENT]
-    ON [SONDA].[SONDA_POS_RES_SAT];
+DISABLE TRIGGER [acsa].[PREVENT_LOWER_DOCUMENT]
+    ON [acsa].[SONDA_POS_RES_SAT];
 

@@ -18,17 +18,17 @@
 /* 
 -- Ejemplo de Ejecucion:
         --
-        EXEC [SONDA].[SWIFT_SP_GET_CUSTOMER_BY_POLYGON_ID]
+        EXEC [acsa].[SWIFT_SP_GET_CUSTOMER_BY_POLYGON_ID]
         @POLYGON_ID = 69
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_CUSTOMER_BY_POLYGON_ID_TUNNING] ( @POLYGON_ID INT )
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_CUSTOMER_BY_POLYGON_ID_TUNNING] ( @POLYGON_ID INT )
 AS
     BEGIN
         BEGIN TRY
 
             DECLARE @GEOMETRY_POLYGON GEOMETRY;            
-            SELECT  @GEOMETRY_POLYGON = [SONDA].SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID(@POLYGON_ID);
+            SELECT  @GEOMETRY_POLYGON = [acsa].SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID(@POLYGON_ID);
 
 
             SELECT  C.CODE_CUSTOMER ,
@@ -42,7 +42,7 @@ AS
                                                               ISNULL(C.LONGITUDE,
                                                               0), 0)) IS_IN
             INTO    #CUSTOMER
-            FROM    [SONDA].SWIFT_VIEW_ALL_COSTUMER C;
+            FROM    [acsa].SWIFT_VIEW_ALL_COSTUMER C;
 
             DELETE  FROM #CUSTOMER
             WHERE   IS_IN = 0;
@@ -82,11 +82,11 @@ AS
                     ROW_NUMBER() OVER ( PARTITION BY C.CODE_CUSTOMER ORDER BY PC.POLYGON_ID DESC, FC.CODE_CUSTOMER DESC, CF.CODE_FREQUENCY DESC ) [ROWNUM]
             INTO    #RESULT
             FROM    #CUSTOMER C
-                    LEFT JOIN [SONDA].[SWIFT_POLYGON_X_CUSTOMER] PC ON ( C.CODE_CUSTOMER = PC.CODE_CUSTOMER
+                    LEFT JOIN [acsa].[SWIFT_POLYGON_X_CUSTOMER] PC ON ( C.CODE_CUSTOMER = PC.CODE_CUSTOMER
                                                               AND PC.POLYGON_ID = @POLYGON_ID
                                                               )
-                    LEFT JOIN [SONDA].SWIFT_CUSTOMER_FREQUENCY CF ON ( CF.CODE_CUSTOMER = C.CODE_CUSTOMER )
-                    LEFT JOIN [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] FC ON ( C.CODE_CUSTOMER = FC.CODE_CUSTOMER );
+                    LEFT JOIN [acsa].SWIFT_CUSTOMER_FREQUENCY CF ON ( CF.CODE_CUSTOMER = C.CODE_CUSTOMER )
+                    LEFT JOIN [acsa].[SWIFT_FREQUENCY_X_CUSTOMER] FC ON ( C.CODE_CUSTOMER = FC.CODE_CUSTOMER );
 
             SELECT  R.CODE_CUSTOMER ,
                     R.NAME_CUSTOMER ,

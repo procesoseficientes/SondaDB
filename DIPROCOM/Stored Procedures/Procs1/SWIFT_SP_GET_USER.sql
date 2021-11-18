@@ -9,13 +9,13 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_GET_USER]
+				EXEC [acsa].[SWIFT_SP_GET_USER]
 					@LOGIN = 'gerente@DIPROCOM'
 
-		SELECT * FROM [SONDA].[USERS]
+		SELECT * FROM [acsa].[USERS]
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_USER](
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_USER](
 	@LOGIN VARCHAR(50) = NULL
 )
 AS
@@ -45,7 +45,7 @@ BEGIN
 			,[ZONE_ID]
 			,[DISTRIBUTION_CENTER_ID]
 			,[CODE_PRICE_LIST]
-	FROM [SONDA].[USERS] 
+	FROM [acsa].[USERS] 
 	WHERE @LOGIN IS NULL OR [LOGIN] = @LOGIN
 
 END

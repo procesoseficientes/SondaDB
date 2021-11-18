@@ -9,12 +9,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_GENERATE_BONUS_GENERAL_AMOUNT_BY_TRADE_AGREEMENT_FOR_DUPLICATE]
+				EXEC [acsa].[SWIFT_SP_GENERATE_BONUS_GENERAL_AMOUNT_BY_TRADE_AGREEMENT_FOR_DUPLICATE]
 					@CODE_ROUTE = '44'
 					,@ORDER = 1
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GENERATE_BONUS_GENERAL_AMOUNT_BY_TRADE_AGREEMENT_FOR_DUPLICATE] (@CODE_ROUTE VARCHAR(250)
+CREATE PROCEDURE [acsa].[SWIFT_SP_GENERATE_BONUS_GENERAL_AMOUNT_BY_TRADE_AGREEMENT_FOR_DUPLICATE] (@CODE_ROUTE VARCHAR(250)
 , @ORDER INT)
 AS
 BEGIN
@@ -48,7 +48,7 @@ IF @ORDER != 1
          ,@LINKED_TO VARCHAR(250) = 'CUSTOMER';
   --
   SELECT
-    @SELLER_CODE = [SONDA].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE)
+    @SELLER_CODE = [acsa].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE)
 
   -- ------------------------------------------------------------------------------------
   -- Obtiene los clientes a repetidos
@@ -56,24 +56,24 @@ IF @ORDER != 1
   INSERT INTO @CUSTOMER ([CODE_CUSTOMER])
     SELECT DISTINCT
       [C].[CODE_CUSTOMER]
-    FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
+    FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
       ON (
       [C].[CODE_CUSTOMER] = [TAC].[CODE_CUSTOMER]
       )
-    INNER JOIN [SONDA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+    INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
       ON (
       [C].[CODE_CUSTOMER] = [CC].[CODE_CUSTOMER]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT] [TA1]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA1]
       ON (
       [TA1].[TRADE_AGREEMENT_ID] = [TAC].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TACH]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TACH]
       ON (
       [CC].[CHANNEL_ID] = [TACH].[CHANNEL_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT] [TA2]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA2]
       ON (
       [TA2].[TRADE_AGREEMENT_ID] = [TACH].[TRADE_AGREEMENT_ID]
       )
@@ -90,28 +90,28 @@ IF @ORDER != 1
   INSERT INTO @CUSTOMER ([CODE_CUSTOMER])
     SELECT DISTINCT
       [C].[CODE_CUSTOMER]
-    FROM [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
-    INNER JOIN [SONDA].[SONDA_ROUTE_PLAN] [RP]
+    FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
+    INNER JOIN [acsa].[SONDA_ROUTE_PLAN] [RP]
       ON (
       [C].[CODE_CUSTOMER] = [RP].[RELATED_CLIENT_CODE]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
       ON (
       [C].[CODE_CUSTOMER] = [TAC].[CODE_CUSTOMER]
       )
-    INNER JOIN [SONDA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+    INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
       ON (
       [C].[CODE_CUSTOMER] = [CC].[CODE_CUSTOMER]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT] [TA1]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA1]
       ON (
       [TA1].[TRADE_AGREEMENT_ID] = [TAC].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TACH]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TACH]
       ON (
       [CC].[CHANNEL_ID] = [TACH].[CHANNEL_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT] [TA2]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA2]
       ON (
       [TA2].[TRADE_AGREEMENT_ID] = [TACH].[TRADE_AGREEMENT_ID]
       )
@@ -143,11 +143,11 @@ IF @ORDER != 1
      ,@CODE_ROUTE
      ,@CODE_ROUTE + '|' + [C].[CODE_CUSTOMER]
     FROM @CUSTOMER [C]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
       ON (
       [C].[CODE_CUSTOMER] = [TAC].[CODE_CUSTOMER]
       )
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT] [TA]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA]
       ON (
       [TAC].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
@@ -164,7 +164,7 @@ IF @ORDER != 1
   --    -- ------------------------------------------------------------------------------------
   --    -- Genera las listas de bonificaciones
   --    -- ------------------------------------------------------------------------------------
-  --    INSERT INTO [SONDA].[SWIFT_BONUS_LIST] ([NAME_BONUS_LIST]
+  --    INSERT INTO [acsa].[SWIFT_BONUS_LIST] ([NAME_BONUS_LIST]
   --    , [CODE_ROUTE])
   --      SELECT DISTINCT
   --        (@CODE_ROUTE + '|' + [TA].[CODE_CUSTOMER])
@@ -174,13 +174,13 @@ IF @ORDER != 1
   --    -- ------------------------------------------------------------------------------------
   --    -- Asocia el cliente con la lista de bonificaciones
   --    -- ------------------------------------------------------------------------------------
-  --    INSERT INTO [SONDA].[SWIFT_BONUS_LIST_BY_CUSTOMER] ([BONUS_LIST_ID]
+  --    INSERT INTO [acsa].[SWIFT_BONUS_LIST_BY_CUSTOMER] ([BONUS_LIST_ID]
   --    , [CODE_CUSTOMER])
   --      SELECT DISTINCT
   --        [BL].[BONUS_LIST_ID]
   --       ,[TA].[CODE_CUSTOMER]
   --      FROM @TRADE_AGREEMENT [TA]
-  --      INNER JOIN [SONDA].[SWIFT_BONUS_LIST] [BL]
+  --      INNER JOIN [acsa].[SWIFT_BONUS_LIST] [BL]
   --        ON (
   --        [BL].[CODE_ROUTE] = [TA].[CODE_ROUTE]
   --        AND [BL].[NAME_BONUS_LIST] = [TA].[NAME_BONUS_LIST]
@@ -190,7 +190,7 @@ IF @ORDER != 1
   -- ------------------------------------------------------------------------------------
   -- Genera las bonificaciones por acuerdo comercial
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [SONDA].[SWIFT_BONUS_LIST_BY_GENERAL_AMOUNT] ([BONUS_LIST_ID]
+  INSERT INTO [acsa].[SWIFT_BONUS_LIST_BY_GENERAL_AMOUNT] ([BONUS_LIST_ID]
   , [LOW_LIMIT]
   , [HIGH_LIMIT]
   , [CODE_SKU_BONUS]
@@ -212,28 +212,28 @@ IF @ORDER != 1
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT [TA]
-    INNER JOIN [SONDA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO] [P]
+    INNER JOIN [acsa].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SWIFT_BONUS_LIST] [BL]
+    INNER JOIN [acsa].[SWIFT_BONUS_LIST] [BL]
       ON (
       [BL].[CODE_ROUTE] = [TA].[CODE_ROUTE]
       AND [BL].[NAME_BONUS_LIST] = [TA].[NAME_BONUS_LIST]
       )
-    INNER JOIN [SONDA].[SWIFT_PROMO_BONUS_BY_GENERAL_AMOUNT] [TAB]
+    INNER JOIN [acsa].[SWIFT_PROMO_BONUS_BY_GENERAL_AMOUNT] [TAB]
       ON (
       [TAB].[PROMO_ID] = [P].[PROMO_ID]
       )
-    INNER JOIN [SONDA].[SONDA_PACK_UNIT] [SPU]
+    INNER JOIN [acsa].[SONDA_PACK_UNIT] [SPU]
       ON (
       [SPU].[PACK_UNIT] = [TAB].[PACK_UNIT_BONUS]
       )
-    LEFT JOIN [SONDA].[SWIFT_BONUS_LIST_BY_GENERAL_AMOUNT] [BLBS]
+    LEFT JOIN [acsa].[SWIFT_BONUS_LIST_BY_GENERAL_AMOUNT] [BLBS]
       ON (
       [BLBS].[BONUS_LIST_ID] = [BL].[BONUS_LIST_ID]
       AND [BLBS].[CODE_SKU_BONUS] = [TAB].[CODE_SKU_BONUS]

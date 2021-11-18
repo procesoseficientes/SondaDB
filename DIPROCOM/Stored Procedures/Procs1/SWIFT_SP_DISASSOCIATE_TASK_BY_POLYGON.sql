@@ -7,13 +7,13 @@ Descripcion:            SP que elimina el tipo de tarea por poligono
 
 Ejemplo de Ejecucion:
 
-    EXEC [SONDA].SWIFT_SP_DISASSOCIATE_TASK_BY_POLYGON
+    EXEC [acsa].SWIFT_SP_DISASSOCIATE_TASK_BY_POLYGON
       @POLYGON_ID = 63
     --
-    SELECT * FROM [SONDA].SWIFT_TASK_BY_POLYGON WHERE POLYGON_ID = 63
+    SELECT * FROM [acsa].SWIFT_TASK_BY_POLYGON WHERE POLYGON_ID = 63
 
 =====================================================================*/
-CREATE PROCEDURE [SONDA].SWIFT_SP_DISASSOCIATE_TASK_BY_POLYGON
+CREATE PROCEDURE [acsa].SWIFT_SP_DISASSOCIATE_TASK_BY_POLYGON
 (
   @POLYGON_ID INT  
 ) AS
@@ -25,7 +25,7 @@ BEGIN
     -- --------------------------------------------
     -- Se eliminan las tareas asociadas al poligono
     -- --------------------------------------------
-    DELETE FROM  [SONDA].[SWIFT_TASK_BY_POLYGON]
+    DELETE FROM  [acsa].[SWIFT_TASK_BY_POLYGON]
       WHERE [POLYGON_ID] = @POLYGON_ID
 
     -- ---------------------------------------

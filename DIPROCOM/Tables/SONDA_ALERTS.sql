@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[SONDA_ALERTS] (
+﻿CREATE TABLE [acsa].[SONDA_ALERTS] (
     [ALERT_ID]      INT           IDENTITY (1, 1) NOT NULL,
     [ALERT_NAME]    VARCHAR (50)  NULL,
     [ALERT_PERC]    INT           NULL,

@@ -13,10 +13,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [SONDA].[SWIFT_SP_GET_SAP_PICKING] @pERP_DOC = 8
+        EXEC [acsa].[SWIFT_SP_GET_SAP_PICKING] @pERP_DOC = 8
 */
 -- =============================================
-CREATE PROC [SONDA].[SWIFT_SP_GET_SAP_PICKING]
+CREATE PROC [acsa].[SWIFT_SP_GET_SAP_PICKING]
 	@pERP_DOC VARCHAR(50)
 AS
 BEGIN

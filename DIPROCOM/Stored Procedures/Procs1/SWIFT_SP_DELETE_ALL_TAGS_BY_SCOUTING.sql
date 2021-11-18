@@ -11,14 +11,14 @@
 						 algun tipo de mensaje en cualquiera de los casos (error de operacion, proceso exitoso) 	   
 
 -- EJEMPLO DE EJECUCION: 
-		EXEC [SONDA].[SWIFT_SP_DELETE_ALL_TAGS_BY_SCOUTING]
+		EXEC [acsa].[SWIFT_SP_DELETE_ALL_TAGS_BY_SCOUTING]
 			@CUSTOMER_ID = '2290'
 		------------------------------------------------
-		SELECT * FROM [SONDA].[SWIFT_TAG_X_CUSTOMER_NEW]
+		SELECT * FROM [acsa].[SWIFT_TAG_X_CUSTOMER_NEW]
 		WHERE [CUSTOMER]= '2290'
 		------------------------------------------------
 =========================================================*/
-CREATE PROCEDURE [SONDA].[SWIFT_SP_DELETE_ALL_TAGS_BY_SCOUTING]
+CREATE PROCEDURE [acsa].[SWIFT_SP_DELETE_ALL_TAGS_BY_SCOUTING]
 ( 
 	@CUSTOMER_ID VARCHAR(250)
 ) AS 
@@ -26,7 +26,7 @@ BEGIN
 	--
 	BEGIN TRY
 		--
-		DELETE FROM [SONDA].[SWIFT_TAG_X_CUSTOMER_NEW]
+		DELETE FROM [acsa].[SWIFT_TAG_X_CUSTOMER_NEW]
 		WHERE [CUSTOMER] = @CUSTOMER_ID
 		--
 		IF @@error = 0 BEGIN		

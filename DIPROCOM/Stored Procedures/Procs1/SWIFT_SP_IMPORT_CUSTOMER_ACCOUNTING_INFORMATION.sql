@@ -5,10 +5,10 @@
       
 /*
 -- Ejemplo de Ejecucion:
-      		EXEC [SONDA].[SWIFT_SP_IMPORT_CUSTOMER_ACCOUNTING_INFORMATION]
+      		EXEC [acsa].[SWIFT_SP_IMPORT_CUSTOMER_ACCOUNTING_INFORMATION]
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_IMPORT_CUSTOMER_ACCOUNTING_INFORMATION]
+CREATE PROCEDURE [acsa].[SWIFT_SP_IMPORT_CUSTOMER_ACCOUNTING_INFORMATION]
 AS
 	BEGIN
 --
@@ -54,7 +54,7 @@ AS
 			-- -------------------------------------------------------------
 			-- Limpiamos la tabla
 			-- -------------------------------------------------------------
-			TRUNCATE TABLE [SONDA].[SWIFT_CUSTOMER_ACCOUNTING_INFORMATION];
+			TRUNCATE TABLE [acsa].[SWIFT_CUSTOMER_ACCOUNTING_INFORMATION];
 
 			-- -------------------------------------------------------------
 			-- Obtenemos los clientes
@@ -67,7 +67,7 @@ AS
 			SELECT
 				[CODE_CUSTOMER]
 			FROM
-				[SONDA].[SWIFT_VIEW_ALL_COSTUMER];
+				[acsa].[SWIFT_VIEW_ALL_COSTUMER];
 
 			-- ------------------------------------------------------------
 			-- Armamos y Ejecutamos la consulta
@@ -100,7 +100,7 @@ AS
 				-- -------------------------------------------------------------------
 				-- Insertamos en nuestra tabla que almacena toda la informacion
 				-- -------------------------------------------------------------------
-			INSERT	INTO [SONDA].[SWIFT_CUSTOMER_ACCOUNTING_INFORMATION]
+			INSERT	INTO [acsa].[SWIFT_CUSTOMER_ACCOUNTING_INFORMATION]
 					(
 						[CODE_CUSTOMER]
 						,[GROUP_NUM]
@@ -133,7 +133,7 @@ AS
 			END;
 
 			--
-			EXEC [SONDA].[SONDA_SP_INSERT_SONDA_SERVER_ERROR_LOG] @CODE_ROUTE = '' , -- varchar(50)
+			EXEC [acsa].[SONDA_SP_INSERT_SONDA_SERVER_ERROR_LOG] @CODE_ROUTE = '' , -- varchar(50)
 				@LOGIN = '' , -- varchar(50)
 				@SOURCE_ERROR = 'SWIFT_SP_IMPORT_CUSTOMER_ACCOUNTING_INFORMATION' , -- varchar(250)
 				@DOC_RESOLUTION = '' , -- varchar(100)

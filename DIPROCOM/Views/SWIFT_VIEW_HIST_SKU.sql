@@ -1,15 +1,15 @@
-﻿CREATE VIEW [SONDA].[SWIFT_VIEW_HIST_SKU]
+﻿CREATE VIEW [acsa].[SWIFT_VIEW_HIST_SKU]
 AS
 SELECT     TOP (100) PERCENT CONVERT(DATE, INV_DATE) AS INV_DATE,
                           A.SKU,
                           A.SKU_DESCRIPTION AS DESCRIPTION_SKU,
                           (SELECT     BARCODE_SKU
-                            FROM          [SONDA].SWIFT_SKU AS B
+                            FROM          [acsa].SWIFT_SKU AS B
                             WHERE      (A.SKU = B.CODE_SKU)) AS BARCODE, 
                             SUM(ON_HAND) AS ON_HAND, 
                             COST, 
                             SUM(ON_HAND) * COST AS TOTAL
-FROM         [SONDA].SWIFT_HIST_INVENTORY AS A
+FROM         [acsa].SWIFT_HIST_INVENTORY AS A
 GROUP BY INV_DATE, A.SKU, A.SKU_DESCRIPTION, A.COST
 ORDER BY INV_DATE
 

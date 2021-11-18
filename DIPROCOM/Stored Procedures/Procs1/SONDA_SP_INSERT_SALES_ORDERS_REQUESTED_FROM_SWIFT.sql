@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SONDA_SP_INSERT_SALES_ORDERS_REQUESTED_FROM_SWIFT]
+				EXEC [acsa].[SONDA_SP_INSERT_SALES_ORDERS_REQUESTED_FROM_SWIFT]
 					@XML = '<?xml version="1.0"?>
 <Data>
     <option>success</option>
@@ -2667,7 +2667,7 @@
 </Data>'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_INSERT_SALES_ORDERS_REQUESTED_FROM_SWIFT] (@XML XML)
+CREATE PROCEDURE [acsa].[SONDA_SP_INSERT_SALES_ORDERS_REQUESTED_FROM_SWIFT] (@XML XML)
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -3012,13 +3012,13 @@ BEGIN
     -- Se eliminan registros antiguos si existieran
     -- ------------------------------------------------------------------------------------
     DELETE DETAIL
-      FROM [SONDA].[SONDA_SALES_ORDER_DETAIL_REQUESTED] AS DETAIL
-      INNER JOIN [SONDA].[SONDA_SALES_ORDER_HEADER_REQUESTED] AS HEADER
+      FROM [acsa].[SONDA_SALES_ORDER_DETAIL_REQUESTED] AS DETAIL
+      INNER JOIN [acsa].[SONDA_SALES_ORDER_HEADER_REQUESTED] AS HEADER
         ON [HEADER].[ORDER_ID] = [DETAIL].[ORDER_ID]
         AND [HEADER].[SALES_ORDER_ID] = [DETAIL].[SALES_ORDER_ID]
     WHERE [HEADER].[POS_TERMINAL] = @CODE_ROUTE
     --
-    DELETE FROM [SONDA].[SONDA_SALES_ORDER_HEADER_REQUESTED]
+    DELETE FROM [acsa].[SONDA_SALES_ORDER_HEADER_REQUESTED]
     WHERE [POS_TERMINAL] = @CODE_ROUTE;
 
     -- ------------------------------------------------------------------------------------
@@ -3047,7 +3047,7 @@ BEGIN
       -- ------------------------------------------------------------------------------------
       -- Inserta el encabezado
       -- ------------------------------------------------------------------------------------
-      INSERT INTO [SONDA].[SONDA_SALES_ORDER_HEADER_REQUESTED] ([SALES_ORDER_ID]
+      INSERT INTO [acsa].[SONDA_SALES_ORDER_HEADER_REQUESTED] ([SALES_ORDER_ID]
       , [POSTED_DATETIME]
       , [CLIENT_ID]
       , [POS_TERMINAL]
@@ -3143,7 +3143,7 @@ BEGIN
       -- ------------------------------------------------------------------------------------
       -- inserta el detalle
       -- ------------------------------------------------------------------------------------
-      INSERT INTO [SONDA].[SONDA_SALES_ORDER_DETAIL_REQUESTED] ([ORDER_ID]
+      INSERT INTO [acsa].[SONDA_SALES_ORDER_DETAIL_REQUESTED] ([ORDER_ID]
       , [SALES_ORDER_ID]
       , [SKU]
       , [LINE_SEQ]
@@ -3192,7 +3192,7 @@ BEGIN
       --
       SET @INSERT_ERROR = ERROR_MESSAGE();
       --
-      EXEC [SONDA].[SONDA_SP_INSERT_SONDA_SERVER_ERROR_LOG] @CODE_ROUTE = @CODE_ROUTE
+      EXEC [acsa].[SONDA_SP_INSERT_SONDA_SERVER_ERROR_LOG] @CODE_ROUTE = @CODE_ROUTE
                                                            ,@LOGIN = NULL
                                                            ,@SOURCE_ERROR = 'SONDA_SP_INSERT_SALES_ORDERS_REQUESTED_FROM_SWIFT'
                                                            ,@DOC_RESOLUTION = NULL
@@ -3220,7 +3220,7 @@ BEGIN
     -- ---------------------------------------------------------------------------------------
     SET @LOG_MESSAGE = 'Los documentos de la ruta: ' + @CODE_ROUTE + ' han sido obtenidos exitosamente';
 
-    EXEC [SONDA].[SONDA_SP_INSERT_SONDA_SERVER_ERROR_LOG] @CODE_ROUTE = @CODE_ROUTE
+    EXEC [acsa].[SONDA_SP_INSERT_SONDA_SERVER_ERROR_LOG] @CODE_ROUTE = @CODE_ROUTE
                                                          ,@LOGIN = NULL
                                                          ,@SOURCE_ERROR = 'SONDA_SP_INSERT_SALES_ORDERS_REQUESTED_FROM_SWIFT'
                                                          ,@DOC_RESOLUTION = NULL
@@ -3238,7 +3238,7 @@ BEGIN
     --
     SET @LOG_MESSAGE = ERROR_MESSAGE();
     --
-    EXEC [SONDA].[SONDA_SP_INSERT_SONDA_SERVER_ERROR_LOG] @CODE_ROUTE = @CODE_ROUTE
+    EXEC [acsa].[SONDA_SP_INSERT_SONDA_SERVER_ERROR_LOG] @CODE_ROUTE = @CODE_ROUTE
                                                          ,@LOGIN = NULL
                                                          ,@SOURCE_ERROR = 'SONDA_SP_INSERT_SALES_ORDERS_REQUESTED_FROM_SWIFT'
                                                          ,@DOC_RESOLUTION = NULL

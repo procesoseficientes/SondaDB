@@ -10,13 +10,13 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SONDA_SP_ADD_OVERDUE_INVOICE_PAYMENT_BY_XML]
+				EXEC [acsa].[SONDA_SP_ADD_OVERDUE_INVOICE_PAYMENT_BY_XML]
 				@XML = '
 					
 				'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_ADD_OVERDUE_INVOICE_PAYMENT_BY_XML]
+CREATE PROCEDURE [acsa].[SONDA_SP_ADD_OVERDUE_INVOICE_PAYMENT_BY_XML]
 (@XML XML)
 AS
 BEGIN
@@ -189,7 +189,7 @@ BEGIN
                 DECLARE @POSTED_PAYMENT_ID INT = NULL;
 
                 SELECT @POSTED_PAYMENT_ID = [ID]
-                FROM [SONDA].[SONDA_OVERDUE_INVOICE_PAYMENT_HEADER]
+                FROM [acsa].[SONDA_OVERDUE_INVOICE_PAYMENT_HEADER]
                 WHERE [DOC_SERIE] = @CURRENT_DOC_SERIE
                       AND [DOC_NUM] = @CURRENT_DOC_NUM;
 
@@ -214,7 +214,7 @@ BEGIN
                     -- ----------------------------------------------------------------------------
                     -- Agregamos el encabezado
                     -- ----------------------------------------------------------------------------
-                    INSERT INTO [SONDA].[SONDA_OVERDUE_INVOICE_PAYMENT_HEADER]
+                    INSERT INTO [acsa].[SONDA_OVERDUE_INVOICE_PAYMENT_HEADER]
                     (
                         [CODE_CUSTOMER],
                         [DOC_SERIE],
@@ -247,7 +247,7 @@ BEGIN
                     -- --------------------------------------------------------------------------------------
                     -- Agregamos el detalle
                     -- --------------------------------------------------------------------------------------
-                    INSERT INTO [SONDA].[SONDA_OVERDUE_INVOICE_PAYMENT_DETAIL]
+                    INSERT INTO [acsa].[SONDA_OVERDUE_INVOICE_PAYMENT_DETAIL]
                     (
                         [PAYMENT_HEADER_ID],
                         [INVOICE_ID],
@@ -273,7 +273,7 @@ BEGIN
                     -- --------------------------------------------------------------------------------------
                     -- Agregamos el detalle de los tipos de pago realizados en el documento
                     -- --------------------------------------------------------------------------------------
-                    INSERT INTO [SONDA].[SONDA_PAYMENT_TYPE_DETAIL_FOR_OVERDUE_INVOICE_PAYMENT]
+                    INSERT INTO [acsa].[SONDA_PAYMENT_TYPE_DETAIL_FOR_OVERDUE_INVOICE_PAYMENT]
                     (
                         [PAYMENT_HEADER_ID],
                         [PAYMENT_TYPE],
@@ -301,7 +301,7 @@ BEGIN
                     -- -------------------------------------------------------------------------------------------------------------
                     UPDATE [OI]
                     SET [OI].[PENDING_TO_PAID] = ([OI].[PENDING_TO_PAID] - [D].[PAYED_AMOUNT])
-                    FROM [SONDA].[SWIFT_OVERDUE_INVOICE_BY_CUSTOMER] AS [OI]
+                    FROM [acsa].[SWIFT_OVERDUE_INVOICE_BY_CUSTOMER] AS [OI]
                         INNER JOIN @DETAIL AS [D]
                             ON (
                                    [D].[INVOICE_ID] = [OI].[INVOICE_ID]

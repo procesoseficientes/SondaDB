@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[SONDA_SALES_ORDER_DETAIL_BK] (
+﻿CREATE TABLE [acsa].[SONDA_SALES_ORDER_DETAIL_BK] (
     [SALES_ORDER_ID]  INT             NOT NULL,
     [SKU]             VARCHAR (25)    NOT NULL,
     [LINE_SEQ]        INT             NOT NULL,

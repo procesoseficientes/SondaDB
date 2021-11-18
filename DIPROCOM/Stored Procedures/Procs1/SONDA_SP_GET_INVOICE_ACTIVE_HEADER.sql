@@ -42,14 +42,14 @@
 /*
 Ejemplo de Ejecucion:
           -- Para obtener todas las facturas
-            EXEC [SONDA].SONDA_SP_GET_INVOICE_ACTIVE_HEADER @CODE_ROUTE = '46' ,@CODE_CUSTOMER = '1'
+            EXEC [acsa].SONDA_SP_GET_INVOICE_ACTIVE_HEADER @CODE_ROUTE = '46' ,@CODE_CUSTOMER = '1'
           -- Para obtener todas las facturas por cliente
-			      EXEC [SONDA].SONDA_SP_GET_INVOICE_ACTIVE_HEADER @CODE_ROUTE = '46', @CODE_CUSTOMER = 'BO-100018'
+			      EXEC [acsa].SONDA_SP_GET_INVOICE_ACTIVE_HEADER @CODE_ROUTE = '46', @CODE_CUSTOMER = 'BO-100018'
           --Obtien los clientes de la ruta
-			      EXEC [SONDA].SONDA_SP_GET_INVOICE_ACTIVE_HEADER @CODE_ROUTE = '46'
+			      EXEC [acsa].SONDA_SP_GET_INVOICE_ACTIVE_HEADER @CODE_ROUTE = '46'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_GET_INVOICE_ACTIVE_HEADER] (
+CREATE PROCEDURE [acsa].[SONDA_SP_GET_INVOICE_ACTIVE_HEADER] (
 	@CODE_ROUTE AS VARCHAR(50)
 	,@CODE_CUSTOMER AS VARCHAR(50) = NULL
 )AS
@@ -89,7 +89,7 @@ BEGIN
   --  -- Se obtienen todos los clientes de la ruta
   --  -- ----------------------------------------------------------------------------------
   --  INSERT INTO #CUSTOMER
-  --  EXEC [SONDA].SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING @CODE_ROUTE = @CODE_ROUTE
+  --  EXEC [acsa].SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING @CODE_ROUTE = @CODE_ROUTE
 
   --END
   --ELSE

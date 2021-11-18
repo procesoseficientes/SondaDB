@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[SWIFT_VEHICLES] (
+﻿CREATE TABLE [acsa].[SWIFT_VEHICLES] (
     [VEHICLE]                INT          IDENTITY (1, 1) NOT NULL,
     [CODE_VEHICLE]           VARCHAR (50) NULL,
     [PLATE_VEHICLE]          VARCHAR (50) NULL,

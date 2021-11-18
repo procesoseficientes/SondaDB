@@ -3,7 +3,7 @@
 -- Fecha de Creacion: 	18-10-2019 
 -- Description:			SP que agrega pedido minimo por usuario por medio de XML
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_ADD_MINIMUM_ORDER_BY_USER]
+CREATE PROCEDURE [acsa].[SWIFT_SP_ADD_MINIMUM_ORDER_BY_USER]
 (@XML XML)
 AS
 BEGIN
@@ -33,7 +33,7 @@ BEGIN
                [x].[Rec].[query]('./MINIMUM_ORDER').[value]('.', 'numeric(10,4)')
         FROM @XML.[nodes]('ArrayOfPedidoMinimo/PedidoMinimo') AS [x]([Rec]);
 
-        INSERT INTO [SONDA].[SWIFT_MINIMUM_ORDER_BY_USER]
+        INSERT INTO [acsa].[SWIFT_MINIMUM_ORDER_BY_USER]
         (
             [USER],
             [MINIMUM_ORDER]

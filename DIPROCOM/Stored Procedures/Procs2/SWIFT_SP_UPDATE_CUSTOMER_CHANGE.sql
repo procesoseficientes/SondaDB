@@ -14,7 +14,7 @@
 
 /*
 -- EJEMPLO DE EJECUCION: 
-		EXEC [SONDA].[SWIFT_SP_UPDATE_CUSTOMER_CHANGE]
+		EXEC [acsa].[SWIFT_SP_UPDATE_CUSTOMER_CHANGE]
 			@CUSTOMER = 2
 			,@PHONE_CUSTOMER = '56875468'
 			,@ADRESS_CUSTOMER = 'Coatepeque'
@@ -24,10 +24,10 @@
 			,@INVOICE_NAME = 'CLIENTE'
 			,@NEW_CUSTOMER_NAME = 'nuevo nombre'
 		--
-		SELECT * FROM [SONDA].[SWIFT_CUSTOMER_CHANGE] WHERE CUSTOMER = 2
+		SELECT * FROM [acsa].[SWIFT_CUSTOMER_CHANGE] WHERE CUSTOMER = 2
 */
 -- =========================================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_UPDATE_CUSTOMER_CHANGE] (
+CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_CUSTOMER_CHANGE] (
 	@CUSTOMER INT
 	,@PHONE_CUSTOMER VARCHAR(50)
 	,@ADRESS_CUSTOMER VARCHAR(50)
@@ -44,7 +44,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Actualiza el cliente
 		-- ------------------------------------------------------------------------------------
-		UPDATE [SONDA].[SWIFT_CUSTOMER_CHANGE]
+		UPDATE [acsa].[SWIFT_CUSTOMER_CHANGE]
 		SET
 			[PHONE_CUSTOMER] = @PHONE_CUSTOMER
 			,[ADRESS_CUSTOMER] = @ADRESS_CUSTOMER

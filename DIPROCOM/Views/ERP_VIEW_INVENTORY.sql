@@ -11,11 +11,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				SELECT * FROM [SONDA].[ERP_VIEW_INVENTORY]
+				SELECT * FROM [acsa].[ERP_VIEW_INVENTORY]
 */
 -- =============================================
 
-CREATE VIEW [SONDA].[ERP_VIEW_INVENTORY]
+CREATE VIEW [acsa].[ERP_VIEW_INVENTORY]
 AS 
 SELECT * FROM OPENQUERY ([SAP_INTERCOMPANY],'
 SELECT   

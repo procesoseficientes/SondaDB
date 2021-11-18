@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[tttt] (
+﻿CREATE TABLE [acsa].[tttt] (
     [col] INT NULL
 );
 

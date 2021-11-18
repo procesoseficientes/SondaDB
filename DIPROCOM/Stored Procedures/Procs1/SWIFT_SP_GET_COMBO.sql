@@ -5,13 +5,13 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_GET_COMBO]
+				EXEC [acsa].[SWIFT_SP_GET_COMBO]
 					@COMBO_ID = 6
 				--
-				EXEC [SONDA].[SWIFT_SP_GET_COMBO]
+				EXEC [acsa].[SWIFT_SP_GET_COMBO]
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_COMBO](
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_COMBO](
 	@COMBO_ID INT = NULL
 )
 AS
@@ -22,7 +22,7 @@ BEGIN
 		[C].[COMBO_ID]
 		,[C].[NAME_COMBO]
 		,[C].[DESCRIPTION_COMBO]
-	FROM [SONDA].[SWIFT_COMBO] [C]
+	FROM [acsa].[SWIFT_COMBO] [C]
 	WHERE @COMBO_ID IS NULL
 		OR [C].[COMBO_ID] = @COMBO_ID
 END

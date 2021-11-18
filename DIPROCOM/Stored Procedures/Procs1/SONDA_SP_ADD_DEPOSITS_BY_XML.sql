@@ -79,14 +79,14 @@ SET @XML = '<Data>
 </Data>' 
 SET @JSON = '' 
 
-EXECUTE @RC = [SONDA].SONDA_SP_ADD_DEPOSITS_BY_XML @XML
+EXECUTE @RC = [acsa].SONDA_SP_ADD_DEPOSITS_BY_XML @XML
                                                 ,@JSON
 GO
 
 					
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].SONDA_SP_ADD_DEPOSITS_BY_XML (@XML XML
+CREATE PROCEDURE [acsa].SONDA_SP_ADD_DEPOSITS_BY_XML (@XML XML
 , @JSON VARCHAR(MAX))
 AS
 BEGIN
@@ -165,7 +165,7 @@ BEGIN
     SELECT
       @WAREHOUSE = [x].[Rec].[query]('./warehouse').[value]('.', 'varchar(50)')
      ,@DEVICE_ID = [x].[Rec].[query]('./uuid').[value]('.', 'varchar(50)')
-     ,@LOGIN = [SONDA].[SWIFT_FN_GET_LOGIN_BY_ROUTE]([x].[Rec].[query]('./routeid').[value]('.', 'varchar(50)'))
+     ,@LOGIN = [acsa].[SWIFT_FN_GET_LOGIN_BY_ROUTE]([x].[Rec].[query]('./routeid').[value]('.', 'varchar(50)'))
     FROM @XML.[nodes]('/Data') AS [x] ([Rec]);
 
 
@@ -208,7 +208,7 @@ BEGIN
       -- Valida si existe la orden de venta
       -- ------------------------------------------------------------------------------------
       INSERT INTO @RESULT_VALIDATION
-      EXEC [SONDA].[SONDA_SP_VALIDATE_IF_EXISTS_DEPOSIT] @CODE_ROUTE = @CODE_ROUTE
+      EXEC [acsa].[SONDA_SP_VALIDATE_IF_EXISTS_DEPOSIT] @CODE_ROUTE = @CODE_ROUTE
                                                         ,@DOC_SERIE = @DOC_SERIE
                                                         ,@DOC_NUM = @DOC_NUM
                                                         ,@POSTED_DATETIME = @HEADER_POSTEDDATIME
@@ -251,7 +251,7 @@ BEGIN
 
 
 
-        INSERT INTO [SONDA].SONDA_DEPOSITS (TRANS_TYPE, TRANS_DATETIME, BANK_ID, ACCOUNT_NUM, AMOUNT, POSTED_BY, POSTED_DATETIME, POS_TERMINAL, GPS_URL, TRANS_REF, IS_OFFLINE, STATUS, DOC_SERIE, DOC_NUM, LIQUIDATION_ID, IMAGE_1, IS_READY_TO_SEND)
+        INSERT INTO [acsa].SONDA_DEPOSITS (TRANS_TYPE, TRANS_DATETIME, BANK_ID, ACCOUNT_NUM, AMOUNT, POSTED_BY, POSTED_DATETIME, POS_TERMINAL, GPS_URL, TRANS_REF, IS_OFFLINE, STATUS, DOC_SERIE, DOC_NUM, LIQUIDATION_ID, IMAGE_1, IS_READY_TO_SEND)
           SELECT
             d.TRANS_TYPE
            ,d.TRANS_DATE_TIME

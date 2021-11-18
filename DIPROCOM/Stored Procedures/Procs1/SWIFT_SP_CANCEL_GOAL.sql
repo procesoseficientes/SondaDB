@@ -5,10 +5,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				exec [SONDA].[SWIFT_SP_CANCEL_GOAL]
+				exec [acsa].[SWIFT_SP_CANCEL_GOAL]
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_CANCEL_GOAL] @GOAL_HEADER_ID AS INT,
+CREATE PROCEDURE [acsa].[SWIFT_SP_CANCEL_GOAL] @GOAL_HEADER_ID AS INT,
 @CLOSED_BY AS VARCHAR(25)
 AS
 BEGIN
@@ -19,13 +19,13 @@ BEGIN
       --Validamos el estado actual de la meta
       SELECT
         @CURRENT_STATUS = STATUS
-      FROM [SONDA].SWIFT_GOAL_HEADER
+      FROM [acsa].SWIFT_GOAL_HEADER
       WHERE GOAL_HEADER_ID = @GOAL_HEADER_ID;
 
       IF @CURRENT_STATUS <> 'FINISHED' --Solo si la meta esta en progreso
       BEGIN
         --Se elimina el detalle de la meta
-        UPDATE [SONDA].SWIFT_GOAL_HEADER
+        UPDATE [acsa].SWIFT_GOAL_HEADER
         SET STATUS = 'CANCELED'
            ,GOAL_CLOSE_DATE = GETDATE()
            ,CLOSED_BY = @CLOSED_BY

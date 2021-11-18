@@ -5,10 +5,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [SONDA].[SWIFT_GET_CLASSIFICATION_ALTERNATE]
+        EXEC [acsa].[SWIFT_GET_CLASSIFICATION_ALTERNATE]
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_GET_CLASSIFICATION_ALTERNATE]
+CREATE PROCEDURE [acsa].[SWIFT_GET_CLASSIFICATION_ALTERNATE]
 AS
 BEGIN
 	-- ------------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ BEGIN
 		,[MPC01]
 		,[GROUP_CLASSIFICATION]
 	INTO #REASON
-	FROM [SONDA].[SWIFT_CLASSIFICATION] [C]
+	FROM [acsa].[SWIFT_CLASSIFICATION] [C]
 	WHERE [GROUP_CLASSIFICATION] LIKE '%_REASONS%';
 
 	-- ------------------------------------------------------------------------------------

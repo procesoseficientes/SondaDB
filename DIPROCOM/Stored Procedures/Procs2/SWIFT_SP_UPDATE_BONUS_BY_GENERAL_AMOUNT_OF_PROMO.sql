@@ -9,14 +9,14 @@
 
 /*
 -- Ejemplo de Ejecucion:
-			EXEC  [SONDA].[SWIFT_SP_UPDATE_BONUS_BY_GENERAL_AMOUNT_OF_PROMO] @PROMO_BONUS_BY_GENERAL_AMOUNT_ID = 2, 
+			EXEC  [acsa].[SWIFT_SP_UPDATE_BONUS_BY_GENERAL_AMOUNT_OF_PROMO] @PROMO_BONUS_BY_GENERAL_AMOUNT_ID = 2, 
                                                             @PROMO_ID = 1103,                                                            
                                                             @CODE_SKU_BONUS = 'U00000443', 
                                                             @PACK_UNIT_BONUS = 1, 
                                                             @BONUS_QTY = 4
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_UPDATE_BONUS_BY_GENERAL_AMOUNT_OF_PROMO] (@PROMO_BONUS_BY_GENERAL_AMOUNT_ID INT, @PROMO_ID INT, @CODE_SKU_BONUS VARCHAR(50), @PACK_UNIT_BONUS INT, @BONUS_QTY INT)
+CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_BONUS_BY_GENERAL_AMOUNT_OF_PROMO] (@PROMO_BONUS_BY_GENERAL_AMOUNT_ID INT, @PROMO_ID INT, @CODE_SKU_BONUS VARCHAR(50), @PACK_UNIT_BONUS INT, @BONUS_QTY INT)
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -26,7 +26,7 @@ BEGIN
     BEGIN TRANSACTION
 
 
-    UPDATE [SONDA].[SWIFT_PROMO_BONUS_BY_GENERAL_AMOUNT]
+    UPDATE [acsa].[SWIFT_PROMO_BONUS_BY_GENERAL_AMOUNT]
     SET [PROMO_ID] = @PROMO_ID
        ,[CODE_SKU_BONUS] = @CODE_SKU_BONUS
        ,[PACK_UNIT_BONUS] = @PACK_UNIT_BONUS

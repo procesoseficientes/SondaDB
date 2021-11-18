@@ -4,25 +4,25 @@
 -- Description:            SP que elimina descuentos por familia
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [SONDA].SWIFT_SP_ADD_PROMO_OF_DISCOUNT_BY_FAMILY
+        EXEC [acsa].SWIFT_SP_ADD_PROMO_OF_DISCOUNT_BY_FAMILY
         @PROMO_ID = 2114
         ,@XML = ''
         ,@LOGIN_ID = 'GERENTE@DIPROCOM'
 */
 -- =============================================
 
-CREATE PROCEDURE [SONDA].[SWIFT_SP_DELETE_PROMO_DISCOUNT_BY_FAMILY]
+CREATE PROCEDURE [acsa].[SWIFT_SP_DELETE_PROMO_DISCOUNT_BY_FAMILY]
 	@PROMO_ID INT
 AS
 BEGIN TRY
 	-- ---------------------------------------------------
 	-- se eliminan los descuentos por familia especificada
 	-- ---------------------------------------------------
-	DELETE FROM [SONDA].[SWIFT_PROMO_DISCOUNT_BY_FAMILY]
+	DELETE FROM [acsa].[SWIFT_PROMO_DISCOUNT_BY_FAMILY]
 	WHERE PROMO_ID = @PROMO_ID
 
 
-  UPDATE [SONDA].[SWIFT_PROMO]
+  UPDATE [acsa].[SWIFT_PROMO]
     SET [LAST_UPDATE] = GETDATE()
     WHERE [PROMO_ID] = @PROMO_ID;
 	-- -------------------------

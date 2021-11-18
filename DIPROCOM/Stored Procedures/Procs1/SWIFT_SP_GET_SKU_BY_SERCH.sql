@@ -9,11 +9,11 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				EXEC [SONDA].[SWIFT_SP_GET_SKU_BY_SERCH] @FILTER='bate'
+				EXEC [acsa].[SWIFT_SP_GET_SKU_BY_SERCH] @FILTER='bate'
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_SKU_BY_SERCH] (
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_SKU_BY_SERCH] (
 	@FILTER AS VARCHAR (250)	
 ) AS
 BEGIN
@@ -24,7 +24,7 @@ BEGIN
 		,[VS].[DESCRIPTION_SKU]
 		,[VS].[BARCODE_SKU]
 		,[VS].[HANDLE_SERIAL_NUMBER]
-	FROM [SONDA].[SWIFT_VIEW_ALL_SKU] [VS]
+	FROM [acsa].[SWIFT_VIEW_ALL_SKU] [VS]
 	WHERE [VS].[CODE_SKU] = @FILTER
 		OR [VS].[DESCRIPTION_SKU] LIKE +'%' + @FILTER + '%'
 		OR [VS].[BARCODE_SKU] LIKE +'%' + @FILTER + '%';

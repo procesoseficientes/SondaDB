@@ -14,17 +14,17 @@
 					,@DOC_NUM INT = 2
 					,@VOID INT = 1
 				--
-				SELECT S.DOC_SERIE,S.DOC_NUM,IS_VOID FROM [SONDA].[SONDA_SALES_ORDER_HEADER] S WHERE DOC_SERIE = @SERIE AND DOC_NUM = @DOC_NUM
+				SELECT S.DOC_SERIE,S.DOC_NUM,IS_VOID FROM [acsa].[SONDA_SALES_ORDER_HEADER] S WHERE DOC_SERIE = @SERIE AND DOC_NUM = @DOC_NUM
 				--
-				EXEC [SONDA].[SONDA_SP_UPDATE_SALE_ORDER_VOID]
+				EXEC [acsa].[SONDA_SP_UPDATE_SALE_ORDER_VOID]
 					@SERIE = @SERIE
 					,@DOC_NUM = @DOC_NUM
 					,@VOID = @VOID
 				--
-				SELECT S.DOC_SERIE,S.DOC_NUM,IS_VOID FROM [SONDA].[SONDA_SALES_ORDER_HEADER] S WHERE DOC_SERIE = @SERIE AND DOC_NUM = @DOC_NUM
+				SELECT S.DOC_SERIE,S.DOC_NUM,IS_VOID FROM [acsa].[SONDA_SALES_ORDER_HEADER] S WHERE DOC_SERIE = @SERIE AND DOC_NUM = @DOC_NUM
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_UPDATE_SALE_ORDER_VOID]
+CREATE PROCEDURE [acsa].[SONDA_SP_UPDATE_SALE_ORDER_VOID]
 (	
 	@SERIE VARCHAR(100)
 	,@DOC_NUM INT
@@ -42,7 +42,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		IF @VOID = 1
 		BEGIN
-			SELECT @CAN_VOID = [SONDA].[SONDA_FN_CAN_VOID_SALE_ORDER](@SERIE,@DOC_NUM)
+			SELECT @CAN_VOID = [acsa].[SONDA_FN_CAN_VOID_SALE_ORDER](@SERIE,@DOC_NUM)
 			--
 			IF @CAN_VOID = 0
 			BEGIN
@@ -53,7 +53,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Actualiza la orden de venta
 		-- ------------------------------------------------------------------------------------
-		UPDATE [SONDA].[SONDA_SALES_ORDER_HEADER]
+		UPDATE [acsa].[SONDA_SALES_ORDER_HEADER]
 		SET IS_VOID = @VOID
 			,VOID_DATETIME = GETDATE()
 		WHERE DOC_SERIE = @SERIE

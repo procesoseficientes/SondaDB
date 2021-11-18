@@ -5,12 +5,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [SONDA].SWIFT_SP_INSERT_SALES_STATISTICS_BY_TEAM
-        SELECT * FROM [SONDA].[SWIFT_STATISTICS_GOALS_BY_SALES] 
+        EXEC [acsa].SWIFT_SP_INSERT_SALES_STATISTICS_BY_TEAM
+        SELECT * FROM [acsa].[SWIFT_STATISTICS_GOALS_BY_SALES] 
 */
 -- =============================================
 
-CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_SALES_STATISTICS_BY_TEAM]
+CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_SALES_STATISTICS_BY_TEAM]
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -41,7 +41,7 @@ BEGIN
      ,[GH].[GOAL_DATE_TO]
      ,[GH].[INCLUDE_SATURDAY]
      ,[GH].[SALE_TYPE]
-    FROM [SONDA].[SWIFT_GOAL_HEADER] [GH]
+    FROM [acsa].[SWIFT_GOAL_HEADER] [GH]
     WHERE [GH].[STATUS] = 'IN_PROGRESS'
 
 
@@ -60,7 +60,7 @@ BEGIN
      ,[GD].[SELLER_ID]
      ,[GD].[GOAL_BY_SELLER]
      ,[GD].[DAILY_GOAL_BY_SELLER]
-    FROM [SONDA].[SWIFT_GOAL_DETAIL] [GD]
+    FROM [acsa].[SWIFT_GOAL_DETAIL] [GD]
     INNER JOIN @GOAL_HEADER_IN_PROGRESS [GH]
       ON (
       [GD].[GOAL_HEADER_ID] = [GH].[GOAL_HEADER_ID]
@@ -145,7 +145,7 @@ BEGIN
        ,[SGS].[PERCENTAGE_OF_GENERAL_GOAL]
        ,[SGS].[SALE_OF_THE_DAY]
        ,[SGS].[SALES_DATE]
-      FROM [SONDA].[SWIFT_STATISTICS_GOALS_BY_SALES] [SGS]
+      FROM [acsa].[SWIFT_STATISTICS_GOALS_BY_SALES] [SGS]
       WHERE [SGS].[LAST_CREATED] = 1
       AND [SGS].[GOAL_HEADER_ID] = @GOAL_HEADER_ID
 
@@ -187,7 +187,7 @@ BEGIN
          ,[SGS].[PERCENTAGE_OF_GENERAL_GOAL]
          ,[SGS].[SALE_OF_THE_DAY]
          ,[SGS].[SALES_DATE]
-        FROM [SONDA].[SWIFT_STATISTICS_GOALS_BY_SALES] [SGS]
+        FROM [acsa].[SWIFT_STATISTICS_GOALS_BY_SALES] [SGS]
         WHERE [SGS].[LAST_CREATED] = 1
         AND [SGS].[GOAL_HEADER_ID] = @GOAL_HEADER_ID
 
@@ -212,7 +212,7 @@ BEGIN
         IF @SALES_DATE = DATEADD(DAY, -1, GETDATE())
         BEGIN
           PRINT 'RD-01'
-          DELETE FROM [SONDA].[SWIFT_STATISTICS_GOALS_BY_SALES]
+          DELETE FROM [acsa].[SWIFT_STATISTICS_GOALS_BY_SALES]
           WHERE [GOAL_HEADER_ID] = @GOAL_HEADER_ID
             AND [SALES_DATE] = @SALES_DATE
         END
@@ -240,32 +240,32 @@ BEGIN
           -- ---------------------------
           INSERT INTO @SALES_ORDER ([RANKING], [USER_ID], [SELLER_CODE], [SELLER_NAME], [CODE_ROUTE], [NAME_ROUTE], [TOTAL_AMOUNT], [COUNT_SALES_ORDERS])
             SELECT
-              ROW_NUMBER() OVER (ORDER BY SUM([SONDA].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([SH].[SALES_ORDER_ID])) DESC) AS RANKING
+              ROW_NUMBER() OVER (ORDER BY SUM([acsa].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([SH].[SALES_ORDER_ID])) DESC) AS RANKING
              ,[DT].[SELLER_ID] AS [USER_ID]
              ,MAX([S].[SELLER_CODE]) AS [SELLER_CODE]
              ,MAX([S].[SELLER_NAME]) AS [SELLER_NAME]
              ,MAX([R].[CODE_ROUTE]) AS [CODE_ROUTE]
              ,MAX([R].[NAME_ROUTE]) AS [NAME_ROUTE]
-             ,ISNULL(SUM([SONDA].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([SH].[SALES_ORDER_ID])), 0) AS [TOTAL_AMOUNT]
+             ,ISNULL(SUM([acsa].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([SH].[SALES_ORDER_ID])), 0) AS [TOTAL_AMOUNT]
              ,COUNT([SH].[SALES_ORDER_ID]) AS [COUNT_SALES_ORDERS]
-            FROM [SONDA].[SWIFT_GOAL_DETAIL] [DT]
-            INNER JOIN [SONDA].[USERS] [U]
+            FROM [acsa].[SWIFT_GOAL_DETAIL] [DT]
+            INNER JOIN [acsa].[USERS] [U]
               ON (
               [DT].[SELLER_ID] = [U].[CORRELATIVE]
               )
-            INNER JOIN [SONDA].[SWIFT_USER_BY_TEAM] [UT]
+            INNER JOIN [acsa].[SWIFT_USER_BY_TEAM] [UT]
               ON (
               [U].[CORRELATIVE] = [UT].[USER_ID]
               )
-            LEFT JOIN [SONDA].[SWIFT_SELLER] [S]
+            LEFT JOIN [acsa].[SWIFT_SELLER] [S]
               ON (
               [U].[RELATED_SELLER] = [S].[SELLER_CODE]
               )
-            LEFT JOIN [SONDA].[SWIFT_ROUTES] [R]
+            LEFT JOIN [acsa].[SWIFT_ROUTES] [R]
               ON (
               [U].[SELLER_ROUTE] = [R].[CODE_ROUTE]
               )
-            LEFT JOIN [SONDA].[SONDA_SALES_ORDER_HEADER] [SH]
+            LEFT JOIN [acsa].[SONDA_SALES_ORDER_HEADER] [SH]
               ON (
               [U].[LOGIN] = [SH].[POSTED_BY]
               AND [SH].[IS_READY_TO_SEND] = 1
@@ -291,24 +291,24 @@ BEGIN
              ,ISNULL(SUM([IH].[TOTAL_AMOUNT]), 0) AS [TOTAL_AMOUNT]
              ,COUNT([IH].[INVOICE_ID]) AS [COUNT_SALES_ORDERS]
 
-            FROM [SONDA].[SWIFT_GOAL_DETAIL] [DT]
-            INNER JOIN [SONDA].[USERS] [U]
+            FROM [acsa].[SWIFT_GOAL_DETAIL] [DT]
+            INNER JOIN [acsa].[USERS] [U]
               ON (
               [DT].[SELLER_ID] = [U].[CORRELATIVE]
               )
-            INNER JOIN [SONDA].[SWIFT_USER_BY_TEAM] [UT]
+            INNER JOIN [acsa].[SWIFT_USER_BY_TEAM] [UT]
               ON (
               [U].[CORRELATIVE] = [UT].[USER_ID]
               )
-            LEFT JOIN [SONDA].[SWIFT_SELLER] [S]
+            LEFT JOIN [acsa].[SWIFT_SELLER] [S]
               ON (
               [U].[RELATED_SELLER] = [S].[SELLER_CODE]
               )
-            LEFT JOIN [SONDA].[SWIFT_ROUTES] [R]
+            LEFT JOIN [acsa].[SWIFT_ROUTES] [R]
               ON (
               [U].[SELLER_ROUTE] = [R].[CODE_ROUTE]
               )
-            LEFT JOIN [SONDA].[SONDA_POS_INVOICE_HEADER] [IH]
+            LEFT JOIN [acsa].[SONDA_POS_INVOICE_HEADER] [IH]
               ON (
               [U].[LOGIN] = [IH].[POSTED_BY]
               AND [IH].[IS_READY_TO_SEND] = 1
@@ -326,13 +326,13 @@ BEGIN
         -- ---------------------------
         UPDATE [SGS]
         SET [SGS].[LAST_CREATED] = 0
-        FROM [SONDA].[SWIFT_STATISTICS_GOALS_BY_SALES] [SGS]
+        FROM [acsa].[SWIFT_STATISTICS_GOALS_BY_SALES] [SGS]
         WHERE [SGS].[GOAL_HEADER_ID] = @GOAL_HEADER_ID
 
         -- ---------------------------
         -- Insertamos la estadistica de la meta
         -- ---------------------------
-        INSERT INTO [SONDA].[SWIFT_STATISTICS_GOALS_BY_SALES] ([GOAL_HEADER_ID]
+        INSERT INTO [acsa].[SWIFT_STATISTICS_GOALS_BY_SALES] ([GOAL_HEADER_ID]
         , [TEAM_ID]
         , [USER_ID]
         , [SELLER_CODE]
@@ -371,11 +371,11 @@ BEGIN
            ,(100 / [DAILY_GOAL_BY_SELLER] * [SO].[TOTAL_AMOUNT])
            ,ISNULL([SGS].[DAYS_OF_SALE], 0) + 1
            ,CASE
-              WHEN [SGS].[REMAINING_DAYS] IS NULL THEN ([SONDA].[SWIFT_FN_GET_LABOR_DAYS](@GOAL_DATE_FROM, @GOAL_DATE_TO, @INCLUDE_SATURDAY)) - 1
+              WHEN [SGS].[REMAINING_DAYS] IS NULL THEN ([acsa].[SWIFT_FN_GET_LABOR_DAYS](@GOAL_DATE_FROM, @GOAL_DATE_TO, @INCLUDE_SATURDAY)) - 1
               ELSE [SGS].[REMAINING_DAYS] - 1
             END
-           ,(100 / [SONDA].[SWIFT_FN_GET_LABOR_DAYS](@GOAL_DATE_FROM, @GOAL_DATE_TO, @INCLUDE_SATURDAY) * (CASE
-              WHEN [SGS].[REMAINING_DAYS] IS NULL THEN ([SONDA].[SWIFT_FN_GET_LABOR_DAYS](@GOAL_DATE_FROM, @GOAL_DATE_TO, @INCLUDE_SATURDAY)) - 1
+           ,(100 / [acsa].[SWIFT_FN_GET_LABOR_DAYS](@GOAL_DATE_FROM, @GOAL_DATE_TO, @INCLUDE_SATURDAY) * (CASE
+              WHEN [SGS].[REMAINING_DAYS] IS NULL THEN ([acsa].[SWIFT_FN_GET_LABOR_DAYS](@GOAL_DATE_FROM, @GOAL_DATE_TO, @INCLUDE_SATURDAY)) - 1
               ELSE [SGS].[REMAINING_DAYS] - 1
             END))
            ,CASE
@@ -428,7 +428,7 @@ BEGIN
                      END
      ,[GH].[LAST_UPDATE] = GETDATE()
      ,[GH].[LAST_UPDATE_BY] = 'SYSTEM'
-  FROM [SONDA].[SWIFT_GOAL_HEADER] [GH]
+  FROM [acsa].[SWIFT_GOAL_HEADER] [GH]
   WHERE [GH].[STATUS] = 'CREATED'
   AND (CAST([GH].[GOAL_DATE_FROM] AS DATE) <= CAST(GETDATE() AS DATE)
   AND CAST([GH].[GOAL_DATE_TO] AS DATE) >= CAST(GETDATE() AS DATE)

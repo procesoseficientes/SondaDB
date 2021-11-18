@@ -6,11 +6,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-          EXEC [SONDA].SWIFT_SP_DELETE_FREQUENCY_BY_ROUTE
+          EXEC [acsa].SWIFT_SP_DELETE_FREQUENCY_BY_ROUTE
             @CODDE_ROUTE = '3102'        	  
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].SWIFT_SP_DELETE_FREQUENCY_BY_ROUTE
+CREATE PROCEDURE [acsa].SWIFT_SP_DELETE_FREQUENCY_BY_ROUTE
 	@CODDE_ROUTE INT
 AS
 	SET NOCOUNT ON;
@@ -19,8 +19,8 @@ AS
 	-- Eliminamos los clientes asociado
 	-- ------------------------------------------------------------	
   DELETE FC
-  FROM [SONDA].SWIFT_FREQUENCY_X_CUSTOMER AS FC
-  INNER JOIN [SONDA].SWIFT_FREQUENCY AS F ON(
+  FROM [acsa].SWIFT_FREQUENCY_X_CUSTOMER AS FC
+  INNER JOIN [acsa].SWIFT_FREQUENCY AS F ON(
     FC.ID_FREQUENCY = F.ID_FREQUENCY
   )
   WHERE F.CODE_ROUTE = CONVERT(VARCHAR,  @CODDE_ROUTE)
@@ -28,5 +28,5 @@ AS
   -- ------------------------------------------------------------
 	-- Eliminamos las frecuencia
 	-- ------------------------------------------------------------	
-  DELETE [SONDA].SWIFT_FREQUENCY 
+  DELETE [acsa].SWIFT_FREQUENCY 
   WHERE CODE_ROUTE = CONVERT(VARCHAR,  @CODDE_ROUTE)

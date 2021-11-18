@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[SWIFT_TASKS_BK] (
+﻿CREATE TABLE [acsa].[SWIFT_TASKS_BK] (
     [TASK_ID]                INT           NOT NULL,
     [TASK_TYPE]              VARCHAR (15)  NULL,
     [TASK_DATE]              DATE          NULL,

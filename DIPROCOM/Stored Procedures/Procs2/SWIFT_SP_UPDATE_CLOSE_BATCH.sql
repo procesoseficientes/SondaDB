@@ -7,14 +7,14 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-EXECUTE  [SONDA].[SWIFT_SP_UPDATE_CLOSE_BATCH] 
+EXECUTE  [acsa].[SWIFT_SP_UPDATE_CLOSE_BATCH] 
    @BATCH_ID = 2
   ,@LAST_UPDATE_BY = 'gerente@DIPROCOM' 
 
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_UPDATE_CLOSE_BATCH]
+CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_CLOSE_BATCH]
 	 @BATCH_ID AS INT
 	,@LAST_UPDATE_BY AS VARCHAR(50)
 
@@ -23,7 +23,7 @@ BEGIN
 
 	SET NOCOUNT ON;
       
-	UPDATE [SONDA].[SWIFT_BATCH]
+	UPDATE [acsa].[SWIFT_BATCH]
 	 SET 
 		 [LAST_UPDATE] = GETDATE()
 		,[LAST_UPDATE_BY] = @LAST_UPDATE_BY

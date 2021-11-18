@@ -6,7 +6,7 @@
     Nota: El SP ya existia, se firma porque carecia de la misma.
 
 Ejemplo de Ejecucion:
-    exec [SONDA].SWIFT_SP_INSERT_RESOLUTION
+    exec [acsa].SWIFT_SP_INSERT_RESOLUTION
          @AUTH_ID = 'Prueba'
           , @SERIE = 'Prueba'
           , @BRANCH_NAME = '...'
@@ -23,7 +23,7 @@ Ejemplo de Ejecucion:
 
 =========================*/
 
-CREATE PROC [SONDA].SWIFT_SP_INSERT_RESOLUTION_BK
+CREATE PROC [acsa].SWIFT_SP_INSERT_RESOLUTION_BK
   @AUTH_ID VARCHAR(50)
   , @SERIE VARCHAR(100)
   , @BRANCH_NAME VARCHAR(50)

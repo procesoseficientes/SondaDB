@@ -14,11 +14,11 @@ Descripcion: Obtiene la informacion de una Resolucion
 
 Ejemplo de Ejecucion:
 
-	exec [SONDA].[SWIFT_SP_GET_RESOLUTION]
+	exec [acsa].[SWIFT_SP_GET_RESOLUTION]
 
 ==========================================*/
 
-CREATE PROC [SONDA].[SWIFT_SP_GET_RESOLUTION]
+CREATE PROC [acsa].[SWIFT_SP_GET_RESOLUTION]
 AS
 SELECT [RS].[ROWPK],
        [RS].[AUTH_ID],
@@ -60,6 +60,6 @@ SELECT [RS].[ROWPK],
        [RS].[FEL_DOCUMENT_TYPE],
        [RS].[FEL_STABLISHMENT_CODE_CLASSIFICATION_ID],
        [RS].[FEL_STABLISHMENT_CODE]
-FROM [SONDA].[SONDA_POS_RES_SAT] [RS]
-    LEFT JOIN [SONDA].[SWIFT_ROUTES] [R]
+FROM [acsa].[SONDA_POS_RES_SAT] [RS]
+    LEFT JOIN [acsa].[SWIFT_ROUTES] [R]
         ON ([RS].[AUTH_ASSIGNED_TO] = [R].[CODE_ROUTE]);

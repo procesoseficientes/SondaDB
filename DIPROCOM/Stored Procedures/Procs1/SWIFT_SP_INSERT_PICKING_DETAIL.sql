@@ -13,7 +13,7 @@
         USE SWIFT_EXPRESS
         GO
         --
-        EXEC [SONDA].[SWIFT_SP_INSERT_PICKING_DETAIL]
+        EXEC [acsa].[SWIFT_SP_INSERT_PICKING_DETAIL]
 			@PICKING_HEADER = 1
 			,@CODE_SKU = '100001'
 			,@DESCRIPTION_SKU = 'DESCRIPCION'
@@ -24,10 +24,10 @@
 			,@LAST_UPDATE_BY = 'PRUEBA'
 			,@DIFFERENCE = 2
 		--
-		SELECT * FROM [SONDA].[SWIFT_PICKING_DETAIL] WHERE PICKING_HEADER = 1 AND DESCRIPTION_SKU = 'DESCRIPCION'
+		SELECT * FROM [acsa].[SWIFT_PICKING_DETAIL] WHERE PICKING_HEADER = 1 AND DESCRIPTION_SKU = 'DESCRIPCION'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_PICKING_DETAIL]
+CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_PICKING_DETAIL]
 		@PICKING_HEADER INT
 		,@CODE_SKU VARCHAR(50)
 		,@DESCRIPTION_SKU VARCHAR(250)
@@ -50,21 +50,21 @@ BEGIN TRY
 	-- Obtiene la bodega del encabezado
 	-- ------------------------------------------------------------------------------------
 	SELECT TOP 1 @CODE_WAREHOUSE = P.CODE_WAREHOUSE_SOURCE
-	FROM [SONDA].[SWIFT_PICKING_HEADER] P
+	FROM [acsa].[SWIFT_PICKING_HEADER] P
 	WHERE P.PICKING_HEADER = @PICKING_HEADER
 
 	-- ------------------------------------------------------------------------------------
 	-- Valida inventario
 	-- ------------------------------------------------------------------------------------
 	
-	SELECT  @VALIDATION = [SONDA].[SWIFT_FN_VALIDATE_STOCK_INVENTORY_BY_WS_AND_SKU](@CODE_WAREHOUSE,@CODE_SKU,@DISPATCH)
+	SELECT  @VALIDATION = [acsa].[SWIFT_FN_VALIDATE_STOCK_INVENTORY_BY_WS_AND_SKU](@CODE_WAREHOUSE,@CODE_SKU,@DISPATCH)
 	--
 	IF @VALIDATION = 1
 	BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Inserta el detalle
 		-- ------------------------------------------------------------------------------------
-		INSERT INTO [SONDA].[SWIFT_PICKING_DETAIL](
+		INSERT INTO [acsa].[SWIFT_PICKING_DETAIL](
 			PICKING_HEADER
 			,CODE_SKU
 			,DESCRIPTION_SKU

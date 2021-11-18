@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[SONDA_SALES_ORDER_HEADER_REQUESTED] (
+﻿CREATE TABLE [acsa].[SONDA_SALES_ORDER_HEADER_REQUESTED] (
     [ORDER_ID]                   INT           IDENTITY (1, 1) NOT NULL,
     [SALES_ORDER_ID]             INT           NOT NULL,
     [TERMS]                      VARCHAR (15)  NULL,

@@ -11,7 +11,7 @@
 -- Ejemplo de Ejecucion:
 		DECLARE @pResult VARCHAR(250)
 		--
-		EXEC [SONDA].[SONDA_SP_POST_DEPOSIT]
+		EXEC [acsa].[SONDA_SP_POST_DEPOSIT]
 			@pBANK_ACCOUNT = '1231231231231231'
 			,@pGPS = '14.59,-90.5416'
 			,@pAMT = 666
@@ -27,10 +27,10 @@
 		--
 		SELECT @pResult
 		--
-        SELECT * FROM [SONDA].[SONDA_DEPOSITS] ORDER BY 1 DESC
+        SELECT * FROM [acsa].[SONDA_DEPOSITS] ORDER BY 1 DESC
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_POST_DEPOSIT] (
+CREATE PROCEDURE [acsa].[SONDA_SP_POST_DEPOSIT] (
 	@pBANK_ACCOUNT VARCHAR(50)
 	,@pGPS VARCHAR(150)
 	,@pAMT MONEY
@@ -59,11 +59,11 @@ BEGIN
 		-- -----------------------------------------------------------------
 		-- Se valida el identificador del dispositivo
 		-- -----------------------------------------------------------------
-	   	EXEC [SONDA].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @pPOS_ID , -- varchar(50)
+	   	EXEC [acsa].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @pPOS_ID , -- varchar(50)
 	   		@DEVICE_ID = @DEVICE_ID -- varchar(50)
 
 		--
-    	INSERT INTO [SONDA].[SONDA_DEPOSITS]
+    	INSERT INTO [acsa].[SONDA_DEPOSITS]
     			(
     				[TRANS_TYPE]
     				,[TRANS_DATETIME]

@@ -8,7 +8,7 @@
 
 Ejemplo de Ejecucion:
 
-	EXEC [SONDA].[SWIFT_SP_CREATE_QR_CODE_LABEL] 
+	EXEC [acsa].[SWIFT_SP_CREATE_QR_CODE_LABEL] 
 		@pTASK_ID = 16574
 		,@pCUSTOMER_NAME = 'Ruta Despacho 01'
 		,@pCODE_SKU = '100017'
@@ -19,7 +19,7 @@ Ejemplo de Ejecucion:
 
 ===============================================*/
 
-CREATE PROC [SONDA].[SWIFT_SP_CREATE_QR_CODE_LABEL] 
+CREATE PROC [acsa].[SWIFT_SP_CREATE_QR_CODE_LABEL] 
 	@pTASK_ID int,
 	@pCUSTOMER_NAME varchar(max),
 	@pCODE_SKU varchar(50),
@@ -54,11 +54,11 @@ BEGIN
     set @pShipTo  = ISNULL(@pShipTo,'N\A')
 
 
-    EXEC @return_value = [SONDA].[SWIFT_SP_GET_NEXT_SEQUENCE] 
+    EXEC @return_value = [acsa].[SWIFT_SP_GET_NEXT_SEQUENCE] 
 		@SEQUENCE_NAME = 'QR_CODE_LABEL'
         ,@pRESULT = @pID OUTPUT
 
-    INSERT INTO [SONDA].SWIFT_QR_CODE_LABEL (
+    INSERT INTO [acsa].SWIFT_QR_CODE_LABEL (
 		ID
 		, TASK_ID
 		, CUSTOMER_NAME

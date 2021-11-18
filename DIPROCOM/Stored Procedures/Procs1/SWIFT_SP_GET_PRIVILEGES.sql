@@ -18,7 +18,7 @@
       
       DECLARE	@return_value int
       
-      EXEC	@return_value = [SONDA].[SWIFT_SP_GET_PRIVILEGES]
+      EXEC	@return_value = [acsa].[SWIFT_SP_GET_PRIVILEGES]
       		@USER = N'gerente@DIPROCOM'
       
       SELECT	'Return Value' = @return_value
@@ -26,23 +26,23 @@
       GO
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].SWIFT_SP_GET_PRIVILEGES @USER VARCHAR(50)  WITH RECOMPILE
+CREATE PROCEDURE [acsa].SWIFT_SP_GET_PRIVILEGES @USER VARCHAR(50)  WITH RECOMPILE
 AS
 
   SELECT
     U.[LOGIN]
    ,P.PRIVILEGE_ID AS NAME
    ,P.DISPLAY_NAME
-  FROM [SONDA].USERS U
-  INNER JOIN [SONDA].[SWIFT_ROLE] R
+  FROM [acsa].USERS U
+  INNER JOIN [acsa].[SWIFT_ROLE] R
     ON (
     R.ROLE_ID = U.USER_ROLE
     )
-  INNER JOIN [SONDA].[SWIFT_PRIVILEGES_X_ROLE] PR
+  INNER JOIN [acsa].[SWIFT_PRIVILEGES_X_ROLE] PR
     ON (
     R.ROLE_ID = PR.ROLE_ID
     )
-  INNER JOIN [SONDA].[SWIFT_PRIVILEGES] P
+  INNER JOIN [acsa].[SWIFT_PRIVILEGES] P
     ON (
     PR.PRIVILEGE_ID = P.ID
     AND [P].[IS_SCREEN] = 1

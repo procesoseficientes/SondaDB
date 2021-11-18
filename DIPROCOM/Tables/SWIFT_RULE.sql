@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[SWIFT_RULE] (
+﻿CREATE TABLE [acsa].[SWIFT_RULE] (
     [RULE_ID]     INT           IDENTITY (1, 1) NOT NULL,
     [CODE]        VARCHAR (50)  NOT NULL,
     [NAME]        VARCHAR (150) NOT NULL,

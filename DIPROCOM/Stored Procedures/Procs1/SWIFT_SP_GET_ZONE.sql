@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC  [SONDA].[SWIFT_SP_GET_ZONE]
+				EXEC  [acsa].[SWIFT_SP_GET_ZONE]
 
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_ZONE] (@ID_ZONE INT = NULL)
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_ZONE] (@ID_ZONE INT = NULL)
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -23,7 +23,7 @@ BEGIN
     [Z].[ZONE_ID]
    ,[Z].[CODE_ZONE]
    ,[Z].[DESCRIPTION_ZONE]
-  FROM [SONDA].[SWIFT_ZONE] [Z]
+  FROM [acsa].[SWIFT_ZONE] [Z]
     WHERE @ID_ZONE IS  NULL OR  @ID_ZONE = [Z].[ZONE_ID]
 
 

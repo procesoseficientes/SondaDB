@@ -5,7 +5,7 @@
 
 --Ejemplo de ejecucion:
 /*
-  EXEC [SONDA].[SONDA_SP_INSERT_TAKE_INVENTORY_DETAIL_IF_SKU_EXIST]
+  EXEC [acsa].[SONDA_SP_INSERT_TAKE_INVENTORY_DETAIL_IF_SKU_EXIST]
 	@TAKE_INVENTORY_ID = 44
 	,@CODE_SKU = '2465'
 	,@QTY = 2
@@ -16,7 +16,7 @@
 */
 
 -- =============================================
-CREATE PROCEDURE [SONDA].[SONDA_SP_INSERT_TAKE_INVENTORY_DETAIL_IF_SKU_EXIST]
+CREATE PROCEDURE [acsa].[SONDA_SP_INSERT_TAKE_INVENTORY_DETAIL_IF_SKU_EXIST]
 	-- ----------------------------------------------------------------------------------
   -- Parametros para customer
 	-- ----------------------------------------------------------------------------------
@@ -36,8 +36,8 @@ BEGIN
 	  -- ----------------------------------------------------------------------------------
 			
 			SELECT @RESULT=1 
-			FROM [SONDA].SWIFT_VIEW_ALL_SKU VAS 
-			INNER JOIN [SONDA].SONDA_PACK_CONVERSION SPC ON (VAS.CODE_SKU = SPC.CODE_SKU)
+			FROM [acsa].SWIFT_VIEW_ALL_SKU VAS 
+			INNER JOIN [acsa].SONDA_PACK_CONVERSION SPC ON (VAS.CODE_SKU = SPC.CODE_SKU)
 			WHERE VAS.CODE_SKU = @CODE_SKU 
 			AND SPC.CODE_PACK_UNIT_FROM = @CODE_PACK_UNIT
 
@@ -47,7 +47,7 @@ BEGIN
 		
 		IF @RESULT = 1
 	BEGIN 
-		INSERT INTO [SONDA].[SONDA_TAKE_INVENTORY_DETAIL](
+		INSERT INTO [acsa].[SONDA_TAKE_INVENTORY_DETAIL](
              [TAKE_INVENTORY_ID]
     	    ,[CODE_SKU]
         	,[QTY]

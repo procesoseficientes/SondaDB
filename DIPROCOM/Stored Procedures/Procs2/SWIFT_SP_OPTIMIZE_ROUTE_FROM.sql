@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [SONDA].[SWIFT_SP_OPTIMIZE_ROUTE_FROM]  
+				EXEC [acsa].[SWIFT_SP_OPTIMIZE_ROUTE_FROM]  
 				@NEW_SEQUENCE = 1, 
 				@CODE_ROUTE = 99, 
 				@CODE_CUSTOMER = 'SO-156876', 
@@ -13,7 +13,7 @@
 				@TYPE_TASK = 'SALE'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_OPTIMIZE_ROUTE_FROM]
+CREATE PROCEDURE [acsa].[SWIFT_SP_OPTIMIZE_ROUTE_FROM]
     @NEW_SEQUENCE INT,
     @CODE_ROUTE VARCHAR(50),
     @CODE_CUSTOMER VARCHAR(50),
@@ -45,10 +45,10 @@ BEGIN
         -- ------------------------------------------------------------------------------------------------------------------------- --
         SELECT @GPS_CUSTOMER = [C].[GPS],
                @ID_FREQUENCY = [FC].[ID_FREQUENCY]
-        FROM [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
-            INNER JOIN [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
+        FROM [acsa].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
+            INNER JOIN [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
                 ON ([FC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER])
-            INNER JOIN [SONDA].[SWIFT_FREQUENCY] [F]
+            INNER JOIN [acsa].[SWIFT_FREQUENCY] [F]
                 ON ([FC].[ID_FREQUENCY] = [F].[ID_FREQUENCY])
         WHERE [F].[TYPE_TASK] = @TYPE_TASK
               AND [FC].[CODE_CUSTOMER] = @CODE_CUSTOMER
@@ -62,7 +62,7 @@ BEGIN
                [F].[CODE_ROUTE],
                [F].[TYPE_TASK]
         INTO [#FREQUENCIES]
-        FROM [SONDA].[SWIFT_FREQUENCY] [F]
+        FROM [acsa].[SWIFT_FREQUENCY] [F]
         WHERE (CASE @DAY
                    WHEN 1 THEN
                        [F].[SUNDAY]
@@ -85,10 +85,10 @@ BEGIN
         -- ------------------------------------------------------------------------------------------------------------------------- --
         -- ACTUALIZO EL REGISTRO QUE SOLICITÓ MODIFICAR EL VENDEDOR CON LA SECUENCIA REQUERIDA POR EL MISMO                          --
         -- ------------------------------------------------------------------------------------------------------------------------- --
-        UPDATE [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER]
+        UPDATE [acsa].[SWIFT_FREQUENCY_X_CUSTOMER]
         SET [PRIORITY] = @NEW_SEQUENCE
-        FROM [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
-            INNER JOIN [SONDA].[SWIFT_FREQUENCY] [F]
+        FROM [acsa].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
+            INNER JOIN [acsa].[SWIFT_FREQUENCY] [F]
                 ON ([FC].[ID_FREQUENCY] = [F].[ID_FREQUENCY])
         WHERE [CODE_CUSTOMER] = @CODE_CUSTOMER
               AND [F].[TYPE_TASK] = @TYPE_TASK;
@@ -103,8 +103,8 @@ BEGIN
                [FC].[PRIORITY],
                [C].[GPS],
                [dbo].[SONDA_FN_CALCULATE_DISTANCE](@GPS_CUSTOMER, [C].[GPS]) AS [DISTANCE]
-        FROM [SONDA].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
-            INNER JOIN [SONDA].[SWIFT_VIEW_ALL_COSTUMER] [C]
+        FROM [acsa].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
+            INNER JOIN [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
                 ON ([FC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER])
             INNER JOIN [#FREQUENCIES] [F]
                 ON ([F].[ID_FREQUENCY] = [FC].[ID_FREQUENCY])
@@ -150,7 +150,7 @@ BEGIN
             -- ------------------------------------------------------------------------------------------------------------------------- --
             --	SP QUE REALIZA LA ACTUALIZACIÓN DE LA PRIORIDAD DEL CLIENTE                                                               --
             -- ------------------------------------------------------------------------------------------------------------------------- --
-            EXEC [SONDA].[SWIFT_SP_SET_CUSTOMER_PRIORITY_IN_FREQUENCY] @ID_FREQUENCY,
+            EXEC [acsa].[SWIFT_SP_SET_CUSTOMER_PRIORITY_IN_FREQUENCY] @ID_FREQUENCY,
                                                                        @CODE_CUST,
                                                                        @PRIORITY,
                                                                        @DISTANCE;

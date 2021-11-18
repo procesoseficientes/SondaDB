@@ -11,12 +11,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [SONDA].[SONDA_SP_GET_QUIZ_BY_CHANNEL]
+        EXEC [acsa].[SONDA_SP_GET_QUIZ_BY_CHANNEL]
 */
 -- =============================================
 
 
-CREATE PROCEDURE [SONDA].[SONDA_SP_GET_QUIZ_BY_CHANNEL]
+CREATE PROCEDURE [acsa].[SONDA_SP_GET_QUIZ_BY_CHANNEL]
 (@CODE_ROUTE VARCHAR(50))
 AS
 BEGIN
@@ -35,10 +35,10 @@ BEGIN
            ROW_NUMBER() OVER (ORDER BY [SAQ].[CODE_CHANNEL]) AS [CHANNEL_BY_QUIZ_ID],
            [SQ].[QUIZ_ID],
            [SAQ].[CODE_CHANNEL]
-    FROM [SONDA].[SWIFT_QUIZ] [SQ]
-        INNER JOIN [SONDA].[SWIFT_ASIGNED_QUIZ] [SAQ]
+    FROM [acsa].[SWIFT_QUIZ] [SQ]
+        INNER JOIN [acsa].[SWIFT_ASIGNED_QUIZ] [SAQ]
             ON ([SQ].[QUIZ_ID] = [SAQ].[QUIZ_ID])
-        INNER JOIN [SONDA].[SWIFT_ASIGNED_QUIZ] [QBR]
+        INNER JOIN [acsa].[SWIFT_ASIGNED_QUIZ] [QBR]
             ON (
                    [QBR].[QUIZ_ID] = [SAQ].[QUIZ_ID]
                    AND [QBR].[ROUTE_CODE] = @CODE_ROUTE

@@ -10,7 +10,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-	exec [SONDA].[SWIFT_SP_INSERT_GOAL_DETAIL]
+	exec [acsa].[SWIFT_SP_INSERT_GOAL_DETAIL]
 	@GOAL = '
 	<Meta>
 		<GOAL_HEADER_ID>2022</GOAL_HEADER_ID>
@@ -72,7 +72,7 @@
 	'
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_GOAL_DETAIL] @GOAL XML
+CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_GOAL_DETAIL] @GOAL XML
 AS
 BEGIN
     --
@@ -105,7 +105,7 @@ BEGIN
             -- ---------------------------------------------------------------
             -- Limpia los datos existentes para cuando es actualizacion
             -- ---------------------------------------------------------------
-            DELETE FROM [SONDA].[SWIFT_GOAL_DETAIL]
+            DELETE FROM [acsa].[SWIFT_GOAL_DETAIL]
             WHERE [GOAL_HEADER_ID] = @GOAL_HEADER_ID;
 
             -- ---------------------------------------------------------------------------------------
@@ -129,9 +129,9 @@ BEGIN
             -- -------------------------------------------------------------------------------------------
             SELECT @SELLERS_WITH_GOAL_IN_PROGRESS = COUNT([UOT].[SELLER_ID])
             FROM @GOAL_DETAIL AS [UOT]
-                INNER JOIN [SONDA].[SWIFT_GOAL_DETAIL] AS [GD]
+                INNER JOIN [acsa].[SWIFT_GOAL_DETAIL] AS [GD]
                     ON [GD].[SELLER_ID] = [UOT].[SELLER_ID]
-                INNER JOIN [SONDA].[SWIFT_GOAL_HEADER] AS [GH]
+                INNER JOIN [acsa].[SWIFT_GOAL_HEADER] AS [GH]
                     ON [GH].[GOAL_HEADER_ID] = [GD].[GOAL_HEADER_ID]
             WHERE [GH].[STATUS] = 'IN_PROGRESS'
                   AND
@@ -154,7 +154,7 @@ BEGIN
                 -- -------------------------------------------------------------------------------------------
                 -- Insertamos el operador con los datos de la meta respectiva
                 -- -------------------------------------------------------------------------------------------
-                INSERT INTO [SONDA].[SWIFT_GOAL_DETAIL]
+                INSERT INTO [acsa].[SWIFT_GOAL_DETAIL]
                 (
                     [GOAL_HEADER_ID],
                     [SELLER_ID],

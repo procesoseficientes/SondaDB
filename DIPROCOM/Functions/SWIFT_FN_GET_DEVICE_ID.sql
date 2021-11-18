@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        SELECT [SONDA].[SWIFT_FN_GET_DEVICE_ID]('rudi@DIPROCOM');
+        SELECT [acsa].[SWIFT_FN_GET_DEVICE_ID]('rudi@DIPROCOM');
 */
 -- =============================================
 
-CREATE FUNCTION [SONDA].[SWIFT_FN_GET_DEVICE_ID]
+CREATE FUNCTION [acsa].[SWIFT_FN_GET_DEVICE_ID]
     (@LOGIN AS VARCHAR(50))
 RETURNS VARCHAR(50)
 AS
@@ -17,7 +17,7 @@ BEGIN
 	DECLARE @DEVICE_ID VARCHAR(50)
 
 	SELECT @DEVICE_ID = [DEVICE_ID] 
-	FROM [SONDA].[USERS]
+	FROM [acsa].[USERS]
 	WHERE [LOGIN] = @LOGIN
 
     RETURN @DEVICE_ID

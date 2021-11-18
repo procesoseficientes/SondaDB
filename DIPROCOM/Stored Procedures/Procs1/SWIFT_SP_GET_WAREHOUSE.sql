@@ -1,4 +1,4 @@
-﻿/****** Object:  StoredProcedure [SONDA].[SWIFT_SP_GET_WAREHOUSE]    Script Date: 20/12/2015 9:09:38 AM ******/
+﻿/****** Object:  StoredProcedure [acsa].[SWIFT_SP_GET_WAREHOUSE]    Script Date: 20/12/2015 9:09:38 AM ******/
 -- =============================================
 -- Autor:				jose.garcia
 -- Fecha de Creacion: 	02-12-2015
@@ -12,11 +12,11 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				exec [SONDA].[SWIFT_SP_GET_WAREHOUSE]				--				
+				exec [acsa].[SWIFT_SP_GET_WAREHOUSE]				--				
 
 */
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_WAREHOUSE]
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_WAREHOUSE]
 AS
 Select [WAREHOUSE]
 	  ,[CODE_WAREHOUSE]
@@ -30,7 +30,7 @@ Select [WAREHOUSE]
       ,[SHORT_DESCRIPTION_WAREHOUSE] 
       ,[GPS_WAREHOUSE]
 	  
-from [SONDA].[SWIFT_WAREHOUSES] order by (CODE_WAREHOUSE)
+from [acsa].[SWIFT_WAREHOUSES] order by (CODE_WAREHOUSE)
 
 
 

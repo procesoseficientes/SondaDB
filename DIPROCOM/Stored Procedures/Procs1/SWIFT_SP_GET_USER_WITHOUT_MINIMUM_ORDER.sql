@@ -4,7 +4,7 @@
 -- Description:			SP que obtiene los usuarios que no tienen monto de pedido minimo 
 
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_GET_USER_WITHOUT_MINIMUM_ORDER]
+CREATE PROCEDURE [acsa].[SWIFT_SP_GET_USER_WITHOUT_MINIMUM_ORDER]
 AS
 BEGIN
     SELECT DISTINCT
@@ -12,11 +12,11 @@ BEGIN
            [U].[LOGIN],
            [U].[NAME_USER],
            [U].[TYPE_USER]
-    FROM [SONDA].[USERS] [U]
+    FROM [acsa].[USERS] [U]
     WHERE NOT EXISTS
     (
         SELECT NULL
-        FROM [SONDA].[SWIFT_MINIMUM_ORDER_BY_USER] [SMOU]
+        FROM [acsa].[SWIFT_MINIMUM_ORDER_BY_USER] [SMOU]
         WHERE [SMOU].[USER] = [U].[LOGIN]
     )
           AND [U].[SELLER_ROUTE] IS NOT NULL;

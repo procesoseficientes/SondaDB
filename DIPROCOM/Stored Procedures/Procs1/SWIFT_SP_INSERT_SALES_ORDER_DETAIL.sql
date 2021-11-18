@@ -3,7 +3,7 @@
 -- Fecha de Creacion: 	13-04-2016
 -- Description:			Crea detalle de la orden de venta
 -- =============================================
-CREATE PROCEDURE [SONDA].[SWIFT_SP_INSERT_SALES_ORDER_DETAIL]
+CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_SALES_ORDER_DETAIL]
 		@SALES_ORDER_ID INT
 		,@SKU VARCHAR(25)
 		,@LINE_SEQ INT
@@ -29,7 +29,7 @@ BEGIN TRY
 	-- ------------------------------------------------------------------------------------
 	-- Inserta el detalle de la orden de venta
 	-- ------------------------------------------------------------------------------------
-	INSERT INTO [SONDA].[SONDA_SALES_ORDER_DETAIL](
+	INSERT INTO [acsa].[SONDA_SALES_ORDER_DETAIL](
 		SALES_ORDER_ID
 		,SKU
 		,LINE_SEQ
@@ -64,7 +64,7 @@ BEGIN TRY
 	-- ------------------------------------------------------------------------------------
 	-- Actualiza el inventario reservado
 	-- ------------------------------------------------------------------------------------
-	UPDATE [SONDA].[SONDA_IS_COMITED_BY_WAREHOUSE]
+	UPDATE [acsa].[SONDA_IS_COMITED_BY_WAREHOUSE]
 	SET [IS_COMITED] = [IS_COMITED] + @QTY
 	WHERE [CODE_WAREHOUSE] = @CODE_WAREHOUSE
 		AND [CODE_SKU] = @SKU

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [SONDA].[SWIFT_FREQUENCY_bk] (
+﻿CREATE TABLE [acsa].[SWIFT_FREQUENCY_bk] (
     [ID_FREQUENCY]      INT           IDENTITY (1, 1) NOT NULL,
     [CODE_FREQUENCY]    VARCHAR (50)  NOT NULL,
     [SUNDAY]            INT           NOT NULL,

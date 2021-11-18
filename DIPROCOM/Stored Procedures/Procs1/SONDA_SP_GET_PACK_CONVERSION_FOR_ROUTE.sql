@@ -5,13 +5,13 @@
 
 -- =============================================
 
-CREATE PROCEDURE [SONDA].[SONDA_SP_GET_PACK_CONVERSION_FOR_ROUTE]
+CREATE PROCEDURE [acsa].[SONDA_SP_GET_PACK_CONVERSION_FOR_ROUTE]
     @CODE_ROUTE VARCHAR(50)
 AS
     BEGIN
         SET NOCOUNT ON;
 
----Se crea una tabla temporal desde [SONDA].[SONDA_SP_GET_PRICE_LIST_BY_SKU_PACK_SCALE_FOR_ROUTE]  para traer la lista de precio por defecto y la que tiene asignada para su ruta 
+---Se crea una tabla temporal desde [acsa].[SONDA_SP_GET_PRICE_LIST_BY_SKU_PACK_SCALE_FOR_ROUTE]  para traer la lista de precio por defecto y la que tiene asignada para su ruta 
 
         --DECLARE @PRICE_LISTS TABLE
         --    (
@@ -26,7 +26,7 @@ AS
 
 
         --INSERT  INTO @PRICE_LISTS
-        --        EXEC [SONDA].[SONDA_SP_GET_PRICE_LIST_BY_SKU_PACK_SCALE_FOR_ROUTE] @CODE_ROUTE = '24';  
+        --        EXEC [acsa].[SONDA_SP_GET_PRICE_LIST_BY_SKU_PACK_SCALE_FOR_ROUTE] @CODE_ROUTE = '24';  
 
 ---Se hace un distinct para no mutiplexsar todos los campos del PACK_CONVERSION filtrado desde la tabla anterior	
         SELECT  DISTINCT
@@ -38,7 +38,7 @@ AS
                 [PC].[LAST_UPDATE] ,
                 [PC].[LAST_UPDATE_BY] ,
                 [PC].[ORDER]
-        FROM    [SONDA].[SONDA_PACK_CONVERSION] AS [PC]
+        FROM    [acsa].[SONDA_PACK_CONVERSION] AS [PC]
                 --INNER JOIN @PRICE_LISTS AS [L] ON ( [L].[CODE_SKU] = [PC].[CODE_SKU] );
     END; 
 
