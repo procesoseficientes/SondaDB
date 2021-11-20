@@ -52,11 +52,11 @@ BEGIN
        ,[U].[NAME_USER] [SELLER_NAME]
        ,COUNT([SOH].[SALES_ORDER_ID]) [DOCUMENT_QTY]
        ,SUM([acsa].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([SOH].[SALES_ORDER_ID])) [DOCUMENT_TOTAL]
-       ,GETDATE()
+       ,[SOH].[POSTED_DATETIME]--GETDATE()
        ,[GH].[GOAL_DATE_FROM]
        ,[GH].[GOAL_DATE_TO]
        ,[GH].[INCLUDE_SATURDAY]
-    FROM
+     FROM
         [acsa].[SWIFT_TASKS] [T]
     INNER JOIN [acsa].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
     INNER JOIN [acsa].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
@@ -68,7 +68,7 @@ BEGIN
                                                               AND
                                                               [GH].[GOAL_DATE_TO]
     WHERE
-        FORMAT([T].[TASK_DATE], 'yyyyMMdd') = FORMAT(GETDATE(), 'yyyyMMdd')
+       FORMAT([T].[TASK_DATE], 'yyyyMMdd') = FORMAT(GETDATE()-1, 'yyyyMMdd')
         AND [T].[TASK_TYPE] = 'PRESALE'
     GROUP BY
         [UT].[TEAM_ID]
@@ -78,6 +78,7 @@ BEGIN
        ,[GH].[GOAL_DATE_FROM]
        ,[GH].[GOAL_DATE_TO]
        ,[GH].[INCLUDE_SATURDAY]
+	   ,[SOH].[POSTED_DATETIME]
     HAVING
         COUNT([T].[TASK_ID]) > 0;
 	
@@ -96,7 +97,7 @@ BEGIN
     INNER JOIN [acsa].[USERS] [U] ON [SPH].[POSTED_BY] = [U].[LOGIN]
     INNER JOIN [acsa].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
     WHERE
-        FORMAT([SPH].[POSTED_DATETIME], 'yyyyMMdd') = FORMAT(GETDATE(),
+        FORMAT([SPH].[POSTED_DATETIME], 'yyyyMMdd') = FORMAT(GETDATE()-1,
                                                              'yyyyMMdd')
         AND [SPH].[IS_READY_TO_SEND] = 1
     GROUP BY
@@ -122,7 +123,7 @@ BEGIN
        ,[U].[NAME_USER] [SELLER_NAME]
        ,ISNULL([I].[DOCUMENT_QTY], 0)
        ,ISNULL([I].[DOCUMENT_TOTAL], 0)
-       ,GETDATE()
+       ,[T].[TASK_DATE]--GETDATE()
        ,[GH].[GOAL_DATE_FROM]
        ,[GH].[GOAL_DATE_TO]
        ,[GH].[INCLUDE_SATURDAY]
@@ -137,7 +138,7 @@ BEGIN
                                                               AND
                                                               [GH].[GOAL_DATE_TO]
     WHERE
-        FORMAT([T].[TASK_DATE], 'yyyyMMdd') = FORMAT(GETDATE(), 'yyyyMMdd')
+        FORMAT([T].[TASK_DATE], 'yyyyMMdd') = FORMAT(GETDATE()-1, 'yyyyMMdd')
         AND [T].[TASK_TYPE] = 'SALE'
     GROUP BY
         [I].[DOCUMENT_QTY]
@@ -149,6 +150,7 @@ BEGIN
        ,[GH].[GOAL_DATE_FROM]
        ,[GH].[GOAL_DATE_TO]
        ,[GH].[INCLUDE_SATURDAY]
+	   ,[T].[TASK_DATE]
     HAVING
         COUNT([T].[TASK_ID]) > 0;
 
@@ -176,9 +178,9 @@ BEGIN
        ,ISNULL([DOCUMENT_TOTAL], 0)
        ,[DATE]
        ,[acsa].[SWIFT_FN_GET_GOAL_WORK_DAYS]([DATE],
-                                              '2018-08-01 00:00:00.000', 1)
+                                              '2018-08-01 00:00:00.000', isnull (INCLUDE_SATURDAY, 1))
        ,[acsa].[SWIFT_FN_GET_GOAL_WORK_DAYS]('2018-07-01 00:00:00.000',
-                                              [DATE], 1)
+                                              [DATE],  isnull (INCLUDE_SATURDAY, 1))
     FROM
         @RESULT;
 END;

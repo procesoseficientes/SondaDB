@@ -32,7 +32,7 @@
     ,@CONTACT_CUSTOMER = '123'
 	,@GPS = '14,-90'
     ,@POSTED_DATETIME = '20160202'
-    ,@POSTED_BY = 'prueba@DIPROCOM'
+    ,@POSTED_BY = 'prueba@acsa'
     ,@CODE_ROUTE = '002'
 	,@TAX_ID = 'C.F.'
 	,@INVOICE_NAME = 'Tienda la Bendicion'
@@ -46,7 +46,7 @@
 
 
 -- =============================================
-CREATE PROCEDURE [acsa].SWIFT_SP_INSERT_CUSTOMER_CHANGE 
+CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_CUSTOMER_CHANGE] 
   @CODE_CUSTOMER VARCHAR(50)
   ,@PHONE_CUSTOMER VARCHAR(50)
   ,@ADRESS_CUSTOMER VARCHAR(250)

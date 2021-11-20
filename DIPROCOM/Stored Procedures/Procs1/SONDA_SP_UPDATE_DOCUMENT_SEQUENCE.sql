@@ -20,9 +20,9 @@
 				SELECT D.DOC_TYPE,D.SERIE,D.CURRENT_DOC FROM [acsa].[SWIFT_DOCUMENT_SEQUENCE] D WHERE DOC_TYPE = @DOC_TYPE AND SERIE = @SERIE
 				--
 				EXEC [acsa].[SONDA_SP_UPDATE_DOCUMENT_SEQUENCE]
-					@DOC_TYPE = @DOC_TYPE
-					,@SERIE = @SERIE
-					,@DOC_NUM = @DOC_NUM
+					@DOC_TYPE = 'SONDA_SP_UPDATE_DOCUMENT_SEQUENCE'
+					,@SERIE = 'RP-24'
+					,@DOC_NUM = '13873'
 				--
 				SELECT D.DOC_TYPE,D.SERIE,D.CURRENT_DOC FROM [acsa].[SWIFT_DOCUMENT_SEQUENCE] D WHERE DOC_TYPE = @DOC_TYPE AND SERIE = @SERIE
 */
@@ -35,6 +35,32 @@ CREATE PROCEDURE [acsa].[SONDA_SP_UPDATE_DOCUMENT_SEQUENCE]
 )
 AS
 BEGIN
+
+--DECLARE @CURRENT_DOC INT = (SELECT CURRENT_DOC FROM acsa.SWIFT_DOCUMENT_SEQUENCE WHERE SERIE = @SERIE AND DOC_TYPE = @DOC_TYPE),
+--@RESULT VARCHAR(2000) = ''																													 
+						  
+-- -------------------------------------------------------------------
+-- cambio que valida que la secuencia actual no regrese a una anterior
+-- -------------------------------------------------------------------
+	--SET NOCOUNT ON;
+
+	--BEGIN TRAN
+	--BEGIN TRY
+
+	--IF( @DOC_NUM > @CURRENT_DOC )
+	--BEGIN					  
+	  
+	--	UPDATE [acsa].[SWIFT_DOCUMENT_SEQUENCE]
+	--	SET CURRENT_DOC = @DOC_NUM
+	--	WHERE DOC_TYPE = @DOC_TYPE
+	--		AND SERIE = @SERIE
+	--SET @RESULT = 'Actualización completada'
+	--END;
+	--ELSE
+	--BEGIN
+	--SET @RESULT = 'El documento nuevo no puede ser menor al documento actual'
+	--END;	
+
 	SET NOCOUNT ON;
 
 	BEGIN TRAN
@@ -43,6 +69,7 @@ BEGIN
 		SET CURRENT_DOC = @DOC_NUM
 		WHERE DOC_TYPE = @DOC_TYPE
 			AND SERIE = @SERIE
+			AND @DOC_NUM>CURRENT_DOC
 
 		/*-- ------------------------------------------------------------------------------------
 		-- Valida que se actualizara la secuencia de documentos

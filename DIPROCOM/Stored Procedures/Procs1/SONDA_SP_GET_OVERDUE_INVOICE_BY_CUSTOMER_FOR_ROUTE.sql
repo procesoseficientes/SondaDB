@@ -11,7 +11,9 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [acsa].[SONDA_SP_GET_OVERDUE_INVOICE_BY_CUSTOMER_FOR_ROUTE] @CODE_ROUTE = '46'
+        EXEC [acsa].[SONDA_SP_GET_OVERDUE_INVOICE_BY_CUSTOMER_FOR_ROUTE] @CODE_ROUTE = 'RP-01'
+
+	'CLIE008426               ''CLIE008426'
 */
 -- =============================================
 CREATE PROCEDURE [acsa].[SONDA_SP_GET_OVERDUE_INVOICE_BY_CUSTOMER_FOR_ROUTE]
@@ -62,7 +64,7 @@ BEGIN
     SELECT [OI].[ID],
            [OI].[INVOICE_ID],
            [OI].[DOC_ENTRY],
-           [OI].[CODE_CUSTOMER],
+           LTRIM(RTRIM([OI].[CODE_CUSTOMER])) AS CODE_CUSTOMER,
            [OI].[CREATED_DATE],
            [OI].[DUE_DATE],
            [OI].[TOTAL_AMOUNT],

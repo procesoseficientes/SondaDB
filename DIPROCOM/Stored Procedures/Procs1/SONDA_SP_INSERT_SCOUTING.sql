@@ -54,7 +54,7 @@
         	,@CONTACT_CUSTOMER = 'PEDRO'
         	,@CODE_ROUTE = '001'
         	,@SELLER_CODE = 'V001'        	
-        	,@LAST_UPDATE_BY = 'RUDI@DIPROCOM'        	
+        	,@LAST_UPDATE_BY = 'RUDI@acsa'        	
         	,@SING = ''
         	,@PHOTO = ''
         	,@STATUS = 'NEW'
@@ -94,7 +94,7 @@
 */
 
 -- =============================================
-CREATE PROCEDURE [acsa].SONDA_SP_INSERT_SCOUTING (
+CREATE PROCEDURE [acsa].[SONDA_SP_INSERT_SCOUTING] (
 -- ----------------------------------------------------------------------------------
 -- Parametros para customer
 -- ----------------------------------------------------------------------------------

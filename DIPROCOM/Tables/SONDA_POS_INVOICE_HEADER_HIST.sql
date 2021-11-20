@@ -8,9 +8,9 @@
     [TOTAL_AMOUNT]           MONEY           NULL,
     [STATUS]                 INT             NULL,
     [POSTED_BY]              VARCHAR (25)    NULL,
-    [IMAGE_1]                VARCHAR (MAX)   COLLATE Modern_Spanish_CI_AS NULL,
-    [IMAGE_2]                VARCHAR (MAX)   COLLATE Modern_Spanish_CI_AS NULL,
-    [IMAGE_3]                VARCHAR (MAX)   COLLATE Modern_Spanish_CI_AS NULL,
+    [IMAGE_1]                VARCHAR (MAX)   NULL,
+    [IMAGE_2]                VARCHAR (MAX)   NULL,
+    [IMAGE_3]                VARCHAR (MAX)   NULL,
     [IS_POSTED_OFFLINE]      INT             NULL,
     [INVOICED_DATETIME]      DATETIME        NULL,
     [DEVICE_BATTERY_FACTOR]  INT             NULL,
@@ -31,7 +31,7 @@
     [CLEARING_DATETIME]      DATETIME        NULL,
     [IS_ACTIVE_ROUTE]        INT             NULL,
     [SOURCE_CODE]            NUMERIC (18)    NULL,
-    [GPS_EXPECTED]           VARCHAR (MAX)   COLLATE Modern_Spanish_CI_AS NULL,
+    [GPS_EXPECTED]           VARCHAR (MAX)   NULL,
     [ATTEMPTED_WITH_ERROR]   INT             NULL,
     [IS_POSTED_ERP]          INT             NULL,
     [POSTED_ERP]             DATETIME        NULL,
@@ -60,4 +60,6 @@
     [CASH_AMOUNT]            NUMERIC (18, 6) NOT NULL,
     [PAID_TO_DATE]           NUMERIC (18, 6) NOT NULL
 );
+
+
 

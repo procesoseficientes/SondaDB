@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [acsa].SWIFT_SP_INSERT_SALES_STATISTICS_BY_TEAM
+        EXEC acsa.SWIFT_SP_INSERT_SALES_STATISTICS_BY_TEAM
         SELECT * FROM [acsa].[SWIFT_STATISTICS_GOALS_BY_SALES] 
 */
 -- =============================================
@@ -424,12 +424,12 @@ BEGIN
                      CASE
                        WHEN (CAST([GH].[GOAL_DATE_FROM] AS DATE) <= CAST(GETDATE() AS DATE) AND
                          CAST([GH].[GOAL_DATE_TO] AS DATE) >= CAST(GETDATE() AS DATE)) THEN 'IN_PROGRESS'
-                       WHEN CAST([GH].[GOAL_DATE_TO] AS DATE) < CAST(GETDATE() AS DATE) THEN 'FINISHED'
+                       WHEN CAST([GH].[GOAL_DATE_TO] AS DATE) < CAST(GETDATE() AS DATE) THEN 'FINISHED'				  
                      END
      ,[GH].[LAST_UPDATE] = GETDATE()
      ,[GH].[LAST_UPDATE_BY] = 'SYSTEM'
   FROM [acsa].[SWIFT_GOAL_HEADER] [GH]
-  WHERE [GH].[STATUS] = 'CREATED'
+  WHERE [GH].[STATUS] != 'FINISHED'
   AND (CAST([GH].[GOAL_DATE_FROM] AS DATE) <= CAST(GETDATE() AS DATE)
   AND CAST([GH].[GOAL_DATE_TO] AS DATE) >= CAST(GETDATE() AS DATE)
   OR CAST([GH].[GOAL_DATE_TO] AS DATE) < DATEADD(DAY, -1, CAST(GETDATE() AS DATE)))

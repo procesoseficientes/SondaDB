@@ -19,7 +19,7 @@
 			,@POLYGON_NAME ='pacopaco2' 
 			,@POLYGON_DESCRIPTION = 'Cuatro Caminos'
 			,@COMMENT = 'Por la Super 24'
-			,@LAST_UPDATE_BY = 'gerente@DIPROCOM'
+			,@LAST_UPDATE_BY = 'gerente@acsa'
 		--
 		SELECT * FROM [acsa].[SWIFT_POLYGON] WHERE POLYGON_NAME = 'pacopaco2'
 		--
@@ -45,12 +45,10 @@ BEGIN
   -- ------------------------------------------------------------
 	-- Actualiza el tipo de tarea de la frecuencia
 	-- ------------------------------------------------------------	
-  --EXEC [acsa].[SWIFT_SP_UPDATE_FREQUENCY_BY_POYGON]
-  --        @POLYGON_ID = @POLYGON_ID
-  --        ,@TYPE_TASK = @TYPE_TASK
-  --        ,@LAST_UPDATED_BY = @LAST_UPDATE_BY
-
-		 
+  EXEC [acsa].[SWIFT_SP_UPDATE_FREQUENCY_BY_POYGON]
+          @POLYGON_ID = @POLYGON_ID
+          ,@TYPE_TASK = @TYPE_TASK
+          ,@LAST_UPDATED_BY = @LAST_UPDATE_BY
   -- ------------------------------------------------------------
 	-- Validad si tiene hijos el poligono para borrar 
 	-- ------------------------------------------------------------	
@@ -58,7 +56,6 @@ BEGIN
 	BEGIN
 		DELETE FROM [acsa].[SWIFT_POLYGON_POINT]
 		WHERE POLYGON_ID = @POLYGON_ID  
-	
 	END
 	--
 	UPDATE [acsa].[SWIFT_POLYGON]

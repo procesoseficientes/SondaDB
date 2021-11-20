@@ -28,29 +28,29 @@ BEGIN
    ,DOC_DATE DATETIME
   );
 
-	 -- SELECT
-		--@SQL = ' INSERT INTO #INVOICE 
-		--SELECT		
-		--	DOC_TOTAL 
-		--	,PAID_TO_DATE 
-		--	,DOC_DUE_DATE 
-		--	,CARD_CODE
-		--	,DOC_DATE
-		--FROM openquery ([ERPSERVER],''
-		--SELECT
-		--  IV.DocTotal AS DOC_TOTAL
-		-- ,IV.PaidToDate AS PAID_TO_DATE
-		-- ,IV.DocDueDate AS DOC_DUE_DATE
-		-- ,IV.CardCode AS CARD_CODE
-		-- ,IV.DocDate AS DOC_DATE
-		--FROM PRUEBA.dbo.OINV IV
-		--WHERE IV.DocStatus = ''''O''''
-		--AND (IV.CardCode = ''''' + @CODE_COSTUMER + ''''')
+	  SELECT
+		@SQL = ' INSERT INTO #INVOICE 
+		SELECT		
+			DOC_TOTAL 
+			,PAID_TO_DATE 
+			,DOC_DUE_DATE 
+			,CARD_CODE
+			,DOC_DATE
+		FROM openquery ([ERPSERVER],''
+		SELECT
+		  IV.DocTotal AS DOC_TOTAL
+		 ,IV.PaidToDate AS PAID_TO_DATE
+		 ,IV.DocDueDate AS DOC_DUE_DATE
+		 ,IV.CardCode AS CARD_CODE
+		 ,IV.DocDate AS DOC_DATE
+		FROM PRUEBA.dbo.OINV IV
+		WHERE IV.DocStatus = ''''O''''
+		AND (IV.CardCode = ''''' + @CODE_COSTUMER + ''''')
 
-		--'')'
+		'')'
 
-	 -- PRINT '@SQL: ' + @SQL
-	 -- EXEC (@SQL);
+	  PRINT '@SQL: ' + @SQL
+	  EXEC (@SQL);
 
   SELECT
     *

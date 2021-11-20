@@ -8,9 +8,9 @@
     [TOTAL_AMOUNT]           MONEY           NULL,
     [STATUS]                 VARCHAR (50)    NULL,
     [POSTED_BY]              VARCHAR (25)    NULL,
-    [IMAGE_1]                VARCHAR (MAX)   COLLATE Modern_Spanish_CI_AS NULL,
-    [IMAGE_2]                VARCHAR (MAX)   COLLATE Modern_Spanish_CI_AS NULL,
-    [IMAGE_3]                VARCHAR (MAX)   COLLATE Modern_Spanish_CI_AS NULL,
+    [IMAGE_1]                VARCHAR (MAX)   NULL,
+    [IMAGE_2]                VARCHAR (MAX)   NULL,
+    [IMAGE_3]                VARCHAR (MAX)   NULL,
     [IS_POSTED_OFFLINE]      VARCHAR (50)    NULL,
     [INVOICED_DATETIME]      DATETIME        NULL,
     [DEVICE_BATTERY_FACTOR]  VARCHAR (50)    NULL,
@@ -31,7 +31,7 @@
     [CLEARING_DATETIME]      DATETIME        NULL,
     [IS_ACTIVE_ROUTE]        VARCHAR (50)    NULL,
     [SOURCE_CODE]            NUMERIC (18)    NULL,
-    [GPS_EXPECTED]           VARCHAR (MAX)   COLLATE Modern_Spanish_CI_AS NULL,
+    [GPS_EXPECTED]           VARCHAR (MAX)   NULL,
     [ATTEMPTED_WITH_ERROR]   VARCHAR (50)    NULL,
     [IS_POSTED_ERP]          VARCHAR (50)    NULL,
     [POSTED_ERP]             DATETIME        NULL,
@@ -64,4 +64,6 @@
     [CHANGE]                 DECIMAL (18, 6) NULL,
     [INVOICE_XML]            XML             NULL
 );
+
+
 

@@ -100,7 +100,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        exec [acsa].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING] @CODE_ROUTE = '46'
+        exec [acsa].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING] @CODE_ROUTE = 'rp-01'
 */
 -- =============================================
 CREATE PROCEDURE [acsa].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING]
@@ -113,7 +113,7 @@ BEGIN
     --
     CREATE TABLE [#CUSTOMER]
     (
-        [CODE_CUSTOMER] VARCHAR(50),
+        [CODE_CUSTOMER] VARCHAR(50) COLLATE DATABASE_DEFAULT,
         [NAME_CUSTOMER] VARCHAR(250),
         [TAX_ID_NUMBER] VARCHAR(50),
         [ADRESS_CUSTOMER] VARCHAR(250),
@@ -144,7 +144,7 @@ BEGIN
     --
     CREATE TABLE [#RESULT]
     (
-        [CODE_CUSTOMER] VARCHAR(50),
+        [CODE_CUSTOMER] VARCHAR(50) COLLATE DATABASE_DEFAULT,
         [NAME_CUSTOMER] VARCHAR(250),
         [TAX_ID_NUMBER] VARCHAR(50),
         [ADRESS_CUSTOMER] VARCHAR(250),
@@ -266,7 +266,7 @@ BEGIN
                    [DL].[DISCOUNT_LIST_ID] = [DLBC].[DISCOUNT_LIST_ID]
                    AND [DLBC].[DISCOUNT_LIST_ID] > 0
                )
-    WHERE [DL].[CODE_ROUTE] = @CODE_ROUTE;
+    WHERE [DL].[CODE_ROUTE] COLLATE DATABASE_DEFAULT = @CODE_ROUTE;
 
     -- ------------------------------------------------------------------------------------
     -- Obtiene las listas de bonificaciones asociadas a la ruta
@@ -278,7 +278,7 @@ BEGIN
     FROM [acsa].[SWIFT_BONUS_LIST] [BL]
         INNER JOIN [acsa].[SWIFT_BONUS_LIST_BY_CUSTOMER] [BLBC]
             ON ([BL].[BONUS_LIST_ID] = [BLBC].[BONUS_LIST_ID])
-    WHERE [BL].[CODE_ROUTE] = @CODE_ROUTE;
+    WHERE [BL].[CODE_ROUTE] COLLATE DATABASE_DEFAULT = @CODE_ROUTE;
 
     -- ------------------------------------------------------------------------------------
     -- Obtiene las listas de venta minima
@@ -290,7 +290,7 @@ BEGIN
     FROM [acsa].[SWIFT_SKU_SALES_BY_MULTIPLE_LIST] [SM]
         INNER JOIN [acsa].[SWIFT_SKU_SALES_BY_MULTIPLE_LIST_BY_CUSTOMER] [SLBC]
             ON ([SM].[SALES_BY_MULTIPLE_LIST_ID] = [SLBC].[SALES_BY_MULTIPLE_LIST_ID])
-    WHERE [SM].[CODE_ROUTE] = @CODE_ROUTE;
+    WHERE [SM].[CODE_ROUTE] COLLATE DATABASE_DEFAULT = @CODE_ROUTE;
 
     -- ------------------------------------------------------------------------------------
     -- Obtiene las listas de precios especiales asociadas a la ruta
@@ -310,7 +310,7 @@ BEGIN
                    [SPLBC].[SPECIAL_PRICE_LIST_ID] = [SPL].[SPECIAL_PRICE_LIST_ID]
                    AND [SPLBC].[SPECIAL_PRICE_LIST_ID] > 0
                )
-    WHERE [SPL].[CODE_ROUTE] = @CODE_ROUTE;
+    WHERE [SPL].[CODE_ROUTE] COLLATE DATABASE_DEFAULT = @CODE_ROUTE;
 
     -- ------------------------------------------------------------------------------------
     -- Obtener Canales
@@ -319,7 +319,7 @@ BEGIN
     SELECT [SC].[CHANNEL_ID],
            [SC].[CODE_CHANNEL],
            [SCXC].[CODE_CUSTOMER]
-    FROM [acsa].[SWIFT_CHANNEL] [SC]
+   FROM [acsa].[SWIFT_CHANNEL] [SC]
         INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [SCXC]
             ON ([SCXC].[CHANNEL_ID] = [SC].[CHANNEL_ID]);
 
@@ -352,7 +352,7 @@ BEGIN
         [OUTSTANDING_BALANCE],
         [LAST_PURCHASE_DATE]
     )
-    SELECT [C].[CODE_CUSTOMER],
+    SELECT LTRIM(RTRIM([C].[CODE_CUSTOMER])),
            [dbo].[FUNC_REMOVE_SPECIAL_CHARS]([C].[NAME_CUSTOMER]) AS [NAME_CUSTOMER],
            [C].[TAX_ID_NUMBER],
            REPLACE([dbo].[FUNC_REMOVE_SPECIAL_CHARS](COALESCE([C].[ADRESS_CUSTOMER], '')), '"', '') AS [ADRESS_CUSTOMER],
@@ -388,41 +388,41 @@ BEGIN
                SELECT TOP (1)
                       MAX(CAST([IH].[SALE_DATE] AS DATE)) AS [SALE_DATE]
                FROM [acsa].[SONDA_ITEM_HISTORY] AS [IH]
-               WHERE [IH].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
+               WHERE [IH].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [C].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                GROUP BY [IH].[CODE_CUSTOMER]
                ORDER BY [IH].[CODE_CUSTOMER]
            ) AS [LAST_PURCHASE_DATE]
     FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
         INNER JOIN [acsa].[USERS] [U]
-            ON ([C].[SELLER_DEFAULT_CODE] = [U].[RELATED_SELLER])
+            ON ([C].[SELLER_DEFAULT_CODE] COLLATE DATABASE_DEFAULT = [U].[RELATED_SELLER] COLLATE DATABASE_DEFAULT)
         LEFT JOIN [#DISCOUNT_LIST] [DLC]
             ON (
-                   [DLC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
+                   [DLC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [C].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                    AND [DLC].[CODE_CUSTOMER] > ''
                )
         LEFT JOIN [#BONUS_LIST] [BLC]
             ON (
-                   [BLC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
+                   [BLC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [C].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                    AND [BLC].[CODE_CUSTOMER] > ''
                )
         LEFT JOIN [#SKU_SALES_BY_MULTIPLE_LIST] [SMC]
             ON (
-                   [SMC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
+                   [SMC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [C].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                    AND [SMC].[CODE_CUSTOMER] > ''
                )
         LEFT JOIN [acsa].[SWIFT_PRICE_LIST_BY_CUSTOMER_FOR_ROUTE] [PLC]
             ON (
-                   [PLC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
+                   [PLC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [C].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                    AND [PLC].[CODE_CUSTOMER] > ''
                )
         LEFT JOIN [#SPECIAL_PRICE_LIST] AS [SPL]
             ON (
-                   [SPL].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
+                   [SPL].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [C].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                    AND [SPL].[CODE_CUSTOMER] > ''
                )
         LEFT JOIN [#CHANNEL] AS [CH]
-            ON ([CH].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER])
-    WHERE [U].[SELLER_ROUTE] = @CODE_ROUTE;
+            ON ([CH].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [C].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT)
+    WHERE [U].[SELLER_ROUTE] COLLATE DATABASE_DEFAULT = @CODE_ROUTE ;
 
     --    LEFT JOIN @BONUS_LIST BL
     --      ON (
@@ -484,7 +484,7 @@ BEGIN
         [INVOICE_NAME],
         [SPECIAL_PRICE_LIST_ID],
         [CODE_CHANNEL],
-        [GROUP_NUM],
+        --[GROUP_NUM],
         [OUTSTANDING_BALANCE],
         [LAST_PURCHASE_DATE]
     )
@@ -509,7 +509,7 @@ BEGIN
                SELECT TOP (1)
                       MAX([IH].[DOCUMENT_AMOUNT]) AS [DOCUMENT_AMOUNT]
                FROM [acsa].[SONDA_ITEM_HISTORY] AS [IH]
-               WHERE [IH].[CODE_CUSTOMER] = [VAC].[CODE_CUSTOMER]
+               WHERE [IH].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [VAC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                GROUP BY [IH].[CODE_CUSTOMER]
                ORDER BY [IH].[CODE_CUSTOMER]
            ),
@@ -518,47 +518,47 @@ BEGIN
            [VAC].[INVOICE_NAME],
            [SPL].[SPECIAL_PRICE_LIST_ID],
            [CH].[CODE_CHANNEL],
-           [VAC].[GROUP_NUM],
+           --[VAC].[GROUP_NUM],
            (ISNULL([VAC].[CREDIT_LIMIT], 0) - ISNULL([VAC].[BALANCE], 0)) AS [OUTSTANDING_BALANCE],
            (
                SELECT TOP (1)
                       MAX(CAST([IH].[SALE_DATE] AS DATE)) AS [SALE_DATE]
                FROM [acsa].[SONDA_ITEM_HISTORY] AS [IH]
-               WHERE [IH].[CODE_CUSTOMER] = [VAC].[CODE_CUSTOMER]
+               WHERE [IH].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [VAC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                GROUP BY [IH].[CODE_CUSTOMER]
                ORDER BY [IH].[CODE_CUSTOMER]
            ) AS [LAST_PURCHASE_DATE]
-    FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [VAC]
+        FROM [SWIFT_EXPRESS].[acsa].[SWIFT_VIEW_ALL_COSTUMER] [VAC]
         INNER JOIN [acsa].[SONDA_ROUTE_PLAN] [RP]
-            ON ([VAC].[CODE_CUSTOMER] = [RP].[RELATED_CLIENT_CODE])
+            ON ([VAC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [RP].[RELATED_CLIENT_CODE] COLLATE DATABASE_DEFAULT)
         LEFT JOIN [#DISCOUNT_LIST] [DLC]
             ON (
-                   [DLC].[CODE_CUSTOMER] = [VAC].[CODE_CUSTOMER]
+                   [DLC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [VAC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                    AND [DLC].[CODE_CUSTOMER] > ''
                )
         LEFT JOIN [#BONUS_LIST] [BLC]
             ON (
-                   [BLC].[CODE_CUSTOMER] = [VAC].[CODE_CUSTOMER]
+                   [BLC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [VAC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                    AND [BLC].[CODE_CUSTOMER] > ''
                )
         LEFT JOIN [#SKU_SALES_BY_MULTIPLE_LIST] [SMC]
             ON (
-                   [SMC].[CODE_CUSTOMER] = [VAC].[CODE_CUSTOMER]
+                   [SMC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [VAC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                    AND [SMC].[CODE_CUSTOMER] > ''
                )
         LEFT JOIN [acsa].[SWIFT_PRICE_LIST_BY_CUSTOMER_FOR_ROUTE] [PLC]
             ON (
-                   [PLC].[CODE_CUSTOMER] = [VAC].[CODE_CUSTOMER]
+                   [PLC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [VAC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                    AND [PLC].[CODE_CUSTOMER] > ''
                )
         LEFT JOIN [#SPECIAL_PRICE_LIST] AS [SPL]
             ON (
-                   [SPL].[CODE_CUSTOMER] = [VAC].[CODE_CUSTOMER]
+                   [SPL].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [VAC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT
                    AND [SPL].[CODE_CUSTOMER] > ''
                )
         LEFT JOIN [#CHANNEL] AS [CH]
-            ON ([CH].[CODE_CUSTOMER] = [VAC].[CODE_CUSTOMER])
-    WHERE [RP].[CODE_ROUTE] = @CODE_ROUTE;
+            ON ([CH].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT = [VAC].[CODE_CUSTOMER] COLLATE DATABASE_DEFAULT)
+    WHERE [RP].[CODE_ROUTE] COLLATE DATABASE_DEFAULT = @CODE_ROUTE COLLATE DATABASE_DEFAULT;
 
     --    LEFT JOIN @BONUS_LIST BL
     --      ON (

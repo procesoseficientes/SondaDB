@@ -21,10 +21,10 @@ BEGIN
            [sssbc].[QTY] AS [QTY],
            [sssbc].[SALE_PACK_UNIT]
     FROM [acsa].[SONDA_STATISTIC_SALES_BY_CUSTOMER] AS [sssbc]
-        INNER JOIN [acsa].[SONDA_ROUTE_PLAN] AS [srp]
-            ON [srp].[RELATED_CLIENT_CODE] = [sssbc].[CLIENT_ID]
+        INNER JOIN [acsa].[SONDA_ROUTE_PLAN] AS [srp] 
+            ON [srp].[RELATED_CLIENT_CODE] = [sssbc].[CLIENT_ID] COLLATE DATABASE_DEFAULT
         INNER JOIN [acsa].[SWIFT_VIEW_ALL_SKU] AS [svas]
-            ON [svas].[CODE_SKU] = [sssbc].[CODE_SKU]
+            ON [svas].[CODE_SKU] = [sssbc].[CODE_SKU] COLLATE DATABASE_DEFAULT
     WHERE [srp].[CODE_ROUTE] = @CODE_ROUTE
           AND [srp].[TASK_TYPE] = 'SALE';
 END;

@@ -87,14 +87,14 @@ BEGIN
                SELECT TOP (1)
                       ISNULL([VC].[DEPARTAMENT], 'N/A')
                FROM [acsa].[SWIFT_VIEW_CUSTOMERS] AS [VC]
-               WHERE [VC].[CODE_CUSTOMER] = [IH].[CLIENT_ID]
+               WHERE [VC].[CODE_CUSTOMER] = [IH].[CLIENT_ID] COLLATE DATABASE_DEFAULT 
                ORDER BY [VC].[CODE_CUSTOMER]
            ) AS [Department],
            (
                SELECT TOP (1)
                       ISNULL([VC].[MUNICIPALITY], 'N/A')
                FROM [acsa].[SWIFT_VIEW_CUSTOMERS] AS [VC]
-               WHERE [VC].[CODE_CUSTOMER] = [IH].[CLIENT_ID]
+               WHERE [VC].[CODE_CUSTOMER] = [IH].[CLIENT_ID] COLLATE DATABASE_DEFAULT 
                ORDER BY [VC].[CODE_CUSTOMER]
            ) AS [Municipality],
            [IH].[CDF_NIT] AS [Nit],
