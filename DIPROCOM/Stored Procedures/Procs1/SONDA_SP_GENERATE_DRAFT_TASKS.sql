@@ -5,7 +5,7 @@
 
 --Acuatlización: diego.as
 --Fecha de Actualización: 12-05-2016
---Motivo: Se modifico para usara la funcion [acsa].[SWIFT_FN_GET_PARAMETER] para traer el parametro de Dias Draft.
+--Motivo: Se modifico para usara la funcion [PACASA].[SWIFT_FN_GET_PARAMETER] para traer el parametro de Dias Draft.
 -- 		  Ademas, se agregaron las columnas H.SALES_ORDER_ID, H.IS_VOID a la insercion de la tabla temporal para usarlos
 --		  al momento de la insercion de tareas y plan de ruta.
 
@@ -14,10 +14,10 @@
 -- TOMAR EN CUENTA PARA EL CAMBIO DE AND H.IS_READY_TO_SEND=1
 /*
 -- Ejemplo de Ejecucion:
-				exec [acsa].[SONDA_SP_GENERATE_DRAFT_TASKS]  
+				exec [PACASA].[SONDA_SP_GENERATE_DRAFT_TASKS]  
 */
 -- =============================================
-CREATE PROCEDURE [acsa].SONDA_SP_GENERATE_DRAFT_TASKS
+CREATE PROCEDURE [PACASA].SONDA_SP_GENERATE_DRAFT_TASKS
 	
 AS  
 	BEGIN	
@@ -27,7 +27,7 @@ AS
 	-- Obtiene parametro
 	-- -----------------------------------------------------------------	
 	DECLARE @DRAFTDAYS INT
-	SET @DRAFTDAYS = [acsa].[SWIFT_FN_GET_PARAMETER] ('SALES_ORDER','DRAFT_TASK_DAYS') 
+	SET @DRAFTDAYS = [PACASA].[SWIFT_FN_GET_PARAMETER] ('SALES_ORDER','DRAFT_TASK_DAYS') 
 
 	-- -----------------------------------------------------------------
 	-- Obtiene las tareas
@@ -48,9 +48,9 @@ AS
 			,H.SALES_ORDER_ID
 			,H.IS_VOID
 		INTO #TAREAS
-		FROM [acsa].[SONDA_SALES_ORDER_HEADER] H
-		INNER JOIN [acsa].USERS U ON (H.POS_TERMINAL = U.SELLER_ROUTE)
-		INNER JOIN [acsa].[SWIFT_VIEW_ALL_COSTUMER] C ON (H.CLIENT_ID = C.CODE_CUSTOMER)
+		FROM [PACASA].[SONDA_SALES_ORDER_HEADER] H
+		INNER JOIN [PACASA].USERS U ON (H.POS_TERMINAL = U.SELLER_ROUTE)
+		INNER JOIN [PACASA].[SWIFT_VIEW_ALL_COSTUMER] C ON (H.CLIENT_ID = C.CODE_CUSTOMER)
 		
 		WHERE (H.DELIVERY_DATE - @DRAFTDAYS) <= GETDATE() 
 			AND H.IS_DRAFT = 1 
@@ -60,7 +60,7 @@ AS
 	-- -----------------------------------------------------------------
 	-- Inserta en la tabla SWIFT_TASKS
 	-- -----------------------------------------------------------------
-		INSERT INTO [acsa].[SWIFT_TASKS]
+		INSERT INTO [PACASA].[SWIFT_TASKS]
 	(
 		TASK_TYPE
 		,TASK_DATE
@@ -142,7 +142,7 @@ AS
 	-- -----------------------------------------------------------------
 	-- Inserta en la tabla SONDA_ROUTE_PLAN
 	-- -----------------------------------------------------------------
-	INSERT INTO [acsa].[SONDA_ROUTE_PLAN]
+	INSERT INTO [PACASA].[SONDA_ROUTE_PLAN]
 	(
 		TASK_ID
 		,CODE_FREQUENCY
@@ -203,7 +203,7 @@ AS
     ,1
     ,'BY_CALENDAR'
 	FROM #TAREAS F
-	LEFT JOIN [acsa].[SWIFT_TASKS] T ON (
+	LEFT JOIN [PACASA].[SWIFT_TASKS] T ON (
 		T.ASSIGEND_TO = F.LOGIN
 		AND T.COSTUMER_CODE = F.CODE_CUSTOMER
 		AND T.TASK_TYPE = F.TASK_TYPE

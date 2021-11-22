@@ -10,11 +10,11 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [acsa].[SONDA_SP_TRANSFER_SKU_FOR_POS]
+				EXEC [PACASA].[SONDA_SP_TRANSFER_SKU_FOR_POS]
 					@CODE_ROUTE = 'RUDI@DIPROCOM'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_TRANSFER_SKU_FOR_POS] (
+CREATE PROCEDURE [PACASA].[SONDA_SP_TRANSFER_SKU_FOR_POS] (
 	@CODE_ROUTE VARCHAR(250)
 	,@IS_ONLINE INT = 0
 	,@TRANSFER_ID INT = NULL
@@ -30,13 +30,13 @@ BEGIN
 	-- Obtiene el usuario
 	-- ------------------------------------------------------------------------------------
 	SELECT TOP 1 @LOGIN = [u].[LOGIN]
-	FROM [acsa].[USERS] [u]
+	FROM [PACASA].[USERS] [u]
 	WHERE [u].[SELLER_ROUTE] = @CODE_ROUTE
 
 	-- ------------------------------------------------------------------------------------
 	-- Limpia los bonificaciones para la ruta
 	-- ------------------------------------------------------------------------------------	
-	EXEC [acsa].[SONDA_TRANSFER_SKU]
+	EXEC [PACASA].[SONDA_TRANSFER_SKU]
 		@Login = @LOGIN
 		,@Route = @CODE_ROUTE
 		,@pRESULT = @pRESULT OUTPUT

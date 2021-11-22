@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_DELETE_FULL_PROMOTION_OF_BONUS_BY_GENERAL_AMOUNT]
+				EXEC [PACASA].[SWIFT_SP_DELETE_FULL_PROMOTION_OF_BONUS_BY_GENERAL_AMOUNT]
 				@PROMO_ID = 20
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_DELETE_FULL_PROMOTION_OF_BONUS_BY_GENERAL_AMOUNT] (@PROMO_ID INT)
+CREATE PROCEDURE [PACASA].[SWIFT_SP_DELETE_FULL_PROMOTION_OF_BONUS_BY_GENERAL_AMOUNT] (@PROMO_ID INT)
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -25,7 +25,7 @@ BEGIN
     -- ---------------------------------------------------------------------------------------------------
     SELECT
       @THIS_ASSOCIATE = 1
-    FROM [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO]
+    FROM [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO]
     WHERE [PROMO_ID] = @PROMOTION_ID;
 
     IF (@THIS_ASSOCIATE = 1)
@@ -38,13 +38,13 @@ BEGIN
       -- -------------------------------------------------------------------------------
       -- Se eliminan todos los Descuentos Por Monto General asociados a la promocion
       -- -------------------------------------------------------------------------------
-      DELETE FROM [acsa].[SWIFT_PROMO_BONUS_BY_GENERAL_AMOUNT]
+      DELETE FROM [PACASA].[SWIFT_PROMO_BONUS_BY_GENERAL_AMOUNT]
       WHERE [PROMO_ID] = @PROMOTION_ID;
 
       -- --------------------------------------------------------------------------------
       -- Se elimina la promocion
       -- --------------------------------------------------------------------------------
-      DELETE FROM [acsa].[SWIFT_PROMO]
+      DELETE FROM [PACASA].[SWIFT_PROMO]
       WHERE [PROMO_ID] = @PROMOTION_ID
     END
 

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [acsa].[SWIFT_SP_DELETE_MANUAL_FREQUENCY]	
+﻿CREATE PROCEDURE [PACASA].[SWIFT_SP_DELETE_MANUAL_FREQUENCY]	
     @XML AS XML
 		
 AS
@@ -21,24 +21,24 @@ BEGIN TRY
 	)
 
 	INSERT INTO @TEMP_TABLE_IDS (ID_FREQUENCY)  
-	SELECT ID_FREQUENCY FROM [acsa].SWIFT_FREQUENCY_X_CUSTOMER 
+	SELECT ID_FREQUENCY FROM [PACASA].SWIFT_FREQUENCY_X_CUSTOMER 
 	WHERE CONVERT(VARCHAR(30),ID_FREQUENCY) + CODE_CUSTOMER IN  (SELECT * FROM @TABLE_IDS);
 
 ------------------------------------------------------------	
 --Eliminamos las secuencias del cliente que se encontro (hijos)
 ------------------------------------------------------------
 
-	DELETE FROM [acsa].SWIFT_FREQUENCY_X_CUSTOMER
+	DELETE FROM [PACASA].SWIFT_FREQUENCY_X_CUSTOMER
 	WHERE  CONVERT(VARCHAR(30),ID_FREQUENCY) + CODE_CUSTOMER IN  (SELECT * FROM @TABLE_IDS);
 
 ------------------------------------------------------------
 --verificamos si los aun hay hijos para eliminar al papa
 ------------------------------------------------------------
 	
-	IF NOT EXISTS(SELECT * FROM [acsa].SWIFT_FREQUENCY_X_CUSTOMER
+	IF NOT EXISTS(SELECT * FROM [PACASA].SWIFT_FREQUENCY_X_CUSTOMER
 			  WHERE ID_FREQUENCY IN (SELECT * FROM @TEMP_TABLE_IDS))
 		BEGIN
-			DELETE FROM [acsa].SWIFT_FREQUENCY WHERE ID_FREQUENCY IN (SELECT ID_FREQUENCY FROM @TEMP_TABLE_IDS);
+			DELETE FROM [PACASA].SWIFT_FREQUENCY WHERE ID_FREQUENCY IN (SELECT ID_FREQUENCY FROM @TEMP_TABLE_IDS);
 		END
 
 ------------------------------------------------------------

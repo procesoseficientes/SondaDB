@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GET_SUPERVISOR_FOR_TEAM] 
+				EXEC [PACASA].[SWIFT_SP_GET_SUPERVISOR_FOR_TEAM] 
 				--
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_SUPERVISOR_FOR_TEAM](@TEAM_ID INT)
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_SUPERVISOR_FOR_TEAM](@TEAM_ID INT)
 AS
 BEGIN
 
@@ -17,8 +17,8 @@ BEGIN
     [U].[CORRELATIVE]
    ,[U].[LOGIN]
    ,[U].[NAME_USER]
-  FROM [acsa].[USERS] [U]
-  LEFT JOIN [acsa].[SWIFT_TEAM] [T]
+  FROM [PACASA].[USERS] [U]
+  LEFT JOIN [PACASA].[SWIFT_TEAM] [T]
     ON (
     [U].[CORRELATIVE] = [T].[SUPERVISOR]    
     )

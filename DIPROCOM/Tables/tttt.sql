@@ -1,4 +1,4 @@
-﻿CREATE TABLE [acsa].[tttt] (
+﻿CREATE TABLE [PACASA].[tttt] (
     [col] INT NULL
 );
 

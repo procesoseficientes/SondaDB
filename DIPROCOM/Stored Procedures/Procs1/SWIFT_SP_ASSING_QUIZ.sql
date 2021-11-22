@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [acsa].SWIFT_SP_ASSING_QUIZ
+        EXEC [PACASA].SWIFT_SP_ASSING_QUIZ
 		@XML_ROUTES = '
 			<ArrayOfAsignacionMicroencuesta>
 			  <AsignacionMicroencuesta>
@@ -43,7 +43,7 @@
 		@QUIZ_ID = 12
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ASSING_QUIZ]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ASSING_QUIZ]
 	(
 		@QUIZ_ID INT
 		,@XML_ROUTES XML
@@ -73,7 +73,7 @@ AS
 			SELECT
 				COUNT([QUESTION_ID])
 			FROM
-				[acsa].[SWIFT_QUESTION]
+				[PACASA].[SWIFT_QUESTION]
 			WHERE
 				[QUIZ_ID] = @QUIZ_ID
 			) < 1
@@ -129,7 +129,7 @@ AS
 				-- ------------------------------------------------------------------------------------
 				-- Se inserta la asociacion
 				-- ------------------------------------------------------------------------------------
-				INSERT	INTO [acsa].[SWIFT_ASIGNED_QUIZ]
+				INSERT	INTO [PACASA].[SWIFT_ASIGNED_QUIZ]
 						(
 							[QUIZ_ID]
 							,[ROUTE_CODE]

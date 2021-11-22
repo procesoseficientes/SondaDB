@@ -6,13 +6,13 @@
 /* 
 -- Ejemplo de Ejecucion:
         --
-        EXEC [acsa].[SWIFT_SP_UPDATE_FREQUENCY_BY_POYGON]
+        EXEC [PACASA].[SWIFT_SP_UPDATE_FREQUENCY_BY_POYGON]
           @POLYGON_ID = 3102
           ,@TYPE_TASK = 'PRESALE'
           ,@LAST_UPDATED_BY = 'gerente@DIPROCOM'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_FREQUENCY_BY_POYGON] (
+CREATE PROCEDURE [PACASA].[SWIFT_SP_UPDATE_FREQUENCY_BY_POYGON] (
   @POLYGON_ID INT
   ,@TYPE_TASK VARCHAR(20)
   ,@LAST_UPDATED_BY VARCHAR(50)
@@ -27,13 +27,13 @@ BEGIN
 	  -- ------------------------------------------------------------	
     SELECT TOP 1
       @TYPE_TASK_OLD = TYPE_TASK
-    FROM [acsa].SWIFT_POLYGON p
+    FROM [PACASA].SWIFT_POLYGON p
     WHERE p.POLYGON_ID = @POLYGON_ID
     
     -- ------------------------------------------------------------
 	  -- Se actualizan las frecuencias con el nuevo tipo de tarea
 	  -- ------------------------------------------------------------
-    UPDATE [acsa].SWIFT_FREQUENCY SET 
+    UPDATE [PACASA].SWIFT_FREQUENCY SET 
       CODE_FREQUENCY = (TYPE_TASK 
                         + CONVERT(VARCHAR, @POLYGON_ID) 
                         + CONVERT(VARCHAR, SUNDAY)

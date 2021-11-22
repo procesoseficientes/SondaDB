@@ -5,16 +5,16 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_ADD_CURRENCY]
+				EXEC [PACASA].[SWIFT_SP_ADD_CURRENCY]
 					 @CODE_CURRENCY = 'gt'
           ,@NAME_CURRENCY = 'Quetzal'
           ,@SYMBOL_CURRENCY = 'Q'
           ,@IS_DEFAULT = 1
 				-- 
-				SELECT * FROM [acsa].[SWIFT_CURRENCY]
+				SELECT * FROM [PACASA].[SWIFT_CURRENCY]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ADD_CURRENCY](  
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ADD_CURRENCY](  
  @CODE_CURRENCY VARCHAR(50)
  ,@NAME_CURRENCY VARCHAR(250)
  ,@SYMBOL_CURRENCY VARCHAR(5)
@@ -25,7 +25,7 @@ BEGIN
 	BEGIN TRY
 		DECLARE @ID INT
 		--
-		INSERT INTO [acsa].[SWIFT_CURRENCY]
+		INSERT INTO [PACASA].[SWIFT_CURRENCY]
 				(
 					[CODE_CURRENCY]
           ,[NAME_CURRENCY]

@@ -13,19 +13,19 @@
 
 /*
 -- Ejemplo de Ejecucion:
-	      SELECT * FROM [acsa].SWIFT_COMBO 
-  			SELECT * FROM [acsa].[SWIFT_SKU_BY_COMBO]
+	      SELECT * FROM [PACASA].SWIFT_COMBO 
+  			SELECT * FROM [PACASA].[SWIFT_SKU_BY_COMBO]
 				--
-				EXEC [acsa].[SWIFT_SP_DELETE_SKU_BY_COMBO]
+				EXEC [PACASA].[SWIFT_SP_DELETE_SKU_BY_COMBO]
 					@COMBO_ID = 5
 					,@CODE_SKU = '100002'
 					,@PACK_UNIT = 8
 				-- 
-				SELECT * FROM [acsa].[SWIFT_SKU_BY_COMBO]
-        SELECT * FROM [acsa].SWIFT_COMBO 
+				SELECT * FROM [PACASA].[SWIFT_SKU_BY_COMBO]
+        SELECT * FROM [PACASA].SWIFT_COMBO 
 */
 -- =============================================
-CREATE PROCEDURE [acsa].SWIFT_SP_DELETE_SKU_BY_COMBO (@COMBO_ID INT
+CREATE PROCEDURE [PACASA].SWIFT_SP_DELETE_SKU_BY_COMBO (@COMBO_ID INT
 , @CODE_SKU VARCHAR(50)
 , @PACK_UNIT INT)
 AS
@@ -39,12 +39,12 @@ BEGIN
     -- ------------------------------------------------------------------------------------
 
 
-    DELETE FROM [acsa].[SWIFT_SKU_BY_COMBO]
+    DELETE FROM [PACASA].[SWIFT_SKU_BY_COMBO]
     WHERE [COMBO_ID] = @COMBO_ID
       AND [CODE_SKU] = @CODE_SKU
       AND [PACK_UNIT] = @PACK_UNIT
     --
-    UPDATE [acsa].[SWIFT_COMBO]
+    UPDATE [PACASA].[SWIFT_COMBO]
     SET [LAST_UPDATE] = GETDATE()
     WHERE [COMBO_ID] = @COMBO_ID;
 

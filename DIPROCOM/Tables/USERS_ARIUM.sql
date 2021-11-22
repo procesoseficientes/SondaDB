@@ -1,4 +1,4 @@
-﻿CREATE TABLE [acsa].[USERS_ARIUM] (
+﻿CREATE TABLE [PACASA].[USERS_ARIUM] (
     [CORRELATIVE]            INT           NOT NULL,
     [LOGIN]                  VARCHAR (50)  NULL,
     [NAME_USER]              VARCHAR (50)  NULL,

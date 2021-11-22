@@ -6,10 +6,10 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [acsa].[SWIFT_SP_SONDA_INVENTORY_TRANSFER] @PICKING_HEADER = 4
+				EXEC [PACASA].[SWIFT_SP_SONDA_INVENTORY_TRANSFER] @PICKING_HEADER = 4
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_SONDA_INVENTORY_TRANSFER]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_SONDA_INVENTORY_TRANSFER]
 (	
 	@PICKING_HEADER INT
 )
@@ -42,7 +42,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		SELECT 
 			@WAREHOUSE = P.CODE_CLIENT
-		FROM [acsa].[SWIFT_PICKING_HEADER] P
+		FROM [PACASA].[SWIFT_PICKING_HEADER] P
 		WHERE P.PICKING_HEADER = @PICKING_HEADER
 
 		-- ------------------------------------------------------------------------------------
@@ -51,14 +51,14 @@ BEGIN
 		SELECT 
 			@TASK_ID = T.TASK_ID
 			,@LAST_UPDATE_BY = T.ASSIGEND_TO
-		FROM [acsa].[SWIFT_TASKS] T
+		FROM [PACASA].[SWIFT_TASKS] T
 		WHERE T.PICKING_NUMBER = @PICKING_HEADER
 		
 		-- ------------------------------------------------------------------------------------
 		-- Obtiene el nombre del usuario
 		-- ------------------------------------------------------------------------------------
 		SELECT @LAST_UPDATE_BY = U.NAME_USER
-		FROM [acsa].USERS U
+		FROM [PACASA].USERS U
 		WHERE U.LOGIN = @LAST_UPDATE_BY
 
 		-- ------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		PRINT 'Insert en TXN'
 		--
-		INSERT INTO [acsa].[SWIFT_TXNS] (
+		INSERT INTO [PACASA].[SWIFT_TXNS] (
 			[TXN_TYPE]
 			,[TXN_DESCRIPTION]
 			,[TXN_CATEGORY]
@@ -112,7 +112,7 @@ BEGIN
 			,T.TXN_BARCODE_SKU
 			,T.TXN_COSTUMER_CODE
 			,T.TXN_COSTUMER_NAME
-		FROM [acsa].[SWIFT_TXNS] T
+		FROM [PACASA].[SWIFT_TXNS] T
 		WHERE T.TASK_SOURCE_ID = @TASK_ID
 
 		-- ------------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		PRINT 'Merge inventario'
 		--
-		MERGE [acsa].[SWIFT_INVENTORY] I
+		MERGE [PACASA].[SWIFT_INVENTORY] I
 		USING (
 			SELECT 
 				T.CODE_SKU

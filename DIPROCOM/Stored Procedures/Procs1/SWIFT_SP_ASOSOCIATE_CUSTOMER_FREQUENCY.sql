@@ -18,7 +18,7 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [acsa].[SWIFT_SP_ASOSOCIATE_CUSTOMER_FREQUENCY]
+				EXEC [PACASA].[SWIFT_SP_ASOSOCIATE_CUSTOMER_FREQUENCY]
 				   @FREQUENCY_WEEKS = 4
 				   ,@SUNDAY = 1
 				   ,@MONDAY = 0
@@ -33,12 +33,12 @@
 				   ,@REFERENCE_SOURCE = 'BO'
 				   ,@CODE_CUSTOMER = '205'
 				--
-				SELECT * FROM [acsa].SWIFT_FREQUENCY
-				SELECT * FROM [acsa].SWIFT_FREQUENCY_X_CUSTOMER WHERE CODE_CUSTOMER = '205'
+				SELECT * FROM [PACASA].SWIFT_FREQUENCY
+				SELECT * FROM [PACASA].SWIFT_FREQUENCY_X_CUSTOMER WHERE CODE_CUSTOMER = '205'
 
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ASOSOCIATE_CUSTOMER_FREQUENCY](
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ASOSOCIATE_CUSTOMER_FREQUENCY](
 	@FREQUENCY_WEEKS INT
 	,@SUNDAY INT
 	,@MONDAY INT
@@ -127,13 +127,13 @@ BEGIN
 			,@POLYGON_ID  -- CODE_ROUTE - varchar(50)
 			,[TP].[TASK_TYPE]
 			,@POLYGON_ID
-		FROM [acsa].[SWIFT_TASK_BY_POLYGON] [TP]
+		FROM [PACASA].[SWIFT_TASK_BY_POLYGON] [TP]
 		WHERE [TP].[POLYGON_ID] = @POLYGON_ID
 
 		-- ------------------------------------------------------------
 		-- Insertamos o actualizamos la frecuencia
 		-- ------------------------------------------------------------
-		MERGE [acsa].[SWIFT_FREQUENCY] [F]
+		MERGE [PACASA].[SWIFT_FREQUENCY] [F]
 		USING
 			(
 				SELECT
@@ -209,13 +209,13 @@ BEGIN
 		-- ------------------------------------------------------------
 		-- Se elemina el cliente si tiene una frecuencia asociada
 		-- ------------------------------------------------------------
-		DELETE FROM [acsa].[SWIFT_FREQUENCY_X_CUSTOMER]
+		DELETE FROM [PACASA].[SWIFT_FREQUENCY_X_CUSTOMER]
 		WHERE [CODE_CUSTOMER] = @CODE_CUSTOMER;
 
 		-- ------------------------------------------------------------
 		-- Asociamos el cliente a la frecuencia
 		-- ------------------------------------------------------------
-		INSERT	INTO [acsa].[SWIFT_FREQUENCY_X_CUSTOMER]
+		INSERT	INTO [PACASA].[SWIFT_FREQUENCY_X_CUSTOMER]
 				(
 					[ID_FREQUENCY]
 					,[CODE_CUSTOMER]
@@ -225,7 +225,7 @@ BEGIN
 			[F].[ID_FREQUENCY]
 			,@CODE_CUSTOMER
 			,0
-		FROM [acsa].[SWIFT_FREQUENCY] [F]
+		FROM [PACASA].[SWIFT_FREQUENCY] [F]
 		INNER JOIN @FREQUENCY [FT] ON (
 			[FT].[CODE_FREQUENCY] = [F].[CODE_FREQUENCY]
 		)
@@ -233,7 +233,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Asocia o actualiza la asociacion del cliente con el poligono
 		-- ------------------------------------------------------------------------------------
-		MERGE [acsa].[SWIFT_POLYGON_X_CUSTOMER] AS [PC]
+		MERGE [PACASA].[SWIFT_POLYGON_X_CUSTOMER] AS [PC]
 		USING (
 				SELECT
 					@CODE_CUSTOMER AS [CODE_CUSTOMER]

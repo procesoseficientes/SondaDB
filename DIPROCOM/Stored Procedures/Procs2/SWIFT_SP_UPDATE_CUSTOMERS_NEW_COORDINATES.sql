@@ -7,7 +7,7 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				exec [acsa].[UPDATE_SWIFT_CUSTOMERS_NEW_COORDINATES]
+				exec [PACASA].[UPDATE_SWIFT_CUSTOMERS_NEW_COORDINATES]
 										@GPS = '',
 										@CODE_CUSTOMER = '',
 
@@ -15,7 +15,7 @@
 */
 -- =============================================
 
-CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_CUSTOMERS_NEW_COORDINATES]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_UPDATE_CUSTOMERS_NEW_COORDINATES]
 @GPS VARCHAR(max),
 @CUSTOMER INT
 AS
@@ -26,7 +26,7 @@ TRY
 
 
 
-UPDATE [acsa].[SWIFT_CUSTOMERS_NEW]
+UPDATE [PACASA].[SWIFT_CUSTOMERS_NEW]
    
    SET [GPS] = @GPS
 

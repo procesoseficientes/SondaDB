@@ -7,7 +7,7 @@
 					-- diego.as
 					-- Se corrige error al validar las rutas asociadas a la microencuesta y se ordena el codigo
 
-CREATE PROCEDURE [acsa].[SWIFT_SP_ALL_DELETE_QUESTION] (@QUIZ_ID INT)
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ALL_DELETE_QUESTION] (@QUIZ_ID INT)
 AS
 	BEGIN TRY
 	
@@ -19,12 +19,12 @@ AS
 		SELECT
 			@ASSIGNED_ROUTES_QTY = COUNT([QUESTION_ID])
 		FROM
-			[acsa].[SWIFT_QUESTION]
+			[PACASA].[SWIFT_QUESTION]
 		WHERE
 			[QUIZ_ID] IN (SELECT
 								[QUIZ_ID]
 							FROM
-								[acsa].[SWIFT_ASIGNED_QUIZ]
+								[PACASA].[SWIFT_ASIGNED_QUIZ]
 							WHERE
 								[QUIZ_ID] = @QUIZ_ID);
 
@@ -40,8 +40,8 @@ AS
 		DELETE
 			[A]
 		FROM
-			[acsa].[SWIFT_ANSWER] [A]
-		INNER JOIN [acsa].[SWIFT_QUESTION] [Q]
+			[PACASA].[SWIFT_ANSWER] [A]
+		INNER JOIN [PACASA].[SWIFT_QUESTION] [Q]
 		ON	([A].[QUESTION_ID] = [Q].[QUESTION_ID])
 		WHERE
 			[Q].[QUIZ_ID] = @QUIZ_ID;
@@ -50,7 +50,7 @@ AS
 		-- Elimina la pregunta
 		-- ------------------------------------------------------------------------------------
 		DELETE
-			[acsa].[SWIFT_QUESTION]
+			[PACASA].[SWIFT_QUESTION]
 		WHERE
 			[QUIZ_ID] = @QUIZ_ID;
 

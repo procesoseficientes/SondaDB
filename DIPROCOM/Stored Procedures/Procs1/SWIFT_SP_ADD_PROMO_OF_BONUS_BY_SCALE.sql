@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_ADD_PROMO_OF_BONUS_BY_SCALE]
+				EXEC [PACASA].[SWIFT_SP_ADD_PROMO_OF_BONUS_BY_SCALE]
 					@PROMO_ID = 82,
 					@CODE_SKU = 'U00000237', -- varchar(50)
 					@PACK_UNIT = 1, -- int
@@ -15,11 +15,11 @@
 					@PACK_UNIT_BONUS = 1, -- int
 					@BONUS_QTY = 10 -- int
 				-- 
-				SELECT * FROM [acsa].[SWIFT_PROMO]
-				SELECT * FROM [acsa].[SWIFT_PROMO_BONUS_BY_SCALE]
+				SELECT * FROM [PACASA].[SWIFT_PROMO]
+				SELECT * FROM [PACASA].[SWIFT_PROMO_BONUS_BY_SCALE]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ADD_PROMO_OF_BONUS_BY_SCALE] (@PROMO_ID INT
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ADD_PROMO_OF_BONUS_BY_SCALE] (@PROMO_ID INT
 , @CODE_SKU VARCHAR(50)
 , @PACK_UNIT INT
 , @LOW_LIMIT INT
@@ -33,7 +33,7 @@ BEGIN
   --
   BEGIN TRY
 
-    EXEC [acsa].[SWIFT_SP_VALIDATED_BONUS_SCALE_OF_PROMO] @PROMO_ID = @PROMO_ID
+    EXEC [PACASA].[SWIFT_SP_VALIDATED_BONUS_SCALE_OF_PROMO] @PROMO_ID = @PROMO_ID
                                                         ,@CODE_SKU = @CODE_SKU
                                                         ,@PACK_UNIT = @PACK_UNIT
                                                         ,@LOW_LIMIT = @LOW_LIMIT
@@ -44,7 +44,7 @@ BEGIN
     --
     DECLARE @ID INT
     --
-    INSERT INTO [acsa].[SWIFT_PROMO_BONUS_BY_SCALE] ([PROMO_ID]
+    INSERT INTO [PACASA].[SWIFT_PROMO_BONUS_BY_SCALE] ([PROMO_ID]
     , [CODE_SKU]
     , [PACK_UNIT]
     , [LOW_LIMIT]

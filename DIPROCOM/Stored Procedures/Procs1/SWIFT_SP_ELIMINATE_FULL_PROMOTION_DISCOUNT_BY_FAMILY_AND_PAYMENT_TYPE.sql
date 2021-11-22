@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_ELIMINATE_FULL_PROMOTION_DISCOUNT_BY_FAMILY_AND_PAYMENT_TYPE]
+				EXEC [PACASA].[SWIFT_SP_ELIMINATE_FULL_PROMOTION_DISCOUNT_BY_FAMILY_AND_PAYMENT_TYPE]
 				@PROMO_ID = 2121
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ELIMINATE_FULL_PROMOTION_DISCOUNT_BY_FAMILY_AND_PAYMENT_TYPE] (@PROMO_ID INT) WITH RECOMPILE
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ELIMINATE_FULL_PROMOTION_DISCOUNT_BY_FAMILY_AND_PAYMENT_TYPE] (@PROMO_ID INT) WITH RECOMPILE
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -25,7 +25,7 @@ BEGIN
     -- ---------------------------------------------------------------------------------------------------
     SELECT
       @THIS_ASSOCIATE = 1
-    FROM [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO]
+    FROM [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO]
     WHERE [PROMO_ID] = @PROMOTION_ID;
 
     IF (@THIS_ASSOCIATE = 1)
@@ -44,13 +44,13 @@ BEGIN
     -- -------------------------------------------------------------------------------
     -- Se eliminan todas la familias asociados a la promocion
     -- -------------------------------------------------------------------------------
-    DELETE FROM [acsa].[SWIFT_PROMO_DISCOUNT_BY_PAYMENT_TYPE_AND_FAMILY]
+    DELETE FROM [PACASA].[SWIFT_PROMO_DISCOUNT_BY_PAYMENT_TYPE_AND_FAMILY]
     WHERE [PROMO_ID] = @PROMOTION_ID;
 
     -- --------------------------------------------------------------------------------
     -- Se elimina la promocion
     -- --------------------------------------------------------------------------------
-    DELETE FROM [acsa].[SWIFT_PROMO]
+    DELETE FROM [PACASA].[SWIFT_PROMO]
     WHERE [PROMO_ID] = @PROMOTION_ID
 
     -- --------------------------------------------------------------------------------

@@ -9,21 +9,21 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_UPDATE_COMBO]
+				EXEC [PACASA].[SWIFT_SP_UPDATE_COMBO]
 					@COMBO_ID = 14
 					,@NAME_COMBO = 'Combo hector prueba 1.5'
 					,@DESCRIPTION_COMBO = 'Combo hector prueba 1.5'
 				-- 
-				SELECT * FROM [acsa].[SWIFT_COMBO]
+				SELECT * FROM [PACASA].[SWIFT_COMBO]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_COMBO] (@COMBO_ID INT
+CREATE PROCEDURE [PACASA].[SWIFT_SP_UPDATE_COMBO] (@COMBO_ID INT
 , @NAME_COMBO VARCHAR(250)
 , @DESCRIPTION_COMBO VARCHAR(250))
 AS
 BEGIN
   BEGIN TRY
-    UPDATE [acsa].[SWIFT_COMBO]
+    UPDATE [PACASA].[SWIFT_COMBO]
     SET [NAME_COMBO] = @NAME_COMBO
        ,[DESCRIPTION_COMBO] = @DESCRIPTION_COMBO
        ,[LAST_UPDATE] = GETDATE()

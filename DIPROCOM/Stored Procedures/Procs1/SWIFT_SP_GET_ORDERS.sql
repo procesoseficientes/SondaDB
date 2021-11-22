@@ -15,7 +15,7 @@
 -- Ejemplo de Ejecucion:
         DECLARE	@return_value int
 
-		EXEC	@return_value = [acsa].[SWIFT_SP_GET_ORDERS]
+		EXEC	@return_value = [PACASA].[SWIFT_SP_GET_ORDERS]
 		@DTBEGIN = '20171201',
 		@DTEND = '20180925'
 
@@ -23,7 +23,7 @@
 
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_ORDERS]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_ORDERS]
     (
       @DTBEGIN DATE ,
       @DTEND DATE
@@ -32,9 +32,9 @@ AS
     BEGIN
         DECLARE @SHIPPING_ATTEMPTS_SALES_ORDER VARCHAR(100) ,
             @SHIPPING_ATTEMPTS_INVOICE VARCHAR(100);
-        SELECT  @SHIPPING_ATTEMPTS_SALES_ORDER = [acsa].[SWIFT_FN_GET_PARAMETER]('SALES_ORDER',
+        SELECT  @SHIPPING_ATTEMPTS_SALES_ORDER = [PACASA].[SWIFT_FN_GET_PARAMETER]('SALES_ORDER',
                                                               'SHIPPING_ATTEMPTS') ,
-                @SHIPPING_ATTEMPTS_INVOICE = [acsa].[SWIFT_FN_GET_PARAMETER]('INVOICE',
+                @SHIPPING_ATTEMPTS_INVOICE = [PACASA].[SWIFT_FN_GET_PARAMETER]('INVOICE',
                                                               'SHIPPING_ATTEMPTS');
 	
         CREATE TABLE #DOCUMENTS
@@ -80,7 +80,7 @@ AS
                         [S].[POSTED_BY] AS [ASSIGNED_TO] ,
                         [S].[TOTAL_AMOUNT] [TOTAL_AMOUNT] ,
                         ( SELECT    SUM([QTY])
-                          FROM      [acsa].[SONDA_SALES_ORDER_DETAIL] [D]
+                          FROM      [PACASA].[SONDA_SALES_ORDER_DETAIL] [D]
                                     WITH ( NOLOCK )
                           WHERE     [D].[SALES_ORDER_ID] = [S].[SALES_ORDER_ID]
                         ) AS [UNIDADES_VENDIDAS] ,
@@ -115,7 +115,7 @@ AS
                         [S].[POSTED_ERP] AS [POSTED_ERP] ,
                         [S].[POSTED_DATETIME] AS [POSTED_DATETIME] ,
                         [S].[LAST_UPDATE_IS_SENDING] AS [LAST_UPDATE_IS_SENDING]
-                FROM    [acsa].[SONDA_SALES_ORDER_HEADER] [S] WITH ( NOLOCK )
+                FROM    [PACASA].[SONDA_SALES_ORDER_HEADER] [S] WITH ( NOLOCK )
                 WHERE   [S].[SALES_ORDER_ID] > 0
                         AND [S].[IS_READY_TO_SEND] = 1
                         AND CAST([S].[POSTED_DATETIME] AS DATE) >= @DTBEGIN
@@ -130,7 +130,7 @@ AS
                         [US].[LOGIN] AS [ASSIGNED_TO] ,
                         [TOTAL_AMOUNT] AS [TOTAL_AMOUNT] ,
                         ( SELECT    SUM([QTY])
-                          FROM      [acsa].[SONDA_POS_INVOICE_DETAIL] [D]
+                          FROM      [PACASA].[SONDA_POS_INVOICE_DETAIL] [D]
                                     WITH ( NOLOCK )
                           WHERE     [D].[ID] = [H].[ID]
                         ) AS [UNIDADES_VENDIDAS] ,
@@ -160,8 +160,8 @@ AS
                         [H].[POSTED_ERP] ,
                         [H].[INVOICED_DATETIME] ,
                         [H].[LAST_UPDATE_IS_SENDING] AS [LAST_UPDATE_IS_SENDING]
-                FROM    [acsa].[SONDA_POS_INVOICE_HEADER] [H] WITH ( NOLOCK )
-                        INNER JOIN [acsa].[USERS] AS [US] ON ( [US].[SELLER_ROUTE] = [H].[POS_TERMINAL] )
+                FROM    [PACASA].[SONDA_POS_INVOICE_HEADER] [H] WITH ( NOLOCK )
+                        INNER JOIN [PACASA].[USERS] AS [US] ON ( [US].[SELLER_ROUTE] = [H].[POS_TERMINAL] )
                 WHERE   [H].[ID] > 0
                         AND [H].[IS_READY_TO_SEND] = 1
                         AND CAST([H].[INVOICED_DATETIME] AS DATE) >= @DTBEGIN
@@ -197,12 +197,12 @@ AS
                 END AS 'SALES_ORDER_TYPE' ,
                 CASE [H].[SALES_ORDER_TYPE]
                   WHEN 'CASH'
-                  THEN [acsa].[SWIFT_FN_GET_DISPLAY_NUMBER]([H].[TOTAL_AMOUNT])
+                  THEN [PACASA].[SWIFT_FN_GET_DISPLAY_NUMBER]([H].[TOTAL_AMOUNT])
                   ELSE 0
                 END AS 'CASH_AMOUNT' ,
                 CASE [H].[SALES_ORDER_TYPE]
                   WHEN 'CREDIT'
-                  THEN [acsa].[SWIFT_FN_GET_DISPLAY_NUMBER]([H].[TOTAL_AMOUNT])
+                  THEN [PACASA].[SWIFT_FN_GET_DISPLAY_NUMBER]([H].[TOTAL_AMOUNT])
                   ELSE 0
                 END AS 'CREDIT_AMOUNT' ,
                 CASE WHEN [H].[IS_POSTED_ERP] = 1 THEN 'Enviado'

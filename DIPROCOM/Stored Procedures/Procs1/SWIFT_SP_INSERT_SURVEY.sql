@@ -1,4 +1,4 @@
-﻿CREATE PROC [acsa].[SWIFT_SP_INSERT_SURVEY]
+﻿CREATE PROC [PACASA].[SWIFT_SP_INSERT_SURVEY]
 	  @NAME VARCHAR(50)
 	, @DESCRIPTION VARCHAR(250)
 	, @USER VARCHAR(50)	
@@ -8,10 +8,10 @@ DECLARE @return_value int,
           @pID numeric(18, 0)
 BEGIN
 	BEGIN TRAN t1
-	EXEC @return_value = [acsa].[SWIFT_SP_GET_NEXT_SEQUENCE] @SEQUENCE_NAME = N'SURVEY',
+	EXEC @return_value = [PACASA].[SWIFT_SP_GET_NEXT_SEQUENCE] @SEQUENCE_NAME = N'SURVEY',
                                                               @pRESULT = @pID OUTPUT
 		BEGIN		
-			INSERT INTO [acsa].[SWIFT_SURVEY]
+			INSERT INTO [PACASA].[SWIFT_SURVEY]
            ([SURVEY_ID]
            ,[NAME]
            ,[DESCRIPTION]

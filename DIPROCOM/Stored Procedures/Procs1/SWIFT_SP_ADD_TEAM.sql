@@ -5,15 +5,15 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_ADD_TEAM]
+				EXEC [PACASA].[SWIFT_SP_ADD_TEAM]
 					 @NAME_TEAM = 'RD'
           , @SUPERVISOR = 1
           , @LOGIN_ID = 'GERENTE@DIPROCOM'
 				-- 
-				SELECT * FROM [acsa].[SWIFT_TEAM]
+				SELECT * FROM [PACASA].[SWIFT_TEAM]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ADD_TEAM] (@NAME_TEAM VARCHAR(100)
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ADD_TEAM] (@NAME_TEAM VARCHAR(100)
 , @SUPERVISOR INT
 , @LOGIN_ID VARCHAR(50))
 AS
@@ -21,7 +21,7 @@ BEGIN
   BEGIN TRY
     DECLARE @ID INT
     --
-    INSERT INTO [acsa].[SWIFT_TEAM] ([NAME_TEAM]
+    INSERT INTO [PACASA].[SWIFT_TEAM] ([NAME_TEAM]
     , [SUPERVISOR]
     , [CREATE_BY])
       VALUES (@NAME_TEAM, @SUPERVISOR, @LOGIN_ID)

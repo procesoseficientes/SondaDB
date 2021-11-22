@@ -1,4 +1,4 @@
-﻿CREATE TABLE [acsa].[SWIFT_LOG_TRANSACTIONS] (
+﻿CREATE TABLE [PACASA].[SWIFT_LOG_TRANSACTIONS] (
     [TXNID]                  INT           IDENTITY (1, 1) NOT NULL,
     [CODE_CUSTOMER]          VARCHAR (50)  NULL,
     [TXN_TYPE]               VARCHAR (50)  NULL,

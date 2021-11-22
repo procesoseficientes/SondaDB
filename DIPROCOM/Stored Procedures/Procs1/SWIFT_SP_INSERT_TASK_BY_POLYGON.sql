@@ -7,13 +7,13 @@ Descripcion:            SP que inserta el tipo de tarea por poligono
 
 Ejemplo de Ejecucion:
 
-    EXEC [acsa].SWIFT_SP_INSERT_TASK_BY_POLYGON
+    EXEC [PACASA].SWIFT_SP_INSERT_TASK_BY_POLYGON
       @TYPE_TASK = 'PRESALE'
       ,@POLYGON_ID = 1
     --
-    SELECT * FROM [acsa].SWIFT_TASK_BY_POLYGON
+    SELECT * FROM [PACASA].SWIFT_TASK_BY_POLYGON
 ==============================================*/
-CREATE PROCEDURE [acsa].SWIFT_SP_INSERT_TASK_BY_POLYGON
+CREATE PROCEDURE [PACASA].SWIFT_SP_INSERT_TASK_BY_POLYGON
 (
 @TASK_TYPE VARCHAR(15)
 ,@POLYGON_ID INT  
@@ -26,7 +26,7 @@ BEGIN
     -- ----------------------------------------
     -- Se inserta la tarea asociada al poligono
     -- ----------------------------------------
-    INSERT INTO [acsa].[SWIFT_TASK_BY_POLYGON] (
+    INSERT INTO [PACASA].[SWIFT_TASK_BY_POLYGON] (
       [POLYGON_ID]
       , [TASK_TYPE]
       )

@@ -6,10 +6,10 @@
 /*
 -- Ejemplo de Ejecucion:
 				--
-				EXEC [acsa].[SWIFT_SP_GET_ROUTE_AND_USER]
+				EXEC [PACASA].[SWIFT_SP_GET_ROUTE_AND_USER]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_ROUTE_AND_USER]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_ROUTE_AND_USER]
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -19,8 +19,8 @@ BEGIN
 		,[R].[NAME_ROUTE]
 		,[U].[LOGIN]
 		,[U].[NAME_USER]
-	FROM [acsa].[USERS] [U]
-	INNER JOIN [acsa].[SWIFT_ROUTES] [R] ON (
+	FROM [PACASA].[USERS] [U]
+	INNER JOIN [PACASA].[SWIFT_ROUTES] [R] ON (
 		[U].[SELLER_ROUTE] = [R].[CODE_ROUTE]
 	)
 END

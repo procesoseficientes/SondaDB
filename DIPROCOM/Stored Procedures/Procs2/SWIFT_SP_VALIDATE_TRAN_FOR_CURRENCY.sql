@@ -5,13 +5,13 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_VALIDATE_TRAN_FOR_CURRENCY]
+				EXEC [PACASA].[SWIFT_SP_VALIDATE_TRAN_FOR_CURRENCY]
 					 @CURRENCY_ID = 1
 				-- 
-				SELECT * FROM [acsa].[SWIFT_CURRENCY]
+				SELECT * FROM [PACASA].[SWIFT_CURRENCY]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_VALIDATE_TRAN_FOR_CURRENCY](  
+CREATE PROCEDURE [PACASA].[SWIFT_SP_VALIDATE_TRAN_FOR_CURRENCY](  
  @CURRENCY_ID INT = NULL
  ,@IS_DEFAULT INT = NULL
 )
@@ -26,7 +26,7 @@ BEGIN
 
     SELECT TOP 1
       @ID = C.CURRENCY_ID
-    FROM [acsa].[SWIFT_CURRENCY] C
+    FROM [PACASA].[SWIFT_CURRENCY] C
     WHERE C.IS_DEFAULT = 1
     
     -- ------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
   	-- Si no tiene transacciones la moneda default se actualiza
 	  -- ------------------------------------------------------------------------------------
-      UPDATE [acsa].[SWIFT_CURRENCY] SET
+      UPDATE [PACASA].[SWIFT_CURRENCY] SET
         [IS_DEFAULT] = 0
       WHERE [CURRENCY_ID] = @ID
     END

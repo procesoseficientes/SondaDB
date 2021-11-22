@@ -5,14 +5,14 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SP_GET_USER_BY_LICENSES] '<ArrayOfString>
+				EXEC [PACASA].[SP_GET_USER_BY_LICENSES] '<ArrayOfString>
   <string>oper01@DIPROCOM</string>
   <string>oper03@DIPROCOM</string>
   <string>CHRISTIAN@DIPROCOM</string>
 </ArrayOfString>'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_USER_BY_LICENSES] @XML XML
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_USER_BY_LICENSES] @XML XML
 AS
 	DECLARE	@TABLE_RESULT TABLE ([LOGIN] VARCHAR(250));
 
@@ -39,8 +39,8 @@ AS
 			,[USR].[SELLER_ROUTE]
 			,[R].[NAME_ROUTE] [RELATED_SELLER]
 		FROM
-			[acsa].[USERS] [USR]
-		LEFT JOIN [acsa].[SWIFT_ROUTES] AS [R]
+			[PACASA].[USERS] [USR]
+		LEFT JOIN [PACASA].[SWIFT_ROUTES] AS [R]
 		ON	([USR].[SELLER_ROUTE] = [R].[CODE_ROUTE])
 		WHERE
 			UPPER([USR].[LOGIN]) IN (SELECT

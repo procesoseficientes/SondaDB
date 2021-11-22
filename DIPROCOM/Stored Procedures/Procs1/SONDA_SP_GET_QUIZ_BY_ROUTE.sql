@@ -22,11 +22,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [acsa].[SONDA_SP_GET_QUIZ_BY_ROUTE]
+        EXEC [PACASA].[SONDA_SP_GET_QUIZ_BY_ROUTE]
 		@CODE_ROUTE = '136'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_GET_QUIZ_BY_ROUTE]
+CREATE PROCEDURE [PACASA].[SONDA_SP_GET_QUIZ_BY_ROUTE]
 (@CODE_ROUTE VARCHAR(50))
 AS
 BEGIN
@@ -84,8 +84,8 @@ BEGIN
            [SQ].[REQUIRED],
            [SQ].[QUIZ_START],
            1 AS [CHANNELS_ON_QUIZ]
-    FROM [acsa].[SWIFT_QUIZ] [SQ]
-        INNER JOIN [acsa].[SWIFT_ASIGNED_QUIZ] [SAQ]
+    FROM [PACASA].[SWIFT_QUIZ] [SQ]
+        INNER JOIN [PACASA].[SWIFT_ASIGNED_QUIZ] [SAQ]
             ON [SQ].[QUIZ_ID] = [SAQ].[QUIZ_ID]
     WHERE [SAQ].[ROUTE_CODE] = @CODE_ROUTE
           AND @TODAY
@@ -115,10 +115,10 @@ BEGIN
            [SQ].[REQUIRED],
            [SQ].[QUIZ_START],
            1 AS [CHANNELS_ON_QUIZ]
-    FROM [acsa].[SWIFT_QUIZ] [SQ]
-        INNER JOIN [acsa].[SWIFT_ASIGNED_QUIZ] [SAQ]
+    FROM [PACASA].[SWIFT_QUIZ] [SQ]
+        INNER JOIN [PACASA].[SWIFT_ASIGNED_QUIZ] [SAQ]
             ON ([SQ].[QUIZ_ID] = [SAQ].[QUIZ_ID])
-        INNER JOIN [acsa].[SWIFT_ASIGNED_QUIZ] [QBR]
+        INNER JOIN [PACASA].[SWIFT_ASIGNED_QUIZ] [QBR]
             ON (
                    [QBR].[QUIZ_ID] = [SAQ].[QUIZ_ID]
                    AND [QBR].[ROUTE_CODE] = @CODE_ROUTE

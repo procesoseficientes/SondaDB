@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SET_INVENTORY_BY_DISTRIBUTION_CENTER]
+				EXEC [PACASA].[SWIFT_SET_INVENTORY_BY_DISTRIBUTION_CENTER]
 					@LOGIN = 'KEVIN OSORIO@DIPROCOM'
 					,@SKU = N'<SKU>
 								<CODE_SKU>100001</CODE_SKU>
@@ -16,7 +16,7 @@
 							</SKU>'
 					,@ACTIVATING = 1
 				--
-				EXEC [acsa].[SWIFT_SET_INVENTORY_BY_DISTRIBUTION_CENTER]
+				EXEC [PACASA].[SWIFT_SET_INVENTORY_BY_DISTRIBUTION_CENTER]
 					@LOGIN = 'KEVIN OSORIO@DIPROCOM'
 					,@SKU = N'<SKU>
 								<CODE_SKU>100001</CODE_SKU>
@@ -28,7 +28,7 @@
 					,@ACTIVATING = 0
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SET_INVENTORY_BY_DISTRIBUTION_CENTER](
+CREATE PROCEDURE [PACASA].[SWIFT_SET_INVENTORY_BY_DISTRIBUTION_CENTER](
 	@LOGIN VARCHAR(50)
 	,@SKU XML
 	,@ACTIVATING INT
@@ -53,11 +53,11 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Obtiene las bodegas del centro de distribucion asociado al usuario
 		-- ------------------------------------------------------------------------------------
-		SELECT @DISTRIBUTION_CENTER_ID = [acsa].[SWIFT_FN_GET_DISTRIBUTION_CENTER_BY_LOGIN](@LOGIN)
+		SELECT @DISTRIBUTION_CENTER_ID = [PACASA].[SWIFT_FN_GET_DISTRIBUTION_CENTER_BY_LOGIN](@LOGIN)
 		--
 		INSERT INTO @WAREHOSE
 		SELECT [WDC].[CODE_WAREHOUSE]
-		FROM [acsa].[SWIFT_WAREHOUSE_X_DISTRIBUTION_CENTER] [WDC]
+		FROM [PACASA].[SWIFT_WAREHOUSE_X_DISTRIBUTION_CENTER] [WDC]
 		WHERE [WDC].[DISTRIBUTION_CENTER_ID] = @DISTRIBUTION_CENTER_ID
 
 		-- ------------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ BEGIN
 			,[S].[DESCRIPTION_SKU]
 			,[S].[HANDLE_BATCH]
 		FROM @SKU.nodes('/SKU/CODE_SKU') as x(Rec)
-		INNER JOIN [acsa].[SWIFT_VIEW_ALL_SKU] [S] ON (
+		INNER JOIN [PACASA].[SWIFT_VIEW_ALL_SKU] [S] ON (
 			[S].[CODE_SKU] = x.Rec.query('.').value('.', 'varchar(50)')
 		)
 
@@ -85,7 +85,7 @@ BEGIN
 		--
 		IF @ACTIVATING = 1
 		BEGIN
-			SELECT @ON_HAND = CAST([acsa].[SWIFT_FN_GET_PARAMETER]('INVENTORY','SET_INVENTORY') AS INT)
+			SELECT @ON_HAND = CAST([PACASA].[SWIFT_FN_GET_PARAMETER]('INVENTORY','SET_INVENTORY') AS INT)
 			--
 			SELECT DISTINCT
 				CAST(NULL AS VARCHAR(50)) [SERIAL_NUMBER]
@@ -111,7 +111,7 @@ BEGIN
 			-- ------------------------------------------------------------------------------------
 			-- Opera los productos sin lote
 			-- ------------------------------------------------------------------------------------
-			MERGE [acsa].[SWIFT_INVENTORY] SIV
+			MERGE [PACASA].[SWIFT_INVENTORY] SIV
 			USING (SELECT DISTINCT * FROM #INVENTORY [I] WHERE [I].[HANDLE_BATCH] = 0) EVI 
 			ON (
 				ISNULL(SIV.[SERIAL_NUMBER],'') = ISNULL(EVI.[SERIAL_NUMBER],'')
@@ -161,7 +161,7 @@ BEGIN
 			-- Opera los productos con lote
 			-- ------------------------------------------------------------------------------------
 			DELETE [I]
-			FROM [acsa].[SWIFT_INVENTORY] [I]
+			FROM [PACASA].[SWIFT_INVENTORY] [I]
 			INNER JOIN @WAREHOSE [W] ON ([I].[WAREHOUSE] = [W].[CODE_WAREHOUSE])
 			INNER JOIN @SKU_LIST [S] ON (
 				[S].[CODE_SKU] = [I].[SKU]
@@ -169,7 +169,7 @@ BEGIN
 			)
 			WHERE [I].[BATCH_ID] IS NULL
 
-			INSERT INTO [acsa].[SWIFT_INVENTORY]
+			INSERT INTO [PACASA].[SWIFT_INVENTORY]
 					(
 						[SERIAL_NUMBER]
 						,[WAREHOUSE]
@@ -209,7 +209,7 @@ BEGIN
 			-- ------------------------------------------------------------------------------------
 			UPDATE [I]
 			SET [I].[ON_HAND] = 0
-			FROM [acsa].[SWIFT_INVENTORY] [I]
+			FROM [PACASA].[SWIFT_INVENTORY] [I]
 			INNER JOIN @WAREHOSE [W] ON ([I].[WAREHOUSE] = [W].[CODE_WAREHOUSE])
 			INNER JOIN @SKU_LIST [S] ON (
 				[S].[CODE_SKU] = [I].[SKU]
@@ -220,7 +220,7 @@ BEGIN
 			-- Opera los productos con lote
 			-- ------------------------------------------------------------------------------------
 			DELETE [I]
-			FROM [acsa].[SWIFT_INVENTORY] [I]
+			FROM [PACASA].[SWIFT_INVENTORY] [I]
 			INNER JOIN @WAREHOSE [W] ON ([I].[WAREHOUSE] = [W].[CODE_WAREHOUSE])
 			INNER JOIN @SKU_LIST [S] ON (
 				[S].[CODE_SKU] = [I].[SKU]

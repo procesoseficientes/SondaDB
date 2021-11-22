@@ -5,13 +5,13 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_ADD_USER_BY_TEAM]
+				EXEC [PACASA].[SWIFT_SP_ADD_USER_BY_TEAM]
 					  @TEAM_ID = 1          
 				-- 
-				SELECT * FROM [acsa].[SWIFT_TEAM]
+				SELECT * FROM [PACASA].[SWIFT_TEAM]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ADD_USER_BY_TEAM] (
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ADD_USER_BY_TEAM] (
 		@TEAM_ID INT
 		,@XML XML
 		,@LOGIN_ID VARCHAR(50)
@@ -40,7 +40,7 @@ BEGIN
 						1
 					FROM
 						@USERS [U]
-					JOIN [acsa].[SWIFT_TEAM] [UT] ON [U].[CORRELATIVE] = [UT].[SUPERVISOR] )
+					JOIN [PACASA].[SWIFT_TEAM] [UT] ON [U].[CORRELATIVE] = [UT].[SUPERVISOR] )
 		BEGIN
 			SELECT
 				-1 AS [Resultado]
@@ -49,7 +49,7 @@ BEGIN
 			RETURN;
 		END;
 
-		INSERT	INTO [acsa].[SWIFT_USER_BY_TEAM]
+		INSERT	INTO [PACASA].[SWIFT_USER_BY_TEAM]
 				(
 					[TEAM_ID]
 					,[USER_ID]

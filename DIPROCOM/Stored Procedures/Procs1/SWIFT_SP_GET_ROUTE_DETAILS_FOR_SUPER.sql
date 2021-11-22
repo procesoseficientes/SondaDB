@@ -5,12 +5,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GET_ROUTE_DETAILS_FOR_SUPER]
+				EXEC [PACASA].[SWIFT_SP_GET_ROUTE_DETAILS_FOR_SUPER]
 					@LOGIN = 'adolfo@DIPROCOM',
 					@TASK_TYPE = 'sale'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_ROUTE_DETAILS_FOR_SUPER]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_ROUTE_DETAILS_FOR_SUPER]
     (
      @LOGIN VARCHAR(50)
     ,@TASK_TYPE VARCHAR(50)
@@ -27,7 +27,7 @@ BEGIN
                  ,ISNULL([H].[GPS_URL], [RP].[EXPECTED_GPS]) [GPS]
                  ,[T].[TASK_STATUS]
                  ,[H].[DOC_NUM]
-                 ,[acsa].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([H].[SALES_ORDER_ID]) [DOC_TOTAL]
+                 ,[PACASA].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([H].[SALES_ORDER_ID]) [DOC_TOTAL]
                  ,CONVERT(VARCHAR, DATEADD(SECOND,
                                                               DATEDIFF(SECOND, [T].[ACCEPTED_STAMP],
                                                                              [T].[COMPLETED_STAMP]), 0), 108) AS [DELAY]
@@ -40,9 +40,9 @@ BEGIN
                  ,ROW_NUMBER() OVER (ORDER BY ISNULL([T].[ACCEPTED_STAMP], GETDATE())
                  , [RP].[TASK_SEQ] ASC) AS [ORDER]
               FROM
-                     [acsa].[SONDA_ROUTE_PLAN] [RP]
-              INNER JOIN [acsa].[SWIFT_TASKS] [T] ON [RP].[TASK_ID] = [T].[TASK_ID]
-              LEFT JOIN [acsa].[SONDA_SALES_ORDER_HEADER] [H] ON [H].[TASK_ID] = [T].[TASK_ID]
+                     [PACASA].[SONDA_ROUTE_PLAN] [RP]
+              INNER JOIN [PACASA].[SWIFT_TASKS] [T] ON [RP].[TASK_ID] = [T].[TASK_ID]
+              LEFT JOIN [PACASA].[SONDA_SALES_ORDER_HEADER] [H] ON [H].[TASK_ID] = [T].[TASK_ID]
               WHERE
                      [RP].[ASSIGEND_TO] = @LOGIN
                      AND [RP].[TASK_TYPE] = @TASK_TYPE
@@ -71,9 +71,9 @@ BEGIN
                  ,ROW_NUMBER() OVER (ORDER BY ISNULL([T].[ACCEPTED_STAMP], GETDATE())
                  , [RP].[TASK_SEQ] ASC) AS [ORDER]
               FROM
-                     [acsa].[SONDA_ROUTE_PLAN] [RP]
-              INNER JOIN [acsa].[SWIFT_TASKS] [T] ON [RP].[TASK_ID] = [T].[TASK_ID]
-              LEFT JOIN [acsa].[SONDA_POS_INVOICE_HEADER] [H] ON [H].[TASK_ID] = [T].[TASK_ID]
+                     [PACASA].[SONDA_ROUTE_PLAN] [RP]
+              INNER JOIN [PACASA].[SWIFT_TASKS] [T] ON [RP].[TASK_ID] = [T].[TASK_ID]
+              LEFT JOIN [PACASA].[SONDA_POS_INVOICE_HEADER] [H] ON [H].[TASK_ID] = [T].[TASK_ID]
               WHERE
                      [RP].[ASSIGEND_TO] = @LOGIN
                      AND [RP].[TASK_TYPE] = @TASK_TYPE

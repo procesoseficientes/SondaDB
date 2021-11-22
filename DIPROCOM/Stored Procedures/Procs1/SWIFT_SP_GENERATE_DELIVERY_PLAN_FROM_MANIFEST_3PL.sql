@@ -19,10 +19,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GENERATE_DELIVERY_PLAN_FROM_MANIFEST_3PL] @MANIFEST_HADER_ID = 2145, @LOGIN_ID = 'ADOLFO@DIPROCOM', @CURRENT_GPS_USER = '14.64986000,-90.53980000'
+				EXEC [PACASA].[SWIFT_SP_GENERATE_DELIVERY_PLAN_FROM_MANIFEST_3PL] @MANIFEST_HADER_ID = 2145, @LOGIN_ID = 'ADOLFO@DIPROCOM', @CURRENT_GPS_USER = '14.64986000,-90.53980000'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GENERATE_DELIVERY_PLAN_FROM_MANIFEST_3PL]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GENERATE_DELIVERY_PLAN_FROM_MANIFEST_3PL]
 (
     @MANIFEST_HADER_ID INT,
     @LOGIN_ID VARCHAR(25),
@@ -144,12 +144,12 @@ BEGIN
                                     ELSE
                                         [SS].[GPS]
                                 END
-        FROM [acsa].[SWIFT_SELLER] AS [SS]
-            INNER JOIN [acsa].[USERS] AS [U]
+        FROM [PACASA].[SWIFT_SELLER] AS [SS]
+            INNER JOIN [PACASA].[USERS] AS [U]
                 ON ([U].[RELATED_SELLER] = [SS].[SELLER_CODE])
-            INNER JOIN [acsa].[SWIFT_DISTRIBUTION_CENTER] AS [DC]
+            INNER JOIN [PACASA].[SWIFT_DISTRIBUTION_CENTER] AS [DC]
                 ON ([U].[DISTRIBUTION_CENTER_ID] = [DC].[DISTRIBUTION_CENTER_ID])
-            INNER JOIN [acsa].[SWIFT_WAREHOUSE_X_DISTRIBUTION_CENTER] AS [WXD]
+            INNER JOIN [PACASA].[SWIFT_WAREHOUSE_X_DISTRIBUTION_CENTER] AS [WXD]
                 ON (
                        [WXD].[DISTRIBUTION_CENTER_ID] = [DC].[DISTRIBUTION_CENTER_ID]
                        AND [WXD].[CODE_WAREHOUSE] = [U].[DEFAULT_WAREHOUSE]
@@ -161,7 +161,7 @@ BEGIN
         -- -----------------------------------------------------------------------------------------------------------------
         SELECT @QTY_COMPLETED_TASKS = COUNT([TASK_ID]),
                @LAST_TASK_SEQ = MAX([TASK_SEQ])
-        FROM [acsa].[SWIFT_TASKS]
+        FROM [PACASA].[SWIFT_TASKS]
         WHERE [TASK_TYPE] = 'DELIVERY_SD'
               AND [TASK_DATE] = CONVERT(DATE, GETDATE())
               AND [TASK_STATUS] = 'COMPLETED'
@@ -186,7 +186,7 @@ BEGIN
         -- -----------------------------------------------------------------------
         SELECT @DATABASE_NAME = [S].[DATABASE_NAME],
                @SCHEMA_NAME = [S].[SCHEMA_NAME]
-        FROM [acsa].[SWIFT_SETUP_EXTERNAL_SOURCE] AS [S]
+        FROM [PACASA].[SWIFT_SETUP_EXTERNAL_SOURCE] AS [S]
         WHERE [S].[EXTERNAL_SOURCE_ID] > 0;
 
         -- ---------------------------------------------------------------------------------
@@ -225,7 +225,7 @@ BEGIN
                [COSTUMER_NAME],
                [TASK_ADDRESS],
                [TASK_STATUS]
-        FROM [acsa].[SWIFT_TASKS]
+        FROM [PACASA].[SWIFT_TASKS]
         WHERE [ASSIGEND_TO] = @LOGIN_ID
               AND [TASK_DATE] = CONVERT(DATE, GETDATE())
               AND [TASK_TYPE] = 'DELIVERY_SD';
@@ -309,7 +309,7 @@ BEGIN
                [CF].[ADDRESS_CUSTOMER],
                [VAC].[GPS],
                [dbo].[SONDA_FN_CALCULATE_DISTANCE](@GPS_WAREHOUSE, [VAC].[GPS])
-        FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] AS [VAC]
+        FROM [PACASA].[SWIFT_VIEW_ALL_COSTUMER] AS [VAC]
             INNER JOIN [#CLIENTS_FILTERED] AS [CF]
                 ON ([CF].[CLIENT_CODE] = [VAC].[CODE_CUSTOMER]);
 
@@ -317,7 +317,7 @@ BEGIN
         -- Se borran las tareas de entrega generadas para el dia actual
         -- siempre que no esten completadas
         -- ---------------------------------------------------------------------------------
-        DELETE FROM [acsa].[SWIFT_TASKS]
+        DELETE FROM [PACASA].[SWIFT_TASKS]
         WHERE [ASSIGEND_TO] = @LOGIN_ID
               AND [TASK_DATE] = CONVERT(DATE, GETDATE())
               AND [TASK_STATUS] <> 'COMPLETED'
@@ -343,7 +343,7 @@ BEGIN
             -- ----------------------------------------------------------------------
             IF (@TASK_ID = 0)
             BEGIN
-                INSERT INTO [acsa].[SWIFT_TASKS]
+                INSERT INTO [PACASA].[SWIFT_TASKS]
                 (
                     [TASK_TYPE],
                     [TASK_DATE],
@@ -383,7 +383,7 @@ BEGIN
                        'BY_MANIFEST_3PL',
                        0
                 FROM [#CLIENTS_FILTERED] [T]
-                    INNER JOIN [acsa].[SWIFT_VIEW_ALL_COSTUMER] [VC]
+                    INNER JOIN [PACASA].[SWIFT_VIEW_ALL_COSTUMER] [VC]
                         ON [VC].[CODE_CUSTOMER] = [T].[CLIENT_CODE]
                 WHERE [T].[CLIENT_CODE] = @CLIENT_CODE
                       AND [T].[ADDRESS_CUSTOMER] = @CLIENT_ADDRESS;
@@ -400,7 +400,7 @@ BEGIN
                 -- ----------------------------------------------------
                 IF (@TASK_STATUS = 'COMPLETED')
                 BEGIN
-                    UPDATE [acsa].[SWIFT_TASKS]
+                    UPDATE [PACASA].[SWIFT_TASKS]
                     SET [TASK_STATUS] = 'ASSIGNED'
                     WHERE [TASK_ID] = @TASK_ID;
                     --
@@ -411,7 +411,7 @@ BEGIN
                 END;
                 ELSE
                 BEGIN
-                    INSERT INTO [acsa].[SWIFT_TASKS]
+                    INSERT INTO [PACASA].[SWIFT_TASKS]
                     (
                         [TASK_TYPE],
                         [TASK_DATE],
@@ -451,7 +451,7 @@ BEGIN
                            'BY_MANIFEST_3PL',
                            0
                     FROM [#CLIENTS_FILTERED] [T]
-                        INNER JOIN [acsa].[SWIFT_VIEW_ALL_COSTUMER] [VC]
+                        INNER JOIN [PACASA].[SWIFT_VIEW_ALL_COSTUMER] [VC]
                             ON [VC].[CODE_CUSTOMER] = [T].[CLIENT_CODE]
                     WHERE [T].[CLIENT_CODE] = @CLIENT_CODE
                           AND [T].[ADDRESS_CUSTOMER] = @CLIENT_ADDRESS;
@@ -494,7 +494,7 @@ BEGIN
             ORDER BY [T].[DISTANCE] ASC;
 
             --
-            UPDATE [acsa].[SWIFT_TASKS]
+            UPDATE [PACASA].[SWIFT_TASKS]
             SET [TASK_SEQ] = @TASK_SEQUENCE
             WHERE [TASK_ID] = @TASK_ID_FOR_OPTIMIZATION;
 

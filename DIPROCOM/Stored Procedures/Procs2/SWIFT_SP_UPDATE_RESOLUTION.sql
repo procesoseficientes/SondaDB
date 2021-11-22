@@ -4,7 +4,7 @@
 -- Descripcion: 		11/30/2019 - Se agregan columnas para indicar el TIPO DE DOCUMENTO FEL al que haran referencia las facturas generadas con la resolucion, asi como el CODIGO DE ESTABLECIMIENTO que de igual forma
 --						se enviara en las facturas.
 -- ==============================================================================================================================================
-CREATE PROC [acsa].[SWIFT_SP_UPDATE_RESOLUTION]
+CREATE PROC [PACASA].[SWIFT_SP_UPDATE_RESOLUTION]
     @AUTH_ID VARCHAR(50),
     @SERIE VARCHAR(100),
     @ASSIGNED_BY VARCHAR(100),
@@ -17,7 +17,7 @@ BEGIN
 
     BEGIN TRAN [t1];
     BEGIN
-        UPDATE [acsa].[SONDA_POS_RES_SAT]
+        UPDATE [PACASA].[SONDA_POS_RES_SAT]
         SET [AUTH_ASSIGNED_DATETIME] = GETDATE(),
             [AUTH_ASSIGNED_BY] = @ASSIGNED_BY,
             [AUTH_ASSIGNED_TO] = @ASSIGNED_TO,
@@ -26,7 +26,7 @@ BEGIN
             (
                 SELECT TOP (1)
                        [VALUE_TEXT_CLASSIFICATION]
-                FROM [acsa].[SWIFT_CLASSIFICATION]
+                FROM [PACASA].[SWIFT_CLASSIFICATION]
                 WHERE [CLASSIFICATION] = @FEL_DOCUMENT_TYPE
                 ORDER BY [CLASSIFICATION]
             ),
@@ -35,7 +35,7 @@ BEGIN
             (
                 SELECT TOP (1)
                        [VALUE_TEXT_CLASSIFICATION]
-                FROM [acsa].[SWIFT_CLASSIFICATION]
+                FROM [PACASA].[SWIFT_CLASSIFICATION]
                 WHERE [CLASSIFICATION] = @FEL_STABLISHMENT_CODE
                 ORDER BY [CLASSIFICATION]
             )

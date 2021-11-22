@@ -5,19 +5,19 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].SWIFT_SP_DELETE_CHANNEL
+				EXEC [PACASA].SWIFT_SP_DELETE_CHANNEL
 					@CHANNEL_ID = 1
 				-- 
-				SELECT * FROM [acsa].SWIFT_CHANNEL
+				SELECT * FROM [PACASA].SWIFT_CHANNEL
 */
 -- =============================================
-CREATE PROCEDURE [acsa].SWIFT_SP_DELETE_CHANNEL(
+CREATE PROCEDURE [PACASA].SWIFT_SP_DELETE_CHANNEL(
 	@CHANNEL_ID INT
 )
 AS
 BEGIN
 	BEGIN TRY
-		DELETE FROM [acsa].SWIFT_CHANNEL
+		DELETE FROM [PACASA].SWIFT_CHANNEL
 		WHERE CHANNEL_ID = @CHANNEL_ID
 		--
 		SELECT  1 as Resultado , 'Proceso Exitoso' Mensaje ,  0 Codigo, '0' DbData

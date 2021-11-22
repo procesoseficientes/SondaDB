@@ -1,4 +1,4 @@
-﻿CREATE TABLE [acsa].[SWIFT_ANSWER] (
+﻿CREATE TABLE [PACASA].[SWIFT_ANSWER] (
     [ANSWER_ID]      INT           IDENTITY (1, 1) NOT NULL,
     [QUESTION_ID]    INT           NOT NULL,
     [ANSWER]         VARCHAR (256) NOT NULL,

@@ -14,19 +14,19 @@
 
 /*
 -- EJEMPLO DE EJECUCION: 
-		EXEC [acsa].[SWIFT_SP_UPDATE_POLYGON]
+		EXEC [PACASA].[SWIFT_SP_UPDATE_POLYGON]
 			@POLYGON_ID = 1099
 			,@POLYGON_NAME ='pacopaco2' 
 			,@POLYGON_DESCRIPTION = 'Cuatro Caminos'
 			,@COMMENT = 'Por la Super 24'
 			,@LAST_UPDATE_BY = 'gerente@acsa'
 		--
-		SELECT * FROM [acsa].[SWIFT_POLYGON] WHERE POLYGON_NAME = 'pacopaco2'
+		SELECT * FROM [PACASA].[SWIFT_POLYGON] WHERE POLYGON_NAME = 'pacopaco2'
 		--
-		SELECT * FROM [acsa].SWIFT_ROUTES WHERE NAME_ROUTE = 'pacopaco2'
+		SELECT * FROM [PACASA].SWIFT_ROUTES WHERE NAME_ROUTE = 'pacopaco2'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].SWIFT_SP_UPDATE_POLYGON (
+CREATE PROCEDURE [PACASA].SWIFT_SP_UPDATE_POLYGON (
 	@POLYGON_ID INT
 	,@POLYGON_NAME VARCHAR(250)
 	,@POLYGON_DESCRIPTION VARCHAR(250)
@@ -45,20 +45,20 @@ BEGIN
   -- ------------------------------------------------------------
 	-- Actualiza el tipo de tarea de la frecuencia
 	-- ------------------------------------------------------------	
-  EXEC [acsa].[SWIFT_SP_UPDATE_FREQUENCY_BY_POYGON]
+  EXEC [PACASA].[SWIFT_SP_UPDATE_FREQUENCY_BY_POYGON]
           @POLYGON_ID = @POLYGON_ID
           ,@TYPE_TASK = @TYPE_TASK
           ,@LAST_UPDATED_BY = @LAST_UPDATE_BY
   -- ------------------------------------------------------------
 	-- Validad si tiene hijos el poligono para borrar 
 	-- ------------------------------------------------------------	
-	IF [acsa].SWIFT_FN_VALIDATE_POLYGON_HAS_CHILD(@POLYGON_ID) = 0
+	IF [PACASA].SWIFT_FN_VALIDATE_POLYGON_HAS_CHILD(@POLYGON_ID) = 0
 	BEGIN
-		DELETE FROM [acsa].[SWIFT_POLYGON_POINT]
+		DELETE FROM [PACASA].[SWIFT_POLYGON_POINT]
 		WHERE POLYGON_ID = @POLYGON_ID  
 	END
 	--
-	UPDATE [acsa].[SWIFT_POLYGON]
+	UPDATE [PACASA].[SWIFT_POLYGON]
 	SET 
 		POLYGON_NAME = @POLYGON_NAME
 		,POLYGON_DESCRIPTION = @POLYGON_DESCRIPTION
@@ -73,7 +73,7 @@ BEGIN
 	-- Actualiza la ruta
 	-- ------------------------------------------------------------	
 --  IF @SAVE_ROUTE = 1 BEGIN
---    EXEC [acsa].[SWIFT_SP_UPDATE_ROUTE_FROM_POLYGON]
+--    EXEC [PACASA].[SWIFT_SP_UPDATE_ROUTE_FROM_POLYGON]
 --    	@CODE_ROUTE = @POLYGON_ID
 --    	,@NAME_ROUTE = @POLYGON_NAME
 --    --    

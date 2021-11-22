@@ -6,12 +6,12 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-						EXECUTE  [acsa].[SWIFT_SP_VALIDATE_PALLET] 
+						EXECUTE  [PACASA].[SWIFT_SP_VALIDATE_PALLET] 
 						@PALLET_ID = 2
 			--				
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_VALIDATE_PALLET]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_VALIDATE_PALLET]
 	 @PALLET_ID AS INT
 
 AS
@@ -22,7 +22,7 @@ BEGIN
   DECLARE  @RESULTADO AS INT = 0;
       
   SELECT  TOP 1 @RESULTADO = 1
-	FROM  [acsa].[SWIFT_PALLET] AS PA 
+	FROM  [PACASA].[SWIFT_PALLET] AS PA 
   WHERE PA.[PALLET_ID] = @PALLET_ID
 
 

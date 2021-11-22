@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SONDA_SP_VALIDATE_SCOUTING_BY_XML] 
+				EXEC [PACASA].[SONDA_SP_VALIDATE_SCOUTING_BY_XML] 
 				@XML = N'
 					<Data>
 					<scouting>
@@ -40,7 +40,7 @@
 				@JSON = '{"Data":{"scouting":[{"clientId":"-2","docSerie":"ADOLFO@DIPROCOM","docNum":"1","postedDatetime":"2017/06/16 10:21:33","tagsQty":"5","syncId":"46|Adolfo@DIPROCOM|2017/06/16 10:21:33|-2"},{"clientId":"-3","docSerie":"ADOLFO@DIPROCOM","docNum":"2","postedDatetime":"2017/06/16 10:22:58","tagsQty":"10","syncId":"46|Adolfo@DIPROCOM|2017/06/16 10:22:58|-3"},{"clientId":"-4","docSerie":"ADOLFO@DIPROCOM","docNum":"3","postedDatetime":"2017/06/16 10:24:19","tagsQty":"10","syncId":"46|Adolfo@DIPROCOM|2017/06/16 10:24:19|-4"}],"dbuser":"UDIPROCOM","dbuserpass":"DIPROCOMServer1237710","routeid":"46","loginId":"Adolfo@DIPROCOM"}}'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_VALIDATE_SCOUTING_BY_XML](
+CREATE PROCEDURE [PACASA].[SONDA_SP_VALIDATE_SCOUTING_BY_XML](
 	@XML XML
 	,@JSON VARCHAR(MAX)
 )
@@ -139,7 +139,7 @@ BEGIN
 		PRINT('3')
 		--
 		INSERT INTO @RESULT_VALIDATION
-		EXEC [acsa].[SONDA_SP_VALIDATED_IF_EXISTS_SCOUTING] 
+		EXEC [PACASA].[SONDA_SP_VALIDATED_IF_EXISTS_SCOUTING] 
 			@CODE_ROUTE = @CODE_ROUTE, -- varchar(50)
 			@CODE_CUSTOMER = @CODE_CUSTOMER, -- varchar(50)
 			@DOC_SERIE = @DOC_SERIE, -- varchar(50)

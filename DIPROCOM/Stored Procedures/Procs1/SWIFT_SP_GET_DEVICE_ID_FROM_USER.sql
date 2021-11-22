@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GET_DEVICE_ID_FROM_USER]
+				EXEC [PACASA].[SWIFT_SP_GET_DEVICE_ID_FROM_USER]
 					@LOGIN = 'rudi@DIPROCOM'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_DEVICE_ID_FROM_USER](
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_DEVICE_ID_FROM_USER](
 	@LOGIN VARCHAR(50)
 )
 AS
@@ -18,7 +18,7 @@ BEGIN
 	--
 	SELECT [DEVICE_ID]
 			,[VALIDATION_TYPE] 
-	FROM [acsa].[USERS]
+	FROM [PACASA].[USERS]
 	WHERE [LOGIN] = @LOGIN
 END
 

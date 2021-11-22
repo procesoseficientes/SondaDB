@@ -5,7 +5,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-		EXEC [acsa].[SWIFT_SP_ADD_PROMO_SPECIAL_PRICE_LIST_BY_SCALE]
+		EXEC [PACASA].[SWIFT_SP_ADD_PROMO_SPECIAL_PRICE_LIST_BY_SCALE]
 		@PROMO_ID = 3512
 		,@CODE_SKU = '100001'
 		,@PACK_UNIT = 1
@@ -15,7 +15,7 @@
 		,@INCLUDE_DISCOUNT = 1
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ADD_PROMO_SPECIAL_PRICE_LIST_BY_SCALE](
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ADD_PROMO_SPECIAL_PRICE_LIST_BY_SCALE](
 @PROMO_ID INT
 	, @CODE_SKU VARCHAR(50)
 	, @PACK_UNIT INT
@@ -30,7 +30,7 @@ BEGIN
 		-- --------------------------------------------------------------------------
 		-- Se valida el rango de la promocion que se desea agregar
 		-- --------------------------------------------------------------------------
-		EXEC [acsa].[SWIFT_SP_VALIDATE_DISCOUNT_SCALE_FOR_PROMO]
+		EXEC [PACASA].[SWIFT_SP_VALIDATE_DISCOUNT_SCALE_FOR_PROMO]
 		@PROMO_ID = @PROMO_ID
 		, @CODE_SKU = @CODE_SKU
 		, @PACK_UNIT = @PACK_UNIT
@@ -47,7 +47,7 @@ BEGIN
 					(SELECT
 						*
 					FROM
-						[acsa].[SWIFT_PROMO_SPECIAL_PRICE_LIST_BY_SCALE]
+						[PACASA].[SWIFT_PROMO_SPECIAL_PRICE_LIST_BY_SCALE]
 					WHERE
 						CODE_SKU = @CODE_SKU and PROMO_ID = @PROMO_ID) AS D WHERE (@LOW_LIMIT BETWEEN  D.LOW_LIMIT AND D.HIGH_LIMIT) OR (@HIGH_LIMIT BETWEEN  D.LOW_LIMIT AND D.HIGH_LIMIT) 
 			) > 0
@@ -60,7 +60,7 @@ BEGIN
 	END;		
 ELSE 
 	BEGIN 
-		INSERT INTO [acsa].[SWIFT_PROMO_SPECIAL_PRICE_LIST_BY_SCALE]
+		INSERT INTO [PACASA].[SWIFT_PROMO_SPECIAL_PRICE_LIST_BY_SCALE]
 			(
 				[PROMO_ID]
 				,[CODE_SKU]

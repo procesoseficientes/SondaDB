@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [acsa].[SWIFT_GET_ROLE_BY_QUERY_LIST] (@QUERY_LIST_ID INT)
+﻿CREATE PROCEDURE [PACASA].[SWIFT_GET_ROLE_BY_QUERY_LIST] (@QUERY_LIST_ID INT)
 AS 
 BEGIN 
 
@@ -16,7 +16,7 @@ BEGIN
 
   INSERT INTO @TEAM_ROLE
   SELECT QR.TEAM_ID	
-  FROM [acsa].[SWIFT_QUERY_LIST_BY_ROLE] [QR]
+  FROM [PACASA].[SWIFT_QUERY_LIST_BY_ROLE] [QR]
   WHERE [QR].[QUERY_LIST_ID] = @QUERY_LIST_ID
   	
   -- ---------------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ BEGIN
 					WHERE
 						[UOT].[TEAM_ROLE] > 0;			  
 
-			SELECT @NAMEROLE=NAME FROM [acsa].SWIFT_ROLE
+			SELECT @NAMEROLE=NAME FROM [PACASA].SWIFT_ROLE
 			WHERE ROLE_ID=@ID_ROLE
 
 				SET @srole = @srole +';' + @ID_ROLE +';'+ @NAMEROLE

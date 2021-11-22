@@ -4,23 +4,23 @@
 -- Author:         diego.as
 -- Create date:    05-02-2016
 -- Description:    Procedimiento para Insertar registros en la Tabla 
---				   [acsa].SONDA_DOC_ROUTE_RETURN_DETAIL 
+--				   [PACASA].SONDA_DOC_ROUTE_RETURN_DETAIL 
 --				   con transacción y control de errores.
 /*
 Ejemplo de Ejecucion:
 				--
-				EXEC [acsa].[SONDA_SP_INSERT_RETURN_RECEPTION_DETAIL] 
+				EXEC [PACASA].[SONDA_SP_INSERT_RETURN_RECEPTION_DETAIL] 
 				@ID_DOC_RETURN_HEADER = 1 
 				,@CODE_SKU = '100020'
 				,@QTY = 10
 				,@DESCRIPTION_SKU = 'BATERIAS AAA 2PACK'
 
-				SELECT * FROM [acsa].[SONDA_DOC_ROUTE_RETURN_DETAIL]
+				SELECT * FROM [PACASA].[SONDA_DOC_ROUTE_RETURN_DETAIL]
 				--	
 */
 -- =============================================
 
-CREATE PROCEDURE [acsa].[SONDA_SP_INSERT_RETURN_RECEPTION_DETAIL]
+CREATE PROCEDURE [PACASA].[SONDA_SP_INSERT_RETURN_RECEPTION_DETAIL]
 (
 	@ID_DOC_RETURN_HEADER AS INT
 	,@CODE_SKU AS VARCHAR(50)
@@ -33,7 +33,7 @@ BEGIN
 
     BEGIN TRAN TransAdd
 	BEGIN TRY
-        INSERT INTO [acsa].[SONDA_DOC_ROUTE_RETURN_DETAIL] (
+        INSERT INTO [PACASA].[SONDA_DOC_ROUTE_RETURN_DETAIL] (
 				[ID_DOC_RETURN_HEADER]
 				,[CODE_SKU]
 				,[QTY]

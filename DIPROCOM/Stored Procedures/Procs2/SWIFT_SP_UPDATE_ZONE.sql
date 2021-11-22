@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC  [acsa].[SWIFT_SP_UPDATE_ZONE] @ZONE_ID = 2,  @CODE_ZONE = '2', @DESCRIPTION_ZONE = 'Zona 2/1'
-SELECT * FROM [acsa].[SWIFT_ZONE]
+				EXEC  [PACASA].[SWIFT_SP_UPDATE_ZONE] @ZONE_ID = 2,  @CODE_ZONE = '2', @DESCRIPTION_ZONE = 'Zona 2/1'
+SELECT * FROM [PACASA].[SWIFT_ZONE]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_ZONE] (
+CREATE PROCEDURE [PACASA].[SWIFT_SP_UPDATE_ZONE] (
   @ZONE_ID INT
   ,@CODE_ZONE VARCHAR(50)
   ,@DESCRIPTION_ZONE VARCHAR(200),
@@ -23,7 +23,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Operar
   -- ------------------------------------------------------------------------------------
-UPDATE [acsa].[SWIFT_ZONE]
+UPDATE [PACASA].[SWIFT_ZONE]
 SET [CODE_ZONE] = @CODE_ZONE
    ,[DESCRIPTION_ZONE] = @DESCRIPTION_ZONE
   ,[LAST_UPDATED_BY] =   @LOGIN 

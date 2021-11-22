@@ -27,7 +27,7 @@ DECLARE @BRANCH_ADDRESS varchar(150)
 
 -- TODO: Set parameter values here.
 
-EXECUTE [acsa].[SWIFT_SP_INSERT_DOCUMENT_SEQUENCE] 
+EXECUTE [PACASA].[SWIFT_SP_INSERT_DOCUMENT_SEQUENCE] 
    @DOC_TYPE
   ,@ASSIGNED_DATETIME
   ,@POST_DATETIME
@@ -44,7 +44,7 @@ GO
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_DOCUMENT_SEQUENCE]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_INSERT_DOCUMENT_SEQUENCE]
     @DOC_TYPE VARCHAR(50),
     @POST_DATETIME DATETIME,
     @ASSIGNED_BY VARCHAR(100),
@@ -111,7 +111,7 @@ BEGIN TRY
                              ELSE
                                  'Rangos mal definidos'
                          END
-            FROM [acsa].[SWIFT_DOCUMENT_SEQUENCE] AS [S]
+            FROM [PACASA].[SWIFT_DOCUMENT_SEQUENCE] AS [S]
             WHERE [S].[DOC_TYPE] = @DOC_TYPE
                   AND
                   (
@@ -141,7 +141,7 @@ BEGIN TRY
             END;
             ELSE
             BEGIN
-                INSERT INTO [acsa].[SWIFT_DOCUMENT_SEQUENCE]
+                INSERT INTO [PACASA].[SWIFT_DOCUMENT_SEQUENCE]
                 (
                     [DOC_TYPE],
                     [ASSIGNED_DATETIME],
@@ -176,7 +176,7 @@ BEGIN TRY
     END;
     ELSE
     BEGIN
-        INSERT INTO [acsa].[SWIFT_DOCUMENT_SEQUENCE]
+        INSERT INTO [PACASA].[SWIFT_DOCUMENT_SEQUENCE]
         (
             [DOC_TYPE],
             [ASSIGNED_DATETIME],

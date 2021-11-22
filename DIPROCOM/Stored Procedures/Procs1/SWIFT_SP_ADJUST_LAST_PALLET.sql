@@ -1,4 +1,4 @@
-﻿/****** Object:  StoredProcedure [acsa].[SWIFT_SP_UPDATE_PALLET_QTY]    Script Date: 20/12/2015 9:09:38 AM ******/
+﻿/****** Object:  StoredProcedure [PACASA].[SWIFT_SP_UPDATE_PALLET_QTY]    Script Date: 20/12/2015 9:09:38 AM ******/
 -- =============================================
 -- Autor:				jose.garcia
 -- Fecha de Creacion: 	14-01-2016
@@ -6,11 +6,11 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				exec [acsa].[SWIFT_SP_ADJUST_LAST_PALLET] @BATCH_ID=157, @PALLET_ID=199, @TASK_ID=5218, @QTY=2
+				exec [PACASA].[SWIFT_SP_ADJUST_LAST_PALLET] @BATCH_ID=157, @PALLET_ID=199, @TASK_ID=5218, @QTY=2
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ADJUST_LAST_PALLET]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ADJUST_LAST_PALLET]
 	@BATCH_ID varchar(250)
    ,@PALLET_ID INT
    ,@TASK_ID INT
@@ -20,13 +20,13 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	UPDATE [acsa].[SWIFT_PALLET] 
+	UPDATE [PACASA].[SWIFT_PALLET] 
 		SET QTY= QTY - @QTY
 		where BATCH_ID=@BATCH_ID
 		AND PALLET_ID=@PALLET_ID
 		AND TASK_ID= @TASK_ID
 
-	UPDATE [acsa].[SWIFT_BATCH] 
+	UPDATE [PACASA].[SWIFT_BATCH] 
 		SET [QTY_LEFT]=[QTY_LEFT] + @QTY
 		WHERE [BATCH_ID]=@BATCH_ID
 		AND [TASK_ID] = @TASK_ID

@@ -8,21 +8,21 @@
 					-- Se agrega el parametro IS_MULTISELLER
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_INSERT_POLYGON_X_ROUTE]
+				EXEC [PACASA].[SWIFT_SP_INSERT_POLYGON_X_ROUTE]
 					@ROUTE = 1
 					,@POLYGON_ID = 63
 					,@ID_FREQUENCY = 24
 				-- 
-				EXEC [acsa].[SWIFT_SP_INSERT_POLYGON_X_ROUTE]
+				EXEC [PACASA].[SWIFT_SP_INSERT_POLYGON_X_ROUTE]
 					@ROUTE = 1
 					,@POLYGON_ID = 63
 					,@ID_FREQUENCY = 24
 					,@IS_MULTIPOLYGON = 1
 				-- 
-				SELECT * FROM [acsa].[SWIFT_POLYGON_BY_ROUTE] 
+				SELECT * FROM [PACASA].[SWIFT_POLYGON_BY_ROUTE] 
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_POLYGON_X_ROUTE] (
+CREATE PROCEDURE [PACASA].[SWIFT_SP_INSERT_POLYGON_X_ROUTE] (
 	@ROUTE INT
 	,@POLYGON_ID INT
 	,@ID_FREQUENCY INT = NULL
@@ -35,7 +35,7 @@ BEGIN
   BEGIN TRY
     DECLARE @ID INT
     --
-	MERGE [acsa].[SWIFT_POLYGON_BY_ROUTE] [PR]
+	MERGE [PACASA].[SWIFT_POLYGON_BY_ROUTE] [PR]
 	USING (SELECT @POLYGON_ID AS [POLYGON_ID]) AS [P]
 	ON [PR].[POLYGON_ID] = [P].[POLYGON_ID]
 	WHEN MATCHED THEN
@@ -64,7 +64,7 @@ BEGIN
     -- ------------------------------------------------------------
     -- Actualizamos el poligono para que no este disponible
     -- ------------------------------------------------------------
-    UPDATE [acsa].SWIFT_POLYGON
+    UPDATE [PACASA].SWIFT_POLYGON
     SET AVAILABLE = 0
     WHERE POLYGON_ID = @POLYGON_ID
     --

@@ -4,14 +4,14 @@
 -- Description:			    Retorna el picking detalle de una tarea de reabastecimiento con el formato para enviar a SAP para realizar un warehouse transfer request.
 
 /*
--- DROP PROCEDURE [acsa].[SWIFT_SP_GET_RESTOCK_PICKING_DETAIL_FOR_ERP]
+-- DROP PROCEDURE [PACASA].[SWIFT_SP_GET_RESTOCK_PICKING_DETAIL_FOR_ERP]
 
 -- Ejemplo de Ejecucion:
-        EXEC  [acsa].[SWIFT_SP_GET_RESTOCK_PICKING_DETAIL_FOR_ERP] @PICKING_HEADER ='1003'
+        EXEC  [PACASA].[SWIFT_SP_GET_RESTOCK_PICKING_DETAIL_FOR_ERP] @PICKING_HEADER ='1003'
           
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_RESTOCK_PICKING_DETAIL_FOR_ERP] (@PICKING_HEADER INT)
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_RESTOCK_PICKING_DETAIL_FOR_ERP] (@PICKING_HEADER INT)
 
 AS
 BEGIN
@@ -24,6 +24,6 @@ BEGIN
 	   ,CAST(0 AS INT) ObjType
 	   ,CAST(0 AS INT) LineNum
 
-	  FROM [acsa].SWIFT_PICKING_DETAIL spd
+	  FROM [PACASA].SWIFT_PICKING_DETAIL spd
 	  WHERE spd.PICKING_HEADER = @PICKING_HEADER;  
 END

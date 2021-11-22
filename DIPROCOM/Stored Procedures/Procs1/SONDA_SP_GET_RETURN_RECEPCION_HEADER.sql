@@ -2,18 +2,18 @@
 -- Author:         diego.as
 -- Create date:    09-02-2016
 -- Description:    Obtiene los HEADER de la Tabla 
---				   [acsa].SONDA_DOC_ROUTE_RETURN_HEADER 
+--				   [PACASA].SONDA_DOC_ROUTE_RETURN_HEADER 
 --				   con transacción y control de errores.
 /*
 Ejemplo de Ejecucion:
 
-	EXEC [acsa].[SONDA_SP_GET_RETURN_RECEPCION_HEADER] 
+	EXEC [PACASA].[SONDA_SP_GET_RETURN_RECEPCION_HEADER] 
 	@ID_RETURN_HEADER = 2
 	 				
 */
 -- =============================================
 
-CREATE PROCEDURE [acsa].SONDA_SP_GET_RETURN_RECEPCION_HEADER
+CREATE PROCEDURE [PACASA].SONDA_SP_GET_RETURN_RECEPCION_HEADER
 (
 	@ID_RETURN_HEADER INT
 )
@@ -34,7 +34,7 @@ BEGIN
 			,RH.IS_POSTED_ERP
 			,RH.POSTED_ERP
 			,RH.POSTED_RESPONSE
-		FROM [acsa].[SONDA_DOC_ROUTE_RETURN_HEADER] RH 
+		FROM [PACASA].[SONDA_DOC_ROUTE_RETURN_HEADER] RH 
 		WHERE RH.ID_DOC_RETURN_HEADER = @ID_RETURN_HEADER
 
 END

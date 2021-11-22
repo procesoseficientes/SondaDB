@@ -4,7 +4,7 @@
 -- Description:       SP que resetea los documentos de preventa y venta directa para que se pueden reintentar enviar a ERP
 
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_RESET_OF_DOCUMENT_SHIPMENTS]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_RESET_OF_DOCUMENT_SHIPMENTS]
 	(
 		@XML XML
 		,@LOGIN_ID VARCHAR(50)
@@ -43,7 +43,7 @@ AS
 				,[SOH].[POSTED_ERP] = NULL
 				,[SOH].[IS_POSTED_ERP] = 0
 			FROM
-				[acsa].[SONDA_SALES_ORDER_HEADER] [SOH]
+				[PACASA].[SONDA_SALES_ORDER_HEADER] [SOH]
 			INNER JOIN @DOCUMENTS [D]
 			ON	([SOH].[SALES_ORDER_ID] = [D].[ID])
 			WHERE
@@ -59,7 +59,7 @@ AS
 				,[PIH].[POSTED_ERP] = NULL
 				,[PIH].[IS_POSTED_ERP] = 0
 			FROM
-				[acsa].[SONDA_POS_INVOICE_HEADER] [PIH]
+				[PACASA].[SONDA_POS_INVOICE_HEADER] [PIH]
 			INNER JOIN @DOCUMENTS [D]
 			ON	([PIH].[ID] = [D].[ID])
 			WHERE

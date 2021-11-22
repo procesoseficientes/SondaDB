@@ -40,7 +40,7 @@
 --		                         [CONTINGENCY_DOC_NUM],[FEL_DOCUMENT_TYPE],[FEL_STABLISHMENT_CODE]
 /*															 
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SONDA_SP_ADD_INVOICE_BY_XML]
+				EXEC [PACASA].[SONDA_SP_ADD_INVOICE_BY_XML]
 					@XML = '<?xml version="1.0"?>
 <Data>
     <invoice>
@@ -103,10 +103,10 @@
 </Data>'
 					
 				--
-				SELECT * FROM [acsa].[SONDA_POS_INVOICE_HEADER]
+				SELECT * FROM [PACASA].[SONDA_POS_INVOICE_HEADER]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_ADD_INVOICE_BY_XML]
+CREATE PROCEDURE [PACASA].[SONDA_SP_ADD_INVOICE_BY_XML]
 (
     @XML XML,
     @JSON VARCHAR(MAX)
@@ -211,14 +211,14 @@ BEGIN
         SELECT @WAREHOUSE = [x].[Rec].[query]('./warehouse').[value]('.', 'varchar(50)'),
                @DEVICE_ID = [x].[Rec].[query]('./uuid').[value]('.', 'varchar(50)'),
                @LOGIN
-                   = [acsa].[SWIFT_FN_GET_LOGIN_BY_ROUTE]([x].[Rec].[query]('./routeid').[value]('.', 'varchar(50)')),
+                   = [PACASA].[SWIFT_FN_GET_LOGIN_BY_ROUTE]([x].[Rec].[query]('./routeid').[value]('.', 'varchar(50)')),
                @BATTERY = [x].[Rec].[query]('./battery').[value]('.', 'int')
         FROM @XML.[nodes]('/Data') AS [x]([Rec]);
 
         -- ------------------------------------------------------------------------------------
         -- Se valida el identificador del dispositivo
         -- ------------------------------------------------------------------------------------
-        EXEC [acsa].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE, -- varchar(50)
+        EXEC [PACASA].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE, -- varchar(50)
                                                                            @DEVICE_ID = @DEVICE_ID;   -- varchar(50)
 
         -- ------------------------------------------------------------------------------------
@@ -300,7 +300,7 @@ BEGIN
             -- Valida si existe la factura
             -- ------------------------------------------------------------------------------------
             INSERT INTO @RESUTL_VALIDATION
-            EXEC [acsa].[SONDA_SP_VALIDATED_IF_EXISTS_INVOICE] @CODE_ROUTE = @CODE_ROUTE,
+            EXEC [PACASA].[SONDA_SP_VALIDATED_IF_EXISTS_INVOICE] @CODE_ROUTE = @CODE_ROUTE,
                                                                 @CODE_CUSTOMER = @CODE_CUSTOMER,
                                                                 @DOC_RESOLUTION = @DOC_RESOLUTION,
                                                                 @DOC_SERIE = @DOC_SERIE,
@@ -329,7 +329,7 @@ BEGIN
                     -- ------------------------------------------------------------------------------------
                     -- Inserta el encabezado
                     -- ------------------------------------------------------------------------------------
-                    INSERT INTO [acsa].[SONDA_POS_INVOICE_HEADER]
+                    INSERT INTO [PACASA].[SONDA_POS_INVOICE_HEADER]
                     (
                         [INVOICE_ID],
                         [TERMS],
@@ -656,7 +656,7 @@ BEGIN
                     -- ------------------------------------------------------------------------------------
                     -- inserta el detalle
                     -- ------------------------------------------------------------------------------------
-                    INSERT INTO [acsa].[SONDA_POS_INVOICE_DETAIL]
+                    INSERT INTO [PACASA].[SONDA_POS_INVOICE_DETAIL]
                     (
                         [INVOICE_ID],
                         [INVOICE_SERIAL],
@@ -727,7 +727,7 @@ BEGIN
         BEGIN
             SET @JSON = 'No cuadra la cantidad de lineas que dice el encabezdo con las del detalle|' + @JSON;
             --
-            EXEC [acsa].[SONDA_SP_INSERT_INVOICE_LOG_EXISTS] @EXISTS_INVOICE = 0,                     -- int
+            EXEC [PACASA].[SONDA_SP_INSERT_INVOICE_LOG_EXISTS] @EXISTS_INVOICE = 0,                     -- int
                                                               @DOC_RESOLUTION = @DOC_RESOLUTION,       -- varchar(100)
                                                               @DOC_SERIE = @DOC_SERIE,                 -- varchar(100)
                                                               @DOC_NUM = @DOC_NUM,                     -- int

@@ -10,11 +10,11 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [acsa].SWIFT_SP_GET_TEMPLATES @ID_TEMPLATE = 2
+				EXEC [PACASA].SWIFT_SP_GET_TEMPLATES @ID_TEMPLATE = 2
 					
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_TEMPLATES]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_TEMPLATES]
 
   @ID_TEMPLATE INT
 
@@ -28,13 +28,13 @@ DECLARE @DELIMITER VARCHAR(50),
 -- ------------------------------------------------------------------------------------
 -- Obtiene el delimitador
 --------------------------------------------------------------------------------------
-  SELECT @DELIMITER = [acsa].SWIFT_FN_GET_PARAMETER('DELIMITER','DEFAULT_DELIMITER')
+  SELECT @DELIMITER = [PACASA].SWIFT_FN_GET_PARAMETER('DELIMITER','DEFAULT_DELIMITER')
 
 -- ------------------------------------------------------------------------------------
 -- Obtienen columnas
 --------------------------------------------------------------------------------------
     SELECT @COLUMNAS= sdt.COLUMNS_DOC
-      			FROM [acsa].SWIFT_DOC_TEMPLATE sdt 
+      			FROM [PACASA].SWIFT_DOC_TEMPLATE sdt 
             WHERE sdt.ID_TEMPLATE_DOC=@ID_TEMPLATE
 -- ------------------------------------------------------------------------------------
 -- Se genera el split para obtener tabla de columnas
@@ -42,7 +42,7 @@ DECLARE @DELIMITER VARCHAR(50),
 
 
   SELECT * 
-    FROM [acsa].[SWIFT_FN_SPLIT]
+    FROM [PACASA].[SWIFT_FN_SPLIT]
         (@COLUMNAS,@DELIMITER)
   
 END

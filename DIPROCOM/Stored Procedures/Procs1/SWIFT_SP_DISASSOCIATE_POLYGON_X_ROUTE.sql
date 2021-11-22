@@ -5,21 +5,21 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_DISASSOCIATE_POLYGON_X_ROUTE]
+				EXEC [PACASA].[SWIFT_SP_DISASSOCIATE_POLYGON_X_ROUTE]
 					@ROUTE = 1
 					,@POLYGON_ID = 63
 					,@ID_FREQUENCY = 24
 				-- 
-				EXEC [acsa].[SWIFT_SP_INSERT_POLYGON_X_ROUTE]
+				EXEC [PACASA].[SWIFT_SP_INSERT_POLYGON_X_ROUTE]
 					@ROUTE = 1
 					,@POLYGON_ID = 63
 					,@ID_FREQUENCY = 24
 					,@IS_MULTIPOLYGON = 1
 				-- 
-				SELECT * FROM [acsa].[SWIFT_POLYGON_BY_ROUTE] 
+				SELECT * FROM [PACASA].[SWIFT_POLYGON_BY_ROUTE] 
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_DISASSOCIATE_POLYGON_X_ROUTE] (@POLYGON_ID INT)
+CREATE PROCEDURE [PACASA].[SWIFT_SP_DISASSOCIATE_POLYGON_X_ROUTE] (@POLYGON_ID INT)
 AS
 BEGIN
   BEGIN TRY
@@ -28,8 +28,8 @@ BEGIN
     -- Borramos loc clientes de la frecuencia
     -- ------------------------------------------------------------
     DELETE FC
-      FROM [acsa].SWIFT_FREQUENCY_X_CUSTOMER FC
-      INNER JOIN [acsa].SWIFT_POLYGON_X_CUSTOMER PC
+      FROM [PACASA].SWIFT_FREQUENCY_X_CUSTOMER FC
+      INNER JOIN [PACASA].SWIFT_POLYGON_X_CUSTOMER PC
         ON (
         PC.CODE_CUSTOMER = FC.CODE_CUSTOMER
         )
@@ -38,13 +38,13 @@ BEGIN
     ------------------------------------------------------------
     -- Borramos la asociacion del poligono y la ruta
     -- ------------------------------------------------------------
-    DELETE [acsa].SWIFT_POLYGON_BY_ROUTE
+    DELETE [PACASA].SWIFT_POLYGON_BY_ROUTE
     WHERE POLYGON_ID = @POLYGON_ID
     
     ------------------------------------------------------------
     -- Actualizamos los clientes para que no tenga frecuencia
     -- ------------------------------------------------------------
-    UPDATE [acsa].SWIFT_POLYGON_X_CUSTOMER
+    UPDATE [PACASA].SWIFT_POLYGON_X_CUSTOMER
     SET HAS_FREQUENCY = 0
     WHERE POLYGON_ID = @POLYGON_ID
       
@@ -52,7 +52,7 @@ BEGIN
     -- Actualizamos el poligono para que este disponible para asociar
     -- ------------------------------------------------------------
 
-    UPDATE [acsa].SWIFT_POLYGON
+    UPDATE [PACASA].SWIFT_POLYGON
     SET AVAILABLE = 1
     WHERE POLYGON_ID = @POLYGON_ID
 

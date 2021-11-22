@@ -6,15 +6,15 @@
 /*
 Ejemplo de Ejecucion:
           -- Para obtener todas las facturas
-            EXEC [acsa].SONDA_SP_GET_INVOICE_ACTIVE_HEADER_DELETME @CODE_ROUTE = '16103@DIPROCOM'
+            EXEC [PACASA].SONDA_SP_GET_INVOICE_ACTIVE_HEADER_DELETME @CODE_ROUTE = '16103@DIPROCOM'
           -- Para obtener todas las facturas por cliente
-			      EXEC [acsa].SONDA_SP_GET_INVOICE_ACTIVE_HEADER @CODE_ROUTE = '16103@DIPROCOM', @CODE_CUSTOMER = 'BO-100018'
+			      EXEC [PACASA].SONDA_SP_GET_INVOICE_ACTIVE_HEADER @CODE_ROUTE = '16103@DIPROCOM', @CODE_CUSTOMER = 'BO-100018'
           --Obtien los clientes de la ruta
-			      EXEC [acsa].SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING @CODE_ROUTE = '16103@DIPROCOM'
+			      EXEC [PACASA].SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING @CODE_ROUTE = '16103@DIPROCOM'
 */
 -- =============================================
 
-CREATE PROCEDURE [acsa].[SONDA_SP_GET_INVOICE_ACTIVE_HEADER_DELETME] @CODE_ROUTE AS VARCHAR(50)
+CREATE PROCEDURE [PACASA].[SONDA_SP_GET_INVOICE_ACTIVE_HEADER_DELETME] @CODE_ROUTE AS VARCHAR(50)
 , @CODE_CUSTOMER AS VARCHAR(50) = NULL
 AS
 BEGIN
@@ -42,7 +42,7 @@ BEGIN
     -- Se obtienen todos los clientes de la ruta
     -- ----------------------------------------------------------------------------------
     INSERT INTO #COSTUMER
-    EXEC [acsa].SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING @CODE_ROUTE = @CODE_ROUTE   
+    EXEC [PACASA].SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING @CODE_ROUTE = @CODE_ROUTE   
 
   END
   ELSE

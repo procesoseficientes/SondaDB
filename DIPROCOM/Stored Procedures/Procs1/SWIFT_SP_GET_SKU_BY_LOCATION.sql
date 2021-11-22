@@ -1,4 +1,4 @@
-﻿/****** Object:  StoredProcedure [acsa].[SWIFT_SP_GET_SKU_BY_LOCATION]   Script Date: 20/12/2015 9:09:38 AM ******/
+﻿/****** Object:  StoredProcedure [PACASA].[SWIFT_SP_GET_SKU_BY_LOCATION]   Script Date: 20/12/2015 9:09:38 AM ******/
 -- =============================================
 -- Autor:				JOSE ROBERTO
 -- Fecha de Creacion: 	02-12-2015
@@ -7,11 +7,11 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				exec [acsa].[SWIFT_SP_GET_SKU_BY_LOCATION] @WAREHOUSE='BODEGA_CENTRAL', @LOCATION='A3'
+				exec [PACASA].[SWIFT_SP_GET_SKU_BY_LOCATION] @WAREHOUSE='BODEGA_CENTRAL', @LOCATION='A3'
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_SKU_BY_LOCATION]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_SKU_BY_LOCATION]
 	@WAREHOUSE VARCHAR(50),
 	@LOCATION VARCHAR(50)
 AS
@@ -24,7 +24,7 @@ AS
 			WHEN I.SERIAL_NUMBER != '' THEN I.SERIAL_NUMBER
 			ELSE '...'
 		END AS SERIAL_NUMBER
-	FROM [acsa].[SWIFT_INVENTORY] I
+	FROM [PACASA].[SWIFT_INVENTORY] I
 	WHERE I.WAREHOUSE = @WAREHOUSE
 		AND I.LOCATION = @LOCATION
 		AND I.ON_HAND > 0

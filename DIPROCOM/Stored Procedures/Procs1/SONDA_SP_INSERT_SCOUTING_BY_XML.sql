@@ -20,7 +20,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-		EXEC [acsa].[SONDA_SP_INSERT_SCOUTING_BY_XML]
+		EXEC [PACASA].[SONDA_SP_INSERT_SCOUTING_BY_XML]
 		@XML = N'<?xml version=''1.0''?>
 <Data>
     <scouting>
@@ -361,11 +361,11 @@
 				  "loginId": "Adolfo@DIPROCOM"
 				}'
 		--
-		SELECT * FROM [acsa].[SONDA_CUSTOMER_NEW]
-		SELECT * FROM [acsa].[SONDA_TAG_X_CUSTOMER_NEW]
+		SELECT * FROM [PACASA].[SONDA_CUSTOMER_NEW]
+		SELECT * FROM [PACASA].[SONDA_TAG_X_CUSTOMER_NEW]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].SONDA_SP_INSERT_SCOUTING_BY_XML(
+CREATE PROCEDURE [PACASA].SONDA_SP_INSERT_SCOUTING_BY_XML(
 	@XML XML
 	,@JSON VARCHAR(MAX) = NULL
 )
@@ -442,8 +442,8 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		SELECT TOP 1 
 			@OWNER = COMPANY_ID 
-			,@SCOUTING_PREFIX = [acsa].SWIFT_FN_GET_PARAMETER('SCOUTING', 'CLIENT_PREFIX')
-		FROM [acsa].[SWIFT_COMPANY]
+			,@SCOUTING_PREFIX = [PACASA].SWIFT_FN_GET_PARAMETER('SCOUTING', 'CLIENT_PREFIX')
+		FROM [PACASA].[SWIFT_COMPANY]
 
 		-- ------------------------------------------------------
 		-- Obtiene el LOGIN_ID y el CODE_ROUTE
@@ -457,7 +457,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Se valida el identificador del dispositivo
 		-- ------------------------------------------------------------------------------------
-		EXEC [acsa].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE , -- varchar(50)
+		EXEC [PACASA].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE , -- varchar(50)
 			@DEVICE_ID = @DEVICE_ID -- varchar(50)
 		
 		-- ------------------------------------------------------------------------------------
@@ -563,7 +563,7 @@ BEGIN
 				,@CODE_CUSTOMER_BO = [C].[CODE_CUSTOMER]
 				,@IS_SUCCESSFUL = 1
 				,@MESSAGE = 'Ya existe el scouting'
-			FROM [acsa].[SONDA_CUSTOMER_NEW] [C]
+			FROM [PACASA].[SONDA_CUSTOMER_NEW] [C]
 			WHERE [C].[DOC_SERIE] = @DOC_SERIE
 				AND [C].[DOC_NUM] = @DOC_NUM
 				AND [C].[SYNC_ID] = @SYNC_ID
@@ -596,7 +596,7 @@ BEGIN
 						-- Obtiene la secuencia de scouting
 						-- ----------------------------------------------------------------------------------      
 						SELECT @SCOUTING_SEQUENCE = NEXT VALUE
-						FOR [acsa].SCOUTING_CLIENT_SEQUENCE
+						FOR [PACASA].SCOUTING_CLIENT_SEQUENCE
 
 						-- ----------------------------------------------------------------------------------
 						-- Se prepara el codigo de scouting
@@ -606,7 +606,7 @@ BEGIN
 						-- ----------------------------------------------------------------------------------
 						-- Se inserta el nuevo cliente
 						-- ----------------------------------------------------------------------------------
-						INSERT INTO [acsa].[SONDA_CUSTOMER_NEW]
+						INSERT INTO [PACASA].[SONDA_CUSTOMER_NEW]
 						(
 							[CODE_CUSTOMER]
 							,[DOC_SERIE]
@@ -675,7 +675,7 @@ BEGIN
 						-- ----------------------------------------------------------------------------------
 						-- Se insertan las etiquetas del nuevo cliente
 						-- ----------------------------------------------------------------------------------
-						INSERT INTO [acsa].[SONDA_TAG_X_CUSTOMER_NEW]
+						INSERT INTO [PACASA].[SONDA_TAG_X_CUSTOMER_NEW]
 							([TAG_COLOR]
 							,[CUSTOMER_ID])
 						SELECT
@@ -714,7 +714,7 @@ BEGIN
 			-- ------------------------------------------------------------------------------------
 			-- Agrega el log
 			-- ------------------------------------------------------------------------------------
-			EXEC [acsa].[SONDA_SP_CUSTOMER_NEW_INSERT_LOG]
+			EXEC [PACASA].[SONDA_SP_CUSTOMER_NEW_INSERT_LOG]
 				@EXISTS_SCOUTING = @EXISTS
 				,@DOC_SERIE = @DOC_SERIE
 				,@DOC_NUM = @DOC_NUM

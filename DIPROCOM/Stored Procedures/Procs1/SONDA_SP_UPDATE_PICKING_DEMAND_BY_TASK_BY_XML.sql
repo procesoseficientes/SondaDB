@@ -11,7 +11,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-EXEC [acsa].[SONDA_SP_UPDATE_PICKING_DEMAND_BY_TASK_BY_XML]
+EXEC [PACASA].[SONDA_SP_UPDATE_PICKING_DEMAND_BY_TASK_BY_XML]
 @XML = '
 <Data>
     <demandasDespachoPorTarea>        
@@ -27,7 +27,7 @@ EXEC [acsa].[SONDA_SP_UPDATE_PICKING_DEMAND_BY_TASK_BY_XML]
 </Data>'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_UPDATE_PICKING_DEMAND_BY_TASK_BY_XML] (@XML XML)
+CREATE PROCEDURE [PACASA].[SONDA_SP_UPDATE_PICKING_DEMAND_BY_TASK_BY_XML] (@XML XML)
 AS
 BEGIN
     BEGIN TRY
@@ -74,7 +74,7 @@ BEGIN
         UPDATE [PDBT]
         SET [PDBT].[PICKING_DEMAND_STATUS] = [SRC].[PICKING_DEMAND_STATUS],
             [PDBT].[IS_POSTED] = [SRC].[IS_POSTED]
-        FROM [acsa].[SONDA_PICKING_DEMAND_BY_TASK] AS [PDBT]
+        FROM [PACASA].[SONDA_PICKING_DEMAND_BY_TASK] AS [PDBT]
             INNER JOIN @PICKING_DEMAND_BY_TASK [SRC]
                 ON ([SRC].[PICKING_DEMAND_HEADER_ID] = [PDBT].[PICKING_DEMAND_HEADER_ID] AND [SRC].[TASK_ID] = [PDBT].[TASK_ID])
         WHERE [SRC].[ID] > 0;
@@ -82,7 +82,7 @@ BEGIN
         -- ---------------------------------------------------------------
         -- Insertamos los nuevos registros (si se tiene alguno)
         -- ---------------------------------------------------------------
-        INSERT INTO [acsa].[SONDA_PICKING_DEMAND_BY_TASK]
+        INSERT INTO [PACASA].[SONDA_PICKING_DEMAND_BY_TASK]
         (
             [PICKING_DEMAND_HEADER_ID],
             [TASK_ID],
@@ -94,7 +94,7 @@ BEGIN
                [SRC].[PICKING_DEMAND_STATUS],
                [SRC].[IS_POSTED]
         FROM @PICKING_DEMAND_BY_TASK AS [SRC]
-            LEFT JOIN [acsa].[SONDA_PICKING_DEMAND_BY_TASK] AS [PDBT]
+            LEFT JOIN [PACASA].[SONDA_PICKING_DEMAND_BY_TASK] AS [PDBT]
                 ON ([PDBT].[PICKING_DEMAND_HEADER_ID] = [SRC].[PICKING_DEMAND_HEADER_ID])
         WHERE [PDBT].[PICKING_DEMAND_HEADER_ID] IS NULL;
 

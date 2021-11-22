@@ -5,7 +5,7 @@
 
 --Ejemplo de ejecucion:
 /*
-  EXEC [acsa].SONDA_SP_INSERT_SCOUTING_TEMP
+  EXEC [PACASA].SONDA_SP_INSERT_SCOUTING_TEMP
 			    --Customer
           @CODE_CUSTOMER = 'PR-01'
 	        ,@NAME_CUSTOMER = 'NOMBRE PRUEBA01'
@@ -43,18 +43,18 @@
 		  ,@IS_POSTED = 0
 
 					SELECT * 
-          FROM [acsa].SWIFT_CUSTOMERS_NEW_TEMP
+          FROM [PACASA].SWIFT_CUSTOMERS_NEW_TEMP
           --WHERE CODE_CUSTOMER = 'SO-125'
           ORDER BY CUSTOMER DESC
 
           SELECT *
-          FROM [acsa].SWIFT_CUSTOMER_FREQUENCY_NEW_TEMP 
+          FROM [PACASA].SWIFT_CUSTOMER_FREQUENCY_NEW_TEMP 
           --WHERE CODE_CUSTOMER = 'SO-125'
           ORDER BY CODE_FREQUENCY DESC
 */
 
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_INSERT_SCOUTING_TEMP]
+CREATE PROCEDURE [PACASA].[SONDA_SP_INSERT_SCOUTING_TEMP]
 	-- ----------------------------------------------------------------------------------
   -- Parametros para customer
 	-- ----------------------------------------------------------------------------------
@@ -115,12 +115,12 @@ BEGIN
 			-- Obtiene la secuencia de scouting
 			-- ----------------------------------------------------------------------------------      
       SELECT @SCOUTING_SEQUENCE = NEXT VALUE 
-      FOR [acsa].SCOUTING_CLIENT_TEMP_SEQUENCE
+      FOR [PACASA].SCOUTING_CLIENT_TEMP_SEQUENCE
       
       -- ----------------------------------------------------------------------------------
 			-- Obtiene la prefijo para el scouting
 			-- ----------------------------------------------------------------------------------
-      SELECT @SCOUTING_PREFIX = [acsa].SWIFT_FN_GET_PARAMETER('SCOUTING','CLIENT_PREFIX')      
+      SELECT @SCOUTING_PREFIX = [PACASA].SWIFT_FN_GET_PARAMETER('SCOUTING','CLIENT_PREFIX')      
       
       --
       PRINT('Se concatena el prefijo con la secuencia.')
@@ -140,7 +140,7 @@ BEGIN
       -- ----------------------------------------------------------------------------------
 			-- Se inserte el cliente
 			-- ----------------------------------------------------------------------------------
-      INSERT INTO [acsa].[SWIFT_CUSTOMERS_NEW_TEMP](
+      INSERT INTO [PACASA].[SWIFT_CUSTOMERS_NEW_TEMP](
           [CODE_CUSTOMER]
     	    ,[NAME_CUSTOMER]
         	,[CLASSIFICATION_CUSTOMER]
@@ -214,7 +214,7 @@ BEGIN
       -- ----------------------------------------------------------------------------------
 			-- Se inserte la frecuencia del cliente
 			-- ----------------------------------------------------------------------------------
-      INSERT [acsa].SWIFT_CUSTOMER_FREQUENCY_NEW_TEMP(          
+      INSERT [PACASA].SWIFT_CUSTOMER_FREQUENCY_NEW_TEMP(          
         	CODE_CUSTOMER
         	,SUNDAY
         	,MONDAY

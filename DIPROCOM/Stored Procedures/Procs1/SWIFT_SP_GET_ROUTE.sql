@@ -9,11 +9,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GET_ROUTE]
+				EXEC [PACASA].[SWIFT_SP_GET_ROUTE]
 					@TRADE_AGREEMENT_ID = 1
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_ROUTE] (
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_ROUTE] (
 		@TRADE_AGREEMENT_ID INT
 	)
 AS
@@ -37,7 +37,7 @@ BEGIN
 				ELSE 'Si'
 			END AS [ASSIGNED]
 	FROM
-		[acsa].[SWIFT_ROUTES]
+		[PACASA].[SWIFT_ROUTES]
 	WHERE
 		(
 			[TRADE_AGREEMENT_ID] IS NULL

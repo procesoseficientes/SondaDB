@@ -9,25 +9,25 @@
 /*
 -- Ejemplo de Ejecucion:
 				--
-				EXEC [acsa].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING_FOR_SALES]
+				EXEC [PACASA].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING_FOR_SALES]
 				--
-				SELECT * FROM [acsa].SONDA_COSTUMER_FOR_SALES
+				SELECT * FROM [PACASA].SONDA_COSTUMER_FOR_SALES
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING_FOR_SALES]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING_FOR_SALES]
 AS
 BEGIN
 
 ------------------------------------------------------------------------------------------------
 -- LIMPIA LA TABLA DE CLIENTES PARA SONDA
 ------------------------------------------------------------------------------------------------
-TRUNCATE TABLE [acsa].SONDA_COSTUMER_FOR_SALES
+TRUNCATE TABLE [PACASA].SONDA_COSTUMER_FOR_SALES
 ------------------------------------------------------------------------------------------------
 -- TRAE LOS CLIENTES A LOS QUE SE REALIZO VENTA LOS ULTIMOS 15 DIAS
 ------------------------------------------------------------------------------------------------
 	SELECT DISTINCT CLIENT_ID 
 	INTO #CLSALES
-	FROM [acsa].SONDA_SALES_ORDER_HEADER WITH(NOLOCK)
+	FROM [PACASA].SONDA_SALES_ORDER_HEADER WITH(NOLOCK)
 	WHERE POSTED_DATETIME BETWEEN FORMAT (GETDATE()-15,'yyyyMMdd') AND FORMAT (GETDATE()+1,'yyyyMMdd') 
 	AND IS_VOID=0
 	and IS_READY_TO_SEND=1
@@ -76,14 +76,14 @@ SELECT
       ,[OWNER_ID]
       ,[BALANCE]
 	  INTO #CUSTOMERSFORSALES 
-	  FROM [acsa].SWIFT_VIEW_ALL_COSTUMER VAC
+	  FROM [PACASA].SWIFT_VIEW_ALL_COSTUMER VAC
 		INNER JOIN #CLSALES  CFS ON (VAC.code_customer=CFS.CLIENT_ID) 
 ------------------------------------------------------------------------------------------------
 -- TRAE LOS CLIENTES DEL SCOUTING DEL DIA DE HOY
 ------------------------------------------------------------------------------------------------
 	SELECT DISTINCT CODE_CUSTOMER
 	INTO #CLSCOUNTING
-	 FROM [acsa].SWIFT_CUSTOMERS_NEW WITH (NOLOCK)
+	 FROM [PACASA].SWIFT_CUSTOMERS_NEW WITH (NOLOCK)
 	WHERE POST_DATETIME>= FORMAT (GETDATE(),'yyyyMMdd')
 	
 ------------------------------------------------------------------------------------------------
@@ -130,7 +130,7 @@ SELECT
       ,[VAC].[OWNER_ID]
       ,[VAC].[BALANCE]
 	  INTO #CUSTOMERSFORSCOUTING
-	  FROM [acsa].SWIFT_VIEW_ALL_COSTUMER VAC
+	  FROM [PACASA].SWIFT_VIEW_ALL_COSTUMER VAC
 		INNER JOIN #CLSCOUNTING  CFS ON (VAC.CODE_CUSTOMER=CFS.CODE_CUSTOMER) 
 
 ------------------------------------------------------------------------------------------------
@@ -226,7 +226,7 @@ SELECT
 -- INSERTA LOS CLIENTES PARA ENVIAR AL SONDA
 ------------------------------------------------------------------------------------------------
 
-INSERT INTO [acsa].SONDA_COSTUMER_FOR_SALES
+INSERT INTO [PACASA].SONDA_COSTUMER_FOR_SALES
         ( CUSTOMER ,
           CODE_CUSTOMER ,
           NAME_CUSTOMER ,

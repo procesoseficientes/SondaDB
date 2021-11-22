@@ -18,11 +18,11 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [acsa].[SWIFT_SP_GENERATE_BONUS_FROM_TRADE_AGREEMENT]
+				EXEC [PACASA].[SWIFT_SP_GENERATE_BONUS_FROM_TRADE_AGREEMENT]
 					@CODE_ROUTE = '44'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GENERATE_BONUS_FROM_TRADE_AGREEMENT] (
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GENERATE_BONUS_FROM_TRADE_AGREEMENT] (
 	@CODE_ROUTE VARCHAR(250)
 )
 AS
@@ -31,58 +31,58 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	-- Limpia los bonificaciones para la ruta
 	-- ------------------------------------------------------------------------------------
-	EXEC [acsa].[SWIFT_SP_CLEAN_BONUS_LIST_BY_ROUTE]
+	EXEC [PACASA].[SWIFT_SP_CLEAN_BONUS_LIST_BY_ROUTE]
 		@CODE_ROUTE = @CODE_ROUTE
 
 	-- ------------------------------------------------------------------------------------
 	-- Genera las listas de precios
 	-- ------------------------------------------------------------------------------------
-	EXEC [acsa].[SWIFT_SP_GENERATE_BONUS_LIST]
+	EXEC [PACASA].[SWIFT_SP_GENERATE_BONUS_LIST]
 		@CODE_ROUTE = @CODE_ROUTE
 
 	-- ------------------------------------------------------------------------------------
 	-- Genera lista por canal
 	-- ------------------------------------------------------------------------------------
-	EXEC [acsa].[SWIFT_SP_GENERATE_BONUS_BY_CHANNEL]
+	EXEC [PACASA].[SWIFT_SP_GENERATE_BONUS_BY_CHANNEL]
 		@CODE_ROUTE = @CODE_ROUTE
 
 	-- ------------------------------------------------------------------------------------
 	-- Genera lista por clientes
 	-- ------------------------------------------------------------------------------------
-	EXEC [acsa].[SWIFT_SP_GENERATE_BONUS_BY_TRADE_AGREEMENT]
+	EXEC [PACASA].[SWIFT_SP_GENERATE_BONUS_BY_TRADE_AGREEMENT]
 		@CODE_ROUTE = @CODE_ROUTE
 
 	-- ------------------------------------------------------------------------------------
 	-- Limpia los repetidos
 	-- ------------------------------------------------------------------------------------
-	EXEC [acsa].[SWIFT_SP_CLEAN_DUPLICATE_CUSTOMER_IN_BONUS_LIST_BY_ROUTE]
+	EXEC [PACASA].[SWIFT_SP_CLEAN_DUPLICATE_CUSTOMER_IN_BONUS_LIST_BY_ROUTE]
 		@CODE_ROUTE = @CODE_ROUTE
 
 	-- ------------------------------------------------------------------------------------
 	-- Genera lista para los clientes repetidos
 	-- ------------------------------------------------------------------------------------
-	EXEC [acsa].[SWIFT_SP_GENERATE_BONUS_FOR_DUPLICATE_CUSTOMER]
+	EXEC [PACASA].[SWIFT_SP_GENERATE_BONUS_FOR_DUPLICATE_CUSTOMER]
 		@CODE_ROUTE = @CODE_ROUTE
 		,@TYPE = 'SCALE'
 
 	-- ------------------------------------------------------------------------------------
 	-- Genera lista de multiplos para los clientes repetidos 
 	-- ------------------------------------------------------------------------------------
-	EXEC [acsa].[SWIFT_SP_GENERATE_BONUS_FOR_DUPLICATE_CUSTOMER]
+	EXEC [PACASA].[SWIFT_SP_GENERATE_BONUS_FOR_DUPLICATE_CUSTOMER]
 		@CODE_ROUTE = @CODE_ROUTE
 		,@TYPE = 'MULTIPLE'
 
 	-- ------------------------------------------------------------------------------------
 	-- Genera lista de combos para los clientes repetidos 
 	-- ------------------------------------------------------------------------------------
-	EXEC [acsa].[SWIFT_SP_GENERATE_BONUS_FOR_DUPLICATE_CUSTOMER]
+	EXEC [PACASA].[SWIFT_SP_GENERATE_BONUS_FOR_DUPLICATE_CUSTOMER]
 		@CODE_ROUTE = @CODE_ROUTE
 		,@TYPE = 'COMBO'
 
 	-- ------------------------------------------------------------------------------------
 	-- Genera lista de BMG para los clientes repetidos 
 	-- ------------------------------------------------------------------------------------
-	EXEC [acsa].[SWIFT_SP_GENERATE_BONUS_FOR_DUPLICATE_CUSTOMER]
+	EXEC [PACASA].[SWIFT_SP_GENERATE_BONUS_FOR_DUPLICATE_CUSTOMER]
 		@CODE_ROUTE = @CODE_ROUTE
 		,@TYPE = 'GENERAL_AMOUNT'
 END

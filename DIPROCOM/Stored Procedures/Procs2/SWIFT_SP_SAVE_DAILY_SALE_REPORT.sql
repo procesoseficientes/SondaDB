@@ -5,12 +5,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_SAVE_DAILY_SALE_REPORT]
+				EXEC [PACASA].[SWIFT_SP_SAVE_DAILY_SALE_REPORT]
 				--
-				SELECT * FROM [acsa].[SWIFT_DAILY_GOAL_BY_SELLER]
+				SELECT * FROM [PACASA].[SWIFT_DAILY_GOAL_BY_SELLER]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_SAVE_DAILY_SALE_REPORT]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_SAVE_DAILY_SALE_REPORT]
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -51,18 +51,18 @@ BEGIN
        ,[U].[LOGIN]
        ,[U].[NAME_USER] [SELLER_NAME]
        ,COUNT([SOH].[SALES_ORDER_ID]) [DOCUMENT_QTY]
-       ,SUM([acsa].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([SOH].[SALES_ORDER_ID])) [DOCUMENT_TOTAL]
+       ,SUM([PACASA].[SWIFT_FN_GET_SALES_ORDER_TOTAL]([SOH].[SALES_ORDER_ID])) [DOCUMENT_TOTAL]
        ,[SOH].[POSTED_DATETIME]--GETDATE()
        ,[GH].[GOAL_DATE_FROM]
        ,[GH].[GOAL_DATE_TO]
        ,[GH].[INCLUDE_SATURDAY]
      FROM
-        [acsa].[SWIFT_TASKS] [T]
-    INNER JOIN [acsa].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
-    INNER JOIN [acsa].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
-    LEFT JOIN [acsa].[SONDA_SALES_ORDER_HEADER] [SOH] ON [SOH].[TASK_ID] = [T].[TASK_ID]
+        [PACASA].[SWIFT_TASKS] [T]
+    INNER JOIN [PACASA].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
+    INNER JOIN [PACASA].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
+    LEFT JOIN [PACASA].[SONDA_SALES_ORDER_HEADER] [SOH] ON [SOH].[TASK_ID] = [T].[TASK_ID]
                                                           AND [SOH].[IS_READY_TO_SEND] = 1
-    LEFT JOIN [acsa].[SWIFT_GOAL_HEADER] [GH] ON [UT].[TEAM_ID] = [GH].[TEAM_ID]
+    LEFT JOIN [PACASA].[SWIFT_GOAL_HEADER] [GH] ON [UT].[TEAM_ID] = [GH].[TEAM_ID]
                                                   AND [GH].[SALE_TYPE] = 'PRE'
                                                   AND [T].[TASK_DATE] BETWEEN [GH].[GOAL_DATE_FROM]
                                                               AND
@@ -93,9 +93,9 @@ BEGIN
     INTO
         [#INVOICES]
     FROM
-        [acsa].[SONDA_POS_INVOICE_HEADER] [SPH]
-    INNER JOIN [acsa].[USERS] [U] ON [SPH].[POSTED_BY] = [U].[LOGIN]
-    INNER JOIN [acsa].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
+        [PACASA].[SONDA_POS_INVOICE_HEADER] [SPH]
+    INNER JOIN [PACASA].[USERS] [U] ON [SPH].[POSTED_BY] = [U].[LOGIN]
+    INNER JOIN [PACASA].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
     WHERE
         FORMAT([SPH].[POSTED_DATETIME], 'yyyyMMdd') = FORMAT(GETDATE()-1,
                                                              'yyyyMMdd')
@@ -128,11 +128,11 @@ BEGIN
        ,[GH].[GOAL_DATE_TO]
        ,[GH].[INCLUDE_SATURDAY]
     FROM
-        [acsa].[SWIFT_TASKS] [T]
-    INNER JOIN [acsa].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
-    INNER JOIN [acsa].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
+        [PACASA].[SWIFT_TASKS] [T]
+    INNER JOIN [PACASA].[USERS] [U] ON [T].[ASSIGEND_TO] = [U].[LOGIN]
+    INNER JOIN [PACASA].[SWIFT_USER_BY_TEAM] [UT] ON [UT].[USER_ID] = [U].[CORRELATIVE]
     LEFT JOIN [#INVOICES] [I] ON [I].[LOGIN] = [U].[LOGIN]
-    LEFT JOIN [acsa].[SWIFT_GOAL_HEADER] [GH] ON [UT].[TEAM_ID] = [GH].[TEAM_ID]
+    LEFT JOIN [PACASA].[SWIFT_GOAL_HEADER] [GH] ON [UT].[TEAM_ID] = [GH].[TEAM_ID]
                                                   AND [GH].[SALE_TYPE] = 'VEN'
                                                   AND [T].[TASK_DATE] BETWEEN [GH].[GOAL_DATE_FROM]
                                                               AND
@@ -157,7 +157,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	-- Inserta en la tabla de SWIFT_DAILY_GOAL_BY_SELLER
 	-- ------------------------------------------------------------------------------------
-    INSERT  INTO [acsa].[SWIFT_DAILY_GOAL_BY_SELLER]
+    INSERT  INTO [PACASA].[SWIFT_DAILY_GOAL_BY_SELLER]
             (
              [TEAM_ID]
             ,[DOC_TYPE]
@@ -177,9 +177,9 @@ BEGIN
        ,ISNULL([DOCUMENT_QTY], 0)
        ,ISNULL([DOCUMENT_TOTAL], 0)
        ,[DATE]
-       ,[acsa].[SWIFT_FN_GET_GOAL_WORK_DAYS]([DATE],
+       ,[PACASA].[SWIFT_FN_GET_GOAL_WORK_DAYS]([DATE],
                                               '2018-08-01 00:00:00.000', isnull (INCLUDE_SATURDAY, 1))
-       ,[acsa].[SWIFT_FN_GET_GOAL_WORK_DAYS]('2018-07-01 00:00:00.000',
+       ,[PACASA].[SWIFT_FN_GET_GOAL_WORK_DAYS]('2018-07-01 00:00:00.000',
                                               [DATE],  isnull (INCLUDE_SATURDAY, 1))
     FROM
         @RESULT;

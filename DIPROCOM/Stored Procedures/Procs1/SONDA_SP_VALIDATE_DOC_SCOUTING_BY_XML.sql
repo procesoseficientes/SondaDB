@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [acsa].[SONDA_SP_VALIDATE_DOC_SCOUTING_BY_XML] (@XML XML
+﻿CREATE PROCEDURE [PACASA].[SONDA_SP_VALIDATE_DOC_SCOUTING_BY_XML] (@XML XML
 , @JSON VARCHAR(MAX))
 AS
 BEGIN
@@ -124,7 +124,7 @@ BEGIN
     PRINT ('3')
     --
     INSERT INTO @RESULT_VALIDATION ([EXISTS],ID, CODE_CUSTOMER, DOC_SERIE, DOC_NUM)
-    EXEC [acsa].[SONDA_SP_VALIDATED_IF_EXISTS_SCOUTING] @CODE_ROUTE = @CODE_ROUTE
+    EXEC [PACASA].[SONDA_SP_VALIDATED_IF_EXISTS_SCOUTING] @CODE_ROUTE = @CODE_ROUTE
                                                         , -- varchar(50)
                                                          @CODE_CUSTOMER = @CODE_CUSTOMER
                                                         , -- varchar(50)

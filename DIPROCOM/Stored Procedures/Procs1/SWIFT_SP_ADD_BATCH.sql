@@ -1,4 +1,4 @@
-﻿/****** Object:  StoredProcedure [acsa].[SWIFT_SP_UPDATE_BATCH_QTY]    Script Date: 20/12/2015 9:09:38 AM ******/
+﻿/****** Object:  StoredProcedure [PACASA].[SWIFT_SP_UPDATE_BATCH_QTY]    Script Date: 20/12/2015 9:09:38 AM ******/
 -- =============================================
 -- Autor:				jose.garcia
 -- Fecha de Creacion: 	06-01-2016
@@ -7,7 +7,7 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				EXECUTE  [acsa].[SWIFT_SP_ADD_BATCH] 
+				EXECUTE  [PACASA].[SWIFT_SP_ADD_BATCH] 
 					@BATCH_SUPPLIER = 'PRUEBA'
 					,@BATCH_SUPPLIER_EXPIRATION_DATE= '12/12/2015'
 					,@STATUS='INACTIVO'
@@ -18,12 +18,12 @@
 					,@TASK_ID =5219
 					,@BATCH_ID=NULL
 				--
-				SELECT * FROM [acsa].[SWIFT_BATCH]
+				SELECT * FROM [PACASA].[SWIFT_BATCH]
 
 				--
 				DECLARE @ID INT
 				--
-				EXECUTE  [acsa].[SWIFT_SP_ADD_BATCH] 
+				EXECUTE  [PACASA].[SWIFT_SP_ADD_BATCH] 
 					@BATCH_SUPPLIER = 'PRUEBA'
 					,@BATCH_SUPPLIER_EXPIRATION_DATE= '12/12/2015'
 					,@STATUS='INACTIVO'
@@ -38,7 +38,7 @@
 				SELECT @ID AS ID
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ADD_BATCH]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ADD_BATCH]
 	 @BATCH_SUPPLIER VARCHAR(250)
 	,@BATCH_SUPPLIER_EXPIRATION_DATE AS DATE
 	,@STATUS AS VARCHAR(20)
@@ -59,7 +59,7 @@ BEGIN
 	BEGIN TRAN
 	BEGIN TRY
 		INSERT INTO #T
-		EXECUTE  [acsa].[SWIFT_SP_INSERT_BATCH] 
+		EXECUTE  [PACASA].[SWIFT_SP_INSERT_BATCH] 
 			@BATCH_SUPPLIER =@BATCH_SUPPLIER
 			,@BATCH_SUPPLIER_EXPIRATION_DATE= @BATCH_SUPPLIER_EXPIRATION_DATE
 			,@STATUS=@STATUS
@@ -71,7 +71,7 @@ BEGIN
 		--
 		IF (@BATCH_ID IS NOT NULL) 
 		BEGIN
-			EXEC [acsa].[SWIFT_SP_BATCH_CLOSED]
+			EXEC [PACASA].[SWIFT_SP_BATCH_CLOSED]
 				@BATCH_ID = @BATCH_ID
 				,@QTY=@QTY
 		END

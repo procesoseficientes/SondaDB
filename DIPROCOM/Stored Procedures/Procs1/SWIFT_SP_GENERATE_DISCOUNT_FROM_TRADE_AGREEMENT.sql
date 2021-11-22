@@ -14,59 +14,59 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [acsa].[SWIFT_SP_GENERATE_DISCOUNT_FROM_TRADE_AGREEMENT]
+				EXEC [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_FROM_TRADE_AGREEMENT]
 					@CODE_ROUTE = '4'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GENERATE_DISCOUNT_FROM_TRADE_AGREEMENT] (@CODE_ROUTE VARCHAR(250))
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_FROM_TRADE_AGREEMENT] (@CODE_ROUTE VARCHAR(250))
 AS
 BEGIN
   SET NOCOUNT ON;
   -- ------------------------------------------------------------------------------------
   -- Limpia los descuentos para la ruta
   -- ------------------------------------------------------------------------------------
-  EXEC [acsa].[SWIFT_SP_CLEAN_DISCOUNT_LIST_BY_ROUTE] @CODE_ROUTE = @CODE_ROUTE
+  EXEC [PACASA].[SWIFT_SP_CLEAN_DISCOUNT_LIST_BY_ROUTE] @CODE_ROUTE = @CODE_ROUTE
 
   -- ------------------------------------------------------------------------------------
   -- Genera las listas de precios
   -- ------------------------------------------------------------------------------------
-  EXEC [acsa].[SWIFT_SP_GENERATE_DISCOUNT_LIST] @CODE_ROUTE = @CODE_ROUTE
+  EXEC [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_LIST] @CODE_ROUTE = @CODE_ROUTE
 
   -- ------------------------------------------------------------------------------------
   -- Genera lista por canal
   -- ------------------------------------------------------------------------------------
-  EXEC [acsa].[SWIFT_SP_GENERATE_DISCOUNT_BY_CHANNEL] @CODE_ROUTE = @CODE_ROUTE
+  EXEC [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_BY_CHANNEL] @CODE_ROUTE = @CODE_ROUTE
 
   -- ------------------------------------------------------------------------------------
   -- Genera lista por clientes
   -- ------------------------------------------------------------------------------------
-  EXEC [acsa].[SWIFT_SP_GENERATE_DISCOUNT_BY_TRADE_AGREEMENT] @CODE_ROUTE = @CODE_ROUTE
+  EXEC [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_BY_TRADE_AGREEMENT] @CODE_ROUTE = @CODE_ROUTE
 
   -- ------------------------------------------------------------------------------------
   -- Limpia los repetidos
   -- ------------------------------------------------------------------------------------
-  EXEC [acsa].[SWIFT_SP_CLEAN_DUPLICATE_CUSTOMER_IN_DISCOUNT_LIST_BY_ROUTE] @CODE_ROUTE = @CODE_ROUTE
+  EXEC [PACASA].[SWIFT_SP_CLEAN_DUPLICATE_CUSTOMER_IN_DISCOUNT_LIST_BY_ROUTE] @CODE_ROUTE = @CODE_ROUTE
 
   -- ------------------------------------------------------------------------------------
   -- Genera lista para los clientes repetidos
   -- ------------------------------------------------------------------------------------
-  EXEC [acsa].[SWIFT_SP_GENERATE_DISCOUNT_LIST_BY_ROUTE_FOR_REPEATED_CUSTOMER] @CODE_ROUTE = @CODE_ROUTE
+  EXEC [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_LIST_BY_ROUTE_FOR_REPEATED_CUSTOMER] @CODE_ROUTE = @CODE_ROUTE
 
   -- ------------------------------------------------------------------------------------
   -- Genera los descuentos generales para los clientes repetidos
   -- ------------------------------------------------------------------------------------
-  EXEC [acsa].[SWIFT_SP_GENERATE_DISCOUNT_FOR_DUPLICATE_CUSTOMER] @CODE_ROUTE = @CODE_ROUTE
+  EXEC [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_FOR_DUPLICATE_CUSTOMER] @CODE_ROUTE = @CODE_ROUTE
                                                                   ,@TYPE = 'GENERAL_AMOUNT'
 
   -- ------------------------------------------------------------------------------------
   -- Genera los descuentos generales y familias para los clientes repetidos
   -- ------------------------------------------------------------------------------------
-  EXEC [acsa].[SWIFT_SP_GENERATE_DISCOUNT_FOR_DUPLICATE_CUSTOMER] @CODE_ROUTE = @CODE_ROUTE
+  EXEC [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_FOR_DUPLICATE_CUSTOMER] @CODE_ROUTE = @CODE_ROUTE
                                                                   ,@TYPE = 'GENERAL_AMOUNT_AND_FAMILY'
 
   -- ------------------------------------------------------------------------------------
   -- Genera los descuentos por familia y tipo de pago para los clientes repetidos
   -- ------------------------------------------------------------------------------------
-  EXEC [acsa].[SWIFT_SP_GENERATE_DISCOUNT_FOR_DUPLICATE_CUSTOMER] @CODE_ROUTE = @CODE_ROUTE
+  EXEC [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_FOR_DUPLICATE_CUSTOMER] @CODE_ROUTE = @CODE_ROUTE
                                                                   ,@TYPE = 'FAMILY_AND_PAYMENT_TYPE'
 END

@@ -11,12 +11,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [acsa].[SONDA_SP_GET_OVERDUE_INVOICE_BY_CUSTOMER_FOR_ROUTE] @CODE_ROUTE = 'RP-01'
+        EXEC [PACASA].[SONDA_SP_GET_OVERDUE_INVOICE_BY_CUSTOMER_FOR_ROUTE] @CODE_ROUTE = 'RP-01'
 
 	'CLIE008426               ''CLIE008426'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_GET_OVERDUE_INVOICE_BY_CUSTOMER_FOR_ROUTE]
+CREATE PROCEDURE [PACASA].[SONDA_SP_GET_OVERDUE_INVOICE_BY_CUSTOMER_FOR_ROUTE]
 (@CODE_ROUTE AS VARCHAR(50))
 AS
 BEGIN
@@ -56,7 +56,7 @@ BEGIN
     -- Se obtienen todos los clientes de la ruta actual
     -- ----------------------------------------------------------------------------------
     INSERT INTO @CUSTOMER
-    EXEC [acsa].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING] @CODE_ROUTE = @CODE_ROUTE; -- varchar(50)
+    EXEC [PACASA].[SWIFT_SP_GET_CUSTUMER_FOR_SCOUTING] @CODE_ROUTE = @CODE_ROUTE; -- varchar(50)
 
     -- -------------------------------------------------------------------------------------------
     -- Obtenemos las facturas del cliente o los clientes que se hayan configurado
@@ -70,7 +70,7 @@ BEGIN
            [OI].[TOTAL_AMOUNT],
            [OI].[PENDING_TO_PAID],
            [OI].[IS_EXPIRED]
-    FROM [acsa].[SWIFT_OVERDUE_INVOICE_BY_CUSTOMER] AS [OI]
+    FROM [PACASA].[SWIFT_OVERDUE_INVOICE_BY_CUSTOMER] AS [OI]
         INNER JOIN @CUSTOMER AS [C]
             ON [C].[CODE_CUSTOMER] = [OI].[CODE_CUSTOMER]
     WHERE [OI].[ID] > 0;

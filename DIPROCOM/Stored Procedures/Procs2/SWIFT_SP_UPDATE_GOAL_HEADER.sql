@@ -11,10 +11,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				exec [acsa].SWIFT_SP_UPDATE_GOAL_HEADER
+				exec [PACASA].SWIFT_SP_UPDATE_GOAL_HEADER
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_GOAL_HEADER]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_UPDATE_GOAL_HEADER]
 (
     @GOAL_HEADER_ID INT,
     @GOAL_NAME AS VARCHAR(250),
@@ -37,7 +37,7 @@ BEGIN
 
         --Se valida si el rango de fechas no se traslapa con el de otra meta para ese team y tipo de transacción.
         SELECT @VALID_RANGE = COUNT(1)
-        FROM [acsa].[SWIFT_GOAL_HEADER]
+        FROM [PACASA].[SWIFT_GOAL_HEADER]
         WHERE (
                   @GOAL_DATE_FROM
               BETWEEN [GOAL_DATE_FROM] AND [GOAL_DATE_TO]
@@ -51,13 +51,13 @@ BEGIN
 
         SELECT TOP(1)
                @SUPERVISOR_ID = [T].[SUPERVISOR]
-        FROM [acsa].[SWIFT_TEAM] [T]
+        FROM [PACASA].[SWIFT_TEAM] [T]
         WHERE [T].[TEAM_ID] = @TEAM_ID
 		ORDER BY [T].[TEAM_ID];
 
         IF @VALID_RANGE = 0
         BEGIN
-            UPDATE [acsa].[SWIFT_GOAL_HEADER]
+            UPDATE [PACASA].[SWIFT_GOAL_HEADER]
             SET [GOAL_NAME] = @GOAL_NAME,
                 [TEAM_ID] = @TEAM_ID,
                 [SUPERVISOR_ID] = @SUPERVISOR_ID,

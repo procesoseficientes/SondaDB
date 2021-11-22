@@ -1,4 +1,4 @@
-﻿/****** Object:  StoredProcedure [acsa].[SWIFT_SP_GET_WAREHOUSE_BY_FILTER]    Script Date: 20/12/2015 9:09:38 AM ******/
+﻿/****** Object:  StoredProcedure [PACASA].[SWIFT_SP_GET_WAREHOUSE_BY_FILTER]    Script Date: 20/12/2015 9:09:38 AM ******/
 -- =============================================
 -- Autor:				jose.garcia
 -- Fecha de Creacion: 	02-12-2015
@@ -11,16 +11,16 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				exec [acsa].[SWIFT_SP_GET_WAREHOUSE_BY_FILTER] @FILTER_WH='klm'		--				
+				exec [PACASA].[SWIFT_SP_GET_WAREHOUSE_BY_FILTER] @FILTER_WH='klm'		--				
 
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_WAREHOUSE_BY_FILTER]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_WAREHOUSE_BY_FILTER]
  @FILTER_WH VARCHAR (50) 
 AS
 SELECT DISTINCT( H.CODE_WAREHOUSE)
-FROM [acsa].[SWIFT_LOCATIONS] L
-INNER JOIN [acsa].[SWIFT_WAREHOUSES] H ON (L.CODE_WAREHOUSE = H.CODE_WAREHOUSE)
+FROM [PACASA].[SWIFT_LOCATIONS] L
+INNER JOIN [PACASA].[SWIFT_WAREHOUSES] H ON (L.CODE_WAREHOUSE = H.CODE_WAREHOUSE)
 WHERE h.CODE_WAREHOUSE LIKE '%' +@FILTER_WH+'%'
 	or L.HALL_LOCATION LIKE '%' +@FILTER_WH+'%'
 	OR L.RACK_LOCATION LIKE '%' +@FILTER_WH+'%'

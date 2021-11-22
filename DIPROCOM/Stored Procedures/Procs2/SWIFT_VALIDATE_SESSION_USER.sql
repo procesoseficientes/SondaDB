@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				 EXEC [acsa].SWIFT_VALIDATE_SESSION_USER 'GERENTE@DIPROCOM','zwtlxyeapvniysfrwqavlkese78fa2db'
+				 EXEC [PACASA].SWIFT_VALIDATE_SESSION_USER 'GERENTE@DIPROCOM','zwtlxyeapvniysfrwqavlkese78fa2db'
 					
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_VALIDATE_SESSION_USER] (@LOGIN_ID VARCHAR(100)
+CREATE PROCEDURE [PACASA].[SWIFT_VALIDATE_SESSION_USER] (@LOGIN_ID VARCHAR(100)
 , @SESSION_USER_ID VARCHAR(80))
 AS
 BEGIN
@@ -22,7 +22,7 @@ BEGIN
   BEGIN TRY
     SELECT TOP 1
       @SESSION_ID = [SESSION_ID]
-    FROM [acsa].[USERS]
+    FROM [PACASA].[USERS]
     WHERE [login] = @LOGIN_ID;
 
     SELECT TOP 1

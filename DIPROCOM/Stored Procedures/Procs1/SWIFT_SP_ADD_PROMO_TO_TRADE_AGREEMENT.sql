@@ -5,15 +5,15 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_ADD_PROMO_TO_TRADE_AGREEMENT]
+				EXEC [PACASA].[SWIFT_SP_ADD_PROMO_TO_TRADE_AGREEMENT]
 					@TRADE_AGREEMENT_ID = 1, -- int
 					@PROMO_ID = 5, -- int
 					@FREQUENCY = 'ALWAYS' -- varchar(50)
 				-- 
-				SELECT * FROM [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] 
+				SELECT * FROM [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] 
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ADD_PROMO_TO_TRADE_AGREEMENT] (@TRADE_AGREEMENT_ID INT
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ADD_PROMO_TO_TRADE_AGREEMENT] (@TRADE_AGREEMENT_ID INT
 , @PROMO_ID INT
 , @FREQUENCY VARCHAR(50) = 'ALWAYS')
 AS
@@ -28,19 +28,19 @@ BEGIN
           [TAP].[TRADE_AGREEMENT_ID]
          ,[TAP].[PROMO_ID]
          ,[P].[PROMO_TYPE]
-        FROM [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
-        INNER JOIN [acsa].[SWIFT_PROMO] [P]
+        FROM [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+        INNER JOIN [PACASA].[SWIFT_PROMO] [P]
           ON [TAP].[PROMO_ID] = [P].[PROMO_ID]
         WHERE [TAP].[TRADE_AGREEMENT_ID] = @TRADE_AGREEMENT_ID
         AND [P].[PROMO_TYPE] = (SELECT
             [P2].[PROMO_TYPE]
-          FROM [acsa].[SWIFT_PROMO] [P2]
+          FROM [PACASA].[SWIFT_PROMO] [P2]
           WHERE [P2].[PROMO_ID] = @PROMO_ID))
       )
     BEGIN
       DECLARE @PROMO_TYPE VARCHAR(50) = (SELECT TOP 1
                   PROMO_TYPE
-                FROM [acsa].[SWIFT_PROMO] [P]
+                FROM [PACASA].[SWIFT_PROMO] [P]
                 WHERE [P].[PROMO_ID] = @PROMO_ID)
              ,@ERROR VARCHAR(100)
       SET @ERROR = 'No se pueden agregar dos promociones del mismo tipo.: ' +
@@ -60,7 +60,7 @@ BEGIN
     END
 
 
-    INSERT INTO [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] ([TRADE_AGREEMENT_ID]
+    INSERT INTO [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] ([TRADE_AGREEMENT_ID]
     , [PROMO_ID]
     , [FREQUENCY])
       VALUES (@TRADE_AGREEMENT_ID  -- TRADE_AGREEMENT_ID - int

@@ -5,10 +5,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-                EXEC [acsa].SWIFT_SP_GET_QUIZ
+                EXEC [PACASA].SWIFT_SP_GET_QUIZ
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_QUIZ]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_QUIZ]
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -31,6 +31,6 @@ BEGIN
     END [DESCRIPTION_QUIZ_START]
    ,[Q].[LAST_UPDATE]
    ,[Q].[LAST_UPDATE_BY]
-  FROM [acsa].[SWIFT_QUIZ] [Q]
+  FROM [PACASA].[SWIFT_QUIZ] [Q]
 
 END;

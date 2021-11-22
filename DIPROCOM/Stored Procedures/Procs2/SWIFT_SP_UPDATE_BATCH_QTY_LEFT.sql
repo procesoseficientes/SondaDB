@@ -1,4 +1,4 @@
-﻿/****** Object:  StoredProcedure [acsa].[SWIFT_SP_UPDATE_BATCH_QTY_LEFT]    Script Date: 20/12/2015 9:09:38 AM ******/
+﻿/****** Object:  StoredProcedure [PACASA].[SWIFT_SP_UPDATE_BATCH_QTY_LEFT]    Script Date: 20/12/2015 9:09:38 AM ******/
 -- =============================================
 -- Autor:				jose.garcia
 -- Fecha de Creacion: 	06-01-2016
@@ -6,11 +6,11 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				exec [acsa].[SWIFT_SP_UPDATE_BATCH_QTY_LEFT] @BATCHID=1, @QTY_NEW=10
+				exec [PACASA].[SWIFT_SP_UPDATE_BATCH_QTY_LEFT] @BATCHID=1, @QTY_NEW=10
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_BATCH_QTY_LEFT]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_UPDATE_BATCH_QTY_LEFT]
 	@BATCH_ID INT
    ,@QTY INT
 
@@ -18,7 +18,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	UPDATE [acsa].[SWIFT_BATCH]
+	UPDATE [PACASA].[SWIFT_BATCH]
 	SET	   
 		[QTY_LEFT] = (QTY_LEFT- @QTY)  
 		,[STATUS]='CLOSED' 

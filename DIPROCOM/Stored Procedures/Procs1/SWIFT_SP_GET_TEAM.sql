@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GET_TEAM]
+				EXEC [PACASA].[SWIFT_SP_GET_TEAM]
 				--
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_TEAM]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_TEAM]
 AS
 BEGIN
 
@@ -20,10 +20,10 @@ BEGIN
    ,[U].[LOGIN]
    ,[U].[NAME_USER]
    ,COUNT([UT].[USER_ID]) [USERS_QUANTITY]
-  FROM [acsa].[SWIFT_TEAM] [T]
-  INNER JOIN [acsa].[USERS] [U]
+  FROM [PACASA].[SWIFT_TEAM] [T]
+  INNER JOIN [PACASA].[USERS] [U]
     ON ([T].[SUPERVISOR] = [U].[CORRELATIVE])
-  LEFT JOIN [acsa].[SWIFT_USER_BY_TEAM] [UT]
+  LEFT JOIN [PACASA].[SWIFT_USER_BY_TEAM] [UT]
     ON ([T].[TEAM_ID] = [UT].[TEAM_ID])
   GROUP BY 
     [T].[TEAM_ID]

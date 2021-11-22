@@ -14,13 +14,13 @@
 /*
 -- Ejemplo de Ejecucion:
         --
-		EXEC [acsa].[SWIFT_SP_VALIDATE_POLYGON]
+		EXEC [PACASA].[SWIFT_SP_VALIDATE_POLYGON]
 			@POLYGON_ID  = 10
 			,@PARENT_ID  = null
 			,@POLYGON_TYPE = 'REGION'
 			,@POLYGON_SUB_TYPE = NULL
 		--
-		EXEC [acsa].[SWIFT_SP_VALIDATE_POLYGON]
+		EXEC [PACASA].[SWIFT_SP_VALIDATE_POLYGON]
 			@POLYGON_ID  = 10
 			,@PARENT_ID  = null
 			,@POLYGON_TYPE = 'REGION'
@@ -28,7 +28,7 @@
 			,@IS_MULTIPOLYGON = 1
 */
 -- =============================================
-CREATE PROCEDURE [acsa].SWIFT_SP_VALIDATE_POLYGON (
+CREATE PROCEDURE [PACASA].SWIFT_SP_VALIDATE_POLYGON (
 		@POLYGON_ID INT
 		,@PARENT_ID INT = NULL
 		,@POLYGON_TYPE VARCHAR(250)
@@ -59,7 +59,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Valida si el poligono tiene hijos 
 		-- ------------------------------------------------------------------------------------
-		IF [acsa].[SWIFT_FN_VALIDATE_POLYGON_HAS_CHILD](@POLYGON_ID) = 1
+		IF [PACASA].[SWIFT_FN_VALIDATE_POLYGON_HAS_CHILD](@POLYGON_ID) = 1
 		BEGIN
 			SELECT
 				-1 AS [RESULTADO]
@@ -71,14 +71,14 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Se obtiene el poligono geometrico del poligono que se desea validar
 		-- ------------------------------------------------------------------------------------
-		SELECT @GEOMETRY_POLYGON_TO_COMPARE = [acsa].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@POLYGON_ID);
+		SELECT @GEOMETRY_POLYGON_TO_COMPARE = [PACASA].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@POLYGON_ID);
 
 		-- ------------------------------------------------------------------------------------
 		-- Validar que si tiene padre, este contenido en el. 
 		-- ------------------------------------------------------------------------------------
 		IF @PARENT_ID IS NOT NULL
 		BEGIN
-			SELECT @GEOMETRY_POLYGON = [acsa].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@PARENT_ID);
+			SELECT @GEOMETRY_POLYGON = [PACASA].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@PARENT_ID);
 			--
 			IF @GEOMETRY_POLYGON.[STContains](@GEOMETRY_POLYGON_TO_COMPARE) = 0
 			BEGIN
@@ -104,7 +104,7 @@ BEGIN
 			,[P].[POLYGON_TYPE]
 			,[P].[SUB_TYPE]
 		INTO [#POLYGONS]
-		FROM [acsa].[SWIFT_POLYGON] [P]
+		FROM [PACASA].[SWIFT_POLYGON] [P]
 		WHERE [P].[POLYGON_TYPE] = @POLYGON_TYPE
 			AND (
 					@PARENT_ID IS NULL
@@ -128,7 +128,7 @@ BEGIN
 			FROM [#POLYGONS]
 			ORDER BY [POLYGON_ID_PARENT] ASC;
 			--
-			SET @GEOMETRY_POLYGON = [acsa].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@vPOLYGON_ID);
+			SET @GEOMETRY_POLYGON = [PACASA].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID](@vPOLYGON_ID);
 
 			-- ------------------------------------------------------------------------------------
 			-- Validar que su poligono no intersecte al nuevo.
@@ -150,7 +150,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		RESULTADO:
 
-    EXEC [acsa].[SWIFT_SP_ASSOCIATE_CUSTOMER_BY_POLYGON] @POLYGON_ID = @POLYGON_ID
+    EXEC [PACASA].[SWIFT_SP_ASSOCIATE_CUSTOMER_BY_POLYGON] @POLYGON_ID = @POLYGON_ID
     
 		SELECT
 			1 AS [RESULTADO]

@@ -6,10 +6,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [acsa].[SWIFT_SP_GET_SAP_RECEPTION] @pERP_DOC = 8
+        EXEC [PACASA].[SWIFT_SP_GET_SAP_RECEPTION] @pERP_DOC = 8
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_SAP_RECEPTION]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_SAP_RECEPTION]
 	@pERP_DOC VARCHAR(50)
 AS
 BEGIN

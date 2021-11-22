@@ -6,11 +6,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GET_DRIVERS]
+				EXEC [PACASA].[SWIFT_SP_GET_DRIVERS]
 				
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_DRIVERS] 
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_DRIVERS] 
 AS
 BEGIN
 

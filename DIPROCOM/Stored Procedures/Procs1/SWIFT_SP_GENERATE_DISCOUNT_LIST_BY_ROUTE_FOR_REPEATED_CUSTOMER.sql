@@ -26,11 +26,11 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [acsa].[SWIFT_SP_GENERATE_DISCOUNT_LIST_BY_ROUTE_FOR_REPEATED_CUSTOMER]
+				EXEC [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_LIST_BY_ROUTE_FOR_REPEATED_CUSTOMER]
 					@CODE_ROUTE = 'RUDI@DIPROCOM'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GENERATE_DISCOUNT_LIST_BY_ROUTE_FOR_REPEATED_CUSTOMER] (@CODE_ROUTE VARCHAR(250))
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_LIST_BY_ROUTE_FOR_REPEATED_CUSTOMER] (@CODE_ROUTE VARCHAR(250))
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -51,7 +51,7 @@ BEGIN
          ,@STATUS INT = 1
   --
   SELECT
-    @SELLER_CODE = [acsa].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE)
+    @SELLER_CODE = [PACASA].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE)
 
   -- ------------------------------------------------------------------------------------
   -- Obtiene los clientes a repetidos
@@ -59,24 +59,24 @@ BEGIN
   INSERT INTO @CUSTOMER ([CODE_CUSTOMER])
     SELECT DISTINCT
       [C].[CODE_CUSTOMER]
-    FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
-    INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+    FROM [PACASA].[SWIFT_VIEW_ALL_COSTUMER] [C]
+    INNER JOIN [PACASA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
       ON (
       [C].[CODE_CUSTOMER] = [CC].[CODE_CUSTOMER]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
       ON (
       [C].[CODE_CUSTOMER] = [TAC].[CODE_CUSTOMER]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA1]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT] [TA1]
       ON (
       [TA1].[TRADE_AGREEMENT_ID] = [TAC].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TA]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TA]
       ON (
       [TA].[CHANNEL_ID] = [CC].[CHANNEL_ID]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA2]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT] [TA2]
       ON (
       [TA2].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
@@ -95,24 +95,24 @@ BEGIN
   INSERT INTO @CUSTOMER ([CODE_CUSTOMER])
     SELECT DISTINCT
       [RP].[RELATED_CLIENT_CODE]
-    FROM [acsa].[SONDA_ROUTE_PLAN] [RP]
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
+    FROM [PACASA].[SONDA_ROUTE_PLAN] [RP]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
       ON (
       [RP].[RELATED_CLIENT_CODE] = [TAC].[CODE_CUSTOMER]
       )
-    INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+    INNER JOIN [PACASA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
       ON (
       [RP].[RELATED_CLIENT_CODE] = [CC].[CODE_CUSTOMER]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA1]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT] [TA1]
       ON (
       [TA1].[TRADE_AGREEMENT_ID] = [TAC].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TACH]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TACH]
       ON (
       [CC].[CHANNEL_ID] = [TACH].[CHANNEL_ID]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA2]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT] [TA2]
       ON (
       [TA2].[TRADE_AGREEMENT_ID] = [TACH].[TRADE_AGREEMENT_ID]
       )
@@ -132,7 +132,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   SELECT TOP 1
     @LINKED_TO = [LINKED_TO]
-  FROM [acsa].[SWIFT_DISCOUNT_PRIORITY]
+  FROM [PACASA].[SWIFT_DISCOUNT_PRIORITY]
   WHERE [ORDER] > 0
   AND [ACTIVE_SWIFT_EXPRESS] = @STATUS
   ORDER BY [ORDER]
@@ -155,7 +155,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     -- Crea la lista de descuento
     -- ------------------------------------------------------------------------------------
-    INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST] ([NAME_DISCOUNT_LIST]
+    INSERT INTO [PACASA].[SWIFT_DISCOUNT_LIST] ([NAME_DISCOUNT_LIST]
     , [CODE_ROUTE])
       VALUES ((@CODE_ROUTE + '|' + @CODE_CUSTOMER)  -- NAME_DISCOUNT_LIST - varchar(250)
       , @CODE_ROUTE  -- CODE_ROUTE - varchar(50)
@@ -166,7 +166,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     -- Asocia el cliente a la lista de descuento
     -- ------------------------------------------------------------------------------------
-    INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER]
+    INSERT INTO [PACASA].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER]
       VALUES (@DISCOUNT_LIST_ID, @CODE_CUSTOMER)
 
     -- ------------------------------------------------------------------------------------
@@ -174,7 +174,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     IF @LINKED_TO = 'CHANNEL'
     BEGIN
-      INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_SKU] ([DISCOUNT_LIST_ID]
+      INSERT INTO [PACASA].[SWIFT_DISCOUNT_LIST_BY_SKU] ([DISCOUNT_LIST_ID]
       , [CODE_SKU]
       , [PACK_UNIT]
       , [LOW_LIMIT]
@@ -199,26 +199,26 @@ BEGIN
          ,[P].[PROMO_NAME]
          ,[P].[PROMO_TYPE]
          ,[TAP].[FREQUENCY]
-        FROM [acsa].[SWIFT_PROMO_DISCOUNT_BY_SCALE] [TAD]
-        INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+        FROM [PACASA].[SWIFT_PROMO_DISCOUNT_BY_SCALE] [TAD]
+        INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
           ON (
           [TAP].[PROMO_ID] = [TAD].[PROMO_ID]
           )
-        INNER JOIN [acsa].[SWIFT_PROMO] [P]
+        INNER JOIN [PACASA].[SWIFT_PROMO] [P]
           ON (
           [P].[PROMO_ID] = [TAP].[PROMO_ID]
           )
-        INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TAC]
+        INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TAC]
           ON (
           [TAC].[TRADE_AGREEMENT_ID] = [TAP].[TRADE_AGREEMENT_ID]
           )
-        INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+        INNER JOIN [PACASA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
           ON (
           [CC].[CHANNEL_ID] = [TAC].[CHANNEL_ID]
           )
         WHERE [CC].[CODE_CUSTOMER] = @CODE_CUSTOMER
       --
-      INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_SKU] ([DISCOUNT_LIST_ID]
+      INSERT INTO [PACASA].[SWIFT_DISCOUNT_LIST_BY_SKU] ([DISCOUNT_LIST_ID]
       , [CODE_SKU]
       , [PACK_UNIT]
       , [LOW_LIMIT]
@@ -243,20 +243,20 @@ BEGIN
          ,[P].[PROMO_NAME]
          ,[P].[PROMO_TYPE]
          ,[TAP].[FREQUENCY]
-        FROM [acsa].[SWIFT_PROMO_DISCOUNT_BY_SCALE] [TAD]
-        INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+        FROM [PACASA].[SWIFT_PROMO_DISCOUNT_BY_SCALE] [TAD]
+        INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
           ON (
           [TAP].[PROMO_ID] = [TAD].[PROMO_ID]
           )
-        INNER JOIN [acsa].[SWIFT_PROMO] [P]
+        INNER JOIN [PACASA].[SWIFT_PROMO] [P]
           ON (
           [P].[PROMO_ID] = [TAP].[PROMO_ID]
           )
-        INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
+        INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
           ON (
           [TAC].[TRADE_AGREEMENT_ID] = [TAP].[TRADE_AGREEMENT_ID]
           )
-        LEFT JOIN [acsa].[SWIFT_DISCOUNT_LIST_BY_SKU] [DLS]
+        LEFT JOIN [PACASA].[SWIFT_DISCOUNT_LIST_BY_SKU] [DLS]
           ON (
           [DLS].[DISCOUNT_LIST_ID] = @DISCOUNT_LIST_ID
           AND [DLS].[CODE_SKU] = [TAD].[CODE_SKU]
@@ -266,7 +266,7 @@ BEGIN
     END
     ELSE
     BEGIN
-      INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_SKU] ([DISCOUNT_LIST_ID]
+      INSERT INTO [PACASA].[SWIFT_DISCOUNT_LIST_BY_SKU] ([DISCOUNT_LIST_ID]
       , [CODE_SKU]
       , [PACK_UNIT]
       , [LOW_LIMIT]
@@ -291,22 +291,22 @@ BEGIN
          ,[P].[PROMO_NAME]
          ,[P].[PROMO_TYPE]
          ,[TAP].[FREQUENCY]
-        FROM [acsa].[SWIFT_PROMO_DISCOUNT_BY_SCALE] [TAD]
-        INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+        FROM [PACASA].[SWIFT_PROMO_DISCOUNT_BY_SCALE] [TAD]
+        INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
           ON (
           [TAP].[PROMO_ID] = [TAD].[PROMO_ID]
           )
-        INNER JOIN [acsa].[SWIFT_PROMO] [P]
+        INNER JOIN [PACASA].[SWIFT_PROMO] [P]
           ON (
           [P].[PROMO_ID] = [TAP].[PROMO_ID]
           )
-        INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
+        INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_CUSTOMER] [TAC]
           ON (
           [TAC].[TRADE_AGREEMENT_ID] = [TAP].[TRADE_AGREEMENT_ID]
           )
         WHERE [TAC].[CODE_CUSTOMER] = @CODE_CUSTOMER
       --
-      INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_SKU] ([DISCOUNT_LIST_ID]
+      INSERT INTO [PACASA].[SWIFT_DISCOUNT_LIST_BY_SKU] ([DISCOUNT_LIST_ID]
       , [CODE_SKU]
       , [PACK_UNIT]
       , [LOW_LIMIT]
@@ -331,24 +331,24 @@ BEGIN
          ,[P].[PROMO_NAME]
          ,[P].[PROMO_TYPE]
          ,[TAP].[FREQUENCY]
-        FROM [acsa].[SWIFT_PROMO_DISCOUNT_BY_SCALE] [TAD]
-        INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+        FROM [PACASA].[SWIFT_PROMO_DISCOUNT_BY_SCALE] [TAD]
+        INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
           ON (
           [TAP].[PROMO_ID] = [TAD].[PROMO_ID]
           )
-        INNER JOIN [acsa].[SWIFT_PROMO] [P]
+        INNER JOIN [PACASA].[SWIFT_PROMO] [P]
           ON (
           [P].[PROMO_ID] = [TAP].[PROMO_ID]
           )
-        INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TAC]
+        INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TAC]
           ON (
           [TAC].[TRADE_AGREEMENT_ID] = [TAP].[TRADE_AGREEMENT_ID]
           )
-        INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+        INNER JOIN [PACASA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
           ON (
           [CC].[CHANNEL_ID] = [TAC].[CHANNEL_ID]
           )
-        LEFT JOIN [acsa].[SWIFT_DISCOUNT_LIST_BY_SKU] [DLS]
+        LEFT JOIN [PACASA].[SWIFT_DISCOUNT_LIST_BY_SKU] [DLS]
           ON (
           [DLS].[DISCOUNT_LIST_ID] = @DISCOUNT_LIST_ID
           AND [DLS].[CODE_SKU] = [TAD].[CODE_SKU]

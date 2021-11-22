@@ -17,11 +17,11 @@
         
         SET @pERP_DOC = '1678' 
         
-        EXECUTE @RC = [acsa].SWIFT_SP_GET_SAP_PICKING_ITR @pERP_DOC
+        EXECUTE @RC = [PACASA].SWIFT_SP_GET_SAP_PICKING_ITR @pERP_DOC
         GO
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_SAP_PICKING_ITR] 
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_SAP_PICKING_ITR] 
 	@pERP_DOC VARCHAR(50)
 AS
 BEGIN

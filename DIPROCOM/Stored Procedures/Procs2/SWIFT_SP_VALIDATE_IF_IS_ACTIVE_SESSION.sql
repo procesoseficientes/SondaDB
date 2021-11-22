@@ -4,12 +4,12 @@
 -- Description:			SP que valida si la sesion enviada es la activa del usuario
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_VALIDATE_IF_IS_ACTIVE_SESSION]
+				EXEC [PACASA].[SWIFT_SP_VALIDATE_IF_IS_ACTIVE_SESSION]
 					@LOGIN = 'gerente@DIPROCOM'
 					,@SESSION_ID = 'oe3hojf5ysmuryp3ba2gczzk'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_VALIDATE_IF_IS_ACTIVE_SESSION](
+CREATE PROCEDURE [PACASA].[SWIFT_SP_VALIDATE_IF_IS_ACTIVE_SESSION](
 	@LOGIN VARCHAR(50)
 	,@SESSION_ID VARCHAR(88)
 )
@@ -25,7 +25,7 @@ BEGIN
 		SELECT TOP 1
 			@RESULT = 1
 			,@MESSAGE = ''
-		FROM [acsa].[USERS] [U]
+		FROM [PACASA].[USERS] [U]
 		WHERE [U].[LOGIN] = @LOGIN
 		AND [U].[SESSION_ID] = @SESSION_ID
 		--

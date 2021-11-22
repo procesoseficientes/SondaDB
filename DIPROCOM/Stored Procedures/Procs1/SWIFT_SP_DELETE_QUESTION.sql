@@ -3,7 +3,7 @@
 -- Fecha de Creacion: 02-Oct-2018 G-Force@Koala
 -- Description:			  SP que borra la pregunta
 
-CREATE PROCEDURE [acsa].[SWIFT_SP_DELETE_QUESTION] (@QUESTION_ID INT)
+CREATE PROCEDURE [PACASA].[SWIFT_SP_DELETE_QUESTION] (@QUESTION_ID INT)
 AS
 	BEGIN TRY
 
@@ -17,13 +17,13 @@ AS
 		SELECT
 			@ANSWERS_QTY = COUNT(*)
 		FROM
-			[acsa].[SWIFT_QUESTION] AS [Q]
+			[PACASA].[SWIFT_QUESTION] AS [Q]
 		WHERE
 			[Q].[QUIZ_ID] = (
 								SELECT TOP 1
 									[QA].[QUIZ_ID]
 								FROM
-									[acsa].[SWIFT_QUESTION] AS [QA]
+									[PACASA].[SWIFT_QUESTION] AS [QA]
 								WHERE
 									[QA].[QUESTION_ID] = @QUESTION_ID
 							);
@@ -34,8 +34,8 @@ AS
 		SELECT
 			@ASSIGNED_ROUTES_QTY = COUNT(*)
 		FROM
-			[acsa].[SWIFT_QUESTION] AS [Q]
-		INNER JOIN [acsa].[SWIFT_ASIGNED_QUIZ] AS [AQ]
+			[PACASA].[SWIFT_QUESTION] AS [Q]
+		INNER JOIN [PACASA].[SWIFT_ASIGNED_QUIZ] AS [AQ]
 		ON	([AQ].[QUIZ_ID] = [Q].[QUIZ_ID])
 		WHERE
 			[Q].[QUESTION_ID] = @QUESTION_ID;
@@ -57,7 +57,7 @@ AS
 			-- Se eliminan las respuestas
 			-- ------------------------------------------------------------------------------------
 			DELETE
-				[acsa].[SWIFT_ANSWER]
+				[PACASA].[SWIFT_ANSWER]
 			WHERE
 				[QUESTION_ID] = @QUESTION_ID;
 			
@@ -65,7 +65,7 @@ AS
 			-- Elimina la pregunta
 			-- ------------------------------------------------------------------------------------
 			DELETE
-				[acsa].[SWIFT_QUESTION]
+				[PACASA].[SWIFT_QUESTION]
 			WHERE
 				[QUESTION_ID] = @QUESTION_ID;
 			

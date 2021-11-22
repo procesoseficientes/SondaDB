@@ -1,10 +1,10 @@
 ﻿-- =============================================
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SALES_ORDER_LOG]
+				EXEC [PACASA].[SWIFT_SALES_ORDER_LOG]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SALES_ORDER_LOG] 
+CREATE PROCEDURE [PACASA].[SWIFT_SALES_ORDER_LOG] 
 AS 
 BEGIN
 	SET NOCOUNT ON
@@ -18,8 +18,8 @@ BEGIN
 		, SUM(SSOD.TOTAL_LINE) [DETALLE] 
 		,SSOH.CLIENT_ID [CLIENTE]
 	INTO #T
-	FROM [acsa].SONDA_SALES_ORDER_HEADER SSOH WITH (NOLOCK)
-		INNER JOIN [acsa].SONDA_SALES_ORDER_DETAIL SSOD WITH (NOLOCK)ON (SSOH.SALES_ORDER_ID=SSOD.SALES_ORDER_ID)
+	FROM [PACASA].SONDA_SALES_ORDER_HEADER SSOH WITH (NOLOCK)
+		INNER JOIN [PACASA].SONDA_SALES_ORDER_DETAIL SSOD WITH (NOLOCK)ON (SSOH.SALES_ORDER_ID=SSOD.SALES_ORDER_ID)
 		WHERE SSOH.POSTED_DATETIME>=  format (getdate(),'yyyyMMdd')
 	GROUP BY SSOH.SALES_ORDER_ID, SSOH.POS_TERMINAL, SSOH.TOTAL_AMOUNT,SSOH.CLIENT_ID
 	--
@@ -40,7 +40,7 @@ BEGIN
 		-- ---------------------------------------------------------------
 		-- Inserta el log
 		-- ---------------------------------------------------------------
-		INSERT INTO [acsa].SWIFT_SALES_ORDER
+		INSERT INTO [PACASA].SWIFT_SALES_ORDER
 		SELECT	
 			*
 		FROM #RESUTL AS T

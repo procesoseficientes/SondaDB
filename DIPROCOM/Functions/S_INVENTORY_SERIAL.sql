@@ -8,10 +8,10 @@
 					-- Se agrega columna en el WHERE para filtrar solo las etiquetas que realmente tienen informacion.
 /*
   EJEMPLO:
-  SELECT * FROM [acsa].S_INVENTORY_SERIAL('C001')
+  SELECT * FROM [PACASA].S_INVENTORY_SERIAL('C001')
 */
 -- =============================================
-CREATE  FUNCTION [acsa].[S_INVENTORY_SERIAL]
+CREATE  FUNCTION [PACASA].[S_INVENTORY_SERIAL]
 (        
 -- Add the parameters for the function here
 @Warehouse nvarchar(8) = 'PG.GUM01'
@@ -28,7 +28,7 @@ SELECT
 	,''		AS SKU_ICC
 	,i.WAREHOUSE		AS WAREHOUSE
 FROM 
- [acsa].[SWIFT_INVENTORY] i 
+ [PACASA].[SWIFT_INVENTORY] i 
 WHERE 	
 i.WAREHOUSE = @Warehouse 
  AND  i.ON_HAND > 0

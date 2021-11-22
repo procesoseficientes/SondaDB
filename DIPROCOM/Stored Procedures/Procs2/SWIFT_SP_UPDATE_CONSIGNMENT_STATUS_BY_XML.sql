@@ -9,7 +9,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SONDA_SP_ADD_INVOICE_BY_XML]
+				EXEC [PACASA].[SONDA_SP_ADD_INVOICE_BY_XML]
 					@XML = '<?xml version="1.0"?>
 <Data>
     <consignment>
@@ -41,10 +41,10 @@
 	<deviceId>3b396881f40a8de3</deviceId>
 </Data>'					
 				--
-				SELECT * FROM [acsa].[SONDA_POS_INVOICE_HEADER]
+				SELECT * FROM [PACASA].[SONDA_POS_INVOICE_HEADER]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_CONSIGNMENT_STATUS_BY_XML] (@XML XML)
+CREATE PROCEDURE [PACASA].[SWIFT_SP_UPDATE_CONSIGNMENT_STATUS_BY_XML] (@XML XML)
 AS
 BEGIN
   BEGIN TRY
@@ -81,7 +81,7 @@ BEGIN
 	FROM @XML.nodes('Data') AS X(REC)
 
 	-- --------------------------------------------------------------------------------------------------------
-	EXEC [acsa].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE , -- varchar(50)
+	EXEC [PACASA].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE , -- varchar(50)
 		@DEVICE_ID = @DEVICE_ID -- varchar(50)
 	
 
@@ -123,7 +123,7 @@ BEGIN
     BEGIN TRY
 
 
-      UPDATE [acsa].[SWIFT_CONSIGNMENT_HEADER]
+      UPDATE [PACASA].[SWIFT_CONSIGNMENT_HEADER]
       SET [STATUS] = 'CANCELLED'
          ,[DATE_UPDATE] = GETDATE()
       WHERE [CONSIGNMENT_ID] = @CONSIGNMENT_ID
@@ -141,7 +141,7 @@ BEGIN
     END TRY
     BEGIN CATCH
       SET @LOG_MESSAGE = ERROR_MESSAGE()
-      EXEC [acsa].[SONDA_SP_INSERT_SONDA_SERVER_ERROR_LOG] @CODE_ROUTE = @CODE_ROUTE
+      EXEC [PACASA].[SONDA_SP_INSERT_SONDA_SERVER_ERROR_LOG] @CODE_ROUTE = @CODE_ROUTE
                                                            ,@LOGIN = @CUSTOMER_ID
                                                            ,@SOURCE_ERROR = 'SWIFT_SP_UPDATE_CONSIGNMENT_STATUS_BY_XML'
                                                            ,@DOC_RESOLUTION = NULL

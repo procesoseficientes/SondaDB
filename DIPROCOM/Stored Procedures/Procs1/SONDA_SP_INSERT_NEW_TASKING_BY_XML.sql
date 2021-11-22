@@ -7,7 +7,7 @@
 /*
 -- =============================================================================
 -- Ejemplo de ejecución
-EXEC [acsa].[SONDA_SP_INSERT_NEW_TASKING_BY_XML] @XML = '<?xml version=''1.0''?>
+EXEC [PACASA].[SONDA_SP_INSERT_NEW_TASKING_BY_XML] @XML = '<?xml version=''1.0''?>
 <Data>
     <tasking>
         <taskId>4</taskId>
@@ -46,7 +46,7 @@ EXEC [acsa].[SONDA_SP_INSERT_NEW_TASKING_BY_XML] @XML = '<?xml version=''1.0''?>
 </Data>'
 ====================================
 */
-CREATE PROCEDURE [acsa].[SONDA_SP_INSERT_NEW_TASKING_BY_XML]
+CREATE PROCEDURE [PACASA].[SONDA_SP_INSERT_NEW_TASKING_BY_XML]
 (
     @XML XML,
     @JSON VARCHAR(MAX) = NULL
@@ -106,7 +106,7 @@ BEGIN
         -- ------------------------------------------------------------------------------------- --
         -- Se valida el identificador del dispositivo que mando a ejecutar al procedimiento      --
         -- ------------------------------------------------------------------------------------- --
-        EXEC [acsa].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE,
+        EXEC [PACASA].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE,
                                                                            @DEVICE_ID = @DEVICE_ID;
 
         -- ----------------------------------------------------------------- --
@@ -210,7 +210,7 @@ BEGIN
         -- ------------------------------------------- --
         -- Inserta en la tabla SWIFT_TASKS             --
         -- ------------------------------------------- --
-        INSERT INTO [acsa].[SWIFT_TASKS]
+        INSERT INTO [PACASA].[SWIFT_TASKS]
         (
             [TASK_TYPE],
             [TASK_DATE],
@@ -298,7 +298,7 @@ BEGIN
         SELECT [ST].[TASK_ID],
                [ST].[TASK_ID_HH]
         FROM @TASK AS [TS]
-            INNER JOIN [acsa].[SWIFT_TASKS] [ST]
+            INNER JOIN [PACASA].[SWIFT_TASKS] [ST]
                 ON [ST].[CREATED_STAMP] = [TS].[CREATED_STAMP]
                    AND [ST].[COSTUMER_CODE] = [TS].[CUSTOMER_CODE]
                    AND [ST].[CODE_ROUTE] = [TS].[CODE_ROUTE];

@@ -5,12 +5,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GET_ROLE]
+				EXEC [PACASA].[SWIFT_SP_GET_ROLE]
 				--
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_ROLE]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_ROLE]
 AS
 BEGIN
-  SELECT * FROM [acsa].SWIFT_ROLE
+  SELECT * FROM [PACASA].SWIFT_ROLE
 END

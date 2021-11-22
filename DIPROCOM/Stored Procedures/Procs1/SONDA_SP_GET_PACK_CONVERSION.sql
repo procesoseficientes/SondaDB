@@ -3,18 +3,18 @@
 -- Author:         diego.as
 -- Create date:    15-02-2016
 -- Description:    Obtiene los registros de la Tabla 
---				   [acsa].[SONDA_PACK_CONVERSION]
+--				   [PACASA].[SONDA_PACK_CONVERSION]
 --				   con control de errores.
 
 /*
 Ejemplo de Ejecucion:
 
-		EXEC [acsa].[SONDA_SP_GET_PACK_CONVERSION]	
+		EXEC [PACASA].[SONDA_SP_GET_PACK_CONVERSION]	
 				
 */
 -- =============================================
 
-CREATE PROCEDURE [acsa].[SONDA_SP_GET_PACK_CONVERSION]
+CREATE PROCEDURE [PACASA].[SONDA_SP_GET_PACK_CONVERSION]
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -25,7 +25,7 @@ BEGIN
    ,[SPC].[CODE_PACK_UNIT_TO]
    ,[SPC].[CONVERSION_FACTOR]
    ,[SPC].[ORDER]
-  FROM [acsa].[SONDA_PACK_CONVERSION] AS SPC
+  FROM [PACASA].[SONDA_PACK_CONVERSION] AS SPC
 END
 
 

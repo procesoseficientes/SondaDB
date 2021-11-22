@@ -6,12 +6,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GET_CONSIGMENT_HEADER]
+				EXEC [PACASA].[SWIFT_SP_GET_CONSIGMENT_HEADER]
 					@FECHA_INICIAL = '2014-10-13 00:00:00.000',
 					@FECHA_FIN = '2017-10-13 23:59:59.59'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_CONSIGMENT_HEADER] (
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_CONSIGMENT_HEADER] (
 	@FECHA_INICIAL DATETIME,
 	@FECHA_FIN DATETIME)
 AS
@@ -25,12 +25,12 @@ BEGIN
 	-- ----------------------------------------------------------------------------------------------------------------
 	-- Coloca parametros iniciales
 	-------------------------------------------------------------------------------------------------------------------
-	SELECT @DEFAULT_DISPLAY_DECIMALS = [acsa].[SWIFT_FN_GET_PARAMETER]('CALCULATION_RULES','DEFAULT_DISPLAY_DECIMALS')
+	SELECT @DEFAULT_DISPLAY_DECIMALS = [PACASA].[SWIFT_FN_GET_PARAMETER]('CALCULATION_RULES','DEFAULT_DISPLAY_DECIMALS')
 	
 	-- ----------------------------------------------------------------------------------------------------------------
 	-- Se Obtiene el Parametro de Dias Restantes para el KPI
 	-- ----------------------------------------------------------------------------------------------------------------
-	SELECT @KPI = [acsa].[SWIFT_FN_GET_PARAMETER]('CONSIGNMENT','WARNING_DUE_DATE_CONSIGNMENT')
+	SELECT @KPI = [PACASA].[SWIFT_FN_GET_PARAMETER]('CONSIGNMENT','WARNING_DUE_DATE_CONSIGNMENT')
   
   SET @QUERY = N'
 
@@ -57,7 +57,7 @@ BEGIN
    ,[CH].[IS_ACTIVE_ROUTE]
    ,[CH].[DUE_DATE]
    ,[CH].[CONSIGNMENT_HH_NUM]
-   , CONVERT(DECIMAL(18,' + CAST(@DEFAULT_DISPLAY_DECIMALS AS VARCHAR) + '),[acsa].SWIFT_FN_GET_DISPLAY_NUMBER([CH].[TOTAL_AMOUNT])) [TOTAL_AMOUNT]   
+   , CONVERT(DECIMAL(18,' + CAST(@DEFAULT_DISPLAY_DECIMALS AS VARCHAR) + '),[PACASA].SWIFT_FN_GET_DISPLAY_NUMBER([CH].[TOTAL_AMOUNT])) [TOTAL_AMOUNT]   
    ,[CH].[DOC_SERIE]
    ,[CH].[DOC_NUM]
    ,[CH].[IMG]
@@ -72,8 +72,8 @@ BEGIN
 		WHEN DATEDIFF(DAY,GETDATE(),CH.DUE_DATE) < ' + @KPI +' THEN 2
 		WHEN  DATEDIFF(DAY,GETDATE(),CH.DUE_DATE) >' + @KPI +' THEN 3
 	END AS [KPI]
-  FROM [acsa].[SWIFT_CONSIGNMENT_HEADER] [CH]
-  INNER JOIN [acsa].SWIFT_VIEW_ALL_COSTUMER AC
+  FROM [PACASA].[SWIFT_CONSIGNMENT_HEADER] [CH]
+  INNER JOIN [PACASA].SWIFT_VIEW_ALL_COSTUMER AC
     ON CH.CUSTOMER_ID = AC.CODE_CUSTOMER
   WHERE CONVERT(DATE,[CH].[DATE_CREATE]) Between CONVERT(DATE,''' + CONVERT(VARCHAR(25),@FECHA_INICIAL,101) + ''') AND CONVERT(DATE,''' + CONVERT(VARCHAR(25),@FECHA_FIN,101) + ''')
   '

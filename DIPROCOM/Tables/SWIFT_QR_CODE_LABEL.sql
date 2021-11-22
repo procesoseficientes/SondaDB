@@ -1,4 +1,4 @@
-﻿CREATE TABLE [acsa].[SWIFT_QR_CODE_LABEL] (
+﻿CREATE TABLE [PACASA].[SWIFT_QR_CODE_LABEL] (
     [ID]                NUMERIC (18)  NOT NULL,
     [TASK_ID]           INT           NOT NULL,
     [CUSTOMER_NAME]     VARCHAR (MAX) NULL,

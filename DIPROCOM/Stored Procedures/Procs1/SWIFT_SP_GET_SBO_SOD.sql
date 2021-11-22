@@ -1,7 +1,7 @@
 ﻿
 
 
-CREATE PROC [acsa].[SWIFT_SP_GET_SBO_SOD]
+CREATE PROC [PACASA].[SWIFT_SP_GET_SBO_SOD]
 @DOC_NUM VARCHAR(50), @DOC_ENTRY VARCHAR(50)
 AS
 DECLARE @SQL VARCHAR(8000)
@@ -12,7 +12,7 @@ SELECT t.TXN_ID as TransactionId,cast('+@DOC_ENTRY+' as varchar) as DocEntry,
   t.TXN_CODE_SKU COLLATE SQL_Latin1_General_CP1_CI_AS AS ItemCode,
   so.ObjType COLLATE SQL_Latin1_General_CP1_CI_AS AS ObjType,
   ISNULL(so.LineNum, -1) AS LineNum
-FROM [acsa].SWIFT_TXNS AS t
+FROM [PACASA].SWIFT_TXNS AS t
 LEFT OUTER JOIN
 		(select * from openquery (ERPSERVER,
 		'' SELECT DISTINCT

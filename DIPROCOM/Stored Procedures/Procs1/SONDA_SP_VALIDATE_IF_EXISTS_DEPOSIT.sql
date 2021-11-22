@@ -5,10 +5,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SONDA_SP_VALIDATE_IF_EXISTS_DEPOSIT]
+				EXEC [PACASA].[SONDA_SP_VALIDATE_IF_EXISTS_DEPOSIT]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_VALIDATE_IF_EXISTS_DEPOSIT] (@CODE_ROUTE VARCHAR(50)
+CREATE PROCEDURE [PACASA].[SONDA_SP_VALIDATE_IF_EXISTS_DEPOSIT] (@CODE_ROUTE VARCHAR(50)
 , @DOC_SERIE VARCHAR(100)
 , @DOC_NUM INT
 , @POSTED_DATETIME DATETIME
@@ -30,7 +30,7 @@ BEGIN
   SELECT TOP 1
     @EXISTS = 1
    ,@ID = sd.TRANS_ID
-  FROM [acsa].SONDA_DEPOSITS sd WITH (ROWLOCK, XLOCK, HOLDLOCK)
+  FROM [PACASA].SONDA_DEPOSITS sd WITH (ROWLOCK, XLOCK, HOLDLOCK)
   WHERE sd.POS_TERMINAL = @CODE_ROUTE
   AND sd.DOC_SERIE = @DOC_SERIE
   AND sd.DOC_NUM = @DOC_NUM
@@ -40,7 +40,7 @@ BEGIN
     -- ------------------------------------------------------------------------------------
   -- Inserta el log
   -- ------------------------------------------------------------------------------------
-  EXEC [acsa].[SONDA_SP_INSERT_DEPOSIT_LOG_EXISTS] @EXISTS_DEPOSIT = @EXISTS
+  EXEC [PACASA].[SONDA_SP_INSERT_DEPOSIT_LOG_EXISTS] @EXISTS_DEPOSIT = @EXISTS
                                                    , -- int                                                   
                                                     @DOC_SERIE = @DOC_SERIE
                                                    , -- varchar(100)

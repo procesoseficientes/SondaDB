@@ -1,4 +1,4 @@
-﻿CREATE TABLE [acsa].[SWIFT_ORDERS] (
+﻿CREATE TABLE [PACASA].[SWIFT_ORDERS] (
     [ORDER_SERIAL]            INT             IDENTITY (1, 1) NOT NULL,
     [ORDER_ID]                VARCHAR (50)    NULL,
     [CREATED_DATESTAMP]       DATETIME        NULL,

@@ -5,12 +5,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [acsa].SONDA_SP_ASSOCIATE_TELEPHONE_NUMBER_TO_INVOICE_BY_XML
+        EXEC [PACASA].SONDA_SP_ASSOCIATE_TELEPHONE_NUMBER_TO_INVOICE_BY_XML
 		@XML = ''
 		,@JSON = NULL
 */
 -- =============================================
-CREATE PROCEDURE [acsa].SONDA_SP_ASSOCIATE_TELEPHONE_NUMBER_TO_INVOICE_BY_XML(
+CREATE PROCEDURE [PACASA].SONDA_SP_ASSOCIATE_TELEPHONE_NUMBER_TO_INVOICE_BY_XML(
 	@XML XML
 	,@JSON VARCHAR(MAX) = NULL
 )
@@ -78,7 +78,7 @@ BEGIN
 			-- ------------------------------------------------------------------------------------
 			-- Se actualizan los datos de la factura
 			-- ------------------------------------------------------------------------------------
-			UPDATE [acsa].[SONDA_POS_INVOICE_HEADER]
+			UPDATE [PACASA].[SONDA_POS_INVOICE_HEADER]
 			SET [TELEPHONE_NUMBER] = @TELEPHONE_NUMBER
 			WHERE [INVOICE_ID] = @INVOICE_NUM
 			AND [POS_TERMINAL] = @POS_TERMINAL

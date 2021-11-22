@@ -1,4 +1,4 @@
-﻿CREATE TABLE [acsa].[SWIFT_GOAL_HEADER] (
+﻿CREATE TABLE [PACASA].[SWIFT_GOAL_HEADER] (
     [GOAL_HEADER_ID]   INT             IDENTITY (1, 1) NOT NULL,
     [GOAL_NAME]        VARCHAR (120)   NOT NULL,
     [TEAM_ID]          INT             NOT NULL,

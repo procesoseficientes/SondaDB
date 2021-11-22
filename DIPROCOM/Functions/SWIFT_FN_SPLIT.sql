@@ -7,10 +7,10 @@
         USE SWIFT_EXPRESS
         GO
         --
-        SELECT * FROM [acsa].[SWIFT_FN_SPLIT]('A|B|C|D','|')
+        SELECT * FROM [PACASA].[SWIFT_FN_SPLIT]('A|B|C|D','|')
 */
 -- =============================================
-CREATE FUNCTION [acsa].[SWIFT_FN_SPLIT]
+CREATE FUNCTION [PACASA].[SWIFT_FN_SPLIT]
 (
     @STRING NVARCHAR(4000),
     @DELIMITER NCHAR(1)

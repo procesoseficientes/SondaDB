@@ -5,13 +5,13 @@
 -- Description:			    Vista de acceso a datos del Reporte Cumplimiento de Ruta
 /*
 -- Ejemplo de Ejecucion:
-	SELECT * FROM [acsa].SWIFT_VW_ROUTE_COMPLIANCE 
+	SELECT * FROM [PACASA].SWIFT_VW_ROUTE_COMPLIANCE 
 */
 -- =============================================
-CREATE VIEW [acsa].[SWIFT_VW_ROUTE_COMPLIANCE] 
+CREATE VIEW [PACASA].[SWIFT_VW_ROUTE_COMPLIANCE] 
 AS
 
   SELECT *
-  FROM [acsa].[SWIFT_ROUTE_COMPLIANCE]  
+  FROM [PACASA].[SWIFT_ROUTE_COMPLIANCE]  
 
 

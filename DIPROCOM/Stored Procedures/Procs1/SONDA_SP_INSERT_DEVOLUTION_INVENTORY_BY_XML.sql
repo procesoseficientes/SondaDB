@@ -9,7 +9,7 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SONDA_SP_INSERT_DEVOLUTION_INVENTORY_BY_XML]
+				EXEC [PACASA].[SONDA_SP_INSERT_DEVOLUTION_INVENTORY_BY_XML]
 				@XML = '
 					<Data>
 					   <documentoDeDevolucion>
@@ -66,7 +66,7 @@
 				'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_INSERT_DEVOLUTION_INVENTORY_BY_XML](
+CREATE PROCEDURE [PACASA].[SONDA_SP_INSERT_DEVOLUTION_INVENTORY_BY_XML](
 	@XML XML
 )
 AS
@@ -117,7 +117,7 @@ BEGIN
 		-- -------------------------------------------------------------------------------
 		-- Se valida el identificador del dispositivo
 		-- -------------------------------------------------------------------------------
-		EXEC [acsa].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE , -- varchar(50)
+		EXEC [PACASA].[SONDA_SP_VALIDATE_DEVICE_ID_OF_USER_FOR_TRANSACTION] @CODE_ROUTE = @CODE_ROUTE , -- varchar(50)
 			@DEVICE_ID = @DEVICE_ID -- varchar(50)
 		
 
@@ -165,7 +165,7 @@ BEGIN
 			-- --------------------------------------------------------------------------
 			-- Se valida la existencia del documento actual
 			-- --------------------------------------------------------------------------
-			EXEC [acsa].[SONDA_SP_VALIDATE_DEVOLUTION_INVENTORY] 
+			EXEC [PACASA].[SONDA_SP_VALIDATE_DEVOLUTION_INVENTORY] 
 				@DOC_SERIE = @DOC_SERIE ,
 				@DOC_NUM = @DOC_NUM,
 				@DEVOLUTION_INVENTORY_HEADER_ID = @DEVOLUTION_ID OUTPUT
@@ -183,7 +183,7 @@ BEGIN
 				-- --------------------------------------------------------------------------
 				-- Si el documento actual no existe se procesa
 				-- --------------------------------------------------------------------------
-				INSERT INTO [acsa].[SONDA_DEVOLUTION_INVENTORY_HEADER](
+				INSERT INTO [PACASA].[SONDA_DEVOLUTION_INVENTORY_HEADER](
 					[CODE_CUSTOMER]
 					,[DOC_SERIE]
 					,[DOC_NUM]
@@ -224,7 +224,7 @@ BEGIN
 				-- --------------------------------------------------------------------------
 				-- Se inserta el detalle del documento
 				-- --------------------------------------------------------------------------
-				INSERT INTO [acsa].[SONDA_DEVOLUTION_INVENTORY_DETAIL]
+				INSERT INTO [PACASA].[SONDA_DEVOLUTION_INVENTORY_DETAIL]
 						(
 							[DEVOLUTION_ID]
 							,[CODE_SKU]
@@ -277,7 +277,7 @@ BEGIN
 						-- -------------------------------------------------------------------------------------
 						  IF (@HANDLE_SERIAL = 0) BEGIN
 							
-							UPDATE [acsa].[SONDA_POS_SKUS]
+							UPDATE [PACASA].[SONDA_POS_SKUS]
 							SET ON_HAND = (ON_HAND + @QTY_SKU)
 							WHERE SKU = @CODE_SKU
 							AND ROUTE_ID = @DEFAULT_WAREHOUSE
@@ -285,7 +285,7 @@ BEGIN
 							-- -------------------------------------------------------------------------------------
 							-- Se actualiza el inventario
 							-- -------------------------------------------------------------------------------------
-							UPDATE [acsa].[SWIFT_INVENTORY]
+							UPDATE [PACASA].[SWIFT_INVENTORY]
 							SET ON_HAND = (ON_HAND + @QTY_SKU)
 							WHERE SKU = @CODE_SKU
 							AND WAREHOUSE = @DEFAULT_WAREHOUSE
@@ -295,13 +295,13 @@ BEGIN
 							-- -------------------------------------------------------------------------------------
 							-- Si el producto MANEJA SERIE se suma a la bodega del vendedor
 							-- -------------------------------------------------------------------------------------
-							UPDATE [acsa].[SONDA_POS_SKUS]
+							UPDATE [PACASA].[SONDA_POS_SKUS]
 							SET ON_HAND = (ON_HAND + 1)
 							WHERE SKU = @CODE_SKU
 							AND ROUTE_ID = @DEFAULT_WAREHOUSE
 							AND REQUERIES_SERIE = 1
 							--
-							UPDATE [acsa].[SWIFT_INVENTORY]
+							UPDATE [PACASA].[SWIFT_INVENTORY]
 							SET ON_HAND = (ON_HAND + 1)
 							WHERE SKU = @CODE_SKU
 							AND WAREHOUSE = @DEFAULT_WAREHOUSE

@@ -8,23 +8,23 @@
 -- Description:	   Se agrega LAST_UPDATE
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_UPDATE_SKU_BY_COMBO]
+				EXEC [PACASA].[SWIFT_SP_UPDATE_SKU_BY_COMBO]
 					@COMBO_ID = 5
 					,@CODE_SKU = '100002'
 					,@PACK_UNIT = 9
 					,@QTY = 2
 				-- 
-				SELECT * FROM [acsa].[SWIFT_SKU_BY_COMBO] 
+				SELECT * FROM [PACASA].[SWIFT_SKU_BY_COMBO] 
 */
 -- =============================================
-CREATE PROCEDURE [acsa].SWIFT_SP_UPDATE_SKU_BY_COMBO (@COMBO_ID INT
+CREATE PROCEDURE [PACASA].SWIFT_SP_UPDATE_SKU_BY_COMBO (@COMBO_ID INT
 , @CODE_SKU VARCHAR(50)
 , @PACK_UNIT INT
 , @QTY INT)
 AS
 BEGIN
   BEGIN TRY
-    UPDATE [acsa].[SWIFT_SKU_BY_COMBO]
+    UPDATE [PACASA].[SWIFT_SKU_BY_COMBO]
     SET [QTY] = @QTY
        ,[LAST_UPDATE] = GETDATE()
     WHERE [COMBO_ID] = @COMBO_ID

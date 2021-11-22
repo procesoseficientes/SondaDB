@@ -12,13 +12,13 @@
         USE SWIFT_EXPRESS
         GO
         --
-        EXEC [acsa].[SWIFT_SP_VALIDATE_STOCK_INVENTORY_BY_WS_AND_SKUS]
+        EXEC [PACASA].[SWIFT_SP_VALIDATE_STOCK_INVENTORY_BY_WS_AND_SKUS]
 			@CODE_WAREHOUSE = 'C002'
 			,@CODE_SKU = '100001|100021'
 			,@QTY = '40|1901'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_VALIDATE_STOCK_INVENTORY_BY_WS_AND_SKUS]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_VALIDATE_STOCK_INVENTORY_BY_WS_AND_SKUS]
 		@CODE_WAREHOUSE VARCHAR(50)
 		,@CODE_SKU VARCHAR(4000)
 		,@QTY VARCHAR(4000)
@@ -30,7 +30,7 @@ BEGIN
 	-- Obtiene el delimitador
 	-- ------------------------------------------------------------------------------------
 	SELECT @DELIMITER = P.VALUE
-	FROM [acsa].SWIFT_PARAMETER P
+	FROM [PACASA].SWIFT_PARAMETER P
 	WHERE P.GROUP_ID = 'DELIMITER' 
 		AND P.PARAMETER_ID = 'DEFAULT_DELIMITER'
 	
@@ -41,7 +41,7 @@ BEGIN
 		S.ID
 		,S.VALUE CODE_SKU
 	INTO #SKU
-	FROM [acsa].[SWIFT_FN_SPLIT](@CODE_SKU,@DELIMITER) S	
+	FROM [PACASA].[SWIFT_FN_SPLIT](@CODE_SKU,@DELIMITER) S	
 
 	-- ------------------------------------------------------------------------------------
 	-- Obtiene las cantidades
@@ -50,7 +50,7 @@ BEGIN
 		S.ID
 		,CONVERT(INT,S.VALUE) QTY
 	INTO #QTY
-	FROM [acsa].[SWIFT_FN_SPLIT](@QTY,@DELIMITER) S
+	FROM [PACASA].[SWIFT_FN_SPLIT](@QTY,@DELIMITER) S
 
 	-- ------------------------------------------------------------------------------------
 	-- Obtiene el inventario reservado
@@ -59,7 +59,7 @@ BEGIN
 		[R].[CODE_SKU]
 		,[R].[QYT_RESERVED]
 	INTO #RESERVED
-	FROM [acsa].[SWIFT_FN_GET_INVENTORY_RESERVED](@CODE_WAREHOUSE) [R]
+	FROM [PACASA].[SWIFT_FN_GET_INVENTORY_RESERVED](@CODE_WAREHOUSE) [R]
 	INNER JOIN [#SKU] [S] ON (
 		[S].[CODE_SKU] = [R].[CODE_SKU]
 	)
@@ -88,8 +88,8 @@ BEGIN
 	INTO #INVENTORY
 	FROM #SKU S
 	INNER JOIN #QTY Q ON (S.ID = Q.ID)
-	INNER JOIN [acsa].[SWIFT_VIEW_ALL_SKU] VS ON (VS.CODE_SKU = S.CODE_SKU)
-	LEFT JOIN [acsa].SWIFT_INVENTORY I ON (
+	INNER JOIN [PACASA].[SWIFT_VIEW_ALL_SKU] VS ON (VS.CODE_SKU = S.CODE_SKU)
+	LEFT JOIN [PACASA].SWIFT_INVENTORY I ON (
 		I.SKU = S.CODE_SKU
 		AND I.WAREHOUSE = @CODE_WAREHOUSE
 		AND I.LAST_UPDATE_BY != 'BULK_DATA'

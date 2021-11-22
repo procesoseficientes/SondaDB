@@ -9,22 +9,22 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				SELECT * FROM [acsa].[SWIFT_COMBO]
+				SELECT * FROM [PACASA].[SWIFT_COMBO]
 				--
-				EXEC [acsa].[SWIFT_SP_DELETE_COMBO]
+				EXEC [PACASA].[SWIFT_SP_DELETE_COMBO]
 					@COMBO_ID = 5
 				-- 
-				SELECT * FROM [acsa].[SWIFT_COMBO]
+				SELECT * FROM [PACASA].[SWIFT_COMBO]
 
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_DELETE_COMBO](
+CREATE PROCEDURE [PACASA].[SWIFT_SP_DELETE_COMBO](
 	@COMBO_ID INT
 )
 AS
 BEGIN
 	BEGIN TRY
-		DELETE FROM [acsa].[SWIFT_COMBO]
+		DELETE FROM [PACASA].[SWIFT_COMBO]
 		WHERE [COMBO_ID] = @COMBO_ID
 		--
 		SELECT  1 as Resultado , 'Proceso Exitoso' Mensaje ,  0 Codigo, '' DbData

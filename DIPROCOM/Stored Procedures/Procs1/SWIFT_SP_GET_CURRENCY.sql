@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GET_CURRENCY]					 
+				EXEC [PACASA].[SWIFT_SP_GET_CURRENCY]					 
 				-- 				
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_CURRENCY]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_CURRENCY]
 AS
 BEGIN
   	
@@ -23,7 +23,7 @@ BEGIN
         WHEN 1 THEN 'SI'
         ELSE 'NO'
        END [IS_DEFAULT_DESCRIPTION]
-    FROM [acsa].[SWIFT_CURRENCY] C
+    FROM [PACASA].[SWIFT_CURRENCY] C
       
 	
 END

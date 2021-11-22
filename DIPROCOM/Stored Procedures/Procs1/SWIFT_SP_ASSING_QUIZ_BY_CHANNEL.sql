@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [acsa].[SWIFT_SP_ASSING_QUIZ_BY_CHANNEL]
+﻿CREATE PROCEDURE [PACASA].[SWIFT_SP_ASSING_QUIZ_BY_CHANNEL]
 	(
 		@QUIZ_ID INT
 		,@XML_CHANNEL XML
@@ -28,7 +28,7 @@ AS
 			SELECT
 				COUNT([QUESTION_ID])
 			FROM
-				[acsa].[SWIFT_QUESTION]
+				[PACASA].[SWIFT_QUESTION]
 			WHERE
 				[QUIZ_ID] = @QUIZ_ID
 			) < 1
@@ -84,7 +84,7 @@ AS
 				-- ------------------------------------------------------------------------------------
 				-- Se inserta la asociacion
 				-- ------------------------------------------------------------------------------------
-				INSERT	INTO [acsa].[SWIFT_ASIGNED_QUIZ]
+				INSERT	INTO [PACASA].[SWIFT_ASIGNED_QUIZ]
 						(
 							[QUIZ_ID]
 							,[CODE_CHANNEL]

@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].SWIFT_SP_DELETE_PROMO_OF_BONUS_BY_COMBO
+				EXEC [PACASA].SWIFT_SP_DELETE_PROMO_OF_BONUS_BY_COMBO
 				@PROMO_ID = 2128
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_DELETE_PROMO_OF_BONUS_BY_COMBO] (@PROMO_ID INT)
+CREATE PROCEDURE [PACASA].[SWIFT_SP_DELETE_PROMO_OF_BONUS_BY_COMBO] (@PROMO_ID INT)
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -26,7 +26,7 @@ BEGIN
     -- ---------------------------------------------------------------------------------------------------
     SELECT
       @THIS_ASSOCIATE = 1
-    FROM [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO]
+    FROM [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO]
     WHERE [PROMO_ID] = @PROMOTION_ID;
 
     IF (@THIS_ASSOCIATE = 1)
@@ -42,20 +42,20 @@ BEGIN
       SELECT
         [PBR].[PROMO_ID]
        ,[PBR].[PROMO_RULE_BY_COMBO_ID] INTO #PROMO_RULES_BY_COMBO_ID
-      FROM [acsa].[SWIFT_PROMO_BY_BONUS_RULE] [PBR]
+      FROM [PACASA].[SWIFT_PROMO_BY_BONUS_RULE] [PBR]
       WHERE [PBR].[PROMO_ID] = @PROMOTION_ID
 
       -- -------------------------------------------------------------------------------
       -- Se eliminan las relaciones entre la promo y las reglas
       -- -------------------------------------------------------------------------------
 
-      DELETE FROM [acsa].[SWIFT_PROMO_BY_BONUS_RULE]
+      DELETE FROM [PACASA].[SWIFT_PROMO_BY_BONUS_RULE]
       WHERE [PROMO_ID] = @PROMOTION_ID
 
       -- --------------------------------------------------------------------------------
       -- Se elimina la promocion
       -- --------------------------------------------------------------------------------
-      DELETE FROM [acsa].[SWIFT_PROMO]
+      DELETE FROM [PACASA].[SWIFT_PROMO]
       WHERE [PROMO_ID] = @PROMOTION_ID
 
 
@@ -73,10 +73,10 @@ BEGIN
         FROM [#PROMO_RULES_BY_COMBO_ID] [prbci]
         ORDER BY [prbci].[PROMO_RULE_BY_COMBO_ID]
 
-        DELETE FROM [acsa].[SWIFT_PROMO_SKU_BY_PROMO_RULE]
+        DELETE FROM [PACASA].[SWIFT_PROMO_SKU_BY_PROMO_RULE]
         WHERE [PROMO_RULE_BY_COMBO_ID] = @PROMO_RULE_BY_COMBO_ID
 
-        DELETE FROM [acsa].[SWIFT_PROMO_BY_COMBO_PROMO_RULE]
+        DELETE FROM [PACASA].[SWIFT_PROMO_BY_COMBO_PROMO_RULE]
         WHERE [PROMO_RULE_BY_COMBO_ID] = @PROMO_RULE_BY_COMBO_ID
 
         DELETE FROM [#PROMO_RULES_BY_COMBO_ID]

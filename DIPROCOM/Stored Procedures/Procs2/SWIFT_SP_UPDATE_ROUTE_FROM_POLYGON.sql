@@ -10,15 +10,15 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [acsa].[SWIFT_SP_UPDATE_ROUTE_FROM_POLYGON]
+        EXEC [PACASA].[SWIFT_SP_UPDATE_ROUTE_FROM_POLYGON]
 			@CODE_ROUTE = 'pablo@DIPROCOM'
 			,@NAME_ROUTE = 'Ruta de pablo2'
 		--
-		SELECT * FROM [acsa].SWIFT_ROUTES WHERE CODE_ROUTE = 'pablo@DIPROCOM'
+		SELECT * FROM [PACASA].SWIFT_ROUTES WHERE CODE_ROUTE = 'pablo@DIPROCOM'
 
 */
 -- =============================================
-CREATE PROCEDURE [acsa].SWIFT_SP_UPDATE_ROUTE_FROM_POLYGON (
+CREATE PROCEDURE [PACASA].SWIFT_SP_UPDATE_ROUTE_FROM_POLYGON (
 	@CODE_ROUTE VARCHAR(50)
 	,@NAME_ROUTE VARCHAR(50)
 	,@CODE_COUNTRY VARCHAR(250) = 'GT'
@@ -31,7 +31,7 @@ BEGIN
 	  SET NOCOUNT ON;
     DECLARE @ID_ROUTE INT
 	--
-  	UPDATE [acsa].SWIFT_ROUTES
+  	UPDATE [PACASA].SWIFT_ROUTES
   	SET
   		NAME_ROUTE = @NAME_ROUTE
   		,LAST_UPDATE_BY = 'Poligonos'
@@ -45,7 +45,7 @@ BEGIN
 		-- ------------------------------------------------------------
 
     SELECT TOP 1 @ID_ROUTE  = [ROUTE]
-    FROM [acsa].SWIFT_ROUTES
+    FROM [PACASA].SWIFT_ROUTES
     WHERE CODE_ROUTE = @CODE_ROUTE
 		
     IF @@error = 0

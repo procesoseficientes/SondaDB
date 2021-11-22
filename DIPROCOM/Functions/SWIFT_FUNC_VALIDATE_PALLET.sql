@@ -6,11 +6,11 @@
 --						y que el producto coresponda a la tarea
 						--
 -- Ejemplo de Ejecucion:	
-						SELECT [acsa].[SWIFT_FUNC_VALIDATE_PALLET]('6211','20GE','60')
+						SELECT [PACASA].[SWIFT_FUNC_VALIDATE_PALLET]('6211','20GE','60')
 						--						--
 -- =============================================
 */
-CREATE FUNCTION [acsa].[SWIFT_FUNC_VALIDATE_PALLET]
+CREATE FUNCTION [PACASA].[SWIFT_FUNC_VALIDATE_PALLET]
 ( 
 	@TASK_ID INT
 	,@SKU VARCHAR(50)
@@ -23,8 +23,8 @@ BEGIN
 	DECLARE @RESULT BIT = 0
 	--
 	SELECT TOP 1 @RESULT = 1  
-	FROM [acsa].[SWIFT_PALLET] TP
-	INNER JOIN [acsa].[SWIFT_BATCH] TB ON (
+	FROM [PACASA].[SWIFT_PALLET] TP
+	INNER JOIN [PACASA].[SWIFT_BATCH] TB ON (
 		TP.BATCH_ID = TB.BATCH_ID
 		AND TP.TASK_ID = TB.TASK_ID
 	)

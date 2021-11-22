@@ -1,4 +1,4 @@
-﻿/****** Object:  StoredProcedure [acsa].[SWIFT_LOG_RELOCATE_INVENTORY]    Script Date: 03/12/2015 9:09:38 AM ******/
+﻿/****** Object:  StoredProcedure [PACASA].[SWIFT_LOG_RELOCATE_INVENTORY]    Script Date: 03/12/2015 9:09:38 AM ******/
 -- =============================================
 -- Autor:				JOSE ROBERTO
 -- Fecha de Creacion: 	03-12-2015
@@ -8,7 +8,7 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				EXEC [acsa].[SWIFT_LOG_RELOCATE_INVENTORY]
+				EXEC [PACASA].[SWIFT_LOG_RELOCATE_INVENTORY]
 				  GETDATE()
 				 , @LAST_UPDATE_BY='User'
 				 , @WAREHOUSE_TARGET='userware'
@@ -21,7 +21,7 @@
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_LOG_RELOCATE]	
+CREATE PROCEDURE [PACASA].[SWIFT_SP_INSERT_LOG_RELOCATE]	
        @LAST_UPDATE_BY varchar(50)
       ,@WAREHOUSE_TARGET varchar(50)
       ,@LOCATION_TARGET varchar(50)
@@ -32,7 +32,7 @@ CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_LOG_RELOCATE]
 	  ,@SERIAL varchar(50)
 AS
 BEGIN TRY
- INSERT INTO [acsa].[SWIFT_LOG_RELOCATE_INVENTORY]
+ INSERT INTO [PACASA].[SWIFT_LOG_RELOCATE_INVENTORY]
 			  (			   
 	   [LAST_UPDATE]
       ,[LAST_UPDATE_BY]

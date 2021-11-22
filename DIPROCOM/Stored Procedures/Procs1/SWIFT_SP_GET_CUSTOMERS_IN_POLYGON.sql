@@ -9,10 +9,10 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [acsa].[SWIFT_SP_GET_CUSTOMERS_IN_POLYGON] @CODE_ROUTE = '001'
+				EXEC [PACASA].[SWIFT_SP_GET_CUSTOMERS_IN_POLYGON] @CODE_ROUTE = '001'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_CUSTOMERS_IN_POLYGON]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_CUSTOMERS_IN_POLYGON]
 (	
 	@CODE_ROUTE VARCHAR(50)
 )
@@ -30,7 +30,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	SELECT *
 	INTO #POLYGON
-	FROM [acsa].[SWIFT_FN_GET_POLYGON_BY_ROUTE](@CODE_ROUTE) P 
+	FROM [PACASA].[SWIFT_FN_GET_POLYGON_BY_ROUTE](@CODE_ROUTE) P 
 	ORDER BY P.CODE_ROUTE,P.POSITION
 	--
 	SELECT @ROWS = @@ROWCOUNT
@@ -70,7 +70,7 @@ BEGIN
 		C.CODE_CUSTOMER
 		,@p.MakeValid().STContains(geometry::Point(C.LATITUDE, C.LONGITUDE, 0)) IS_IN
 	INTO #CUSTOMER
-	FROM [acsa].SWIFT_VIEW_ALL_COSTUMER C
+	FROM [PACASA].SWIFT_VIEW_ALL_COSTUMER C
 
 	-- ------------------------------------------------------------------------------------
 	-- Muestra quienes estan en el poligono

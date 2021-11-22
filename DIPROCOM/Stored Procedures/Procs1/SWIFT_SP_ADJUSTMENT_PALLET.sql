@@ -7,7 +7,7 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- Ejemplo de ajuste de nuevo batch y pallet
-				EXEC [acsa].[SWIFT_SP_ADJUSTMENT_PALLET]
+				EXEC [PACASA].[SWIFT_SP_ADJUSTMENT_PALLET]
 						@BATCH_SUPPLIER = 'BATCH_SUPPLIER'
 						,@BATCH_SUPPLIER_EXPIRATION_DATE = '20160115'
 						,@TASK_ID = 6184
@@ -28,7 +28,7 @@
 						,@PALLET_ID_NEW = NULL
 
 				-- Ejemplo de ajuste a un batch existente con nuevo pallet
-				EXEC [acsa].[SWIFT_SP_ADJUSTMENT_PALLET]
+				EXEC [PACASA].[SWIFT_SP_ADJUSTMENT_PALLET]
 						@BATCH_SUPPLIER = 'BATCH_SUPPLIER'
 						,@BATCH_SUPPLIER_EXPIRATION_DATE = '20160115'
 						,@TASK_ID = 6184
@@ -49,7 +49,7 @@
 						,@PALLET_ID_NEW = NULL
 				
 				-- Ejemplo de ajuste a un batch existente con pallet existente
-				EXEC [acsa].[SWIFT_SP_ADJUSTMENT_PALLET]
+				EXEC [PACASA].[SWIFT_SP_ADJUSTMENT_PALLET]
 						@BATCH_SUPPLIER = 'BATCH_SUPPLIER'
 						,@BATCH_SUPPLIER_EXPIRATION_DATE = '20160115'
 						,@TASK_ID = 6184
@@ -70,7 +70,7 @@
 						,@PALLET_ID_NEW = 42
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ADJUSTMENT_PALLET]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ADJUSTMENT_PALLET]
 	@BATCH_SUPPLIER VARCHAR(250)
 	,@BATCH_SUPPLIER_EXPIRATION_DATE DATE
 	,@TASK_ID INT
@@ -110,15 +110,15 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Obtiene parametros generales
 		-- ------------------------------------------------------------------------------------
-		SELECT @BATCH_STATUS_CLOSE = P.[VALUE] FROM [acsa].[SWIFT_PARAMETER] P WHERE P.[GROUP_ID] = 'RECEPCTION_BATCH' AND P.[PARAMETER_ID] = 'BATCH_STATUS_CLOSE'
-		SELECT @PALLET_STATUS_LOCATE = P.[VALUE] FROM [acsa].[SWIFT_PARAMETER] P WHERE P.[GROUP_ID] = 'RECEPCTION_BATCH' AND P.[PARAMETER_ID] = 'PALLET_STATUS_LOCATE'
+		SELECT @BATCH_STATUS_CLOSE = P.[VALUE] FROM [PACASA].[SWIFT_PARAMETER] P WHERE P.[GROUP_ID] = 'RECEPCTION_BATCH' AND P.[PARAMETER_ID] = 'BATCH_STATUS_CLOSE'
+		SELECT @PALLET_STATUS_LOCATE = P.[VALUE] FROM [PACASA].[SWIFT_PARAMETER] P WHERE P.[GROUP_ID] = 'RECEPCTION_BATCH' AND P.[PARAMETER_ID] = 'PALLET_STATUS_LOCATE'
 
 		-- ------------------------------------------------------------------------------------
 		-- Se descuenta la cantidad en el lote original
 		-- ------------------------------------------------------------------------------------
-		PRINT '--> [acsa].[SWIFT_SP_BATCH_QTY_UPDATE] --> @IS_SUM = 0'
+		PRINT '--> [PACASA].[SWIFT_SP_BATCH_QTY_UPDATE] --> @IS_SUM = 0'
 		--
-		EXEC [acsa].[SWIFT_SP_BATCH_QTY_UPDATE]
+		EXEC [PACASA].[SWIFT_SP_BATCH_QTY_UPDATE]
 			@BATCH_ID = @BATCH_ID_OLD
 			,@QTY = @QTY
 			,@LAST_UPDATE_BY = @LAST_UPDATE_BY
@@ -127,9 +127,9 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Se descuenta la cantidad en el pallet original
 		-- ------------------------------------------------------------------------------------
-		PRINT '--> [acsa].[SWIFT_SP_PALLET_QTY_UPDATE] --> @IS_SUM = 0'
+		PRINT '--> [PACASA].[SWIFT_SP_PALLET_QTY_UPDATE] --> @IS_SUM = 0'
 		--
-		EXEC [acsa].[SWIFT_SP_PALLET_QTY_UPDATE]
+		EXEC [PACASA].[SWIFT_SP_PALLET_QTY_UPDATE]
 			@PALLET_ID = @PALLET_ID_OLD
 			,@QTY = @QTY
 			,@LAST_UPDATE_BY = @LAST_UPDATE_BY
@@ -140,9 +140,9 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		IF @BATCH_ID_NEW IS NULL
 		BEGIN
-			PRINT '--> [acsa].[SWIFT_SP_ADD_BATCH]'
+			PRINT '--> [PACASA].[SWIFT_SP_ADD_BATCH]'
 			--
-			EXEC [acsa].[SWIFT_SP_ADD_BATCH]
+			EXEC [PACASA].[SWIFT_SP_ADD_BATCH]
 				@BATCH_SUPPLIER = @BATCH_SUPPLIER
 				,@BATCH_SUPPLIER_EXPIRATION_DATE = @BATCH_SUPPLIER_EXPIRATION_DATE
 				,@STATUS = @BATCH_STATUS_CLOSE
@@ -156,9 +156,9 @@ BEGIN
 		END
 		ELSE
 		BEGIN
-			PRINT '--> [acsa].[SWIFT_SP_BATCH_QTY_UPDATE] --> @IS_SUM = 1'
+			PRINT '--> [PACASA].[SWIFT_SP_BATCH_QTY_UPDATE] --> @IS_SUM = 1'
 			--
-			EXEC [acsa].[SWIFT_SP_BATCH_QTY_UPDATE]
+			EXEC [PACASA].[SWIFT_SP_BATCH_QTY_UPDATE]
 				@BATCH_ID = @BATCH_ID_NEW
 				,@QTY = @QTY
 				,@LAST_UPDATE_BY = @LAST_UPDATE_BY
@@ -170,9 +170,9 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		IF @PALLET_ID_NEW IS NULL
 		BEGIN
-			PRINT '--> [acsa].[SWIFT_SP_INSERT_PALLET]'
+			PRINT '--> [PACASA].[SWIFT_SP_INSERT_PALLET]'
 			--
-			EXEC [acsa].[SWIFT_SP_INSERT_PALLET]
+			EXEC [PACASA].[SWIFT_SP_INSERT_PALLET]
 				@BATCH_ID = @BATCH_ID_NEW
 				,@STATUS = @STATUS_PALLET
 				,@QTY = @QTY
@@ -185,9 +185,9 @@ BEGIN
 		END
 		ELSE
 		BEGIN
-			PRINT '--> [acsa].[SWIFT_SP_PALLET_QTY_UPDATE] --> @IS_SUM = 1'
+			PRINT '--> [PACASA].[SWIFT_SP_PALLET_QTY_UPDATE] --> @IS_SUM = 1'
 			--
-			EXEC [acsa].[SWIFT_SP_PALLET_QTY_UPDATE]
+			EXEC [PACASA].[SWIFT_SP_PALLET_QTY_UPDATE]
 				@PALLET_ID = @PALLET_ID_NEW
 				,@QTY = @QTY
 				,@LAST_UPDATE_BY = @LAST_UPDATE_BY
@@ -197,9 +197,9 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Inserta la transaccion
 		-- ------------------------------------------------------------------------------------
-		PRINT '--> [acsa].[SWIFT_SP_ADD_TXN_FOR_ADJUSTMENT]'
+		PRINT '--> [PACASA].[SWIFT_SP_ADD_TXN_FOR_ADJUSTMENT]'
 		--
-		EXEC [acsa].[SWIFT_SP_ADD_TXN_FOR_ADJUSTMENT]
+		EXEC [PACASA].[SWIFT_SP_ADD_TXN_FOR_ADJUSTMENT]
 			@PALLET_ID_OLD = @PALLET_ID_OLD
 			,@PALLET_ID_NEW = @PALLET_ID_NEW
 			,@TASK_ID = @TASK_ID
@@ -226,9 +226,9 @@ BEGIN
 			-- ------------------------------------------------------------------------------------
 			-- Se descuenta la cantidad en el inventario original
 			-- ------------------------------------------------------------------------------------
-			PRINT '--> [acsa].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT]'
+			PRINT '--> [PACASA].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT]'
 			--
-			EXEC [acsa].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT]
+			EXEC [PACASA].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT]
 				@PALLET_ID = @PALLET_ID_OLD
 				,@QTY = @QTY
 				,@LAST_UPDATE_BY = @LAST_UPDATE_BY
@@ -240,9 +240,9 @@ BEGIN
 			-- ------------------------------------------------------------------------------------
 			IF @IS_NEW_PALLET = 1
 			BEGIN
-				PRINT '--> [acsa].[SWIFT_SP_INVENTORY_INSERT_BY_ADJUSTMENT]'
+				PRINT '--> [PACASA].[SWIFT_SP_INVENTORY_INSERT_BY_ADJUSTMENT]'
 				--
-				EXEC [acsa].[SWIFT_SP_INVENTORY_INSERT_BY_ADJUSTMENT]
+				EXEC [PACASA].[SWIFT_SP_INVENTORY_INSERT_BY_ADJUSTMENT]
 					@PALLET_ID_OLD = @PALLET_ID_OLD
 					,@PALLET_ID_NEW = @PALLET_ID_NEW
 					,@BATCH_ID_NEW = @BATCH_ID_NEW
@@ -255,9 +255,9 @@ BEGIN
 				-- ------------------------------------------------------------------------------------
 				-- Se aumenta la cantidad en el pallet destino
 				-- ------------------------------------------------------------------------------------
-				PRINT '--> [acsa].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT] --> @IS_SUM = 1'
+				PRINT '--> [PACASA].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT] --> @IS_SUM = 1'
 				--
-				EXEC [acsa].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT]
+				EXEC [PACASA].[SWIFT_SP_INVENTORY_QTY_UPDATE_BY_ADJUSTMENT]
 					@PALLET_ID = @PALLET_ID_NEW
 					,@QTY = @QTY
 					,@LAST_UPDATE_BY = @LAST_UPDATE_BY

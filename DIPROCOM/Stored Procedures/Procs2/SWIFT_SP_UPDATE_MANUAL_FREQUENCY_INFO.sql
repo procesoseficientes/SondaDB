@@ -4,7 +4,7 @@
 -- Description:			    SP que actualiza la informacion de secuencias manuales
 -- =============================================
 
-CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_MANUAL_FREQUENCY_INFO]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_UPDATE_MANUAL_FREQUENCY_INFO]
 	(
 		@XML XML
 		,@LOGIN_ID VARCHAR(250)
@@ -232,7 +232,7 @@ AS
 				DELETE
 					[FC]
 				FROM
-					[acsa].[SWIFT_FREQUENCY_X_CUSTOMER] AS [FC]
+					[PACASA].[SWIFT_FREQUENCY_X_CUSTOMER] AS [FC]
 				INNER JOIN @FREQUENCY_TO_PROCESS AS [FTP]
 				ON	[FC].[ID_FREQUENCY] = [FTP].[ID_FREQUENCY]
 					AND [FC].[CODE_CUSTOMER] = [FTP].[CODE_CUSTOMER]
@@ -273,7 +273,7 @@ AS
 						SELECT
 							COUNT(*)
 						FROM
-							[acsa].[SWIFT_FREQUENCY] AS [F]
+							[PACASA].[SWIFT_FREQUENCY] AS [F]
 						WHERE
 							[F].[CODE_FREQUENCY] = @CODE_REQUENCY
 						) > 0
@@ -290,7 +290,7 @@ AS
 													SELECT TOP 1
 														[F].[ID_FREQUENCY]
 													FROM
-														[acsa].[SWIFT_FREQUENCY]
+														[PACASA].[SWIFT_FREQUENCY]
 														AS [F]
 													WHERE
 														[F].[CODE_FREQUENCY] = @CODE_REQUENCY
@@ -307,7 +307,7 @@ AS
 								+ @CODE_REQUENCY
 								+ ' ID: ' + CAST(@FREQUENCY_UPDATED_ID AS VARCHAR));
 
-						INSERT	INTO [acsa].[SWIFT_FREQUENCY]
+						INSERT	INTO [PACASA].[SWIFT_FREQUENCY]
 								(
 									[CODE_FREQUENCY]
 									,[SUNDAY]
@@ -367,7 +367,7 @@ AS
 
 				PRINT ('ASOCIAMOS LOS CLIENTES A LA NUEVA FRECUENCIA '
 						+ CAST(GETDATE() AS VARCHAR));
-				INSERT	INTO [acsa].[SWIFT_FREQUENCY_X_CUSTOMER]
+				INSERT	INTO [PACASA].[SWIFT_FREQUENCY_X_CUSTOMER]
 						(
 							[ID_FREQUENCY]
 							,[CODE_CUSTOMER]
@@ -401,7 +401,7 @@ AS
 				SET	
 					[FC].[PRIORITY] = [FU].[PRIORITY]
 				FROM
-					[acsa].[SWIFT_FREQUENCY_X_CUSTOMER] AS [FC]
+					[PACASA].[SWIFT_FREQUENCY_X_CUSTOMER] AS [FC]
 				INNER JOIN @FREQUENCY_UPDATED AS [FU]
 				ON	[FC].[ID_FREQUENCY] = [FU].[ID_FREQUENCY]
 					AND [FC].[CODE_CUSTOMER] = [FU].[CODE_CUSTOMER]

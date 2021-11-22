@@ -10,11 +10,11 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [acsa].[SWIFT_SP_CLEAN_DUPLICATE_CUSTOMER_IN_DISCOUNT_LIST_BY_ROUTE]
+				EXEC [PACASA].[SWIFT_SP_CLEAN_DUPLICATE_CUSTOMER_IN_DISCOUNT_LIST_BY_ROUTE]
 					@CODE_ROUTE = '44'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_CLEAN_DUPLICATE_CUSTOMER_IN_DISCOUNT_LIST_BY_ROUTE] (
+CREATE PROCEDURE [PACASA].[SWIFT_SP_CLEAN_DUPLICATE_CUSTOMER_IN_DISCOUNT_LIST_BY_ROUTE] (
 	@CODE_ROUTE VARCHAR(250)
 )
 AS
@@ -31,15 +31,15 @@ BEGIN
 	--
 	DECLARE @SELLER_CODE nVARCHAR(155)
 	--
-	SELECT @SELLER_CODE = [acsa].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE)
+	SELECT @SELLER_CODE = [PACASA].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE)
 	
 	-- ------------------------------------------------------------------------------------
 	-- Obtiene los clientes a eliminar
 	-- ------------------------------------------------------------------------------------
 	INSERT INTO @CUSTOMER ([CODE_CUSTOMER])
 	SELECT [DLC].[CODE_CUSTOMER]
-	FROM [acsa].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER] [DLC]
-	INNER JOIN [acsa].[SWIFT_DISCOUNT_LIST] [DL] ON (
+	FROM [PACASA].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER] [DLC]
+	INNER JOIN [PACASA].[SWIFT_DISCOUNT_LIST] [DL] ON (
 		[DL].[DISCOUNT_LIST_ID] = [DLC].[DISCOUNT_LIST_ID]
 	)
 	WHERE [DL].[CODE_ROUTE] = @CODE_ROUTE
@@ -50,7 +50,7 @@ BEGIN
 	-- Elimina los clientes repetidos
 	-- ------------------------------------------------------------------------------------
 	DELETE [DLC]
-	FROM [acsa].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER] [DLC]
+	FROM [PACASA].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER] [DLC]
 	INNER JOIN @CUSTOMER [C] ON (
 		[DLC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
 	)

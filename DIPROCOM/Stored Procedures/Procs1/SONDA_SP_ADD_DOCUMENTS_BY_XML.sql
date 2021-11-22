@@ -6,7 +6,7 @@
 /*
 -- Ejemplo de Ejecucion:
 				USE [SWIFT_EXPRESS]
-				EXEC [acsa].[SONDA_SP_ADD_DOCUMENTS_BY_XML] @XML = '
+				EXEC [PACASA].[SONDA_SP_ADD_DOCUMENTS_BY_XML] @XML = '
 				<Data>
 					<documents>
 						<document>
@@ -240,7 +240,7 @@
 					
 */
 -- =============================================
-CREATE PROCEDURE [acsa].SONDA_SP_ADD_DOCUMENTS_BY_XML(
+CREATE PROCEDURE [PACASA].SONDA_SP_ADD_DOCUMENTS_BY_XML(
 	@XML XML
 	,@JSON VARCHAR(MAX)
 )
@@ -347,7 +347,7 @@ BEGIN
 		SELECT
 			@WAREHOUSE = [x].[Rec].[query]('./warehouse').[value]('.', 'varchar(50)')
 			--,@DEVICE_ID = [x].[Rec].[query]('./uuid').[value]('.', 'varchar(50)')
-			,@LOGIN = [acsa].[SWIFT_FN_GET_LOGIN_BY_ROUTE]([x].[Rec].[query]('./routeid').[value]('.', 'varchar(50)'))
+			,@LOGIN = [PACASA].[SWIFT_FN_GET_LOGIN_BY_ROUTE]([x].[Rec].[query]('./routeid').[value]('.', 'varchar(50)'))
 		FROM @xml.[nodes]('/Data') as [x]([Rec])
 		-- ------------------------------------------------------------------------------------
 		-- Obtiene los _id de todos los documentos
@@ -451,7 +451,7 @@ BEGIN
 					-- Valida si existe la factura
 					-- ------------------------------------------------------------------------------------
 					INSERT INTO @RESULT_VALIDATION_INVOICE
-					EXEC [acsa].[SONDA_SP_VALIDATE_IF_EXISTS_INVOICE_DOCUMENT] 
+					EXEC [PACASA].[SONDA_SP_VALIDATE_IF_EXISTS_INVOICE_DOCUMENT] 
 						@CODE_ROUTE = @CODE_ROUTE
 						,@CODE_CUSTOMER = @CODE_CUSTOMER
 						,@DOC_RESOLUTION = @DOC_RESOLUTION
@@ -503,7 +503,7 @@ BEGIN
 							-- ------------------------------------------------------------------------------------
 							-- Inserta el encabezado
 							-- ------------------------------------------------------------------------------------
-							INSERT INTO [acsa].[SONDA_POS_INVOICE_HEADER]
+							INSERT INTO [PACASA].[SONDA_POS_INVOICE_HEADER]
 									(
 										[INVOICE_ID]
 										,[TERMS]
@@ -609,7 +609,7 @@ BEGIN
 							-- ------------------------------------------------------------------------------------
 							-- inserta el detalle
 							-- ------------------------------------------------------------------------------------
-							INSERT INTO [acsa].[SONDA_POS_INVOICE_DETAIL]
+							INSERT INTO [PACASA].[SONDA_POS_INVOICE_DETAIL]
 									(
 										[INVOICE_ID]
 										,[INVOICE_SERIAL]
@@ -713,7 +713,7 @@ BEGIN
 					-- Valida si existe la orden de venta
 					-- ------------------------------------------------------------------------------------
 					INSERT INTO @RESULT_VALIDATION_SALES_ORDER
-					EXEC [acsa].[SONDA_SP_VALIDATED_IF_EXISTS_SALES_ORDER_2] 
+					EXEC [PACASA].[SONDA_SP_VALIDATED_IF_EXISTS_SALES_ORDER_2] 
 						@DOC_SERIE = @DOC_SERIE,
 						@DOC_NUM = @DOC_NUM, -- int
 						@CODE_ROUTE = @CODE_ROUTE, -- varchar(50)
@@ -765,7 +765,7 @@ BEGIN
 							-- ------------------------------------------------------------------------------------
 							-- Inserta el encabezado
 							-- ------------------------------------------------------------------------------------
-							INSERT INTO [acsa].[SONDA_SALES_ORDER_HEADER]
+							INSERT INTO [PACASA].[SONDA_SALES_ORDER_HEADER]
 									(
 										[TERMS]
 										,[POSTED_DATETIME]
@@ -873,7 +873,7 @@ BEGIN
 							-- ------------------------------------------------------------------------------------
 							-- inserta el detalle
 							-- ------------------------------------------------------------------------------------
-							INSERT INTO [acsa].[SONDA_SALES_ORDER_DETAIL]
+							INSERT INTO [PACASA].[SONDA_SALES_ORDER_DETAIL]
 									(
 										[SALES_ORDER_ID]
 										,[SKU]

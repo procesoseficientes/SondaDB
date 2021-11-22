@@ -5,10 +5,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        SELECT [acsa].[SWIFT_FN_VALIDATE_TRADE_AGREEMENT_BY_ROUTE]('001')
+        SELECT [PACASA].[SWIFT_FN_VALIDATE_TRADE_AGREEMENT_BY_ROUTE]('001')
 */
 -- =============================================
-CREATE FUNCTION [acsa].[SWIFT_FN_VALIDATE_TRADE_AGREEMENT_BY_ROUTE] (@CODE_ROUTE VARCHAR(50))
+CREATE FUNCTION [PACASA].[SWIFT_FN_VALIDATE_TRADE_AGREEMENT_BY_ROUTE] (@CODE_ROUTE VARCHAR(50))
 RETURNS INT
 AS
 BEGIN
@@ -20,12 +20,12 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   SELECT TOP 1
     @HAS_EVENT = 1
-  FROM [acsa].[SWIFT_EVENT] [E]
-  INNER JOIN [acsa].[SWIFT_RULE_X_EVENT] [RXE]
+  FROM [PACASA].[SWIFT_EVENT] [E]
+  INNER JOIN [PACASA].[SWIFT_RULE_X_EVENT] [RXE]
     ON (
     [RXE].[EVENT_ID] = [E].[EVENT_ID]
     )
-  INNER JOIN [acsa].[SWIFT_RULE_X_ROUTE] [RXR]
+  INNER JOIN [PACASA].[SWIFT_RULE_X_ROUTE] [RXR]
     ON (
     [RXR].[RULE_ID] = [RXE].[RULE_ID]
     )
@@ -43,7 +43,7 @@ BEGIN
                               WHEN [R].[TRADE_AGREEMENT_ID] IS NULL THEN 0
                               ELSE 1
                             END
-    FROM [acsa].[SWIFT_ROUTES] [R]
+    FROM [PACASA].[SWIFT_ROUTES] [R]
     WHERE [R].[CODE_ROUTE] = @CODE_ROUTE
   END
   --

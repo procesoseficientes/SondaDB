@@ -5,10 +5,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [acsa].[SONDA_SP_PROCCES_TRANSFER]
+        EXEC [PACASA].[SONDA_SP_PROCCES_TRANSFER]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_PROCCES_TRANSFER]
+CREATE PROCEDURE [PACASA].[SONDA_SP_PROCCES_TRANSFER]
 
 AS
 BEGIN
@@ -21,8 +21,8 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		SELECT U.DEFAULT_WAREHOUSE
 		INTO #WAREHOUSE
-		FROM [acsa].USERS U
-		INNER JOIN [acsa].SWIFT_REGIONAL_USER R ON (U.LOGIN = R.LOGIN)
+		FROM [PACASA].USERS U
+		INNER JOIN [PACASA].SWIFT_REGIONAL_USER R ON (U.LOGIN = R.LOGIN)
 		--
 		PRINT 'Cantidad de bodegas: ' + CAST(@@rowcount AS VARCHAR)
 
@@ -37,7 +37,7 @@ BEGIN
 			,0 QTY
 		INTO #TRANSFER
 		/*FROM [ERP_SERVER].[Me_Llega_DB].DBO.OWTR T
-		LEFT JOIN [acsa].[SONDA_TRANSFER_TO_WH_MOBILE] M ON (T.DOCENTRY = M.DOC_ENTRY)
+		LEFT JOIN [PACASA].[SONDA_TRANSFER_TO_WH_MOBILE] M ON (T.DOCENTRY = M.DOC_ENTRY)
 		INNER JOIN [ERP_SERVER].[Me_Llega_DB].DBO.WTR1 T2 ON (T.DOCENTRY = T2.DOCENTRY)
 		INNER JOIN #WAREHOUSE W ON (T.TOWHSCODE COLLATE DATABASE_DEFAULT = W.DEFAULT_WAREHOUSE)
 		WHERE 
@@ -52,7 +52,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		PRINT 'Merge inventario'
 		--
-		MERGE [acsa].[SWIFT_INVENTORY] I
+		MERGE [PACASA].[SWIFT_INVENTORY] I
 		USING (
 			SELECT 
 				T.CODE_SKU
@@ -62,7 +62,7 @@ BEGIN
 				,'BULK_DATA' AS LAST_UPDATE_BY
 				,SUM(T.QTY) AS QTY
 			FROM #TRANSFER T
-			INNER JOIN [acsa].SWIFT_VIEW_ALL_SKU S ON (T.CODE_SKU = S.CODE_SKU)
+			INNER JOIN [PACASA].SWIFT_VIEW_ALL_SKU S ON (T.CODE_SKU = S.CODE_SKU)
 			GROUP BY T.CODE_SKU
 		) T 
 		ON (
@@ -105,7 +105,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Inserta los documentos transferidos
 		-- ------------------------------------------------------------------------------------
-		INSERT INTO [acsa].[SONDA_TRANSFER_TO_WH_MOBILE]
+		INSERT INTO [PACASA].[SONDA_TRANSFER_TO_WH_MOBILE]
 		SELECT
 			DOC_ENTRY
 			,CODE_WAREHOUSE

@@ -10,7 +10,7 @@
 /*
 --Ejemplo de ejecucion:
 
-  EXEC [acsa].[SWIFT_SP_UPDATE_INFO_GENERAL_FOR_SCOUTING]
+  EXEC [PACASA].[SWIFT_SP_UPDATE_INFO_GENERAL_FOR_SCOUTING]
   --Customer
           @CODE_CUSTOMER = 'C001'
 			,@NAME_CUSTOMER = '...'
@@ -24,12 +24,12 @@
 			,@LOGIN = 'GERENTE@DIPROCOM'
 			,@OWNER_ID = 1
 	----
-	SELECT * FROM [acsa].[SWIFT_CUSTOMERS_NEW]
+	SELECT * FROM [PACASA].[SWIFT_CUSTOMERS_NEW]
     WHERE CODE_CUSTOMER = 'C001'
     ORDER BY CUSTOMER DESC
 */
 -- ============================================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_INFO_GENERAL_FOR_SCOUTING]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_UPDATE_INFO_GENERAL_FOR_SCOUTING]
 (
   @CODE_CUSTOMER VARCHAR(50)
 	,@NAME_CUSTOMER VARCHAR(250) = '...'
@@ -50,7 +50,7 @@ BEGIN
       -- ----------------------------------------------------------------------------------
 	  -- Se ACTUALIZA la Informacion General del cliente
 	  -- ----------------------------------------------------------------------------------
-      UPDATE [acsa].[SWIFT_CUSTOMERS_NEW]
+      UPDATE [PACASA].[SWIFT_CUSTOMERS_NEW]
 	  SET	[NAME_CUSTOMER] = @NAME_CUSTOMER
 			,[PHONE_CUSTOMER] = @PHONE_CUSTOMER
 			,[ADRESS_CUSTOMER] = @ADRESS_CUSTOMER

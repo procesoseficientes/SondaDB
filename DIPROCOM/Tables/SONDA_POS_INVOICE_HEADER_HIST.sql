@@ -1,4 +1,4 @@
-﻿CREATE TABLE [acsa].[SONDA_POS_INVOICE_HEADER_HIST] (
+﻿CREATE TABLE [PACASA].[SONDA_POS_INVOICE_HEADER_HIST] (
     [INVOICE_ID]             INT             NOT NULL,
     [TERMS]                  VARCHAR (15)    NULL,
     [POSTED_DATETIME]        DATETIME        NULL,

@@ -5,10 +5,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-        EXEC [acsa].[SWIFT_GET_CLASSIFICATION_ALTERNATE]
+        EXEC [PACASA].[SWIFT_GET_CLASSIFICATION_ALTERNATE]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_GET_CLASSIFICATION_ALTERNATE]
+CREATE PROCEDURE [PACASA].[SWIFT_GET_CLASSIFICATION_ALTERNATE]
 AS
 BEGIN
 	-- ------------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ BEGIN
 		,[MPC01]
 		,[GROUP_CLASSIFICATION]
 	INTO #REASON
-	FROM [acsa].[SWIFT_CLASSIFICATION] [C]
+	FROM [PACASA].[SWIFT_CLASSIFICATION] [C]
 	WHERE [GROUP_CLASSIFICATION] LIKE '%_REASONS%';
 
 	-- ------------------------------------------------------------------------------------

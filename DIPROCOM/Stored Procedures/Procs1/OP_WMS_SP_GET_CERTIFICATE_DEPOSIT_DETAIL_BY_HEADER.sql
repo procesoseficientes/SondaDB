@@ -2,7 +2,7 @@
 -- Author:         diego.as
 -- Create date:    15-02-2016
 -- Description:    Trae TODOS los registros de la Tabla 
---				   [acsa].[OP_WMS_CERTIFICATE_DEPOSIT_DETAIL] 
+--				   [PACASA].[OP_WMS_CERTIFICATE_DEPOSIT_DETAIL] 
 --				   con transacción y control de errores.
 --				   Recibe como parámetro:
 /*
@@ -12,13 +12,13 @@
 /*
 Ejemplo de Ejecucion:
 				--
-				EXEC [acsa].OP_WMS_SP_GET_CERTIFICATE_DEPOSIT_DETAIL_BY_HEADER
+				EXEC [PACASA].OP_WMS_SP_GET_CERTIFICATE_DEPOSIT_DETAIL_BY_HEADER
 					@ID_DEPOSIT_HEADER = 1
 				--	
 */
 -- =============================================
 
-CREATE PROCEDURE [acsa].[OP_WMS_SP_GET_CERTIFICATE_DEPOSIT_DETAIL_BY_HEADER]
+CREATE PROCEDURE [PACASA].[OP_WMS_SP_GET_CERTIFICATE_DEPOSIT_DETAIL_BY_HEADER]
 (
 	@ID_DEPOSIT_HEADER INT
 
@@ -37,6 +37,6 @@ BEGIN
 			,[CDD].[BULTOS]
 			,[CDD].[QTY]
 			,[CDD].[CUSTOMS_AMOUNT]	
-		FROM [acsa].[OP_WMS_CERTIFICATE_DEPOSIT_DETAIL] AS CDD
+		FROM [PACASA].[OP_WMS_CERTIFICATE_DEPOSIT_DETAIL] AS CDD
 		WHERE CDD.CERTIFICATE_DEPOSIT_ID_HEADER = @ID_DEPOSIT_HEADER
 END

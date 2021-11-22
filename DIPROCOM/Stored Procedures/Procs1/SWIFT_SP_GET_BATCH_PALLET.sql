@@ -7,14 +7,14 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-EXECUTE  [acsa].[SWIFT_SP_GET_BATCH_PALLET] 
+EXECUTE  [PACASA].[SWIFT_SP_GET_BATCH_PALLET] 
    @PALLET_ID = 2
   ,@BATCH_ID = 2
 
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_BATCH_PALLET]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_BATCH_PALLET]
      @PALLET_ID AS INT
 	,@BATCH_ID AS INT
 		
@@ -24,7 +24,7 @@ BEGIN
   SET NOCOUNT ON;
 
   SELECT COUNT(*) AS CANTIDAD_PALLET_LOTE
-  FROM [acsa].[SWIFT_PALLET]
+  FROM [PACASA].[SWIFT_PALLET]
   WHERE [PALLET_ID] = @PALLET_ID AND [BATCH_ID] = @BATCH_ID
       
 

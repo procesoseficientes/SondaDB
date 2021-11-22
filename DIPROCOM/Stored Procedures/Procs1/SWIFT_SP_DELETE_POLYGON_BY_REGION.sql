@@ -25,15 +25,15 @@
 
 /*	
 -- EJEMPLO DE EJECUCION: 
-		EXEC [acsa].[SWIFT_SP_DELETE_POLYGON_BY_REGION]
+		EXEC [PACASA].[SWIFT_SP_DELETE_POLYGON_BY_REGION]
 			@POLYGON_ID = 4154
 		--
-		SELECT * FROM [acsa].[SWIFT_POLYGON] WHERE POLYGON_NAME = 'pacopaco'
+		SELECT * FROM [PACASA].[SWIFT_POLYGON] WHERE POLYGON_NAME = 'pacopaco'
 		--
-		SELECT * FROM [acsa].SWIFT_ROUTES WHERE NAME_ROUTE = 'pacopaco'
+		SELECT * FROM [PACASA].SWIFT_ROUTES WHERE NAME_ROUTE = 'pacopaco'
 */
 -- =========================================================
-CREATE PROCEDURE [acsa].SWIFT_SP_DELETE_POLYGON_BY_REGION (@POLYGON_ID INT
+CREATE PROCEDURE [PACASA].SWIFT_SP_DELETE_POLYGON_BY_REGION (@POLYGON_ID INT
 , @IS_MULTIPOLYGON INT = 0
 --,@TYPE_TASK VARCHAR(1000)
 )
@@ -45,14 +45,14 @@ BEGIN
 
   SELECT    
     @POLYGON_TYPE = [P].[POLYGON_TYPE]
-  FROM [acsa].[SWIFT_POLYGON] [P]
+  FROM [PACASA].[SWIFT_POLYGON] [P]
   WHERE [P].[POLYGON_ID] = @POLYGON_ID
   --
   --BEGIN TRAN T1
   BEGIN TRY
     IF (SELECT
           COUNT([P].[POLYGON_ID])
-        FROM [acsa].[SWIFT_POLYGON] AS [P]
+        FROM [PACASA].[SWIFT_POLYGON] AS [P]
         WHERE [P].[POLYGON_ID_PARENT] = @POLYGON_ID)
       = 0
     BEGIN
@@ -64,28 +64,28 @@ BEGIN
       IF @POLYGON_TYPE = 'REGION' BEGIN
         
         DELETE [CGAP] 
-        FROM [acsa].[SWIFT_CUSTOMER_GPS_ASSOCIATE_TO_POLYGON] [CGAP] 
-        INNER JOIN  [acsa].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON] [CAP] ON (
+        FROM [PACASA].[SWIFT_CUSTOMER_GPS_ASSOCIATE_TO_POLYGON] [CGAP] 
+        INNER JOIN  [PACASA].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON] [CAP] ON (
           [CAP].[CODE_CUSTOMER] = [CGAP].[CODE_CUSTOMER]
         )
         WHERE [CAP].[POLYGON_ID] = @POLYGON_ID
         
 
         DELETE [CAP] 
-        FROM [acsa].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON] [CAP]
+        FROM [PACASA].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON] [CAP]
         WHERE [CAP].[POLYGON_ID] = @POLYGON_ID
 
        
       END
       ELSE IF (@POLYGON_TYPE = 'SECTOR') BEGIN
-        DELETE [acsa].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON] WHERE [POLYGON_ID] = @POLYGON_ID    
+        DELETE [PACASA].[SWIFT_CUSTOMER_ASSOCIATE_TO_POLYGON] WHERE [POLYGON_ID] = @POLYGON_ID    
       END
 
 
       -- ------------------------------------------------------------------------------------
       -- Elimina los puntos del poligono
       -- ------------------------------------------------------------------------------------
-      DELETE FROM [acsa].[SWIFT_POLYGON_POINT]
+      DELETE FROM [PACASA].[SWIFT_POLYGON_POINT]
       WHERE [POLYGON_ID] = @POLYGON_ID
 
       -- ------------------------------------------------------------------------------------
@@ -94,16 +94,16 @@ BEGIN
       SELECT
         [POLYGON_ID]
        ,[TASK_TYPE] INTO [#TASK_BY_POLYGON]
-      FROM [acsa].[SWIFT_TASK_BY_POLYGON]
+      FROM [PACASA].[SWIFT_TASK_BY_POLYGON]
       WHERE [POLYGON_ID] = @POLYGON_ID
       --
       DELETE [FC]
-        FROM [acsa].[SWIFT_POLYGON_X_CUSTOMER] [PC]
-        INNER JOIN [acsa].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
+        FROM [PACASA].[SWIFT_POLYGON_X_CUSTOMER] [PC]
+        INNER JOIN [PACASA].[SWIFT_FREQUENCY_X_CUSTOMER] [FC]
           ON (
           [FC].[CODE_CUSTOMER] = [PC].[CODE_CUSTOMER]
           )
-        INNER JOIN [acsa].[SWIFT_FREQUENCY] [F]
+        INNER JOIN [PACASA].[SWIFT_FREQUENCY] [F]
           ON (
           [F].[ID_FREQUENCY] = [FC].[ID_FREQUENCY]
           )
@@ -117,7 +117,7 @@ BEGIN
       -- ------------------------------------------------------------------------------------
       -- Elimina la relacion entre poligono y ruta
       -- ------------------------------------------------------------------------------------
-      DELETE FROM [acsa].[SWIFT_POLYGON_BY_ROUTE]
+      DELETE FROM [PACASA].[SWIFT_POLYGON_BY_ROUTE]
       WHERE [POLYGON_ID] = @POLYGON_ID
 
       -- ------------------------------------------------------------------------------------
@@ -132,7 +132,7 @@ BEGIN
         -- ------------------------------------------------------------------------------------
         DECLARE @CODE_ROUTE VARCHAR(50) = CONVERT(VARCHAR, @POLYGON_ID)
         --
-        DELETE FROM [acsa].[SWIFT_ROUTES]
+        DELETE FROM [PACASA].[SWIFT_ROUTES]
         WHERE [CODE_ROUTE] = @CODE_ROUTE
       END
 
@@ -140,8 +140,8 @@ BEGIN
       -- Eliminamos los clientes de la frecuencia
       -- ------------------------------------------------------------------------------------
       DELETE [FC]
-        FROM [acsa].[SWIFT_FREQUENCY_X_CUSTOMER] AS [FC]
-        INNER JOIN [acsa].[SWIFT_FREQUENCY] [F]
+        FROM [PACASA].[SWIFT_FREQUENCY_X_CUSTOMER] AS [FC]
+        INNER JOIN [PACASA].[SWIFT_FREQUENCY] [F]
           ON (
           [F].[ID_FREQUENCY] = [FC].[ID_FREQUENCY]
           )
@@ -150,31 +150,31 @@ BEGIN
       -- ------------------------------------------------------------------------------------
       -- Elimina las frecuencias asociadas al poligono
       -- ------------------------------------------------------------------------------------
-      DELETE FROM [acsa].[SWIFT_FREQUENCY_BY_POLYGON]
+      DELETE FROM [PACASA].[SWIFT_FREQUENCY_BY_POLYGON]
       WHERE [POLYGON_ID] = @POLYGON_ID
 
       -- ------------------------------------------------------------------------------------
       -- Eliminamos las frecuencia
       -- ------------------------------------------------------------------------------------
-      DELETE FROM [acsa].[SWIFT_FREQUENCY]
+      DELETE FROM [PACASA].[SWIFT_FREQUENCY]
       WHERE [POLYGON_ID] = @POLYGON_ID
 
       -- ------------------------------------------------------------------------------------
       -- Elimina los clientes asociados al poligono
       -- ------------------------------------------------------------------------------------
-      DELETE FROM [acsa].[SWIFT_POLYGON_X_CUSTOMER]
+      DELETE FROM [PACASA].[SWIFT_POLYGON_X_CUSTOMER]
       WHERE [POLYGON_ID] = @POLYGON_ID
 
       -- ------------------------------------------------------------------------------------
       -- Elimina las tareas asociadas al poligono
       -- ------------------------------------------------------------------------------------
-      DELETE FROM [acsa].[SWIFT_TASK_BY_POLYGON]
+      DELETE FROM [PACASA].[SWIFT_TASK_BY_POLYGON]
       WHERE [POLYGON_ID] = @POLYGON_ID
 
       -- ------------------------------------------------------------------------------------
       -- Elimina el poligono
       -- ------------------------------------------------------------------------------------
-      DELETE FROM [acsa].[SWIFT_POLYGON]
+      DELETE FROM [PACASA].[SWIFT_POLYGON]
       WHERE [POLYGON_ID] = @POLYGON_ID;      
 
       SELECT

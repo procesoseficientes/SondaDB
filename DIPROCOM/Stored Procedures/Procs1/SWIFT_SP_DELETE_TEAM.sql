@@ -5,20 +5,20 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_DELETE_TEAM]
+				EXEC [PACASA].[SWIFT_SP_DELETE_TEAM]
 					  @TEAM_ID = 1          
 				-- 
-				SELECT * FROM [acsa].[SWIFT_TEAM]
+				SELECT * FROM [PACASA].[SWIFT_TEAM]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_DELETE_TEAM] (@TEAM_ID INT)
+CREATE PROCEDURE [PACASA].[SWIFT_SP_DELETE_TEAM] (@TEAM_ID INT)
 AS
 BEGIN
   BEGIN TRY
     --
-    DELETE FROM [acsa].[SWIFT_USER_BY_TEAM] WHERE [TEAM_ID] = @TEAM_ID
+    DELETE FROM [PACASA].[SWIFT_USER_BY_TEAM] WHERE [TEAM_ID] = @TEAM_ID
     --
-    DELETE FROM [acsa].[SWIFT_TEAM] WHERE [TEAM_ID] = @TEAM_ID
+    DELETE FROM [PACASA].[SWIFT_TEAM] WHERE [TEAM_ID] = @TEAM_ID
     --
     SELECT
       1 AS Resultado

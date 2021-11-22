@@ -1,4 +1,4 @@
-﻿CREATE VIEW [acsa].[SWIFT_VIEW_SBO_ORDER_HEADER] as 
+﻿CREATE VIEW [PACASA].[SWIFT_VIEW_SBO_ORDER_HEADER] as 
 SELECT     TOP (1) 
 so.DocEntry AS Doc_Entry, 
 so.CardCode AS Card_Code, 
@@ -31,7 +31,7 @@ CAST(NULL AS varchar) AS U_Total_Flete,
 CAST(NULL AS varchar) AS U_Tipo_Pago, 
 CAST(NULL AS varchar) AS U_Cuotas, 
 CAST(NULL AS varchar) AS U_Total_Tarjeta
-FROM         [acsa].SWIFT_TXNS AS t INNER JOIN
+FROM         [PACASA].SWIFT_TXNS AS t INNER JOIN
                           (SELECT     so.DocEntry, so.DocNum, so.DocType, so.CANCELED, so.Handwrtten, so.Printed, so.DocStatus, so.InvntSttus, so.Transfered, so.ObjType, so.DocDate, so.DocDueDate, so.CardCode, 
                                                    so.CardName, so.Address, so.NumAtCard, so.VatPercent, so.VatSum, so.VatSumFC, so.DiscPrcnt, so.DiscSum, so.DiscSumFC, so.DocCur, so.DocRate, so.DocTotal, so.DocTotalFC, 
                                                    so.PaidToDate, so.PaidFC, so.GrosProfit, so.GrosProfFC, so.Ref1, so.Ref2, so.Comments, so.JrnlMemo, so.TransId, so.ReceiptNum, so.GroupNum, so.DocTime, so.SlpCode, 
@@ -61,7 +61,7 @@ FROM         [acsa].SWIFT_TXNS AS t INNER JOIN
                                                    so.BaseDiscPr, so.CreateTS, so.UpdateTS, so.SrvTaxRule, so.AnnInvDecR, so.Supplier, so.Releaser, so.Receiver, so.AgrNo, so.IsAlt, so.AltBaseTyp, so.AltBaseEnt, so.PaidDpm, 
                                                    so.PaidDpmF, so.PaidDpmS, so.U_Guatex, so.U_KM, so.Ship_To_Address_Type AS Ship_To_Address_Type, so.Ship_To_Street AS Ship_To_Street, so.Ship_To_State AS Ship_To_State, 
                                                    so.Ship_To_Country AS Ship_To_Country
-                            FROM          SWIFT_INTERFACES.[acsa].[ERP_ORDER_HEADER] so ) AS so ON so.DocEntry = t.SAP_REFERENCE
+                            FROM          SWIFT_INTERFACES.[PACASA].[ERP_ORDER_HEADER] so ) AS so ON so.DocEntry = t.SAP_REFERENCE
 WHERE     (so.DocStatus = 'O') AND (so.DocType = 'I') AND (t.TXN_CATEGORY = 'PI') AND (ISNULL(t.TXN_IS_POSTED_ERP, 0) = 0)
 
 

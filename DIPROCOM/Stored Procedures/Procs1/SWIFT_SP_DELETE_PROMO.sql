@@ -9,15 +9,15 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				SELECT * FROM [acsa].[SWIFT_PROMO]
+				SELECT * FROM [PACASA].[SWIFT_PROMO]
 				--
-				EXEC [acsa].SWIFT_SP_DELETE_PROMO
+				EXEC [PACASA].SWIFT_SP_DELETE_PROMO
 					@PROMO_ID = 82
 				-- 
-				SELECT * FROM [acsa].SWIFT_PROMO
+				SELECT * FROM [PACASA].SWIFT_PROMO
 */
 -- =============================================
-CREATE PROCEDURE [acsa].SWIFT_SP_DELETE_PROMO (@PROMO_ID INT)
+CREATE PROCEDURE [PACASA].SWIFT_SP_DELETE_PROMO (@PROMO_ID INT)
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -25,7 +25,7 @@ BEGIN
   BEGIN TRY
 
     --
-    DELETE FROM [acsa].[SWIFT_PROMO]
+    DELETE FROM [PACASA].[SWIFT_PROMO]
     WHERE [PROMO_ID] = @PROMO_ID
     --
 

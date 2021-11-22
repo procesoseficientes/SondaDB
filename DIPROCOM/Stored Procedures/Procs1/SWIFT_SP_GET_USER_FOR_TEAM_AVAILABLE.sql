@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GET_USER_FOR_TEAM_AVAILABLE] @TEAM_ID = 2
+				EXEC [PACASA].[SWIFT_SP_GET_USER_FOR_TEAM_AVAILABLE] @TEAM_ID = 2
 				--
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_USER_FOR_TEAM_AVAILABLE] (@TEAM_ID INT)
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_USER_FOR_TEAM_AVAILABLE] (@TEAM_ID INT)
 AS
 BEGIN
 
@@ -18,8 +18,8 @@ BEGIN
 		,[U].[LOGIN]
 		,[U].[NAME_USER]
 	FROM
-		[acsa].[USERS] [U]
-	LEFT JOIN [acsa].[SWIFT_USER_BY_TEAM] [UT] ON (
+		[PACASA].[USERS] [U]
+	LEFT JOIN [PACASA].[SWIFT_USER_BY_TEAM] [UT] ON (
 											[UT].[USER_ID] = [U].[CORRELATIVE]
 											AND [UT].[TEAM_ID] = @TEAM_ID
 											)
@@ -28,7 +28,7 @@ BEGIN
 		AND NOT EXISTS ( SELECT
 								1
 							FROM
-								[acsa].[SWIFT_TEAM] [ST]
+								[PACASA].[SWIFT_TEAM] [ST]
 							WHERE
 								[ST].[SUPERVISOR] = [U].[CORRELATIVE] );
 END;

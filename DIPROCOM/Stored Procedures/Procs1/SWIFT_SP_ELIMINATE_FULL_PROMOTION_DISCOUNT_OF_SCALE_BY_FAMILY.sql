@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].SWIFT_SP_ELIMINATE_FULL_PROMOTION_DISCOUNT_OF_SCALE_BY_FAMILY
+				EXEC [PACASA].SWIFT_SP_ELIMINATE_FULL_PROMOTION_DISCOUNT_OF_SCALE_BY_FAMILY
 				@PROMO_ID = 2121
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ELIMINATE_FULL_PROMOTION_DISCOUNT_OF_SCALE_BY_FAMILY](
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ELIMINATE_FULL_PROMOTION_DISCOUNT_OF_SCALE_BY_FAMILY](
 	@PROMO_ID INT
 )
 WITH RECOMPILE
@@ -26,7 +26,7 @@ BEGIN
 		-- ---------------------------------------------------------------------------------------------------
 		-- Se verifica si la promocion enviada como parametro se encuentra asociada a algun acuerdo comercial
 		-- ---------------------------------------------------------------------------------------------------
-		SELECT @THIS_ASSOCIATE = 1 FROM [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] WHERE [PROMO_ID] = @PROMOTION_ID;
+		SELECT @THIS_ASSOCIATE = 1 FROM [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] WHERE [PROMO_ID] = @PROMOTION_ID;
 
 		IF(@THIS_ASSOCIATE = 1) BEGIN
 			GOTO PROMOTION_ASSOCIATED_WITH_A_COMMERCIAL_AGREEMENT;
@@ -42,12 +42,12 @@ BEGIN
 			-- -------------------------------------------------------------------------------
 			-- Se eliminan todas la familias asociados a la promocion
 			-- -------------------------------------------------------------------------------
-			DELETE FROM [acsa].[SWIFT_PROMO_DISCOUNT_BY_FAMILY] WHERE [PROMO_ID] = @PROMOTION_ID;      
+			DELETE FROM [PACASA].[SWIFT_PROMO_DISCOUNT_BY_FAMILY] WHERE [PROMO_ID] = @PROMOTION_ID;      
 
 			-- --------------------------------------------------------------------------------
 			-- Se elimina la promocion
 			-- --------------------------------------------------------------------------------
-			DELETE FROM [acsa].[SWIFT_PROMO] WHERE [PROMO_ID] = @PROMOTION_ID
+			DELETE FROM [PACASA].[SWIFT_PROMO] WHERE [PROMO_ID] = @PROMOTION_ID
 			
 			-- --------------------------------------------------------------------------------
 			-- Se devuelve el resultado como EXITOSO

@@ -9,12 +9,12 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_SET_CUSTOMER_IN_MULTPOLIGON]
+				EXEC [PACASA].[SWIFT_SP_SET_CUSTOMER_IN_MULTPOLIGON]
 					@LOGIN = 'GERENTE@DIPROCOM'
 					,@SECTOR_POLYGON_ID = 5168
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_SET_CUSTOMER_IN_MULTPOLIGON](
+CREATE PROCEDURE [PACASA].[SWIFT_SP_SET_CUSTOMER_IN_MULTPOLIGON](
 	@LOGIN VARCHAR(50)
 	,@SECTOR_POLYGON_ID INT
 )
@@ -54,11 +54,11 @@ BEGIN
 		[P].[ROUTE]
 		,[P].[POLYGON_ID]
 		--,[TP].[TASK_TYPE]
-	FROM [acsa].[SWIFT_POLYGON_BY_ROUTE] [P]
-	INNER JOIN [acsa].[SWIFT_POLYGON] [SP] ON (
+	FROM [PACASA].[SWIFT_POLYGON_BY_ROUTE] [P]
+	INNER JOIN [PACASA].[SWIFT_POLYGON] [SP] ON (
 		[SP].[POLYGON_ID] = [P].[POLYGON_ID]
 	)
-	--INNER JOIN [acsa].[SWIFT_TASK_BY_POLYGON] [TP] ON (
+	--INNER JOIN [PACASA].[SWIFT_TASK_BY_POLYGON] [TP] ON (
 	--	[TP].[POLYGON_ID] = [P].[POLYGON_ID]
 	--)
 	WHERE [P].[IS_MULTIPOLYGON] = 1
@@ -71,8 +71,8 @@ BEGIN
 		[C].[CODE_CUSTOMER]
 		,geometry::[Point]([C].[LATITUDE], [C].[LONGITUDE], 0) [POINT]
 	INTO #CUSTOMER
-	FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
-	LEFT JOIN [acsa].[SWIFT_POLYGON_X_CUSTOMER] [PXC] ON (
+	FROM [PACASA].[SWIFT_VIEW_ALL_COSTUMER] [C]
+	LEFT JOIN [PACASA].[SWIFT_POLYGON_X_CUSTOMER] [PXC] ON (
 		[PXC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
 	)
 	WHERE [PXC].[POLYGON_ID] IS NULL
@@ -91,7 +91,7 @@ BEGIN
 		SELECT TOP 1
 			@ROUTE = [M].[ROUTE]
 			,@POLYGON_ID = [M].[POLYGON_ID]
-			,@GEOMETRY_POLYGON = [acsa].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID]([M].[POLYGON_ID])
+			,@GEOMETRY_POLYGON = [PACASA].[SWIFT_GET_GEOMETRY_POLYGON_BY_POLIGON_ID]([M].[POLYGON_ID])
 		FROM @MULTIPOLYGON [M]
 		ORDER BY [POLYGON_ID] ASC
 
@@ -133,12 +133,12 @@ BEGIN
 		-- Genera la frecuencia del cliente
 		-- ------------------------------------------------------------------------------------
 		DELETE [FXC]
-		FROM [acsa].[SWIFT_FREQUENCY_X_CUSTOMER] [FXC]
+		FROM [PACASA].[SWIFT_FREQUENCY_X_CUSTOMER] [FXC]
 		INNER JOIN [#POLYGON_BY_ROUTE] [PBR] ON (
 			[PBR].[CODE_CUSTOMER] = [FXC].[CODE_CUSTOMER]
 		)
 		--
-		INSERT INTO [acsa].[SWIFT_FREQUENCY_X_CUSTOMER]
+		INSERT INTO [PACASA].[SWIFT_FREQUENCY_X_CUSTOMER]
 				(
 					[ID_FREQUENCY]
 					,[CODE_CUSTOMER]
@@ -149,14 +149,14 @@ BEGIN
 			,[PBR].[CODE_CUSTOMER]
 			,1
 		FROM [#POLYGON_BY_ROUTE] [PBR]
-		INNER JOIN [acsa].[SWIFT_FREQUENCY_BY_POLYGON] [FP] ON (
+		INNER JOIN [PACASA].[SWIFT_FREQUENCY_BY_POLYGON] [FP] ON (
 			[FP].[POLYGON_ID] = [PBR].[POLYGON_ID]
 		)
 
 		-- ------------------------------------------------------------------------------------
 		-- Genera la propuesta de vista del cliente
 		-- ------------------------------------------------------------------------------------
-		MERGE [acsa].[SWIFT_CUSTOMER_FREQUENCY] AS [CF]
+		MERGE [PACASA].[SWIFT_CUSTOMER_FREQUENCY] AS [CF]
 		USING (
 			SELECT DISTINCT
 				[PBR].[CODE_CUSTOMER]
@@ -172,10 +172,10 @@ BEGIN
 				,GETDATE() [LAST_UPDATED]
 				,@LOGIN [LAST_UPDATED_BY]
 			FROM [#POLYGON_BY_ROUTE] [PBR]
-			INNER JOIN [acsa].[SWIFT_FREQUENCY_BY_POLYGON] [FP] ON (
+			INNER JOIN [PACASA].[SWIFT_FREQUENCY_BY_POLYGON] [FP] ON (
 				[FP].[POLYGON_ID] = [PBR].[POLYGON_ID]
 			)
-			INNER JOIN [acsa].[SWIFT_FREQUENCY] [F] ON (
+			INNER JOIN [PACASA].[SWIFT_FREQUENCY] [F] ON (
 				[F].[ID_FREQUENCY] = [FP].[ID_FREQUENCY]
 			)
 		) [NCF]
@@ -230,7 +230,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Genera la relacion de los clientes con el poligono
 		-- ------------------------------------------------------------------------------------
-		INSERT INTO [acsa].[SWIFT_POLYGON_X_CUSTOMER]
+		INSERT INTO [PACASA].[SWIFT_POLYGON_X_CUSTOMER]
 				(
 					[POLYGON_ID]
 					,[CODE_CUSTOMER]

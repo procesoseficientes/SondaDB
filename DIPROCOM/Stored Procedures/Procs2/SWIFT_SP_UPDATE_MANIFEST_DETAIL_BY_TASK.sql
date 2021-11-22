@@ -11,7 +11,7 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-				exec [acsa].[SWIFT_SP_UPDATE_MANIFEST_DETAIL_BY_TASK] 
+				exec [PACASA].[SWIFT_SP_UPDATE_MANIFEST_DETAIL_BY_TASK] 
 				@TASK_ID =18753
 				,@TASK_STATUS='COMPLETED'
 				,@LOGIN='OPER1@DIPROCOM'
@@ -22,7 +22,7 @@
 					
 */
 -- =============================================
-CREATE  PROCEDURE [acsa].SWIFT_SP_UPDATE_MANIFEST_DETAIL_BY_TASK          
+CREATE  PROCEDURE [PACASA].SWIFT_SP_UPDATE_MANIFEST_DETAIL_BY_TASK          
 	@TASK_ID				INT 
 	,@TASK_STATUS			VARCHAR(10)
 	,@LOGIN					VARCHAR(50)
@@ -47,12 +47,12 @@ AS
   -- Obtiene los parametros de tarea completada, aceptada y tarea de entrega
   -- ------------------------------------------------------------------------------------
   SELECT @COMPLETED_STATUS = VALUE
-  FROM [acsa].SWIFT_PARAMETER 
+  FROM [PACASA].SWIFT_PARAMETER 
   WHERE GROUP_ID = 'TASK' AND PARAMETER_ID = 'COMPLETED_STATUS'
 
   --
   SELECT @DELIVERY_TYPE = VALUE
-  FROM [acsa].SWIFT_PARAMETER 
+  FROM [PACASA].SWIFT_PARAMETER 
   WHERE GROUP_ID = 'TASK' AND PARAMETER_ID = 'DELIVERY_TYPE'
 
   -- ------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ AS
 	SET 
 		T.TASK_STATUS=@TASK_STATUS,
 		T.ASSIGEND_TO=@LOGIN    
-	FROM [acsa].SWIFT_TASKS T
+	FROM [PACASA].SWIFT_TASKS T
 	WHERE T.TASK_ID=@TASK_ID
 
   -- ------------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ AS
   			-- ------------------------------------------------------------------------------------
 			
 			SELECT @TASK_TYPE= ST.TASK_TYPE
-			FROM [acsa].SWIFT_TASKS ST
+			FROM [PACASA].SWIFT_TASKS ST
 			WHERE ST.TASK_ID=@TASK_ID
 	
 		--
@@ -91,13 +91,13 @@ AS
       		T.TASK_STATUS=@TASK_STATUS
       		,T.ASSIGEND_TO=@LOGIN
           ,T.COMPLETED_STAMP = GetDate()
-      	FROM [acsa].SWIFT_TASKS T
+      	FROM [PACASA].SWIFT_TASKS T
       	WHERE T.TASK_ID=@TASK_ID
         
 			  -- ------------------------------------------------------------------------------------
   			-- Actualizar el Header
   			-- ------------------------------------------------------------------------------------
-            UPDATE [acsa].[SWIFT_MANIFEST_DETAIL]
+            UPDATE [PACASA].[SWIFT_MANIFEST_DETAIL]
 			SET 
 				 REJECT_COMMENT=@REJECT_COMMENT
 				,IMAGE_1=@PHOTO
@@ -110,15 +110,15 @@ AS
   			-- Obtiene el #Manifest Header
   			-- ------------------------------------------------------------------------------------
 			SELECT @MANIFEST_HEADER = MD.CODE_MANIFEST_HEADER
-			FROM [acsa].[SWIFT_MANIFEST_DETAIL] MD
+			FROM [PACASA].[SWIFT_MANIFEST_DETAIL] MD
 			WHERE DELIVERY_TASK=@TASK_ID
 
 			-- ------------------------------------------------------------------------------------
   			-- Obtiene la agrupacion de las tareas finalizadas de los detalles
   			-- ------------------------------------------------------------------------------------
             SELECT TOP 1 @COMPLETED_MANIFEST = 0
-  			FROM [acsa].[SWIFT_MANIFEST_DETAIL] D
-  			INNER JOIN [acsa].[SWIFT_TASKS] T ON (D.DELIVERY_TASK = T.TASK_ID)		
+  			FROM [PACASA].[SWIFT_MANIFEST_DETAIL] D
+  			INNER JOIN [PACASA].[SWIFT_TASKS] T ON (D.DELIVERY_TASK = T.TASK_ID)		
    			WHERE  D.CODE_MANIFEST_HEADER=@MANIFEST_HEADER
 			AND T.TASK_STATUS  != @COMPLETED_STATUS
 			--
@@ -128,14 +128,14 @@ AS
   			-- ------------------------------------------------------------------------------------
 			IF(@COMPLETED_MANIFEST = 1)
 			BEGIN
-				UPDATE [acsa].[SWIFT_MANIFEST_HEADER]
+				UPDATE [PACASA].[SWIFT_MANIFEST_HEADER]
 				SET [STATUS] = @COMPLETED_STATUS
 					,LAST_UPDATE_BY=@LOGIN
 					,LAST_UPDATE=GETDATE()
 					,COMPLETED_STAMP= GETDATE()					
 				WHERE [MANIFEST_HEADER]= @MANIFEST_HEADER	
 
-				UPDATE [acsa].SWIFT_TASKS
+				UPDATE [PACASA].SWIFT_TASKS
 				SET COMPLETED_SUCCESSFULLY=1
 					,COMPLETED_STAMP= GETDATE()					
 				WHERE TASK_ID= @TASK_ID	

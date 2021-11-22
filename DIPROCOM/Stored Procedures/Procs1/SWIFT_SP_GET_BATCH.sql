@@ -7,12 +7,12 @@
 /*
 -- Ejemplo de Ejecucion:				
 				--
-EXECUTE  [acsa].[SWIFT_SP_GET_BATCH] 
+EXECUTE  [PACASA].[SWIFT_SP_GET_BATCH] 
    @BATCH_ID=2
 				--				
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_BATCH]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_BATCH]
 	@BATCH_ID AS INT
 AS
 BEGIN
@@ -29,8 +29,8 @@ BEGIN
 		,B.[QTY]
 		,B.[QTY_LEFT]
 		,B.[STATUS]
-  FROM [acsa].[SWIFT_BATCH] AS B 
-  INNER JOIN [acsa].[SWIFT_VIEW_ALL_SKU] AS S ON (B.[SKU] = S.[CODE_SKU])
+  FROM [PACASA].[SWIFT_BATCH] AS B 
+  INNER JOIN [PACASA].[SWIFT_VIEW_ALL_SKU] AS S ON (B.[SKU] = S.[CODE_SKU])
   WHERE B.[BATCH_ID] =@BATCH_ID
 
 

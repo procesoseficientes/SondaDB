@@ -6,15 +6,15 @@
 
 /*
 -- Ejemplo de Ejecucion:				
-				-- EXEC [acsa].[SWIFT_SP_GET_ALL_LOCATIONES]
+				-- EXEC [PACASA].[SWIFT_SP_GET_ALL_LOCATIONES]
 				--				
 */
 -- =============================================
 
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_ALL_LOCATIONES]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_ALL_LOCATIONES]
 AS
 Select L.[CODE_LOCATION]
-from [acsa].[SWIFT_LOCATIONS] L
+from [PACASA].[SWIFT_LOCATIONS] L
 
 
 

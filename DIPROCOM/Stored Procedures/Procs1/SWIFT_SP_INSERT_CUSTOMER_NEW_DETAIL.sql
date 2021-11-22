@@ -14,7 +14,7 @@
 -- Ejemplo de Ejecucion:
 				
 
-	EXECUTE [acsa].[SWIFT_SP_INSERT_CUSTOMER_NEW_DETAIL] 
+	EXECUTE [PACASA].[SWIFT_SP_INSERT_CUSTOMER_NEW_DETAIL] 
 		@CUSTOMER = '2230'
 	   ,@CODE_CUSTOMER = ''
 	   ,@SALE_ROUTE  =''
@@ -43,7 +43,7 @@ GO
 
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_CUSTOMER_NEW_DETAIL]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_INSERT_CUSTOMER_NEW_DETAIL]
 	 @CUSTOMER INT
 	,@CODE_CUSTOMER VARCHAR(250)
     ,@SALE_ROUTE VARCHAR(50)	
@@ -71,8 +71,8 @@ CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_CUSTOMER_NEW_DETAIL]
 AS
 BEGIN TRY
 	--
-	IF(SELECT 1 FROM [acsa].[SWIFT_CUSTOMER_NEW_DETAIL] WHERE [CUSTOMER] = @CUSTOMER) = 1 BEGIN
-		UPDATE [acsa].[SWIFT_CUSTOMER_NEW_DETAIL]
+	IF(SELECT 1 FROM [PACASA].[SWIFT_CUSTOMER_NEW_DETAIL] WHERE [CUSTOMER] = @CUSTOMER) = 1 BEGIN
+		UPDATE [PACASA].[SWIFT_CUSTOMER_NEW_DETAIL]
 			SET [SALE_ROUTE] = @SALE_ROUTE
 				,[REFERENCE_CBC] = @REFERENCE_CBC
 				,[VISIT_DAY] = @VISIT_DAY
@@ -98,7 +98,7 @@ BEGIN TRY
 		-- -------------------------------------------------------------------------------------------
 		-- Se indica si se actualizo desde el BO
 		-- -------------------------------------------------------------------------------------------
-		UPDATE [acsa].[SWIFT_CUSTOMERS_NEW]
+		UPDATE [PACASA].[SWIFT_CUSTOMERS_NEW]
 		SET 
 			[LAST_UPDATE] = GETDATE()
 			,[LAST_UPDATE_BY] = @LAST_UPDATED_BY
@@ -108,7 +108,7 @@ BEGIN TRY
 		--
 	END
 	ELSE BEGIN
-		INSERT INTO [acsa].[SWIFT_CUSTOMER_NEW_DETAIL]
+		INSERT INTO [PACASA].[SWIFT_CUSTOMER_NEW_DETAIL]
 		(
 			[CUSTOMER]
 			,[SALE_ROUTE]
@@ -160,7 +160,7 @@ BEGIN TRY
 		-- -------------------------------------------------------------------------------------------
 		-- Se indica si se actualizo desde el BO
 		-- -------------------------------------------------------------------------------------------
-		UPDATE [acsa].[SWIFT_CUSTOMERS_NEW]
+		UPDATE [PACASA].[SWIFT_CUSTOMERS_NEW]
 		SET 
 			[LAST_UPDATE] = GETDATE()
 			,[LAST_UPDATE_BY] = @LAST_UPDATED_BY
@@ -169,7 +169,7 @@ BEGIN TRY
 		WHERE [CODE_CUSTOMER] = @CODE_CUSTOMER
 		--
 
-		--EXEC [acsa].[SWIFT_SP_UPDATE_SCOUTING] @STATUS = 'ACCEPTED', @USER = @LAST_UPDATED_BY, @COMMENTS = @COMMENTS, @CUSTOMER = @CUSTOMER
+		--EXEC [PACASA].[SWIFT_SP_UPDATE_SCOUTING] @STATUS = 'ACCEPTED', @USER = @LAST_UPDATED_BY, @COMMENTS = @COMMENTS, @CUSTOMER = @CUSTOMER
 
 	END
 

@@ -5,13 +5,13 @@
 
 /*
 -- Ejemplo de Ejecucion:
-		EXEC [acsa].SWIFT_INSERT_OR_UPDATE_QUERY_LIST_BY_ROLE
+		EXEC [PACASA].SWIFT_INSERT_OR_UPDATE_QUERY_LIST_BY_ROLE
 		 @QUERY_LIST_ID = 2114
 		,@TEAM_ID = 'GERENTE@DIPROCOM'
 */
 -- =============================================
 
-CREATE PROCEDURE [acsa].[SWIFT_INSERT_OR_UPDATE_QUERY_LIST_BY_ROLE] (
+CREATE PROCEDURE [PACASA].[SWIFT_INSERT_OR_UPDATE_QUERY_LIST_BY_ROLE] (
 		 @QUERY_LIST_ID INT
 		,@TEAM_ID VARCHAR(max)
 	)
@@ -28,7 +28,7 @@ BEGIN
 	BEGIN TRY
 
 	INSERT INTO @TEAM_SELECTED	
-	SELECT DATA FROM [acsa].[Split](@TEAM_ID,';')
+	SELECT DATA FROM [PACASA].[Split](@TEAM_ID,';')
 	WHERE ISNUMERIC(DATA)=1
 	-- ---------------------------------------------------------------------------------------
 	-- Se obtiene la cantidad de operadores asociados al equipo en base al tipo de meta
@@ -43,9 +43,9 @@ BEGIN
     ---------------------------------------------------------------------------------------------
 	---Eliminamos los datos----------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
-	DELETE FROM [acsa].SWIFT_QUERY_LIST_BY_ROLE
+	DELETE FROM [PACASA].SWIFT_QUERY_LIST_BY_ROLE
 	WHERE QUERY_LIST_ID=@QUERY_LIST_ID
-	--AND TEAM_ID in (SELECT DATA FROM [acsa].[Split](@TEAM_ID,';'))
+	--AND TEAM_ID in (SELECT DATA FROM [PACASA].[Split](@TEAM_ID,';'))
 	---------------------------------------------------------------------------------------------
 	---Para cada team seleccionado insertamos un registro en la tabla SWIFT_QUERY_LIST_BY_ROLE
 	---------------------------------------------------------------------------------------------
@@ -67,12 +67,12 @@ BEGIN
 							IF NOT EXISTS ( SELECT TOP 1
 												1
 											FROM
-												[acsa].[SWIFT_QUERY_LIST_BY_ROLE]
+												[PACASA].[SWIFT_QUERY_LIST_BY_ROLE]
 											WHERE
 												[QUERY_LIST_ID] = @QUERY_LIST_ID
 												AND [TEAM_ID] = CONVERT(INT,@ID_T) )
 							BEGIN
-								INSERT	INTO [acsa].[SWIFT_QUERY_LIST_BY_ROLE]
+								INSERT	INTO [PACASA].[SWIFT_QUERY_LIST_BY_ROLE]
 										(
 											[QUERY_LIST_ID]
 											,[TEAM_ID]						

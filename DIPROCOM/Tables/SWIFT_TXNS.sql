@@ -1,4 +1,4 @@
-﻿CREATE TABLE [acsa].[SWIFT_TXNS] (
+﻿CREATE TABLE [PACASA].[SWIFT_TXNS] (
     [TXN_ID]                    INT             IDENTITY (1, 1) NOT NULL,
     [MANIFEST_SOURCE]           INT             NULL,
     [SAP_REFERENCE]             VARCHAR (50)    NULL,

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [acsa].[SWIFT_TEAM] (
+﻿CREATE TABLE [PACASA].[SWIFT_TEAM] (
     [TEAM_ID]        INT           IDENTITY (1, 1) NOT NULL,
     [NAME_TEAM]      VARCHAR (100) NOT NULL,
     [SUPERVISOR]     INT           NOT NULL,

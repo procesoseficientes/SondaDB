@@ -14,15 +14,15 @@
 						que indica si ha sido modificado desde el BO
 
 -- EJEMPLO DE EJECUCION: 
-		EXEC [acsa].[SWIFT_SP_INSERT_TAGS_BY_SCOUTING]
+		EXEC [PACASA].[SWIFT_SP_INSERT_TAGS_BY_SCOUTING]
 			@TAG_COLOR = '#33CCCC'
 			,@CUSTOMER_ID = '2290'
 		------------------------------------------------
-		SELECT * FROM [acsa].[SWIFT_TAG_X_CUSTOMER_NEW]
+		SELECT * FROM [PACASA].[SWIFT_TAG_X_CUSTOMER_NEW]
 		WHERE [CUSTOMER] = '2290'
 		------------------------------------------------
 ============================*/
-CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_TAGS_BY_SCOUTING]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_INSERT_TAGS_BY_SCOUTING]
 ( 
 	@TAG_COLOR VARCHAR(250),
 	@CUSTOMER_ID VARCHAR(250),
@@ -32,7 +32,7 @@ BEGIN
 	--
 	BEGIN TRY
 		--
-		INSERT INTO [acsa].[SWIFT_TAG_X_CUSTOMER_NEW](
+		INSERT INTO [PACASA].[SWIFT_TAG_X_CUSTOMER_NEW](
 			[TAG_COLOR]
 			,[CUSTOMER]
 		)
@@ -41,7 +41,7 @@ BEGIN
 			,@CUSTOMER_ID
 		)
 		--
-		UPDATE [acsa].[SWIFT_CUSTOMERS_NEW]
+		UPDATE [PACASA].[SWIFT_CUSTOMERS_NEW]
 			SET [UPDATED_FROM_BO] = 1
 				,[LAST_UPDATE] = GETDATE()
 				,[LAST_UPDATE_BY] = @LOGIN

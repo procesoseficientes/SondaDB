@@ -26,13 +26,13 @@
         SET @POSTED_RESPONSE = '' 
         SET @ERP_REFERENCE ='0'
         
-        EXECUTE @RC = [acsa].SWIFT_SP_MARK_INVOICE_AS_SEND_TO_ERP @INVOICE_ID
+        EXECUTE @RC = [PACASA].SWIFT_SP_MARK_INVOICE_AS_SEND_TO_ERP @INVOICE_ID
                                                                 ,@POSTED_RESPONSE
                                                                 ,@ERP_REFERENCE
         GO
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_MARK_INVOICE_AS_SEND_TO_ERP] (
+CREATE PROCEDURE [PACASA].[SWIFT_SP_MARK_INVOICE_AS_SEND_TO_ERP] (
 		@INVOICE_ID INT
 		,@CDF_SERIE VARCHAR(50)
 		,@CDF_RESOLUCION NVARCHAR(50)
@@ -65,7 +65,7 @@ BEGIN
 		SELECT TOP 1
 			@ID = [ID]
 			,@ATTEMPTED_WITH_ERROR = [ATTEMPTED_WITH_ERROR]
-		FROM [acsa].[SONDA_POS_INVOICE_HEADER]
+		FROM [PACASA].[SONDA_POS_INVOICE_HEADER]
 		WHERE
 			[ID] > 0
 			AND [INVOICE_ID] = @INVOICE_ID
@@ -74,7 +74,7 @@ BEGIN
 			AND [IS_CREDIT_NOTE] = @IS_CREDIT_NOTE
 			AND [IS_READY_TO_SEND] = 1;
 		--
-		EXEC [acsa].[SWIFT_SP_INSERT_INVOICE_ERP_LOG] 
+		EXEC [PACASA].[SWIFT_SP_INSERT_INVOICE_ERP_LOG] 
 			@ID = @ID, -- int
 			@ATTEMPTED_WITH_ERROR = @ATTEMPTED_WITH_ERROR, -- int
 			@IS_POSTED_ERP = 1, -- int

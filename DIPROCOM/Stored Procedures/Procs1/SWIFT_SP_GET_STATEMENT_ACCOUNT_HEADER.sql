@@ -5,14 +5,14 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GET_STATEMENT_ACCOUNT_HEADER]
+				EXEC [PACASA].[SWIFT_SP_GET_STATEMENT_ACCOUNT_HEADER]
 					@CODE_CUSTOMER = '11'
 				--
-				EXEC [acsa].[SWIFT_SP_GET_STATEMENT_ACCOUNT_HEADER]
+				EXEC [PACASA].[SWIFT_SP_GET_STATEMENT_ACCOUNT_HEADER]
 					@CODE_CUSTOMER = '2120'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_STATEMENT_ACCOUNT_HEADER](
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_STATEMENT_ACCOUNT_HEADER](
 	@CODE_CUSTOMER VARCHAR(50)
 )
 AS
@@ -33,7 +33,7 @@ BEGIN
 	-- Obtiene las facturas del cliente
 	-- ------------------------------------------------------------------------------------
 	INSERT INTO @INVOICE
-	EXEC [acsa].[SONDA_SP_GET_ACTIVE_OVERDUE_INVOICE_BY_COSTUMER] 
+	EXEC [PACASA].[SONDA_SP_GET_ACTIVE_OVERDUE_INVOICE_BY_COSTUMER] 
 		@CODE_CUSTOMER = @CODE_CUSTOMER
 	
 	-- ------------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ BEGIN
     ,ISNULL( SUM([I].[DOC_TOTAL]), 0)  -  ISNULL( SUM([I].[PAID_TO_DATE]),0) [TOTAL_CREDIT]
     ,MAX([C].[CREDIT_LIMIT] ) - (ISNULL( SUM([I].[DOC_TOTAL]), 0)  -  ISNULL( SUM([I].[PAID_TO_DATE]),0)) [AVAILABLE_CREDIT]
 		,ISNULL(COUNT(I.[CODE_CUSTOMER]),0) [QTY_OVERDUE_INVOICE]
-	FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
+	FROM [PACASA].[SWIFT_VIEW_ALL_COSTUMER] [C]
 	LEFT JOIN @INVOICE [I] ON (
 		[I].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
 	)

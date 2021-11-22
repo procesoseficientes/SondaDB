@@ -3,7 +3,7 @@
 -- Fecha de Creacion: 		10/23/2019 
 -- Description:			    SP que elimina los registros de pedido minimo por usuario
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_DELETE_MINIMUM_ORDER_BY_USER]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_DELETE_MINIMUM_ORDER_BY_USER]
 (@XML XML)
 AS
 BEGIN
@@ -35,7 +35,7 @@ BEGIN
         -- Se elimina el pedido minimo por usuario
         -- -------------------------------------------------------------------------------
 
-        DELETE FROM [acsa].[SWIFT_MINIMUM_ORDER_BY_USER]
+        DELETE FROM [PACASA].[SWIFT_MINIMUM_ORDER_BY_USER]
         WHERE [USER] IN
               (
                   SELECT [LOGIN] FROM @ORDERS_UPDATED

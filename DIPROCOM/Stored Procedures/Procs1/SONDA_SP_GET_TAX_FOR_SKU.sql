@@ -5,10 +5,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SONDA_SP_GET_TAX_FOR_SKU]
+				EXEC [PACASA].[SONDA_SP_GET_TAX_FOR_SKU]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_GET_TAX_FOR_SKU]
+CREATE PROCEDURE [PACASA].[SONDA_SP_GET_TAX_FOR_SKU]
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -16,5 +16,5 @@ BEGIN
 	SELECT [TAX_CODE]
 			,[TAX_NAME]
 			,[TAX_VALUE] 
-	FROM [acsa].[SWIFT_TAX]
+	FROM [PACASA].[SWIFT_TAX]
 END

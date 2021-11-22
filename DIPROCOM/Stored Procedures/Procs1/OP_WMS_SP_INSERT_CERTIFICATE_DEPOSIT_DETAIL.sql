@@ -2,12 +2,12 @@
 -- Author:         diego.as
 -- Create date:    15-02-2016
 -- Description:    Inserta registros en la Tabla 
---				   [acsa].[OP_WMS_CERTIFICATE_DEPOSIT_DETAIL] 
+--				   [PACASA].[OP_WMS_CERTIFICATE_DEPOSIT_DETAIL] 
 --				   con transacción y control de errores.
 /*
 Ejemplo de Ejecucion:
 				--
-				EXEC [acsa].OP_WMS_SP_INSERT_CERTIFICATE_DEPOSIT_DETAIL 
+				EXEC [PACASA].OP_WMS_SP_INSERT_CERTIFICATE_DEPOSIT_DETAIL 
 					@ID_DEPOSIT_HEADER = 1
 					,@DOC_ID = 49231
 					,@MATERIAL_CODE = '96000988'
@@ -17,12 +17,12 @@ Ejemplo de Ejecucion:
 					,@QTY = 540.06
 					,@CUSTOM_AMOUNT = 56706.30
 
-				SELECT * FROM [acsa].[OP_WMS_CERTIFICATE_DEPOSIT_DETAIL]
+				SELECT * FROM [PACASA].[OP_WMS_CERTIFICATE_DEPOSIT_DETAIL]
 				--	
 */
 -- =============================================
 
-CREATE PROCEDURE [acsa].[OP_WMS_SP_INSERT_CERTIFICATE_DEPOSIT_DETAIL]
+CREATE PROCEDURE [PACASA].[OP_WMS_SP_INSERT_CERTIFICATE_DEPOSIT_DETAIL]
 (
 	@ID_DEPOSIT_HEADER AS INT
 	,@DOC_ID NUMERIC
@@ -41,7 +41,7 @@ BEGIN
 
     BEGIN TRAN TransAdd
 	BEGIN TRY
-        INSERT INTO [acsa].[OP_WMS_CERTIFICATE_DEPOSIT_DETAIL](
+        INSERT INTO [PACASA].[OP_WMS_CERTIFICATE_DEPOSIT_DETAIL](
 				[CERTIFICATE_DEPOSIT_ID_HEADER]
 				,[DOC_ID]
 				,[MATERIAL_CODE]

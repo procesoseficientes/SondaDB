@@ -1,11 +1,11 @@
-﻿CREATE  procedure  [acsa].[SWIFT_GET_NEW_SEQVAL_CUSTOMER]
+﻿CREATE  procedure  [PACASA].[SWIFT_GET_NEW_SEQVAL_CUSTOMER]
 as
 begin      
 declare @NewSeqValue int
 
       set NOCOUNT ON
 
-      insert into [acsa].SWIFT_CUSTOMER_SEQ (SEQ_VAL) values ('a')
+      insert into [PACASA].SWIFT_CUSTOMER_SEQ (SEQ_VAL) values ('a')
 
      
 
@@ -13,7 +13,7 @@ declare @NewSeqValue int
 
      
 
-      delete from  [acsa].SWIFT_CUSTOMER_SEQ WITH (READPAST)
+      delete from  [PACASA].SWIFT_CUSTOMER_SEQ WITH (READPAST)
 
 return @NewSeqValue
 

@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GENERATE_PRICE_LIST_FOR_ROUTE]
+				EXEC [PACASA].[SWIFT_SP_GENERATE_PRICE_LIST_FOR_ROUTE]
 					@CODE_ROUTE = 'ES000035'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GENERATE_PRICE_LIST_FOR_ROUTE](
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GENERATE_PRICE_LIST_FOR_ROUTE](
 	@CODE_ROUTE VARCHAR(50)
 )
 AS
@@ -19,18 +19,18 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	-- Limpia las listas de la ruta
 	-- ------------------------------------------------------------------------------------
-	EXEC [acsa].[SWIFT_SP_CLEAN_PRICE_LIST_BY_ROUTE]
+	EXEC [PACASA].[SWIFT_SP_CLEAN_PRICE_LIST_BY_ROUTE]
 		@CODE_ROUTE = @CODE_ROUTE
 
 	-- ------------------------------------------------------------------------------------
 	-- Genera las listas para la ruta
 	-- ------------------------------------------------------------------------------------
-	EXEC [acsa].[SWIFT_SP_GENERATE_PRICE_LIST]
+	EXEC [PACASA].[SWIFT_SP_GENERATE_PRICE_LIST]
 		@CODE_ROUTE = @CODE_ROUTE
 
 	-- ------------------------------------------------------------------------------------
 	-- Genera la lista de precios por defecto de la ruta
 	-- ------------------------------------------------------------------------------------
-	EXEC [acsa].[SWIFT_SP_GENERATE_DEFAULT_PRICE_LIST_BY_ROUTE]
+	EXEC [PACASA].[SWIFT_SP_GENERATE_DEFAULT_PRICE_LIST_BY_ROUTE]
 		@CODE_ROUTE = @CODE_ROUTE
 END

@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_SUPER_LOGIN]
+				EXEC [PACASA].[SWIFT_SP_SUPER_LOGIN]
 					@LOGIN = 'supervisor1@DIPROCOM'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_SUPER_LOGIN] (@LOGIN VARCHAR(50))
+CREATE PROCEDURE [PACASA].[SWIFT_SP_SUPER_LOGIN] (@LOGIN VARCHAR(50))
 AS
 BEGIN
     DECLARE
@@ -29,8 +29,8 @@ BEGIN
        ,@MESSAGE = 'Proceso Exitoso'
        ,@CODE = 200
     FROM
-        [acsa].[SWIFT_TEAM] [T]
-    INNER JOIN [acsa].[USERS] [U] ON [U].[CORRELATIVE] = [T].[SUPERVISOR]
+        [PACASA].[SWIFT_TEAM] [T]
+    INNER JOIN [PACASA].[USERS] [U] ON [U].[CORRELATIVE] = [T].[SUPERVISOR]
     WHERE
         [U].[LOGIN] = @LOGIN;
 

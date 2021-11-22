@@ -1,4 +1,4 @@
-﻿CREATE TABLE [acsa].[SWIFT_SEND_SO_ERP_LOG] (
+﻿CREATE TABLE [PACASA].[SWIFT_SEND_SO_ERP_LOG] (
     [ORDER]                INT            IDENTITY (1, 1) NOT NULL,
     [SALES_ORDER_ID]       INT            NOT NULL,
     [ATTEMPTED_WITH_ERROR] INT            NULL,

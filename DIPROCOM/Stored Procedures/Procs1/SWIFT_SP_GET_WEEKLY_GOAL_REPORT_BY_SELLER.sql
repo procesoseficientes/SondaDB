@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_GET_WEEKLY_GOAL_REPORT_BY_SELLER] @LOGIN = 'adolfo@DIPROCOM',
+				EXEC [PACASA].[SWIFT_SP_GET_WEEKLY_GOAL_REPORT_BY_SELLER] @LOGIN = 'adolfo@DIPROCOM',
 			@TASK_TYPE = 'PRESALE'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GET_WEEKLY_GOAL_REPORT_BY_SELLER]
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_WEEKLY_GOAL_REPORT_BY_SELLER]
     (
      @LOGIN VARCHAR(50)
     ,@TASK_TYPE VARCHAR(15)
@@ -26,15 +26,15 @@ BEGIN
        ,[DG].[DOCUMENT_TOTAL]
        ,DATENAME(WEEKDAY, [DG].[DATE]) [WEEKDAY]
     FROM
-        [acsa].[SWIFT_DAILY_GOAL_BY_SELLER] [DG]
-    INNER JOIN [acsa].[SWIFT_GOAL_HEADER] [GH] ON [GH].[TEAM_ID] = [DG].[TEAM_ID]
+        [PACASA].[SWIFT_DAILY_GOAL_BY_SELLER] [DG]
+    INNER JOIN [PACASA].[SWIFT_GOAL_HEADER] [GH] ON [GH].[TEAM_ID] = [DG].[TEAM_ID]
                                                    AND [GH].[STATUS] = 1
                                                    AND [DG].[DATE] BETWEEN [GH].[GOAL_DATE_FROM]
                                                               AND
                                                               [GH].[GOAL_DATE_TO]
-    INNER JOIN [acsa].[USERS] [U] ON [U].[LOGIN] = [DG].[LOGIN]
-    INNER JOIN [acsa].[SWIFT_TEAM] [T] ON [T].[TEAM_ID] = [DG].[TEAM_ID]
-    INNER JOIN [acsa].[SWIFT_GOAL_DETAIL] [GD] ON [GD].[GOAL_HEADER_ID] = [GH].[GOAL_HEADER_ID]
+    INNER JOIN [PACASA].[USERS] [U] ON [U].[LOGIN] = [DG].[LOGIN]
+    INNER JOIN [PACASA].[SWIFT_TEAM] [T] ON [T].[TEAM_ID] = [DG].[TEAM_ID]
+    INNER JOIN [PACASA].[SWIFT_GOAL_DETAIL] [GD] ON [GD].[GOAL_HEADER_ID] = [GH].[GOAL_HEADER_ID]
                                                    AND [U].[CORRELATIVE] = [GD].[SELLER_ID]
     WHERE
         [DG].[LOGIN] = @LOGIN

@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC  [acsa].[SWIFT_SP_INSERT_WAREHOUSE_BY_ZONE] @ID_ZONE = 1, @CODE_WAREHOUSE = '01'
-SELECT * FROM [acsa].[SWIFT_WAREHOUSE_X_ZONE]
+				EXEC  [PACASA].[SWIFT_SP_INSERT_WAREHOUSE_BY_ZONE] @ID_ZONE = 1, @CODE_WAREHOUSE = '01'
+SELECT * FROM [PACASA].[SWIFT_WAREHOUSE_X_ZONE]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_INSERT_WAREHOUSE_BY_ZONE] (@ID_ZONE INT
+CREATE PROCEDURE [PACASA].[SWIFT_SP_INSERT_WAREHOUSE_BY_ZONE] (@ID_ZONE INT
   , @CODE_WAREHOUSE VARCHAR(50)
   )
 AS
@@ -20,7 +20,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Muestra el resultado
   -- ------------------------------------------------------------------------------------
-INSERT INTO [acsa].[SWIFT_WAREHOUSE_X_ZONE] ([ID_ZONE], [CODE_WAREHOUSE])
+INSERT INTO [PACASA].[SWIFT_WAREHOUSE_X_ZONE] ([ID_ZONE], [CODE_WAREHOUSE])
   VALUES (@ID_ZONE, @CODE_WAREHOUSE);
 
 

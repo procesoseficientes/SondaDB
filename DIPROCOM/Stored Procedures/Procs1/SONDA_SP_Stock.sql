@@ -30,12 +30,12 @@
 -- Ejemplo de Ejecucion:
 				DECLARE @pRESULT VARCHAR(MAX)
 				--
-				exec [acsa].[SONDA_SP_Stock] @Warehouse = 'CAN', @pRESULT = @pRESULT OUTPUT
+				exec [PACASA].[SONDA_SP_Stock] @Warehouse = 'CAN', @pRESULT = @pRESULT OUTPUT
 				--
 				SELECT @pRESULT
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_Stock]
+CREATE PROCEDURE [PACASA].[SONDA_SP_Stock]
 	(
 		@Warehouse NVARCHAR(15)
 		,@pRESULT VARCHAR(MAX) = '' OUTPUT
@@ -49,12 +49,12 @@ AS
 		DECLARE	@tmpResult VARCHAR(MAX) = '';
 --
 		SELECT
-			@ListaPrecios = [acsa].[SWIFT_FN_GET_PRICE_LIST](DEFAULT);
+			@ListaPrecios = [PACASA].[SWIFT_FN_GET_PRICE_LIST](DEFAULT);
 	--SELECT
 		--@ListaPrecios = 1;
 --
 		DELETE FROM
-			[acsa].[SONDA_POS_SKUS]
+			[PACASA].[SONDA_POS_SKUS]
 		WHERE
 			[ROUTE_ID] = @Warehouse
 		OPTION
@@ -62,7 +62,7 @@ AS
 --
 		IF (@@ERROR = 0)
 		BEGIN
-			INSERT	INTO [acsa].[SONDA_POS_SKUS]
+			INSERT	INTO [PACASA].[SONDA_POS_SKUS]
 					(
 						[SKU]
 						,[SKU_NAME]
@@ -102,10 +102,10 @@ AS
 				,MAX([s].[VAT_CODE]) AS [TAX_CODE]
 				,'ST'
 			FROM
-				[acsa].[SWIFT_INVENTORY] [i]
-			INNER JOIN [acsa].[SWIFT_VIEW_ALL_SKU] [s]
+				[PACASA].[SWIFT_INVENTORY] [i]
+			INNER JOIN [PACASA].[SWIFT_VIEW_ALL_SKU] [s]
 			ON	([s].[CODE_SKU] = [i].[SKU])
-			--INNER JOIN [acsa].[SWIFT_PRICE_LIST_BY_SKU] [p]
+			--INNER JOIN [PACASA].[SWIFT_PRICE_LIST_BY_SKU] [p]
 			--ON	([p].[CODE_SKU] = [i].[SKU])
 			WHERE
 				[i].[WAREHOUSE] = @Warehouse

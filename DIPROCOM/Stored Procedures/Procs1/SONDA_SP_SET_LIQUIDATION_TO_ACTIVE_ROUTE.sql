@@ -5,15 +5,15 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SONDA_SP_SET_LIQUIDATION_TO_ACTIVE_ROUTE]
+				EXEC [PACASA].[SONDA_SP_SET_LIQUIDATION_TO_ACTIVE_ROUTE]
 					@CODE_ROUTE = '4'
 					,@LOGIN = 'RUDI@DIPROCOM'
 				--
-				SELECT * FROM [acsa].[SONDA_LIQUIDATION]
-				SELECT TOP 25 * FROM [acsa].[SONDA_POS_SKU_HISTORICAL]
+				SELECT * FROM [PACASA].[SONDA_LIQUIDATION]
+				SELECT TOP 25 * FROM [PACASA].[SONDA_POS_SKU_HISTORICAL]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_SP_SET_LIQUIDATION_TO_ACTIVE_ROUTE](
+CREATE PROCEDURE [PACASA].[SONDA_SP_SET_LIQUIDATION_TO_ACTIVE_ROUTE](
 	@CODE_ROUTE VARCHAR(50)
 	,@LOGIN VARCHAR(50)
 )
@@ -28,11 +28,11 @@ BEGIN
 	--
 	SELECT
 		@STATUS = 'PENDING'
-		,@LIQUIDATION_ID = NEXT VALUE FOR [acsa].[SONDA_SQ_LIQUIDATION]
+		,@LIQUIDATION_ID = NEXT VALUE FOR [PACASA].[SONDA_SQ_LIQUIDATION]
 	--
 	SELECT TOP 1
 		@CODE_WAREHOUSE = [U].[DEFAULT_WAREHOUSE]
-	FROM [acsa].[USERS] [U]
+	FROM [PACASA].[USERS] [U]
 	WHERE [U].[LOGIN] = @LOGIN
 
 	BEGIN TRAN
@@ -40,7 +40,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Crea la liquidacion
 		-- ------------------------------------------------------------------------------------
-		INSERT INTO [acsa].[SONDA_LIQUIDATION]
+		INSERT INTO [PACASA].[SONDA_LIQUIDATION]
 				(
 					[LIQUIDATION_ID]
 					,[CODE_ROUTE]
@@ -70,7 +70,7 @@ BEGIN
 		-- ------------------------------------------------------------------------------------
 		-- Transfiere el inventario al historico
 		-- ------------------------------------------------------------------------------------
-		INSERT INTO [acsa].[SONDA_POS_SKU_HISTORICAL]
+		INSERT INTO [PACASA].[SONDA_POS_SKU_HISTORICAL]
 				(
 					[CODE_SKU]
 					,[DESCRIPTION_SKU]
@@ -108,13 +108,13 @@ BEGIN
 			,[S].[INITIAL_QTY]
 			,GETDATE()
 			,@LIQUIDATION_ID
-		FROM [acsa].[SONDA_POS_SKUS] [S]
+		FROM [PACASA].[SONDA_POS_SKUS] [S]
 		WHERE [S].[ROUTE_ID] = @CODE_WAREHOUSE
 	
 		-- ------------------------------------------------------------------------------------
 		-- Coloca el numero de liquidacion a los documentos de la ruta
 		-- ------------------------------------------------------------------------------------
-		UPDATE [acsa].[SONDA_POS_INVOICE_HEADER]
+		UPDATE [PACASA].[SONDA_POS_INVOICE_HEADER]
 		SET 
 			[LIQUIDATION_ID] = @LIQUIDATION_ID
 			,[IS_ACTIVE_ROUTE] = 0
@@ -122,7 +122,7 @@ BEGIN
 			AND [POSTED_BY] = @LOGIN
 			AND [IS_ACTIVE_ROUTE] = 1
 		--
-		UPDATE [acsa].[SWIFT_CONSIGNMENT_HEADER]
+		UPDATE [PACASA].[SWIFT_CONSIGNMENT_HEADER]
 		SET 
 			[LIQUIDATION_ID] = @LIQUIDATION_ID
 			,[IS_ACTIVE_ROUTE] = 0
@@ -131,7 +131,7 @@ BEGIN
 			AND [POSTED_BY] = @LOGIN
 			AND [IS_ACTIVE_ROUTE] = 1
 		--
-		UPDATE [acsa].[SONDA_PAYMENT_HEADER]
+		UPDATE [PACASA].[SONDA_PAYMENT_HEADER]
 		SET 
 			[LIQUIDATION_ID] = @LIQUIDATION_ID
 			,[IS_ACTIVE_ROUTE] = 0
@@ -139,7 +139,7 @@ BEGIN
 			AND [POS_TERMINAL] = @CODE_ROUTE
 			AND [IS_ACTIVE_ROUTE] = 1
 		--
-		UPDATE [acsa].[SONDA_DEVOLUTION_INVENTORY_HEADER]
+		UPDATE [PACASA].[SONDA_DEVOLUTION_INVENTORY_HEADER]
 		SET 
 			[LIQUIDATION_ID] = @LIQUIDATION_ID
 			,[IS_ACTIVE_ROUTE] = 0
@@ -147,7 +147,7 @@ BEGIN
 			AND [CODE_ROUTE] = @CODE_ROUTE
 			AND [IS_ACTIVE_ROUTE] = 1 
 		--
-		UPDATE [acsa].[SONDA_DEPOSITS]
+		UPDATE [PACASA].[SONDA_DEPOSITS]
 		SET 
 			[LIQUIDATION_ID] = @LIQUIDATION_ID
 		WHERE [TRANS_ID] > 0

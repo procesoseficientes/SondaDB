@@ -26,18 +26,18 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [acsa].[SWIFT_SP_GENERATE_BONUS_BY_CHANNEL]
+				EXEC [PACASA].[SWIFT_SP_GENERATE_BONUS_BY_CHANNEL]
 					@CODE_ROUTE = '44'
 				--
-				SELECT * FROM [acsa].[SWIFT_BONUS_LIST_BY_SKU]
-				SELECT * FROM [acsa].[SWIFT_BONUS_LIST_BY_SKU_MULTIPLE]
-				SELECT * FROM [acsa].[SWIFT_BONUS_LIST_BY_COMBO]
-				SELECT * FROM [acsa].[SWIFT_BONUS_LIST_BY_COMBO_SKU]
-				SELECT * FROM [acsa].[SWIFT_BONUS_LIST_BY_GENERAL_AMOUNT]
+				SELECT * FROM [PACASA].[SWIFT_BONUS_LIST_BY_SKU]
+				SELECT * FROM [PACASA].[SWIFT_BONUS_LIST_BY_SKU_MULTIPLE]
+				SELECT * FROM [PACASA].[SWIFT_BONUS_LIST_BY_COMBO]
+				SELECT * FROM [PACASA].[SWIFT_BONUS_LIST_BY_COMBO_SKU]
+				SELECT * FROM [PACASA].[SWIFT_BONUS_LIST_BY_GENERAL_AMOUNT]
 
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GENERATE_BONUS_BY_CHANNEL] (@CODE_ROUTE VARCHAR(50))
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GENERATE_BONUS_BY_CHANNEL] (@CODE_ROUTE VARCHAR(50))
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -62,7 +62,7 @@ BEGIN
   )
   --
   SELECT
-    @SELLER_CODE = [acsa].SWIFT_FN_GET_SELLER_BY_ROUTE(@CODE_ROUTE)
+    @SELLER_CODE = [PACASA].SWIFT_FN_GET_SELLER_BY_ROUTE(@CODE_ROUTE)
    ,@LINKED_TO = 'CHANNEL'
    ,@DATETIME = GETDATE()
 
@@ -82,16 +82,16 @@ BEGIN
      ,[TA].[LINKED_TO]
      ,@CODE_ROUTE
      ,@CODE_ROUTE + '|' + [TA].[CODE_TRADE_AGREEMENT]
-    FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
-    INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+    FROM [PACASA].[SWIFT_VIEW_ALL_COSTUMER] [C]
+    INNER JOIN [PACASA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
       ON (
       [C].[CODE_CUSTOMER] = [CC].[CODE_CUSTOMER]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TAC]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TAC]
       ON (
       [CC].[CHANNEL_ID] = [TAC].[CHANNEL_ID]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT] [TA]
       ON (
       [TAC].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
@@ -116,16 +116,16 @@ BEGIN
      ,[TA].[LINKED_TO]
      ,@CODE_ROUTE
      ,@CODE_ROUTE + '|' + [TA].[CODE_TRADE_AGREEMENT]
-    FROM [acsa].[SONDA_ROUTE_PLAN] [RP]
-    INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+    FROM [PACASA].[SONDA_ROUTE_PLAN] [RP]
+    INNER JOIN [PACASA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
       ON (
       [RP].[RELATED_CLIENT_CODE] = [CC].[CODE_CUSTOMER]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TAC]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TAC]
       ON (
       [CC].[CHANNEL_ID] = [TAC].[CHANNEL_ID]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT] [TA]
       ON (
       [TAC].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
@@ -143,13 +143,13 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Genera clientes de las listas de bonificaciones
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [acsa].[SWIFT_BONUS_LIST_BY_CUSTOMER] ([BONUS_LIST_ID]
+  INSERT INTO [PACASA].[SWIFT_BONUS_LIST_BY_CUSTOMER] ([BONUS_LIST_ID]
   , [CODE_CUSTOMER])
     SELECT DISTINCT
       [BL].[BONUS_LIST_ID]
      ,[TA].[CODE_CUSTOMER]
     FROM @TRADE_AGREEMENT_BY_CHANNEL [TA]
-    INNER JOIN [acsa].[SWIFT_BONUS_LIST] [BL]
+    INNER JOIN [PACASA].[SWIFT_BONUS_LIST] [BL]
       ON (
       [BL].[CODE_ROUTE] = [TA].[CODE_ROUTE]
       AND [BL].[NAME_BONUS_LIST] = [TA].[NAME_BONUS_LIST]
@@ -160,7 +160,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Genera SKUs de la lista de bonificaciones por escala
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [acsa].[SWIFT_BONUS_LIST_BY_SKU] ([BONUS_LIST_ID]
+  INSERT INTO [PACASA].[SWIFT_BONUS_LIST_BY_SKU] ([BONUS_LIST_ID]
   , [CODE_SKU]
   , [CODE_PACK_UNIT]
   , [LOW_LIMIT]
@@ -186,28 +186,28 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT_BY_CHANNEL [TA]
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO] [P]
+    INNER JOIN [PACASA].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO_BONUS_BY_SCALE] [TAB]
+    INNER JOIN [PACASA].[SWIFT_PROMO_BONUS_BY_SCALE] [TAB]
       ON (
       [TAB].[PROMO_ID] = [P].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_BONUS_LIST] [BL]
+    INNER JOIN [PACASA].[SWIFT_BONUS_LIST] [BL]
       ON (
       [BL].[CODE_ROUTE] = [TA].[CODE_ROUTE]
       AND [BL].[NAME_BONUS_LIST] = [TA].[NAME_BONUS_LIST]
       )
-    INNER JOIN [acsa].[SONDA_PACK_UNIT] [SPU1]
+    INNER JOIN [PACASA].[SONDA_PACK_UNIT] [SPU1]
       ON (
       [SPU1].[PACK_UNIT] = [TAB].[PACK_UNIT]
       )
-    INNER JOIN [acsa].[SONDA_PACK_UNIT] [SPU2]
+    INNER JOIN [PACASA].[SONDA_PACK_UNIT] [SPU2]
       ON (
       [SPU2].[PACK_UNIT] = [TAB].[PACK_UNIT_BONUS]
       )
@@ -220,7 +220,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Genera los SKUs de la lista de bonificaciones por multiplo
   -- ------------------------------------------------------------------------------------
-  INSERT [acsa].[SWIFT_BONUS_LIST_BY_SKU_MULTIPLE] ([BONUS_LIST_ID]
+  INSERT [PACASA].[SWIFT_BONUS_LIST_BY_SKU_MULTIPLE] ([BONUS_LIST_ID]
   , [CODE_SKU]
   , [CODE_PACK_UNIT]
   , [MULTIPLE]
@@ -244,28 +244,28 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT_BY_CHANNEL [TA]
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO] [P]
+    INNER JOIN [PACASA].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO_BONUS_BY_MULTIPLE] [TAM]
+    INNER JOIN [PACASA].[SWIFT_PROMO_BONUS_BY_MULTIPLE] [TAM]
       ON (
       [TAM].[PROMO_ID] = [P].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_BONUS_LIST] [BL]
+    INNER JOIN [PACASA].[SWIFT_BONUS_LIST] [BL]
       ON (
       [BL].[CODE_ROUTE] = [TA].[CODE_ROUTE]
       AND [BL].[NAME_BONUS_LIST] = [TA].[NAME_BONUS_LIST]
       )
-    INNER JOIN [acsa].[SONDA_PACK_UNIT] [SPU1]
+    INNER JOIN [PACASA].[SONDA_PACK_UNIT] [SPU1]
       ON (
       [SPU1].[PACK_UNIT] = [TAM].[PACK_UNIT]
       )
-    INNER JOIN [acsa].[SONDA_PACK_UNIT] [SPU2]
+    INNER JOIN [PACASA].[SONDA_PACK_UNIT] [SPU2]
       ON (
       [SPU2].[PACK_UNIT] = [TAM].[PACK_UNIT_BONUS]
       )
@@ -277,7 +277,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Se agrega la configuracion de bonificaciones por combo
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [acsa].[SWIFT_BONUS_LIST_BY_COMBO] ([BONUS_LIST_ID]
+  INSERT INTO [PACASA].[SWIFT_BONUS_LIST_BY_COMBO] ([BONUS_LIST_ID]
   , [COMBO_ID]
   , [BONUS_TYPE]
   , [BONUS_SUB_TYPE]
@@ -301,23 +301,23 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT_BY_CHANNEL [TA]
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO] [P]
+    INNER JOIN [PACASA].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO_BY_BONUS_RULE] [TAB]
+    INNER JOIN [PACASA].[SWIFT_PROMO_BY_BONUS_RULE] [TAB]
       ON (
       [TAB].[PROMO_ID] = [P].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO_BY_COMBO_PROMO_RULE] [TAR]
+    INNER JOIN [PACASA].[SWIFT_PROMO_BY_COMBO_PROMO_RULE] [TAR]
       ON (
       [TAR].[PROMO_RULE_BY_COMBO_ID] = [TAB].[PROMO_RULE_BY_COMBO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_BONUS_LIST] [BL]
+    INNER JOIN [PACASA].[SWIFT_BONUS_LIST] [BL]
       ON (
       [BL].[CODE_ROUTE] = [TA].[CODE_ROUTE]
       AND [BL].[NAME_BONUS_LIST] = [TA].[NAME_BONUS_LIST]
@@ -328,7 +328,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Se agrega la configuracion de bonificaciones por combo
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [acsa].[SWIFT_BONUS_LIST_BY_COMBO_SKU] ([BONUS_LIST_ID]
+  INSERT INTO [PACASA].[SWIFT_BONUS_LIST_BY_COMBO_SKU] ([BONUS_LIST_ID]
   , [COMBO_ID]
   , [CODE_SKU]
   , [CODE_PACK_UNIT]
@@ -342,32 +342,32 @@ BEGIN
      ,[TAS].[QTY]
      ,[TAS].[IS_MULTIPLE]
     FROM @TRADE_AGREEMENT_BY_CHANNEL [TA]
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO] [P]
+    INNER JOIN [PACASA].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO_BY_BONUS_RULE] [TAB]
+    INNER JOIN [PACASA].[SWIFT_PROMO_BY_BONUS_RULE] [TAB]
       ON (
       [TAB].[PROMO_ID] = [P].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO_BY_COMBO_PROMO_RULE] [TAR]
+    INNER JOIN [PACASA].[SWIFT_PROMO_BY_COMBO_PROMO_RULE] [TAR]
       ON (
       [TAR].[PROMO_RULE_BY_COMBO_ID] = [TAB].[PROMO_RULE_BY_COMBO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO_SKU_BY_PROMO_RULE] [TAS]
+    INNER JOIN [PACASA].[SWIFT_PROMO_SKU_BY_PROMO_RULE] [TAS]
       ON (
       [TAS].[PROMO_RULE_BY_COMBO_ID] = [TAR].[PROMO_RULE_BY_COMBO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_BONUS_LIST] [BL]
+    INNER JOIN [PACASA].[SWIFT_BONUS_LIST] [BL]
       ON (
       [BL].[CODE_ROUTE] = [TA].[CODE_ROUTE]
       AND [BL].[NAME_BONUS_LIST] = [TA].[NAME_BONUS_LIST]
       )
-    INNER JOIN [acsa].[SONDA_PACK_UNIT] [SPU]
+    INNER JOIN [PACASA].[SONDA_PACK_UNIT] [SPU]
       ON (
       [SPU].[PACK_UNIT] = [TAS].[PACK_UNIT]
       )
@@ -378,7 +378,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   --  Se agrega la bonificacion por monto general
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [acsa].[SWIFT_BONUS_LIST_BY_GENERAL_AMOUNT] ([BONUS_LIST_ID]
+  INSERT INTO [PACASA].[SWIFT_BONUS_LIST_BY_GENERAL_AMOUNT] ([BONUS_LIST_ID]
   , [LOW_LIMIT]
   , [HIGH_LIMIT]
   , [CODE_SKU_BONUS]
@@ -400,24 +400,24 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT_BY_CHANNEL [TA]
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO] [P]
+    INNER JOIN [PACASA].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO_BONUS_BY_GENERAL_AMOUNT] [BGA]
+    INNER JOIN [PACASA].[SWIFT_PROMO_BONUS_BY_GENERAL_AMOUNT] [BGA]
       ON (
       [BGA].[PROMO_ID] = [P].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_BONUS_LIST] [BL]
+    INNER JOIN [PACASA].[SWIFT_BONUS_LIST] [BL]
       ON (
       [BL].[CODE_ROUTE] = [TA].[CODE_ROUTE]
       AND [BL].[NAME_BONUS_LIST] = [TA].[NAME_BONUS_LIST]
       )
-    INNER JOIN [acsa].[SONDA_PACK_UNIT] [SPU]
+    INNER JOIN [PACASA].[SONDA_PACK_UNIT] [SPU]
       ON (
       [SPU].[PACK_UNIT] = [BGA].[PACK_UNIT_BONUS]
       )

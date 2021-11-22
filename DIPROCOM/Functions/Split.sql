@@ -1,4 +1,4 @@
-﻿CREATE FUNCTION [acsa].[Split]
+﻿CREATE FUNCTION [PACASA].[Split]
 (
 	@RowData nvarchar(2000),
 	@SplitOn nvarchar(5)

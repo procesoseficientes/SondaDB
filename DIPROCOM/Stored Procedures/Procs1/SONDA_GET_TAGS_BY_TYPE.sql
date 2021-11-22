@@ -5,11 +5,11 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SONDA_GET_TAGS_BY_TYPE]
+				EXEC [PACASA].[SONDA_GET_TAGS_BY_TYPE]
 				@TYPE_TAGS = 'CUSTOMER'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SONDA_GET_TAGS_BY_TYPE](
+CREATE PROCEDURE [PACASA].[SONDA_GET_TAGS_BY_TYPE](
 	@TYPE_TAGS VARCHAR(250)
 )
 AS
@@ -23,6 +23,6 @@ BEGIN
 		,[LAST_UPDATE]
 		,[LAST_UPDATE_BY]
 		,[TYPE]
-		,[QRY_GROUP] FROM [acsa].[SWIFT_TAGS]
+		,[QRY_GROUP] FROM [PACASA].[SWIFT_TAGS]
 	WHERE [TYPE] = @TYPE_TAGS
 END

@@ -6,14 +6,14 @@
 
 /*
 -- Ejemplo de Ejecucion:
-	EXEC [acsa].[GET_STATISTIC_SALES_BY_CUSTOMER]
+	EXEC [PACASA].[GET_STATISTIC_SALES_BY_CUSTOMER]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[GET_STATISTIC_SALES_BY_CUSTOMER]
+CREATE PROCEDURE [PACASA].[GET_STATISTIC_SALES_BY_CUSTOMER]
 AS
 BEGIN
     DECLARE @WEEKSOLD INT = NULL;
-    SELECT @WEEKSOLD = [acsa].[SWIFT_FN_GET_PARAMETER]('STADISTICS', 'WEEKS_OLD_FOR_CUSTOMER_SALES_SATISTICS');
+    SELECT @WEEKSOLD = [PACASA].[SWIFT_FN_GET_PARAMETER]('STADISTICS', 'WEEKS_OLD_FOR_CUSTOMER_SALES_SATISTICS');
 
     -- -----------------------------------------------------
     -- OBTENES LOS IDENTIFICADORES DE LAS FREQUENCIAS DEL DIA ACTUAL (EN BASE A LA FECHA DEL SERVIDOR)
@@ -33,17 +33,17 @@ BEGIN
     --(
     --    [ID_FREQUENCY]
     --)
-    --EXEC [acsa].[SWIFT_SP_GET_FREQUENCY_X_TASK] @DATE = @CURRENT_DATE;
+    --EXEC [PACASA].[SWIFT_SP_GET_FREQUENCY_X_TASK] @DATE = @CURRENT_DATE;
 
     -- -----------------------------------------------------
     -- Truncamos los resultados de la tabla en cada ejecucion
     -- -----------------------------------------------------
-    TRUNCATE TABLE [acsa].[SONDA_STATISTIC_SALES_BY_CUSTOMER];
+    TRUNCATE TABLE [PACASA].[SONDA_STATISTIC_SALES_BY_CUSTOMER];
 
     -- -----------------------------------------------------
     -- Obtenemos e insertamos los resultados del promedio de ventas y su unidad de venta vendida
     -- -----------------------------------------------------
-    INSERT INTO [acsa].[SONDA_STATISTIC_SALES_BY_CUSTOMER]
+    INSERT INTO [PACASA].[SONDA_STATISTIC_SALES_BY_CUSTOMER]
     (
         [CLIENT_ID],
         [CODE_SKU],
@@ -54,10 +54,10 @@ BEGIN
            MAX([spid].[SKU]) AS [CODE_SKU],
            ROUND(AVG([spid].[QTY]), 0) AS [QTY],
            MAX([spid].[SALES_PACK_UNIT]) AS [SALE_PACK_UNIT]
-    FROM [acsa].[SONDA_POS_INVOICE_DETAIL] AS [spid]
-        INNER JOIN [acsa].[SONDA_POS_INVOICE_HEADER] AS [spih]
+    FROM [PACASA].[SONDA_POS_INVOICE_DETAIL] AS [spid]
+        INNER JOIN [PACASA].[SONDA_POS_INVOICE_HEADER] AS [spih]
             ON ([spih].[ID] = [spid].[ID])
-        INNER JOIN [acsa].[SWIFT_FREQUENCY_X_CUSTOMER] AS [sfxc]
+        INNER JOIN [PACASA].[SWIFT_FREQUENCY_X_CUSTOMER] AS [sfxc]
             ON ([sfxc].[CODE_CUSTOMER] = [spih].[CLIENT_ID])
         --INNER JOIN @FREQUENCIES AS [f]
         --    ON ([f].[ID_FREQUENCY] = [sfxc].[ID_FREQUENCY])

@@ -26,11 +26,11 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [acsa].[SWIFT_SP_GENERATE_DISCOUNT_BY_CHANNEL]
+				EXEC [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_BY_CHANNEL]
 					@CODE_ROUTE = '44'
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_GENERATE_DISCOUNT_BY_CHANNEL] (@CODE_ROUTE VARCHAR(250))
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GENERATE_DISCOUNT_BY_CHANNEL] (@CODE_ROUTE VARCHAR(250))
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -55,7 +55,7 @@ BEGIN
   )
   --
   SELECT
-    @SELLER_CODE = [acsa].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE)
+    @SELLER_CODE = [PACASA].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE)
    ,@LINKED_TO = 'CHANNEL'
 
   -- ------------------------------------------------------------------------------------
@@ -74,16 +74,16 @@ BEGIN
      ,[TA].[LINKED_TO]
      ,@CODE_ROUTE
      ,@CODE_ROUTE + '|' + [TA].[CODE_TRADE_AGREEMENT]
-    FROM [acsa].[SWIFT_VIEW_ALL_COSTUMER] [C]
-    INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+    FROM [PACASA].[SWIFT_VIEW_ALL_COSTUMER] [C]
+    INNER JOIN [PACASA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
       ON (
       [C].[CODE_CUSTOMER] = [CC].[CODE_CUSTOMER]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TAC]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TAC]
       ON (
       [CC].[CHANNEL_ID] = [TAC].[CHANNEL_ID]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT] [TA]
       ON (
       [TAC].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
@@ -108,16 +108,16 @@ BEGIN
      ,[TA].[LINKED_TO]
      ,@CODE_ROUTE
      ,@CODE_ROUTE + '|' + [TA].[CODE_TRADE_AGREEMENT]
-    FROM [acsa].[SONDA_ROUTE_PLAN] [RP]
-    INNER JOIN [acsa].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
+    FROM [PACASA].[SONDA_ROUTE_PLAN] [RP]
+    INNER JOIN [PACASA].[SWIFT_CHANNEL_X_CUSTOMER] [CC]
       ON (
       [RP].[RELATED_CLIENT_CODE] = [CC].[CODE_CUSTOMER]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TAC]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_CHANNEL] [TAC]
       ON (
       [CC].[CHANNEL_ID] = [TAC].[CHANNEL_ID]
       )
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT] [TA]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT] [TA]
       ON (
       [TAC].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
@@ -133,13 +133,13 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Genera clientes de las listas de descuentos
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER] ([DISCOUNT_LIST_ID]
+  INSERT INTO [PACASA].[SWIFT_DISCOUNT_LIST_BY_CUSTOMER] ([DISCOUNT_LIST_ID]
   , [CODE_CUSTOMER])
     SELECT DISTINCT
       [DL].[DISCOUNT_LIST_ID]
      ,[TA].[CODE_CUSTOMER]
     FROM @TRADE_AGREEMENT_BY_CHANNEL [TA]
-    INNER JOIN [acsa].[SWIFT_DISCOUNT_LIST] [DL]
+    INNER JOIN [PACASA].[SWIFT_DISCOUNT_LIST] [DL]
       ON (
       [TA].[CODE_ROUTE] = [DL].[CODE_ROUTE]
       AND [TA].[NAME_DISCOUNT_LIST] = [DL].[NAME_DISCOUNT_LIST]
@@ -150,7 +150,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Genera SKUs de la lista de descuentos
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_SKU] ([DISCOUNT_LIST_ID]
+  INSERT INTO [PACASA].[SWIFT_DISCOUNT_LIST_BY_SKU] ([DISCOUNT_LIST_ID]
   , [CODE_SKU]
   , [PACK_UNIT]
   , [LOW_LIMIT]
@@ -176,19 +176,19 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT_BY_CHANNEL [TA]
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO] [P]
+    INNER JOIN [PACASA].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO_DISCOUNT_BY_SCALE] [PDS]
+    INNER JOIN [PACASA].[SWIFT_PROMO_DISCOUNT_BY_SCALE] [PDS]
       ON (
       [PDS].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_DISCOUNT_LIST] [DL]
+    INNER JOIN [PACASA].[SWIFT_DISCOUNT_LIST] [DL]
       ON (
       [TA].[CODE_ROUTE] = [DL].[CODE_ROUTE]
       AND [TA].[NAME_DISCOUNT_LIST] = [DL].[NAME_DISCOUNT_LIST]
@@ -198,7 +198,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Genera los descuentos generales
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_GENERAL_AMOUNT] ([DISCOUNT_LIST_ID]
+  INSERT INTO [PACASA].[SWIFT_DISCOUNT_LIST_BY_GENERAL_AMOUNT] ([DISCOUNT_LIST_ID]
   , [LOW_AMOUNT]
   , [HIGH_AMOUNT]
   , [DISCOUNT]
@@ -216,19 +216,19 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT_BY_CHANNEL [TA]
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO] [P]
+    INNER JOIN [PACASA].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO_DISCOUNT_BY_GENERAL_AMOUNT] [PGA]
+    INNER JOIN [PACASA].[SWIFT_PROMO_DISCOUNT_BY_GENERAL_AMOUNT] [PGA]
       ON (
       [PGA].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_DISCOUNT_LIST] [DL]
+    INNER JOIN [PACASA].[SWIFT_DISCOUNT_LIST] [DL]
       ON (
       [TA].[CODE_ROUTE] = [DL].[CODE_ROUTE]
       AND [TA].[NAME_DISCOUNT_LIST] = [DL].[NAME_DISCOUNT_LIST]
@@ -238,7 +238,7 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Genera los descuentos generales por familia
   -- ------------------------------------------------------------------------------------
-  INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_GENERAL_AMOUNT_AND_FAMILY] ([DISCOUNT_LIST_ID]
+  INSERT INTO [PACASA].[SWIFT_DISCOUNT_LIST_BY_GENERAL_AMOUNT_AND_FAMILY] ([DISCOUNT_LIST_ID]
   , [CODE_FAMILY]
   , [LOW_AMOUNT]
   , [HIGH_AMOUNT]
@@ -260,19 +260,19 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT_BY_CHANNEL [TA]
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO] [P]
+    INNER JOIN [PACASA].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO_DISCOUNT_BY_FAMILY] [PDF]
+    INNER JOIN [PACASA].[SWIFT_PROMO_DISCOUNT_BY_FAMILY] [PDF]
       ON (
       [PDF].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_DISCOUNT_LIST] [DL]
+    INNER JOIN [PACASA].[SWIFT_DISCOUNT_LIST] [DL]
       ON (
       [TA].[CODE_ROUTE] = [DL].[CODE_ROUTE]
       AND [TA].[NAME_DISCOUNT_LIST] = [DL].[NAME_DISCOUNT_LIST]
@@ -284,7 +284,7 @@ BEGIN
   -- Genera los descuentos por tipo de pago y familia
   -- ------------------------------------------------------------------------------------
 
-  INSERT INTO [acsa].[SWIFT_DISCOUNT_LIST_BY_PAYMENT_TYPE_AND_FAMILY] ([DISCOUNT_LIST_ID]
+  INSERT INTO [PACASA].[SWIFT_DISCOUNT_LIST_BY_PAYMENT_TYPE_AND_FAMILY] ([DISCOUNT_LIST_ID]
   , [PAYMENT_TYPE]
   , [CODE_FAMILY]
   , [DISCOUNT_TYPE]
@@ -304,19 +304,19 @@ BEGIN
      ,[P].[PROMO_TYPE]
      ,[TAP].[FREQUENCY]
     FROM @TRADE_AGREEMENT_BY_CHANNEL [TA]
-    INNER JOIN [acsa].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
+    INNER JOIN [PACASA].[SWIFT_TRADE_AGREEMENT_BY_PROMO] [TAP]
       ON (
       [TAP].[TRADE_AGREEMENT_ID] = [TA].[TRADE_AGREEMENT_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO] [P]
+    INNER JOIN [PACASA].[SWIFT_PROMO] [P]
       ON (
       [P].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_PROMO_DISCOUNT_BY_PAYMENT_TYPE_AND_FAMILY] [PDPF]
+    INNER JOIN [PACASA].[SWIFT_PROMO_DISCOUNT_BY_PAYMENT_TYPE_AND_FAMILY] [PDPF]
       ON (
       [PDPF].[PROMO_ID] = [TAP].[PROMO_ID]
       )
-    INNER JOIN [acsa].[SWIFT_DISCOUNT_LIST] [DL]
+    INNER JOIN [PACASA].[SWIFT_DISCOUNT_LIST] [DL]
       ON (
       [TA].[CODE_ROUTE] = [DL].[CODE_ROUTE]
       AND [TA].[NAME_DISCOUNT_LIST] = [DL].[NAME_DISCOUNT_LIST]

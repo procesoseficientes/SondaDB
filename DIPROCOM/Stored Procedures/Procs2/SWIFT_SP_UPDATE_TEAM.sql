@@ -5,16 +5,16 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_UPDATE_TEAM]
+				EXEC [PACASA].[SWIFT_SP_UPDATE_TEAM]
 					  @TEAM_ID = 1
           , @NAME_TEAM = 'RD'
           , @SUPERVISOR = 1
           , @LOGIN_ID = 'GERENTE@DIPROCOM'
 				-- 
-				SELECT * FROM [acsa].[SWIFT_TEAM]
+				SELECT * FROM [PACASA].[SWIFT_TEAM]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_UPDATE_TEAM] (@TEAM_ID INT
+CREATE PROCEDURE [PACASA].[SWIFT_SP_UPDATE_TEAM] (@TEAM_ID INT
 , @NAME_TEAM VARCHAR(100)
 , @SUPERVISOR INT
 , @LOGIN_ID VARCHAR(50))
@@ -22,7 +22,7 @@ AS
 BEGIN
   BEGIN TRY
     --
-    UPDATE [acsa].[SWIFT_TEAM]
+    UPDATE [PACASA].[SWIFT_TEAM]
     SET [NAME_TEAM] = @NAME_TEAM
        ,[SUPERVISOR] = @SUPERVISOR
        ,[LAST_UPDATE] = GETDATE()

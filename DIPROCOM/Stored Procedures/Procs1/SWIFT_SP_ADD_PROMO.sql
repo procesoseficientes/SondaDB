@@ -9,14 +9,14 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [acsa].[SWIFT_SP_ADD_PROMO]
+				EXEC [PACASA].[SWIFT_SP_ADD_PROMO]
 					@PROMO_NAME = 'Promo 001'
 					, @PROMO_TYPE = 'BONUS_BY_SCALE'
 				-- 
-				SELECT * FROM [acsa].[SWIFT_PROMO]
+				SELECT * FROM [PACASA].[SWIFT_PROMO]
 */
 -- =============================================
-CREATE PROCEDURE [acsa].[SWIFT_SP_ADD_PROMO](
+CREATE PROCEDURE [PACASA].[SWIFT_SP_ADD_PROMO](
 	@PROMO_NAME VARCHAR(250)
 	, @PROMO_TYPE VARCHAR(50)
 )
@@ -27,7 +27,7 @@ BEGIN
 	BEGIN TRY
 		DECLARE @ID INT
 		--
-		INSERT INTO [acsa].[SWIFT_PROMO]
+		INSERT INTO [PACASA].[SWIFT_PROMO]
 				([PROMO_NAME], [PROMO_TYPE])
 		VALUES
 				(@PROMO_NAME  -- PROMO_NAME - varchar(250)
