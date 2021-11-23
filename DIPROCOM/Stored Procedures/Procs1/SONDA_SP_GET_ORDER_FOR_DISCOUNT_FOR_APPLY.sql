@@ -3,28 +3,31 @@
 -- Fecha de Creacion:   12-Nov-2018 G-FORCE@Narwhal
 -- Description:			    SP que obtiene el orden de aplicar los descuentos.
 
+-- Modificacion 		10/25/2019 @ G-Force Team Sprint GEFORCE@MADRID
+-- Autor: 				diego.as
+-- Historia/Bug:		IMPLEMENTACION PACASA HN
+-- Descripcion: 		10/25/2019 - se agrega join a SWIFT_ROUTES para filtrar por el codigo de la ruta que esta iniciando en SONDA
+
 /*
 -- Ejemplo de Ejecucion:
 				EXEC [PACASA].SONDA_SP_GET_ORDER_FOR_DISCOUNT_FOR_APPLY
-				@CODE_ROUTE = '136'
+				@CODE_ROUTE = '540'
 */
 -- =============================================
 CREATE PROCEDURE [PACASA].[SONDA_SP_GET_ORDER_FOR_DISCOUNT_FOR_APPLY] (@CODE_ROUTE VARCHAR(50))
 AS
 BEGIN
-  SET NOCOUNT ON;
-  --
-  SELECT
-   [ODD].[ORDER_FOR_DISCOUNT_HEADER_ID]
-   ,[ODD].[ORDER_FOR_DISCOUNT_DETAIL_ID]   
-   ,[ODD].[ORDER]
-   ,[ODD].[CODE_DISCOUNT]
-   ,[ODD].[DESCRIPTION]   
-  FROM [PACASA].[SWIFT_ORDER_FOR_DISCOUNT_DETAIL] [ODD]
-  INNER JOIN [PACASA].[SWIFT_ORDER_FOR_DISCOUNT_BY_ROUTE] [ODR]
-    ON ([ODD].[ORDER_FOR_DISCOUNT_HEADER_ID] = [ODR].[ORDER_FOR_DISCOUNT_HEADER_ID])
-  WHERE [ODR].[ROUTE_ID] = @CODE_ROUTE
-
-
-
+    SET NOCOUNT ON;
+    --
+    SELECT [ODD].[ORDER_FOR_DISCOUNT_HEADER_ID],
+           [ODD].[ORDER_FOR_DISCOUNT_DETAIL_ID],
+           [ODD].[ORDER],
+           [ODD].[CODE_DISCOUNT],
+           [ODD].[DESCRIPTION]
+    FROM [PACASA].[SWIFT_ORDER_FOR_DISCOUNT_DETAIL] [ODD]
+        INNER JOIN [PACASA].[SWIFT_ORDER_FOR_DISCOUNT_BY_ROUTE] [ODR]
+            ON ([ODD].[ORDER_FOR_DISCOUNT_HEADER_ID] = [ODR].[ORDER_FOR_DISCOUNT_HEADER_ID])
+        INNER JOIN [PACASA].[SWIFT_ROUTES] AS [R]
+            ON ([R].[ROUTE] = [ODR].[ROUTE_ID])
+    WHERE [R].[CODE_ROUTE] = @CODE_ROUTE;
 END;

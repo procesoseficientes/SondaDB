@@ -4,8 +4,8 @@
 -- Description:			SP que genera la lista de bonificaciones por acuerdo comercial de clientes
 
 -- Modificacion 27-Jul-17 @ Nexus Team Sprint AgeOfEmpires
-					-- alberto.ruiz
-					-- Se cambio para que obtenga las listas por el codigo de ruta y de las tablas de promo
+-- alberto.ruiz
+-- Se cambio para que obtenga las listas por el codigo de ruta y de las tablas de promo
 
 /*
 -- Ejemplo de Ejecucion:
@@ -14,46 +14,43 @@
 					@CODE_ROUTE = '44'
 */
 -- =============================================
-CREATE PROCEDURE [PACASA].[SWIFT_SP_CLEAN_DUPLICATE_CUSTOMER_IN_BONUS_LIST_BY_ROUTE] (
-	@CODE_ROUTE VARCHAR(250)
-)
+CREATE PROCEDURE [PACASA].[SWIFT_SP_CLEAN_DUPLICATE_CUSTOMER_IN_BONUS_LIST_BY_ROUTE] (@CODE_ROUTE VARCHAR(250))
 AS
 BEGIN
-	SET NOCOUNT ON;
+    SET NOCOUNT ON;
 
-	-- ------------------------------------------------------------------------------------
-	-- Obtiene valores iniciales
-	-- ------------------------------------------------------------------------------------
-	DECLARE @SELLER_CODE VARCHAR(50)
-	--
-	DECLARE @CUSTEMER TABLE (
-		[CODE_CUSTOMER] VARCHAR(50)
-		,UNIQUE([CODE_CUSTOMER])
-	)
-	--
-	SELECT @SELLER_CODE = [PACASA].SWIFT_FN_GET_SELLER_BY_ROUTE(@CODE_ROUTE)
-	
-	-- ------------------------------------------------------------------------------------
-	-- Obtiene los clientes a eliminar
-	-- ------------------------------------------------------------------------------------
-	INSERT INTO @CUSTEMER
-	SELECT
-		[BLC].[CODE_CUSTOMER]
-	FROM [PACASA].[SWIFT_BONUS_LIST_BY_CUSTOMER] [BLC]
-	INNER JOIN [PACASA].[SWIFT_BONUS_LIST] [BL] ON (
-		[BL].[BONUS_LIST_ID] = [BLC].[BONUS_LIST_ID]
-	)
-	WHERE [BL].[CODE_ROUTE] = @CODE_ROUTE
-	GROUP BY [BLC].[CODE_CUSTOMER]
-	HAVING COUNT([BLC].[CODE_CUSTOMER]) > 1
+    -- ------------------------------------------------------------------------------------
+    -- Obtiene valores iniciales
+    -- ------------------------------------------------------------------------------------
+    DECLARE @SELLER_CODE VARCHAR(50);
+    --
+    DECLARE @CUSTEMER TABLE
+    (
+        [CODE_CUSTOMER] VARCHAR(50),
+        UNIQUE ([CODE_CUSTOMER])
+    );
+    --
+    SELECT @SELLER_CODE = [PACASA].[SWIFT_FN_GET_SELLER_BY_ROUTE](@CODE_ROUTE);
 
-	-- ------------------------------------------------------------------------------------
-	-- Elimina los clientes repetidos
-	-- ------------------------------------------------------------------------------------
-	DELETE [BLC]
-	FROM [PACASA].[SWIFT_BONUS_LIST_BY_CUSTOMER] [BLC]
-	INNER JOIN @CUSTEMER [C] ON (
-		[BLC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER]
-	)
+    -- ------------------------------------------------------------------------------------
+    -- Obtiene los clientes a eliminar
+    -- ------------------------------------------------------------------------------------
+    INSERT INTO @CUSTEMER
+    SELECT [BLC].[CODE_CUSTOMER]
+    FROM [PACASA].[SWIFT_BONUS_LIST_BY_CUSTOMER] [BLC]
+        INNER JOIN [PACASA].[SWIFT_BONUS_LIST] [BL]
+            ON ([BL].[BONUS_LIST_ID] = [BLC].[BONUS_LIST_ID])
+    WHERE [BL].[CODE_ROUTE] = @CODE_ROUTE
+    GROUP BY [BLC].[CODE_CUSTOMER]
+    HAVING COUNT([BLC].[CODE_CUSTOMER]) > 1;
 
-END
+    -- ------------------------------------------------------------------------------------
+    -- Elimina los clientes repetidos
+    -- ------------------------------------------------------------------------------------
+    DELETE [BLC]
+    FROM [PACASA].[SWIFT_BONUS_LIST_BY_CUSTOMER] [BLC]
+        INNER JOIN @CUSTEMER [C]
+            ON ([BLC].[CODE_CUSTOMER] = [C].[CODE_CUSTOMER])
+    WHERE [BLC].[BONUS_LIST_ID] > 0;
+
+END;

@@ -51,10 +51,10 @@ GO
 
 */
 -- =============================================  
-CREATE PROCEDURE [PACASA].SWIFT_SP_GET_SALE_ORDER_DETAIL (
+CREATE PROCEDURE [PACASA].[SWIFT_SP_GET_SALE_ORDER_DETAIL] (
 	@SALES_ORDER_ID INT
-	, @INTERFACE_OWNER VARCHAR(125) = 'diprocom'
-	, @CUSTOMER_OWNER VARCHAR(125) = 'diprocom'
+	, @INTERFACE_OWNER VARCHAR(125) = 'PACASA'
+	, @CUSTOMER_OWNER VARCHAR(125) = 'PACASA'
 ) AS
 BEGIN
 	DECLARE @PARAMETER_OWNER VARCHAR(125)
@@ -68,7 +68,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	IF(@CUSTOMER_OWNER = @PARAMETER_OWNER AND @INTERFACE_OWNER = @PARAMETER_OWNER)
 	BEGIN	
-		SELECT
+		SELECT DISTINCT
 		D.SALES_ORDER_ID
 		,[SKUI].[ITEM_CODE] [SKU]
 		,D.LINE_SEQ
@@ -105,13 +105,14 @@ BEGIN
 		AND SSOH.IS_READY_TO_SEND=1
 		AND ISNULL([D].[IS_POSTED_ERP], 0) = 0
 		AND (ISNULL([D].ATTEMPTED_WITH_ERROR,0) < CAST(@SHIPPING_ATTEMPTS AS INT))
+		ORDER BY D.LINE_SEQ
 	END
 	ELSE
 	BEGIN
 	-- ------------------------------------------------------------------------------------
 	-- Obtiene solo las lineas de detalle donde @OWNER es igual al owner de los SKU.
 	-- ------------------------------------------------------------------------------------
-		SELECT
+		SELECT DISTINCT
 			D.SALES_ORDER_ID
 			,[SKUI].[ITEM_CODE] [SKU]
 			,D.LINE_SEQ
@@ -151,5 +152,6 @@ BEGIN
 			AND svas.[OWNER] = @INTERFACE_OWNER
 			AND @PARAMETER_OWNER <> @CUSTOMER_OWNER
 			AND [SKUI].[SOURCE] = @INTERFACE_OWNER
+		ORDER BY D.LINE_SEQ
 	END
 END

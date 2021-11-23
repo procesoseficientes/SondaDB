@@ -86,6 +86,7 @@ BEGIN
 		,[SIH].[LAST_UPDATE_IS_SENDING] = GETDATE()
 	FROM [PACASA].[SONDA_POS_INVOICE_HEADER] [SIH]
 		INNER JOIN @INVOICE [IV] ON ([IV].[INVOICE_ID] = [SIH].[ID])
+	WHERE [SIH].[ID] > 0
 
 	-- ------------------------------------------------------------------------------------
 	-- Obtiene la factura
@@ -136,6 +137,7 @@ BEGIN
 		,[sw].[ERP_WAREHOUSE]
 		,[CCW].[WhsCode] COLLATE SQL_Latin1_General_CP1_CI_AS AS [COST_CENTER]
 		,@INTERFACE_PAYMENT_TYPE AS [INTERFACE_PAYMENT_TYPE]
+		,[spih].[ID]
 	FROM
 		[PACASA].[SONDA_POS_INVOICE_HEADER] [spih] 
 		INNER JOIN @INVOICE [IV] ON [IV].[INVOICE_ID] = [spih].[ID]

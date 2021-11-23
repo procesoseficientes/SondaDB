@@ -82,9 +82,9 @@ AS
 						,[TAX_CODE]
 						,[CODE_PACK_UNIT_STOCK]
 					)
-			SELECT
+			SELECT DISTINCT
 				[i].[SKU] AS [CodigoHijo]
-				,MAX([i].[SKU_DESCRIPTION]) [NombreHijo]
+				,MAX([dbo].[FUNC_REMOVE_SPECIAL_CHARS]([i].[SKU_DESCRIPTION])) [NombreHijo]
 			--,i.SKU_DESCRIPTION NombreHijo				 		
 				,0 AS [PrecioCombo]--includes sales tax --Para obtener el precio del sku reemplazar el 0 por p.COST
 				,[s].[HANDLE_SERIAL_NUMBER] AS [RequiereSerie]
