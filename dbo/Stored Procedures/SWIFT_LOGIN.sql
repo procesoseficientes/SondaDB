@@ -10,7 +10,7 @@
 /*
 -- Ejemplo de Ejecucion:
         EXEC [dbo].[SWIFT_LOGIN]
-			@USER = 'OPER1@DIPROCOM'
+			@USER = 'OPER1@acsa'
 			,@PASSWORD = '123'
 */
 -- =============================================

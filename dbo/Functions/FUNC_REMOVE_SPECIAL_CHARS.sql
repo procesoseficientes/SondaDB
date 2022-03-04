@@ -4,6 +4,6 @@ RETURNS varchar(255)
 AS
 BEGIN
   DECLARE @Respuesta varchar(255)
-  SET @Respuesta = SWIFT_INTERFACES.dbo.FUNC_REMOVE_SPECIAL_CHARS(@Cadena)
+  SET @Respuesta = [$(SWIFT_INTERFACES)].dbo.FUNC_REMOVE_SPECIAL_CHARS(@Cadena)
   return @Respuesta
 END

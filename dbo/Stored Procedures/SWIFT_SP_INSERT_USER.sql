@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Autor:				pedro.loukota
 -- Fecha de Creacion: 	06-11-2015
--- Description:			inserta datos en la tabla de DIPROCOM clientes
+-- Description:			inserta datos en la tabla de acsa clientes
 
 --Modificado 05-05-2016
 				-- alberto.ruiz
@@ -10,7 +10,7 @@
 /*
 -- Ejemplo de Ejecucion:
 			EXEC [dbo].[SWIFT_SP_INSERT_USER]
-				@LOGIN = 'PRUEBA@DIPROCOM'
+				@LOGIN = 'PRUEBA@acsa'
 				,@NAME_USER = 'prueba'
 				,@TYPE_USER = 'prueba'
 				,@PASSWORD = '123'
@@ -25,9 +25,9 @@
 				,@USER_ROLE  = 1
 				,@USE_PACK_UNIT = 1
 			--
-			SELECT * FROM [dbo].[SWIFT_USER] WHERE [LOGIN] = 'PRUEBA@DIPROCOM'
+			SELECT * FROM [dbo].[SWIFT_USER] WHERE [LOGIN] = 'PRUEBA@acsa'
 			--
-			DELETE [dbo].[SWIFT_USER] WHERE [LOGIN] = 'PRUEBA@DIPROCOM'
+			DELETE [dbo].[SWIFT_USER] WHERE [LOGIN] = 'PRUEBA@acsa'
 */
 -- =============================================
 CREATE PROCEDURE [dbo].[SWIFT_SP_INSERT_USER]
