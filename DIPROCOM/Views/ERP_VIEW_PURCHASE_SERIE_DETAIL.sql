@@ -1,0 +1,8 @@
+﻿CREATE VIEW [DIPROCOM].[ERP_VIEW_PURCHASE_SERIE_DETAIL]
+AS
+SELECT
+  *
+FROM OPENQUERY(ERPSERVER, 'SELECT      po.LineNum AS Line_Num 
+,po.ItemCode ITEM_CODE
+,po.DocEntry DOC_ENTRY
+FROM          bd_viscosa2008.dbo.POR1 AS po  ')

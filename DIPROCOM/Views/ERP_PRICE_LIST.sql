@@ -1,0 +1,23 @@
+﻿
+-- Modificacion 3/13/2017 @ A-Team Sprint Ebonne
+-- rodrigo.gomez
+-- Se pusieron como referencias las vistas en la base de datos SAP_INTERCOMPANY
+
+-- Modificacion 4/20/2017 @ A-Team Sprint Hondo
+-- rodrigo.gomez
+-- Se agregaron las columnas U_MasterId, U_Owner y OwnerId
+
+/*
+	SELECT * FROM [DIPROCOM].[ERP_PRICE_LIST]
+*/
+CREATE VIEW [DIPROCOM].[ERP_PRICE_LIST]
+AS
+    SELECT DISTINCT
+		CODE_CUSTOMER COLLATE DATABASE_DEFAULT AS [CODE_PRICE_LIST]
+		,CODE_CUSTOMER COLLATE DATABASE_DEFAULT AS [NAME_PRICE_LIST]
+		,'--' AS [COMMENT]
+		,GETDATE() AS [LAST_UPDATE]
+		,'Interfaces' COLLATE DATABASE_DEFAULT [LAST_UPDATE_BY]
+		,'Diprocom' COLLATE DATABASE_DEFAULT AS [OWNER]
+		,CODE_CUSTOMER COLLATE DATABASE_DEFAULT AS [OWNER_ID]
+	FROM DIPROCOM.ERP_VIEW_COSTUMER
