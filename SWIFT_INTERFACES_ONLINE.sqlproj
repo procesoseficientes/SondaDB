@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>SONDADB2</Name>
+    <Name>SWIFT_INTERFACES_ONLINE</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{a8b1755a-9003-4fae-9a20-701f17fc7677}</ProjectGuid>
@@ -94,16 +94,12 @@
     <Build Include="DIPROCOM\Views\ERP_VIEW_COSTUMER.sql" />
     <Build Include="DIPROCOM\Views\ERP_VIEW_COST_CENTER_BY_WAREHOUSE.sql" />
     <Build Include="DIPROCOM\Views\ERP_VIEW_COMMITED_BY_WAREHOUSE.sql" />
-    <Build Include="DIPROCOM\Views\ERP_SKU_BASE_PRICE_BY_PACK.sql" />
     <Build Include="DIPROCOM\Views\ERP_PRICE_LIST_BY_SKU_PACK_SCALE.sql" />
     <Build Include="DIPROCOM\Views\ERP_PRICE_LIST_BY_SKU.sql" />
     <Build Include="DIPROCOM\Views\ERP_PRICE_LIST_BY_CUSTOMER.sql" />
     <Build Include="DIPROCOM\Views\ERP_PRICE_LIST.sql" />
     <Build Include="DIPROCOM\Views\ERP_PACK_UNIT.sql" />
     <Build Include="DIPROCOM\Views\ERP_PACK_CONVERSION.sql" />
-    <Build Include="DIPROCOM\Views\ERP_ORDER_HEADER.sql" />
-    <Build Include="DIPROCOM\Views\ERP_ORDER_DETAIL.sql" />
-    <Build Include="Security\procesos.sql" />
     <Build Include="Security\DIPROCOM.sql" />
     <Build Include="DIPROCOM\Stored Procedures\SWIFT_SP_REPLACE_TEXT_IN_OPENQUERY.sql" />
     <Build Include="DIPROCOM\Stored Procedures\SWIFT_SP_RECREATE_OBJECT.sql" />
@@ -120,5 +116,6 @@
     <Build Include="DIPROCOM\Synonyms\SWIFT_BONUS_PRIORITY.sql" />
     <Build Include="ServerObjects\LinkedServers\DIPROCOM_SERVER.sql" />
     <Build Include="ServerObjects\LinkedServers\ERPSERVER.sql" />
+    <Build Include="Security\Login1.sql" />
   </ItemGroup>
 </Project>

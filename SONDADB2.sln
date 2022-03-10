@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SONDADB2", "SONDADB2.sqlproj", "{A8B1755A-9003-4FAE-9A20-701F17FC7677}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SWIFT_INTERFACES_ONLINE", "SWIFT_INTERFACES_ONLINE.sqlproj", "{A8B1755A-9003-4FAE-9A20-701F17FC7677}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
