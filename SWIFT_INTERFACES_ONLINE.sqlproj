@@ -118,4 +118,10 @@
     <Build Include="ServerObjects\LinkedServers\ERPSERVER.sql" />
     <Build Include="Security\Login1.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="SWIFT_INTERFACES">
+      <DefaultValue>SWIFT_INTERFACES</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
 </Project>

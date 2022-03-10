@@ -153,4 +153,10 @@
     <Build Include="ServerObjects\LinkedServers\LinkedServer1.sql" />
     <Build Include="Security\Login1.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="SWIFT_INTERFACES_ONLINE">
+      <DefaultValue>SWIFT_INTERFACES_ONLINE</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
 </Project>
