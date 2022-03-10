@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>SWIFT_INTERFACES</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{6b673a88-ce68-4f00-8cf2-7c2e59d9126e}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>SWIFT_INTERFACES</RootNamespace>
+    <AssemblyName>SWIFT_INTERFACES</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="DIPROCOM\" />
+    <Folder Include="DIPROCOM\Tables\" />
+    <Folder Include="DIPROCOM\Views\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="DIPROCOM\Stored Procedures\" />
+    <Folder Include="DIPROCOM\Synonyms\" />
+    <Folder Include="ServerObjects" />
+    <Folder Include="ServerObjects\LinkedServers" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="DIPROCOM\Tables\SWIFT_WAREHOUSES.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_WAREHOUSES.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_WAREHOUSE.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_SKU_BK.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_SKU.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_SELLER.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_RECEPTION.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_PURCHASE_SERIE_DETAIL.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_PURCHASE_ORDER_HEADER.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_PURCHASE_ORDER_DETAIL.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_PROVIDERS.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_PICKING.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_ORDER_SERIE_DETAIL.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_ORDER_HEADER.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_ORDER_DETAIL.sql" />
+    <Build Include="DIPROCOM\Tables\SWIFT_ERP_CUSTOMERS.sql" />
+    <Build Include="DIPROCOM\Tables\BULK_DATA_CONFIGURATION_LOG.sql" />
+    <Build Include="DIPROCOM\Tables\BULK_DATA_CONFIGURATION.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VW_TRANSFER_REQUEST_HEADER.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VW_TRANSFER_REQUEST_DETAIL.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_WAREHOUSE.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_SKU.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_INVOICE_DETAIL.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_COSTUMER.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_CLIENTS_OF_CHANNEL_MODERN.sql" />
+    <Build Include="DIPROCOM\Views\ERP_ORDER_HEADER.sql" />
+    <Build Include="DIPROCOM\Views\ERP_ORDER_DETAIL.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_SELLER.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_RECEPTION_DOCUMENT_DETAIL.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_RECEPTION_DOCUMENT.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_RECEPTION.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_PURCHASE_SERIE_DETAIL.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_PURCHASE_ORDER_HEADER.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_PURCHASE_ORDER_DETAIL.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_PROVIDERS.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_PICKING.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_ORDER_SERIE_DETAIL.sql" />
+    <Build Include="DIPROCOM\Views\ERP_VIEW_INVOICE_HEADER.sql" />
+    <Build Include="Security\DIPROCOM.sql" />
+    <Build Include="dbo\Functions\FUNC_REMOVE_SPECIAL_CHARS.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_PACK_CONVERSION.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_ORDER.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_INVENTORY_ONLINE.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_INVENTORY_3PL.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_INVENTORY.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_DISCOUNT.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_CUSTOMER_INTERCOMPANY.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_COMPANY.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_COMMIT_INVENTORY.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_GENERATE_SCALE.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_GENERATE_PRICE_LIST_FOR_ROUTE.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_GENERATE_PACK_CONVERTION.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_CLEAN_LOG.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_SELLER_INTERCOMPANY.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_SKU_SALE_PACK_UNIT.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_ROUTE_FRECUENCY.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_RESOLUTION.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_SKU.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_CUSTOMER.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\SWIFT_SP_PREPROCESS_DATA_FOR_INITAL_ROUTE.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\SWIFT_SP_GET_NEXT_SEQUENCE.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_PROCESS.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_INSERT_LOG.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_WAREHOUSE_BY_SALES_OFFICE.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_WAREHOUSE.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_TAG.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_SKU_INTERCOMPANY.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_SKU_FAMILY.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_SKU_BASE_PRICE_BY_PACK.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_SELLER_INFO.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_SELLER.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_SALES_ORGANIZATION.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_SALES_OFFICE.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_PURCHASE_ORDER.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_PROVIDER.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_PRICE_LIST_BY_SKU_PACK_SCALE.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_PRICE_LIST_BY_SKU.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_PRICE_LIST_BY_CUSTOMER_BK.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_PRICE_LIST_BY_CUSTOMER.sql" />
+    <Build Include="DIPROCOM\Stored Procedures\BULK_DATA_SP_IMPORT_PRICE_LIST.sql" />
+    <Build Include="Security\DIPROCOM_1.sql" />
+    <Build Include="DIPROCOM\Synonyms\ERP_VIEW_DOC_FOR_PICKING.sql" />
+    <Build Include="ServerObjects\LinkedServers\LinkedServer1.sql" />
+    <Build Include="Security\Login1.sql" />
+  </ItemGroup>
+</Project>

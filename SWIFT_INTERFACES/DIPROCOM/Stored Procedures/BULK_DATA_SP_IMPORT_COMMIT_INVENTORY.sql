@@ -1,0 +1,37 @@
+﻿-- =============================================
+-- Autor:				alberto.ruiz
+-- Fecha de Creacion: 	29-02-2016
+-- Description:			SP que importa inventario de preventa
+
+/*
+-- Ejemplo de Ejecucion:
+				-- 
+				EXEC [DIPROCOM].[BULK_DATA_SP_IMPORT_COMMIT_INVENTORY]
+*/
+-- =============================================
+CREATE PROCEDURE [DIPROCOM].[BULK_DATA_SP_IMPORT_COMMIT_INVENTORY]
+AS
+BEGIN
+	SET NOCOUNT ON;
+	--
+	MERGE [SWIFT_EXPRESS].[DIPROCOM].[SONDA_IS_COMITED_BY_WAREHOUSE] SIW 
+	USING ( SELECT * FROM  [SWIFT_INTERFACES_ONLINE].[DIPROCOM].[ERP_VIEW_COMMITED_BY_WAREHOUSE] ) EVW 
+	ON (
+		SIW.[CODE_WAREHOUSE] = EVW.[CODE_WAREHOUSE] 
+		AND SIW.[CODE_SKU] = EVW.[CODE_SKU]
+	)
+	WHEN MATCHED THEN 
+	UPDATE 
+		SET SIW.[IS_COMITED] = EVW.[IS_COMMITED] 
+	WHEN NOT MATCHED THEN 
+	INSERT (
+		[CODE_WAREHOUSE]
+		,[CODE_SKU]
+		,[IS_COMITED]
+	) 
+	VALUES(
+		EVW.[CODE_WAREHOUSE] 
+		,EVW.[CODE_SKU]
+		,EVW.[IS_COMMITED]
+	) ;
+END
