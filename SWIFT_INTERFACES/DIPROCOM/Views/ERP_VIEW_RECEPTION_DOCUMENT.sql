@@ -20,10 +20,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-			select * from [DIPROCOM].ERP_VIEW_RECEPTION_DOCUMENT 
+			select * from [SONDA].ERP_VIEW_RECEPTION_DOCUMENT 
 */
 -- =============================================
-CREATE VIEW [DIPROCOM].[ERP_VIEW_RECEPTION_DOCUMENT]
+CREATE VIEW [SONDA].[ERP_VIEW_RECEPTION_DOCUMENT]
 AS
 
 SELECT

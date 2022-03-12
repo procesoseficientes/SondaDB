@@ -1,4 +1,4 @@
-﻿CREATE TABLE [DIPROCOM].[SWIFT_ERP_PURCHASE_ORDER_HEADER] (
+﻿CREATE TABLE [SONDA].[SWIFT_ERP_PURCHASE_ORDER_HEADER] (
     [Doc_Entry]        INT             NOT NULL,
     [Card_Code]        NVARCHAR (15)   NULL,
     [Card_Name]        NVARCHAR (100)  NULL,

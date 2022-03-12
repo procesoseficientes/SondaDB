@@ -1,4 +1,4 @@
-﻿CREATE TABLE [DIPROCOM].[SWIFT_ERP_SKU] (
+﻿CREATE TABLE [SONDA].[SWIFT_ERP_SKU] (
     [SKU]                       INT             NULL,
     [CODE_SKU]                  VARCHAR (50)    NOT NULL,
     [DESCRIPTION_SKU]           VARCHAR (MAX)   NULL,

@@ -6,10 +6,10 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [SWIFT_INTERFACES_QA].[DIPROCOM].[BULK_DATA_SP_IMPORT_SKU_FAMILY]
+				EXEC [SWIFT_INTERFACES_QA].[SONDA].[BULK_DATA_SP_IMPORT_SKU_FAMILY]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[BULK_DATA_SP_IMPORT_SKU_FAMILY]
+CREATE PROCEDURE [SONDA].[BULK_DATA_SP_IMPORT_SKU_FAMILY]
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -17,10 +17,10 @@ BEGIN
   -- ------------------------------------------------------------------------------------
   -- Obtiene las familias de productos
   -- ------------------------------------------------------------------------------------
-  MERGE SWIFT_EXPRESS_QA.DIPROCOM.[SWIFT_SKU_FAMILY] TRG
+  MERGE SWIFT_EXPRESS_QA.[SONDA].[SWIFT_SKU_FAMILY] TRG
   USING (SELECT
       *
-    FROM SWIFT_INTERFACES_ONLINE_QA.DIPROCOM.[ERP_VIEW_SKU_FAMILY]) AS SRC
+    FROM SWIFT_INTERFACES_ONLINE_QA.[SONDA].[ERP_VIEW_SKU_FAMILY]) AS SRC
   ON TRG.CODE_FAMILY_SKU = SRC.CODE_FAMILY_SKU
   WHEN MATCHED
     THEN UPDATE

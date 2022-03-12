@@ -5,10 +5,10 @@
 
 /*
 -- Ejemplo de Ejecucion:
-				EXEC [DIPROCOM].[BULK_DATA_SP_GENERATE_PACK_CONVERTION]
+				EXEC [SONDA].[BULK_DATA_SP_GENERATE_PACK_CONVERTION]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[BULK_DATA_SP_GENERATE_PACK_CONVERTION]
+CREATE PROCEDURE [SONDA].[BULK_DATA_SP_GENERATE_PACK_CONVERTION]
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -16,7 +16,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	-- Agrega la unidad de medida manual en caso no la tenga
 	-- ------------------------------------------------------------------------------------
-	MERGE [SWIFT_EXPRESS].[DIPROCOM].[SONDA_PACK_UNIT] AS [SPU]
+	MERGE [SWIFT_EXPRESS].[SONDA].[SONDA_PACK_UNIT] AS [SPU]
 	USING
 		(
 			SELECT
@@ -49,7 +49,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	--	Genera las unidades de medida
 	-- ------------------------------------------------------------------------------------
-	MERGE [SWIFT_EXPRESS].[DIPROCOM].[SONDA_PACK_CONVERSION] AS [TRG]
+	MERGE [SWIFT_EXPRESS].[SONDA].[SONDA_PACK_CONVERSION] AS [TRG]
 	USING
 		(
 			SELECT
@@ -60,7 +60,7 @@ BEGIN
 				,GETDATE() [LAST_UPDATE]
 				,'BULK_DATA' [LAST_UPDATE_BY]
 				,1 [ORDER]
-			FROM [SWIFT_EXPRESS].[DIPROCOM].[SWIFT_VIEW_ALL_SKU] [epc]
+			FROM [SWIFT_EXPRESS].[SONDA].[SWIFT_VIEW_ALL_SKU] [epc]
 		) AS [SRC]
 	ON [TRG].[CODE_SKU] COLLATE DATABASE_DEFAULT = [SRC].[CODE_SKU]
 		AND [TRG].[CODE_PACK_UNIT_FROM] COLLATE DATABASE_DEFAULT = [SRC].[CODE_PACK_UNIT_FROM]

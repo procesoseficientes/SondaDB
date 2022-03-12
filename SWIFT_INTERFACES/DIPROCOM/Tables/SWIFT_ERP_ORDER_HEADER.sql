@@ -1,4 +1,4 @@
-﻿CREATE TABLE [DIPROCOM].[SWIFT_ERP_ORDER_HEADER] (
+﻿CREATE TABLE [SONDA].[SWIFT_ERP_ORDER_HEADER] (
     [DocEntry]             INT             NOT NULL,
     [DocNum]               INT             NOT NULL,
     [DocType]              CHAR (1)        NULL,

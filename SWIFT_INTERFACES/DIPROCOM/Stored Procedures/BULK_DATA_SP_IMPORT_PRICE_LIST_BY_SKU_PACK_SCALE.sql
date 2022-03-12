@@ -6,12 +6,12 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [SWIFT_INTERFACES_QA].[DIPROCOM].[BULK_DATA_SP_IMPORT_PRICE_LIST_BY_SKU_PACK_SCALE]
+				EXEC [SWIFT_INTERFACES_QA].[SONDA].[BULK_DATA_SP_IMPORT_PRICE_LIST_BY_SKU_PACK_SCALE]
 				--
-				SELECT * FROM [SWIFT_EXPRESS_QA].[DIPROCOM].[SWIFT_PRICE_LIST_BY_SKU_PACK_SCALE]
+				SELECT * FROM [SWIFT_EXPRESS_QA].[SONDA].[SWIFT_PRICE_LIST_BY_SKU_PACK_SCALE]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[BULK_DATA_SP_IMPORT_PRICE_LIST_BY_SKU_PACK_SCALE]
+CREATE PROCEDURE [SONDA].[BULK_DATA_SP_IMPORT_PRICE_LIST_BY_SKU_PACK_SCALE]
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -19,7 +19,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	-- Se limpia la tabla SWIFT_PRICE_LIST_BY_SKU_PACK_SCALE
 	-- ------------------------------------------------------------------------------------
-	TRUNCATE TABLE [SWIFT_EXPRESS_QA].[DIPROCOM].[SWIFT_PRICE_LIST_BY_SKU_PACK_SCALE]
+	TRUNCATE TABLE [SWIFT_EXPRESS_QA].[SONDA].[SWIFT_PRICE_LIST_BY_SKU_PACK_SCALE]
 
 	-- ------------------------------------------------------------------------------------
 	-- Se crea la tabla comun
@@ -46,7 +46,7 @@ BEGIN
 		,COST
 		,0
 		,[OWNER]
-	FROM [SWIFT_INTERFACES_ONLINE_QA].[DIPROCOM].[ERP_PRICE_LIST_BY_SKU]
+	FROM [SWIFT_INTERFACES_ONLINE_QA].[SONDA].[ERP_PRICE_LIST_BY_SKU]
 	
 
 	-- ------------------------------------------------------------------------------------
@@ -60,8 +60,8 @@ BEGIN
 	--	,1 AS LIMIT
 	--	,COST
 	--	,0
-	--	,'diprocom'
-	--FROM [SWIFT_INTERFACES_ONLINE].[DIPROCOM].[ERP_SKU_BASE_PRICE_BY_PACK]
+	--	,'[SONDA]'
+	--FROM [SWIFT_INTERFACES_ONLINE].[SONDA].[ERP_SKU_BASE_PRICE_BY_PACK]
 	
 
 	-- ------------------------------------------------------------------------------------
@@ -75,8 +75,8 @@ BEGIN
 	--	,LIMIT
 	--	,COST
 	--	,0
-	--	,'diprocom'
-	--FROM [SWIFT_INTERFACES_ONLINE].[DIPROCOM].[ERP_PRICE_LIST_BY_SKU_PACK_SCALE]
+	--	,'[SONDA]'
+	--FROM [SWIFT_INTERFACES_ONLINE].[SONDA].[ERP_PRICE_LIST_BY_SKU_PACK_SCALE]
 	
 
 	-- ------------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ BEGIN
 	-- ------------------------------------------------------------------------------------
 	-- Inserta el resultado final
 	-- ------------------------------------------------------------------------------------
-	INSERT INTO [SWIFT_EXPRESS_QA].[DIPROCOM].[SWIFT_PRICE_LIST_BY_SKU_PACK_SCALE] (
+	INSERT INTO [SWIFT_EXPRESS_QA].[SONDA].[SWIFT_PRICE_LIST_BY_SKU_PACK_SCALE] (
 		CODE_PRICE_LIST
 		,CODE_SKU
 		,CODE_PACK_UNIT

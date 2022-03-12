@@ -16,11 +16,11 @@
 					-- Se agregaron las columnas OWNER y [OWNER_ID]
 /*
 -- Ejemplo de Ejecucion:
-        SELECT* FROM [DIPROCOM].[ERP_VIEW_SKU]
+        SELECT* FROM [SONDA].[ERP_VIEW_SKU]
 */
 -- =============================================
 
-CREATE VIEW [DIPROCOM].[ERP_VIEW_SKU]
+CREATE VIEW [SONDA].[ERP_VIEW_SKU]
 AS
 	SELECT
 		[SKU]
@@ -55,4 +55,4 @@ AS
 		,[OWNER_ID]
 		,[ART_CODE]
 		,[VAT_CODE]
-	FROM [DIPROCOM].[SWIFT_ERP_SKU]
+	FROM [SONDA].[SWIFT_ERP_SKU]

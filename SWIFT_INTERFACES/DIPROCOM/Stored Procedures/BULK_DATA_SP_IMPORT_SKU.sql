@@ -25,12 +25,12 @@
 /*
 -- Ejemplo de Ejecucion:
 				-- 
-				EXEC [SWIFT_INTERFACES_QA].[diprocom].[BULK_DATA_SP_IMPORT_SKU]
+				EXEC [SWIFT_INTERFACES_QA].[SONDA].[BULK_DATA_SP_IMPORT_SKU]
 				--
-				SELECT * FROM [diprocom].[SWIFT_ERP_SKU]
+				SELECT * FROM [SONDA].[SWIFT_ERP_SKU]
 */
 -- =============================================
-CREATE PROCEDURE [DIPROCOM].[BULK_DATA_SP_IMPORT_SKU]
+CREATE PROCEDURE [SONDA].[BULK_DATA_SP_IMPORT_SKU]
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -39,14 +39,14 @@ BEGIN
     @NAME_PRICE_LIST VARCHAR(250) = ''
     ,@CODEE_PRICE_LIST INT
 
-	TRUNCATE TABLE [SWIFT_INTERFACES_QA].[diprocom].[SWIFT_ERP_SKU];
+	TRUNCATE TABLE [SWIFT_INTERFACES_QA].[SONDA].[SWIFT_ERP_SKU];
 
 	-- ------------------------------------------------------------------------------------
   -- Obtiene los productos
   -- ------------------------------------------------------------------------------------
-	MERGE [SWIFT_INTERFACES_QA].[diprocom].[SWIFT_ERP_SKU] [TRG]
+	MERGE [SWIFT_INTERFACES_QA].[SONDA].[SWIFT_ERP_SKU] [TRG]
 	USING
-		(SELECT * FROM [SWIFT_INTERFACES_ONLINE_QA].[diprocom].[ERP_VIEW_SKU]) AS [SRC]
+		(SELECT * FROM [SWIFT_INTERFACES_ONLINE_QA].[SONDA].[ERP_VIEW_SKU]) AS [SRC]
 	ON [TRG].[CODE_SKU] = [SRC].[CODE_SKU]
 	WHEN MATCHED THEN
 		UPDATE SET
@@ -144,14 +144,14 @@ BEGIN
     -- ------------------------------------------------------------------------------------
     -- Obtiene el nombre de la lista de precios
     -- ------------------------------------------------------------------------------------
-    SELECT @CODEE_PRICE_LIST = SWIFT_EXPRESS.diprocom.[SWIFT_FN_GET_PARAMETER]('ERP_HARDCODE_VALUES','PRICE_LIST')
+    SELECT @CODEE_PRICE_LIST = SWIFT_EXPRESS.[SONDA].[SWIFT_FN_GET_PARAMETER]('ERP_HARDCODE_VALUES','PRICE_LIST')
     --
     SELECT @NAME_PRICE_LIST = epl.NAME_PRICE_LIST
-    FROM SWIFT_INTERFACES_ONLINE.diprocom.ERP_PRICE_LIST epl
+    FROM SWIFT_INTERFACES_ONLINE.[SONDA].ERP_PRICE_LIST epl
 
     -- ------------------------------------------------------------------------------------
     -- Obtiene coloca el nombre de la lista de preicos
     -- ------------------------------------------------------------------------------------
-    UPDATE diprocom.SWIFT_ERP_SKU
+    UPDATE [SONDA].SWIFT_ERP_SKU
       SET [VALUE_TEXT_CLASSIFICATION] = @NAME_PRICE_LIST
 END

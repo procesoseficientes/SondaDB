@@ -152,6 +152,9 @@
     <Build Include="DIPROCOM\Synonyms\ERP_VIEW_DOC_FOR_PICKING.sql" />
     <Build Include="ServerObjects\LinkedServers\LinkedServer1.sql" />
     <Build Include="Security\Login1.sql" />
+    <Build Include="Security\Schema1.sql" />
+    <Build Include="Security\User1.sql" />
+    <Build Include="Security\Login1_1.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="SWIFT_INTERFACES_ONLINE">

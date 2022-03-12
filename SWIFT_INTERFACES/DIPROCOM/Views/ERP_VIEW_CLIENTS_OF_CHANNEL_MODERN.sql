@@ -13,11 +13,11 @@
 -- Se agrega campo de direccion y departamento
 /*
 -- Ejemplo de Ejecucion:
-        SELECT * FROM [DIPROCOM].ERP_VIEW_CLIENTS_OF_CHANNEL_MODERN
+        SELECT * FROM [SONDA].ERP_VIEW_CLIENTS_OF_CHANNEL_MODERN
           
 */
 -- =============================================
-CREATE VIEW [DIPROCOM].[ERP_VIEW_CLIENTS_OF_CHANNEL_MODERN]
+CREATE VIEW [SONDA].[ERP_VIEW_CLIENTS_OF_CHANNEL_MODERN]
 AS
 
 SELECT
